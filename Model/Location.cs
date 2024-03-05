@@ -17,7 +17,5 @@ namespace BookingApp.Model
             City = city;
             Country = country;
         }
-       
-
     }
 }
