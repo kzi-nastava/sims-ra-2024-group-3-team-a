@@ -9,11 +9,11 @@ namespace BookingApp.Model
 {
     public class KeyPoints
     {
-        public TourKeyPoint Type { get; set; }
+        public KeyPoint Type { get; set; }
         public string Name { get; set; }
 
         public KeyPoints() { }
-        public KeyPoints( TourKeyPoint type, string name)
+        public KeyPoints( KeyPoint type, string name)
         {
             Type = type;
             Name = name;
