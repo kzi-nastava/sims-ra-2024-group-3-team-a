@@ -35,6 +35,14 @@ namespace BookingApp.Model
             Duration = duration; 
             Images = images;
         }
+
+        public Tour( Location place, string language, int maxTouristNumber, DateTime beginingTime)
+        {
+            Place = place;
+            Language = language;
+            MaxTouristNumber = maxTouristNumber;
+            BeginingTime = beginingTime;
+        }
         public string[] ToCSV()
         {
             string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description , Language, MaxTouristNumber.ToString(), BeginingTime.ToString(),Duration.ToString() };
