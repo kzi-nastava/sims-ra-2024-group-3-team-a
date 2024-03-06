@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace BookingApp.Repository
 {
-    public class AccomodationRepository
+    public class AccommodationRepository
     {
         private const string FilePath = "../../../Resources/Data/accommodations.csv";
 
@@ -17,7 +17,7 @@ namespace BookingApp.Repository
 
         private List<Accommodation> _accomodations;
 
-        public AccomodationRepository()
+        public AccommodationRepository()
         {
             _serializer = new Serializer<Accommodation>();
             _accomodations = _serializer.FromCSV(FilePath);

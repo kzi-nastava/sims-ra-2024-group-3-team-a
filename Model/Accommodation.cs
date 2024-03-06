@@ -20,7 +20,10 @@ namespace BookingApp.Model
         public int CancellationPeriod { get; set; }
         public List<string> Images { get; set; }
 
-        public Accommodation() { }
+        public Accommodation()
+        { 
+            Place = new Location();
+        }
 
         public Accommodation(string name, Location place, AccomodationType type, int capacity, int minDaysReservation, int cancellationPeriod, List<string> images)
         {
