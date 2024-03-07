@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,8 @@ namespace BookingApp.View.Owner
         private AccommodationRepository _repository;
         private AccommodationDTO _accommodationDTO;
 
+        private List<string> images;
+
         public event EventHandler AccommodationAdded;
 
         public AddAccommodationWindow()
@@ -49,10 +52,30 @@ namespace BookingApp.View.Owner
             else
                 _accommodationDTO.Type = AccomodationType.Cottage;
 
+            _accommodationDTO.Images = images;
+
             _repository.Save(_accommodationDTO.ToAccommodation());
 
             AccommodationAdded?.Invoke(this, EventArgs.Empty);
             Close();
+        }
+
+        private void AddImages(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if (response == true)
+            {
+                images = openFileDialog.FileNames.ToList();
+
+                for(int i = 0; i < images.Count ; i++)
+                {
+                    images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, images[i]).ToString();
+                }
+            }
         }
 
         private void Cancel(object sender, RoutedEventArgs e)

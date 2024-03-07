@@ -17,11 +17,13 @@ namespace BookingApp.DTO
         public AccommodationDTO()
         {
             _location = new LocationDTO();
+            images = new List<string>();
         }
 
         public AccommodationDTO(LocationDTO location)
         {
             _location = location;
+            images = new List<string>();
         }
 
         public AccommodationDTO(Accommodation accommodation)
@@ -33,6 +35,7 @@ namespace BookingApp.DTO
             capacity = accommodation.Capacity;
             minDaysReservation = accommodation.MinDaysReservation;
             cancellationPeriod = accommodation.CancellationPeriod;
+            images = accommodation.Images;
         }
 
         public AccommodationDTO(AccommodationDTO accommodation)
@@ -44,6 +47,7 @@ namespace BookingApp.DTO
             capacity = accommodation.Capacity;
             minDaysReservation = accommodation.MinDaysReservation;
             cancellationPeriod = accommodation.CancellationPeriod;
+            images = accommodation.Images;
         }
 
         private int id;
@@ -141,6 +145,20 @@ namespace BookingApp.DTO
                     OnPropertyChanged();
                 }
             }
+        }
+
+        private List<string> images;
+        public List<string> Images
+        {
+            get { return images; }
+            set
+            {
+                if (value != images)
+                {
+                    images = value;
+                    OnPropertyChanged();
+                }
+            }
         }   
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -152,7 +170,7 @@ namespace BookingApp.DTO
 
         public  Accommodation ToAccommodation()
         {
-            return new Accommodation(name, _location.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, new List<string>());
+            return new Accommodation(name, _location.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
         }   
     }
 }
