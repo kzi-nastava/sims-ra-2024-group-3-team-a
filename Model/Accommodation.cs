@@ -20,7 +20,11 @@ namespace BookingApp.Model
         public int CancellationPeriod { get; set; }
         public List<string> Images { get; set; }
 
-        public Accommodation() { }
+        public Accommodation()
+        { 
+            Place = new Location();
+            Images = new List<string>();
+        }
 
         public Accommodation(string name, Location place, AccomodationType type, int capacity, int minDaysReservation, int cancellationPeriod, List<string> images)
         {
@@ -35,8 +39,17 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString() };
-            return csvValues;
+            if(Images != null)
+            {
+                string images = string.Join("|", Images);
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString(), images };
+                return csvValues;
+            }  
+            else
+            {
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString() };
+                return csvValues;
+            }      
         }
 
         public void FromCSV(string[] values)
@@ -49,6 +62,10 @@ namespace BookingApp.Model
             Capacity = Convert.ToInt32(values[5]);
             MinDaysReservation = Convert.ToInt32(values[6]);
             CancellationPeriod = Convert.ToInt32(values[7]);
+            for(int i = 8; i < values.Length; i++)
+            {
+                Images.Add(values[i]);
+            }
         }   
     }
 }
