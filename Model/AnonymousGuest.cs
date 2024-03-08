@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace BookingApp.Model
 {
-    public class AnonimousGuest
+    public class AnonymousGuest
     {
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
 
-        public AnonimousGuest() { }
-        public AnonimousGuest(string name, string surname,int age)
+        public AnonymousGuest() { }
+        public AnonymousGuest(string name, string surname,int age)
         {
             Name = name;
             Surname = surname;
