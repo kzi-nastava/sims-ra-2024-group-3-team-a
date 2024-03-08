@@ -16,7 +16,7 @@ namespace BookingApp.Model
         public int AccommodationId { get; set; }
         public DateOnly BeginDate { get; set; }
         public DateOnly EndDate { get; set;}
-        public List<AnonimousGuest> AnonimousGuests { get; set; }
+        public List<AnonymousGuest> AnonymousGuests { get; set; }
 
         public AccommodationReservation() { }
 
