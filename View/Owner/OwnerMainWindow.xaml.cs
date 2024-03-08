@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.View.Owner
 {
@@ -56,6 +57,29 @@ namespace BookingApp.View.Owner
             AddAccommodationWindow addAccommodationWindow = new AddAccommodationWindow();
             addAccommodationWindow.AccommodationAdded += UpdateEvent;
             addAccommodationWindow.ShowDialog();
+        }
+
+        private void RateGuestWindow(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Rate guest");
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(tabControl.SelectedItem == tabItemAccommodations)
+            {
+                buttonFunction.Click -= RateGuestWindow;
+                buttonFunction.Click += ShowAddAccommodationWindow;
+                imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\add.png", UriKind.Relative));
+                textBlockFunction.Text = "Add";
+            }
+            else
+            {
+                buttonFunction.Click -= ShowAddAccommodationWindow;
+                buttonFunction.Click += RateGuestWindow;
+                imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
+                textBlockFunction.Text = "Rate";
+            }
         }
     }
 }
