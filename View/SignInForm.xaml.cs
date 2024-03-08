@@ -1,6 +1,7 @@
 ﻿using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.View.Guest;
 using BookingApp.View.Owner;
 using System;
 using System.ComponentModel;
@@ -72,6 +73,9 @@ namespace BookingApp.View
                         }
                         case UserRole.Guest:
                         {
+                            GuestMainWindow guestMainWindow = new GuestMainWindow();
+                            guestMainWindow.Show();
+                            Close();
                             MessageBox.Show("You signed in as Guest User!");
                             break;
                         }
