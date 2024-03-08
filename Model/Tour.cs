@@ -53,7 +53,7 @@ namespace BookingApp.Model
             BeginingTime = DateTime.Parse(values[7]);
             Duration = TimeSpan.Parse(values[8]);
 
-            
+ 
         }
     }
 
