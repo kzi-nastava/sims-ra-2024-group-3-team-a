@@ -1,12 +1,15 @@
-﻿using System;
+﻿using BookingApp.Model.Enums;
+using BookingApp.Serializer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BookingApp.Model
 {
-    public class GuestRating
+    public class GuestRating : ISerializable
     {
         public int Id { get; set; }
         public int AccommodationReservationId { get; set; }
@@ -24,10 +27,19 @@ namespace BookingApp.Model
             Comment = comment;
         }
 
-        public string[] toSV()
+        public string[] ToCSV()
         {
             string[] csvValues = { Id.ToString(), AccommodationReservationId.ToString(), CleannessRating.ToString(), RulesRespectRating.ToString(), Comment };
             return csvValues;
+        }
+
+        public void FromCSV(string[] values)
+        {
+            Id = Convert.ToInt32(values[0]);
+            AccommodationReservationId = Convert.ToInt32(values[1]);
+            CleannessRating = Convert.ToInt32(values[2]);
+            RulesRespectRating = Convert.ToInt32(values[3]);
+            Comment = values[4];
         }
     }
 }
