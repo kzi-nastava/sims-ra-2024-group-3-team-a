@@ -14,17 +14,23 @@
 
         
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <TextBox Width="200" Margin="0,0,10,0"/>
-            <Button Content="Search" Width="80"/>
+            <TextBox x:Name = "textboxSearch" Width="200" Margin="0,0,10,0"/>
+            <Button x:Name="buttonSearch" Content="Search" Click="Search_Click" Width="80"/>
         </StackPanel>
 
 
-        <DataGrid x:Name="dataGridTour" Grid.Row="1" Margin="10" AutoGenerateColumns="True">
+        <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                
+
+                <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
+                <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
+                <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
+                <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
+                <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
 
 
             </DataGrid.Columns>
+            
         </DataGrid>
     </Grid>
 </Window>

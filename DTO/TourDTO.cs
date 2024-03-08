@@ -115,10 +115,7 @@ namespace BookingApp.DTO
             }
         }
 
-        public String Location
-        {
-            get { return locationDto.ToString(); }
-        }
+        
 
         public Tour ToTour()
         {
