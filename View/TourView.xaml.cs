@@ -35,7 +35,7 @@ namespace BookingApp.View
             DataContext = this;
             _repository = new TourRepository();
             Tours = new ObservableCollection<TourDTO>();
-            tour= new TourDTO();
+            tour = new TourDTO();
             Update();
         }
         private void Update()
@@ -46,77 +46,47 @@ namespace BookingApp.View
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            string searchTerm = textboxSearch.Text.ToLower();
-            string[] resultArray = searchTerm.Split(',').Select(s => s.Trim()).ToArray();
+            string searchInput = textboxSearch.Text.ToLower();
+            string[] resultArray = searchInput.Split(',').Select(s => s.Trim()).ToArray();
 
-            if (comboBoxFilter.SelectedItem == null)
+            var filtered = Tours;
+
+            if (resultArray.Length == 0 || string.IsNullOrWhiteSpace(searchInput))
             {
-                MessageBox.Show("You didn't choose an option for filtration!");
-                return;
+                dataGridTour.ItemsSource = Tours;
             }
 
-            string selectedFilter;
+            foreach (string input in resultArray)
+            {
+                string value = input;
 
-            if (comboBoxFilter.SelectedItem == comboBoxItemDuration)
-            {
-                selectedFilter = comboBoxFilter.SelectedItem.ToString();
-                var filtered = Tours.Where(tour => tour.Duration.ToString().Contains(resultArray[0])).ToList();
-                dataGridTour.ItemsSource = filtered;
-            }
-            else if (comboBoxFilter.SelectedItem == comboBoxItemLanguage)
-            {
-                selectedFilter = comboBoxFilter.SelectedItem.ToString();
-                var filtered = Tours.Where(tour => tour.Language.ToLower().Contains(resultArray[0])).ToList();
-                dataGridTour.ItemsSource = filtered;
-            }
-            else if (comboBoxFilter.SelectedItem == comboBoxItemNumberOfPeople)
-            {
-                
-                    selectedFilter = comboBoxFilter.SelectedItem.ToString();
-                    var filtered = Tours.Where(tour => tour.MaxTouristNumber.ToString().Contains(resultArray[0])).ToList();
-                    dataGridTour.ItemsSource = filtered;
-                
-                
-            }
-            else if(comboBoxFilter.SelectedItem == comboBoxItemPlace)
-            {
-                
-                if (resultArray.Length >= 2)
-                {
-                    string city = resultArray[0];
-                    string country = resultArray[1];
+                if (string.IsNullOrWhiteSpace(value))
+                    continue; 
 
-                    var filtered = Tours.Where(tour => tour.LocationDTO.City.ToLower() == city && tour.LocationDTO.Country.ToLower() == country).ToList();
-                    dataGridTour.ItemsSource = filtered;
-                }
-                else if (searchTerm == "")
-                {
-                   
-                    dataGridTour.ItemsSource = Tours;
-                }
-                else
-                {
-                    MessageBox.Show("U didn't input city and contry in right format!");
-                }
+                filtered = FilterTours(filtered, value);
+            }
 
-
-
-            }
-            else if (comboBoxFilter.SelectedItem == comboBoxItemBeginningTime)
-            { 
-                selectedFilter = comboBoxFilter.SelectedItem.ToString();
-                var filtered = Tours.Where(tour => tour.BeginingTime.ToString().Contains(resultArray[0])).ToList();
-                dataGridTour.ItemsSource = filtered;
-            }
-            else if(comboBoxFilter.SelectedItem == null)
-            {
-                MessageBox.Show("U didn't input anything to search!");
-            }
-            else
-            {
-                MessageBox.Show("Invalid filter selected!");
-            }
-          
+            dataGridTour.ItemsSource = filtered;
         }
+
+        private ObservableCollection<BookingApp.DTO.TourDTO> FilterTours(ObservableCollection<BookingApp.DTO.TourDTO> tours, string value)
+        {
+            var filtered = new ObservableCollection<BookingApp.DTO.TourDTO>();
+
+            foreach (var tour in tours)
+            {
+                if (tour.Duration.ToString().Contains(value)
+                    || tour.Language.ToLower().Contains(value)
+                    || tour.BeginingTime.ToString().Contains(value)
+                    || (tour.LocationDTO.City.ToLower() + ", " + tour.LocationDTO.Country.ToLower()).Contains(value)
+                    || tour.MaxTouristNumber.ToString().Contains(value))
+                {
+                    filtered.Add(tour);
+                }
+            }
+
+            return filtered;
+        }
+
     }
 }
