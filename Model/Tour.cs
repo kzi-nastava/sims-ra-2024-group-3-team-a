@@ -22,15 +22,18 @@ namespace BookingApp.Model
         public TimeSpan Duration { get; set; }  
         public List<string> Images { get; set; }
 
-        public Tour() { }
-        public Tour(string name, Location place, string description, string language, int maxTouristNumber,KeyPoints keyPoint,DateTime beginingTime ,TimeSpan duration, List<string> images)
+        public Tour() 
+        {
+            Place = new Location();
+        }
+        public Tour(string name, Location place, string description, string language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,TimeSpan duration, List<string> images)
         {
             Name = name;
             Place = place;
             Description = description;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
-            KeyPoint = keyPoint;
+            KeyPoint = keyPoints;
             BeginingTime = beginingTime;
             Duration = duration; 
             Images = images;
@@ -61,7 +64,7 @@ namespace BookingApp.Model
         public void FromCSV(string[] values)
         {
             Id = Convert.ToInt32(values[0]);
-            Name = values[1];
+            Name = values[1]; 
             Place.City = values[2];
             Place.Country = values[3];
             Description = values[4];

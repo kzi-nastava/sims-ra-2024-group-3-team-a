@@ -68,6 +68,11 @@ namespace BookingApp.DTO
             return new Location(city, country);
         }
 
+        public override string ToString()
+        {
+            return City + " " + Country;
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
