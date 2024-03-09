@@ -1,5 +1,4 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using System;
 using System.Collections.Generic;
@@ -13,45 +12,37 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.View.Owner
 {
     /// <summary>
-    /// Interaction logic for RateGuestWindow.xaml
+    /// Interaction logic for RateGuestPage.xaml
     /// </summary>
-    public partial class RateGuestWindow : Window
+    public partial class RateGuestPage : Page
     {
+        private OwnerMainWindow _ownerMainWindow;
+
         private AccommodationReservationRepository _repository;
         private AccommodationReservationDTO _accommodationReservationDTO;
 
-        public event EventHandler GuestRated;
-
-        public RateGuestWindow(AccommodationReservationDTO reservation)
+        public RateGuestPage(OwnerMainWindow ownerMainWindow, AccommodationReservationDTO reservation)
         {
             InitializeComponent();
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             _repository = new AccommodationReservationRepository();
             _accommodationReservationDTO = new AccommodationReservationDTO(reservation);
+            _ownerMainWindow = ownerMainWindow;
 
-            DataContext = _accommodationReservationDTO;
+            DataContext = _accommodationReservationDTO;  
         }
 
         private void Rate(object sender, RoutedEventArgs e)
         {
             _repository.Update(_accommodationReservationDTO.ToAccommodationReservation());
-
-            GuestRated?.Invoke(this, EventArgs.Empty);
-            Close();
+            _ownerMainWindow.Update();
         }
-
-        private void Cancel(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void textBox_TextChanged(object sender, EventArgs e)
         {
 

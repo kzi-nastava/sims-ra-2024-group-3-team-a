@@ -7,72 +7,74 @@
         mc:Ignorable="d"
         Title="OwnerMainWindow" Height="750" Width="430" ResizeMode="NoResize" WindowStyle="None"
         WindowStartupLocation="CenterScreen">
-    
+
     <Window.Resources>
         <local:GuestIdToNameConverter x:Key="GuestIdToNameConverter"/>
         <local:AccommodationIdToAccommodationConverter x:Key="AccommodationIdToAccommodationConverter"/>
     </Window.Resources>
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="..\..\Resources\Images\Owner\OwnerBackground.png"/>
-        </Grid.Background>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="Auto" MaxHeight="500"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="..\..\Resources\Images\Owner\OwnerBackground.png"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto" MaxHeight="500"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Frame Panel.ZIndex="1000" x:Name="frameMain" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameMain" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
 
-        <TabControl x:Name="tabControl" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem x:Name="tabItemAccommodations" Header="Accommodations" >
-                <StackPanel>
-                    <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding Accommodations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
-                            <DataGridTextColumn Header="Place" Binding="{Binding PlaceDTO}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </TabItem>
+            <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
+                <TabItem x:Name="tabItemAccommodations" Header="Accommodations" >
+                    <StackPanel>
+                        <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding Accommodations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="Place" Binding="{Binding PlaceDTO}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
 
-            <TabItem x:Name="tabItemUsers" Header="Users" >
-                <StackPanel >
-                    <DataGrid x:Name="dataGridReservations" RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationReservations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
-                            <DataGridTextColumn Header="Guest">
-                                <DataGridTextColumn.Binding>
-                                    <Binding Path="GuestId" Converter="{StaticResource GuestIdToNameConverter}"/>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Accommodation">
-                                <DataGridTextColumn.Binding>
-                                    <Binding Path="AccommodationId" Converter="{StaticResource AccommodationIdToAccommodationConverter}"/>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Clean" Binding="{Binding Path = RatingDTO.CleannessRating}" Width="*"/>
-                            <DataGridTextColumn Header="Rules" Binding="{Binding Path = RatingDTO.RulesRespectRating}" Width="*"/>
-                            <DataGridTextColumn Header="Comment" Binding="{Binding Path = RatingDTO.Comment}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </TabItem>
-        </TabControl>
-        
-        <ToolBar Background="CadetBlue" BorderBrush="Blue" BorderThickness="3" Grid.Row="0" Grid.ColumnSpan="3">
-            <Button x:Name="buttonFunction">
-                <StackPanel Orientation="Horizontal">
-                    <Image Name="imageFunction" Source="../../Resources/Images/add.png" Width="20" Height="25"/>
-                    <TextBlock x:Name="textBlockFunction" Text="Create" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0" />
-                </StackPanel>
-            </Button>
-        </ToolBar>
-    </Grid>
+                <TabItem x:Name="tabItemUsers" Header="Users" >
+                    <StackPanel >
+                        <DataGrid x:Name="dataGridReservations" RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationReservations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
+                                <DataGridTextColumn Header="Guest">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="GuestId" Converter="{StaticResource GuestIdToNameConverter}"/>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Accommodation">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="AccommodationId" Converter="{StaticResource AccommodationIdToAccommodationConverter}"/>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Clean" Binding="{Binding Path = RatingDTO.CleannessRating}" Width="*"/>
+                                <DataGridTextColumn Header="Rules" Binding="{Binding Path = RatingDTO.RulesRespectRating}" Width="*"/>
+                                <DataGridTextColumn Header="Comment" Binding="{Binding Path = RatingDTO.Comment}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+
+            <ToolBar Background="CadetBlue" BorderBrush="Blue" BorderThickness="3" Grid.Row="0" Grid.ColumnSpan="3">
+                <Button x:Name="buttonFunction">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Name="imageFunction" Source="../../Resources/Images/add.png" Width="20" Height="25"/>
+                        <TextBlock x:Name="textBlockFunction" Text="Create" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </Grid>
+    </ScrollViewer>
 </Window>

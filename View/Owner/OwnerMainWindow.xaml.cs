@@ -45,7 +45,7 @@ namespace BookingApp.View.Owner
             Update();
         }
 
-        private void Update()
+        public void Update()
         {
             Accommodations.Clear();
             AccommodationReservations.Clear();
@@ -61,32 +61,33 @@ namespace BookingApp.View.Owner
             }
         }
 
-        private void UpdateEvent(object sender, EventArgs e)
-        {
-            Update();
-        }
-
         private void ShowAddAccommodationWindow(object sender, RoutedEventArgs e)
         {
-            AddAccommodationWindow addAccommodationWindow = new AddAccommodationWindow();
-            addAccommodationWindow.AccommodationAdded += UpdateEvent;
-            addAccommodationWindow.ShowDialog();
+            if(frameMain.Content != null)
+            {
+                frameMain.Content = null;
+            }
+            else
+            {
+                frameMain.Content = new AddAccommodationPage(this);
+            }  
         }
 
         private void ShowRateGuestWindow(object sender, RoutedEventArgs e)
         {
-            if(dataGridReservations.SelectedItem != null)
+            if(dataGridReservations.SelectedItem != null && frameMain.Content == null)
             {
-                RateGuestWindow rateGuestWindow = new RateGuestWindow(dataGridReservations.SelectedItem as AccommodationReservationDTO);
-                rateGuestWindow.GuestRated += UpdateEvent;
-                rateGuestWindow.ShowDialog();
+                frameMain.Content = new RateGuestPage(this, dataGridReservations.SelectedItem as AccommodationReservationDTO);
             }
-            else
+            else if(frameMain.Content == null)
             {
                 MessageBox.Show("User to rate not selected!");
             }
+            else
+            {
+                frameMain.Content = null;
+            }
         }
-
 
         private bool isRateGuestWindowSubscribed = false;
         private bool isAddAccommodationWindowSubscribed = false;
@@ -124,6 +125,7 @@ namespace BookingApp.View.Owner
                 imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
                 textBlockFunction.Text = "Rate";
             }
+            frameMain.Content = null;
         }
     }
 

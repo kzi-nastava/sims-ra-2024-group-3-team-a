@@ -26,17 +26,17 @@ namespace BookingApp.View.Owner
     {
         private AccommodationRepository _repository;
         private AccommodationDTO _accommodationDTO;
+        private OwnerMainWindow _ownerMainWindow;
 
         private List<string> images;
 
-        public event EventHandler AccommodationAdded;
-
-        public AddAccommodationPage()
+        public AddAccommodationPage(OwnerMainWindow ownerMainWindow)
         {
             InitializeComponent();
             
             _repository = new AccommodationRepository();
             _accommodationDTO = new AccommodationDTO();
+            _ownerMainWindow = ownerMainWindow;
 
             DataContext = _accommodationDTO;
         }
@@ -54,7 +54,20 @@ namespace BookingApp.View.Owner
 
             _repository.Save(_accommodationDTO.ToAccommodation());
 
-            AccommodationAdded?.Invoke(this, EventArgs.Empty);
+            setDefaultValues();
+            _ownerMainWindow.Update();
+        }
+
+        private void setDefaultValues()
+        {
+            _accommodationDTO.Name = "";
+            _accommodationDTO.Type = AccomodationType.Apartment;
+            _accommodationDTO.Capacity = 0;
+            _accommodationDTO.MinDaysReservation = 0;
+            _accommodationDTO.CancellationPeriod = 0;
+            _accommodationDTO.PlaceDTO.Country = "";
+            _accommodationDTO.PlaceDTO.City = "";
+            _accommodationDTO.Images.Clear();
         }
 
         private void AddImages(object sender, RoutedEventArgs e)
