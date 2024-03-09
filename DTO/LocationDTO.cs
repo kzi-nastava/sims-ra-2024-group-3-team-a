@@ -62,16 +62,16 @@ namespace BookingApp.DTO
             }
         }
 
-        public Location ToLocation()
-        {
-            return new Location(city, country);
-        }
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public Location ToLocation()
+        {
+            return new Location(city, country);
         }
     }
 }

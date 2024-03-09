@@ -17,20 +17,26 @@ namespace BookingApp.Model
         public DateOnly BeginDate { get; set; }
         public DateOnly EndDate { get; set;}
         public List<AnonymousGuest> AnonymousGuests { get; set; }
+        public GuestRating Rating { get; set; }
 
-        public AccommodationReservation() { }
+        public AccommodationReservation()
+        { 
+            Rating = new GuestRating();
+        }
 
-        public AccommodationReservation( int guestId, int accommodationId, DateOnly beginDate, DateOnly endDate)
+        public AccommodationReservation(int id, int guestId, int accommodationId, DateOnly beginDate, DateOnly endDate, GuestRating rating)
         {
+            Id = id;
             GuestId = guestId;
             AccommodationId = accommodationId;
             BeginDate = beginDate;
             EndDate = endDate;
+            Rating = rating;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString() };
+            string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Rating.CleannessRating.ToString(), Rating.RulesRespectRating.ToString(), Rating.Comment };
             return csvValues;
         }
 
@@ -41,6 +47,9 @@ namespace BookingApp.Model
             AccommodationId = Convert.ToInt32(values[2]);
             BeginDate = DateOnly.Parse(values[3]);
             EndDate = DateOnly.Parse(values[4]);
+            Rating.CleannessRating = Convert.ToInt32(values[5]);
+            Rating.RulesRespectRating = Convert.ToInt32(values[6]);
+            Rating.Comment = values[7];
         }
     }
 }

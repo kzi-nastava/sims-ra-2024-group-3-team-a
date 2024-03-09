@@ -13,10 +13,8 @@ namespace BookingApp.DTO
     {
         public GuestRatingDTO() { }
 
-        public GuestRatingDTO(int id, int accommodationReservationId, int cleannessRating, int rulesRespectRating, string comment)
+        public GuestRatingDTO(int cleannessRating, int rulesRespectRating, string comment)
         {
-            this.id = id;
-            this.accommodationReservationId = accommodationReservationId;
             this.cleannessRating = cleannessRating;
             this.rulesRespectRating = rulesRespectRating;
             this.comment = comment;
@@ -24,8 +22,6 @@ namespace BookingApp.DTO
 
         public GuestRatingDTO(GuestRatingDTO guestRatingDTO)
         {
-            id = guestRatingDTO.Id;
-            accommodationReservationId = guestRatingDTO.AccommodationReservationId;
             cleannessRating = guestRatingDTO.CleannessRating;
             rulesRespectRating = guestRatingDTO.RulesRespectRating;
             comment = guestRatingDTO.Comment;
@@ -33,39 +29,9 @@ namespace BookingApp.DTO
 
         public GuestRatingDTO(GuestRating guestRating)
         {
-            id = guestRating.Id;
-            accommodationReservationId = guestRating.AccommodationReservationId;
             cleannessRating = guestRating.CleannessRating;
             rulesRespectRating = guestRating.RulesRespectRating;
             comment = guestRating.Comment;
-        }
-
-        private int id;
-        public int Id
-        {
-            get { return id; }
-            set
-            {
-                if (value != id)
-                {
-                    id = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private int accommodationReservationId;
-        public int AccommodationReservationId
-        {
-            get { return accommodationReservationId; }
-            set
-            {
-                if (value != accommodationReservationId)
-                {
-                    accommodationReservationId = value;
-                    OnPropertyChanged();
-                }
-            }
         }
 
         private int cleannessRating;
@@ -119,7 +85,7 @@ namespace BookingApp.DTO
 
         public GuestRating ToGuestRating()
         {
-            return new GuestRating(accommodationReservationId, cleannessRating, rulesRespectRating, comment);
+            return new GuestRating(cleannessRating, rulesRespectRating, comment);
         }
     }
 }

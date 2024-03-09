@@ -11,7 +11,10 @@ namespace BookingApp.DTO
 {
     public class AccommodationReservationDTO : INotifyPropertyChanged
     {
-        public AccommodationReservationDTO() { }
+        public AccommodationReservationDTO()
+        {
+            ratingDTO = new GuestRatingDTO();
+        }
 
         public AccommodationReservationDTO(AccommodationReservation reservation) 
         {
@@ -21,6 +24,7 @@ namespace BookingApp.DTO
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
             anonymousGuests = reservation.AnonymousGuests;
+            ratingDTO = new GuestRatingDTO(reservation.Rating);
         }
 
         public AccommodationReservationDTO(AccommodationReservationDTO reservation)
@@ -31,6 +35,7 @@ namespace BookingApp.DTO
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
             anonymousGuests = reservation.AnonymousGuests;
+            ratingDTO = new GuestRatingDTO(reservation.RatingDTO);
         }
 
         private int id;
@@ -103,6 +108,20 @@ namespace BookingApp.DTO
             }
         }
 
+        private GuestRatingDTO ratingDTO;
+        public GuestRatingDTO RatingDTO
+        {
+            get { return ratingDTO; }
+            set
+            {
+                if (value != ratingDTO)
+                {
+                    ratingDTO = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private List<AnonymousGuest> anonymousGuests;
         public List<AnonymousGuest> AnonymousGuests
         {
@@ -126,7 +145,7 @@ namespace BookingApp.DTO
 
         public AccommodationReservation ToAccommodationReservation() 
         {
-            return new AccommodationReservation(guestId, accommodationId, beginDate, endDate);
+            return new AccommodationReservation(id, guestId, accommodationId, beginDate, endDate, ratingDTO.ToGuestRating());
         }
     }
 }
