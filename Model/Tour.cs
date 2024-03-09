@@ -17,20 +17,20 @@ namespace BookingApp.Model
         public string Description { get; set; }
         public string Language { get; set; }
         public int MaxTouristNumber { get; set; }
-        public List<KeyPoints> KeyPoints { get; set; }
+        public KeyPoints KeyPoint { get; set; }
         public DateTime BeginingTime { get; set; }
         public TimeSpan Duration { get; set; }  
         public List<string> Images { get; set; }
 
         public Tour() { }
-        public Tour(string name, Location place, string description, string language, int maxTouristNumber, List<KeyPoints> keyPoints,DateTime beginingTime ,TimeSpan duration, List<string> images)
+        public Tour(string name, Location place, string description, string language, int maxTouristNumber,KeyPoints keyPoint,DateTime beginingTime ,TimeSpan duration, List<string> images)
         {
             Name = name;
             Place = place;
             Description = description;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
-            KeyPoints = keyPoints;
+            KeyPoint = keyPoint;
             BeginingTime = beginingTime;
             Duration = duration; 
             Images = images;
@@ -45,8 +45,17 @@ namespace BookingApp.Model
         }
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description , Language, MaxTouristNumber.ToString(), BeginingTime.ToString(),Duration.ToString() };
-            return csvValues;
+            if (Images != null)
+            {
+                string images = string.Join("|", Images);
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language, MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), KeyPoint.Id.ToString(), images };
+                return csvValues;
+            }
+            else
+            {
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language, MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), KeyPoint.Id.ToString() };
+                return csvValues;
+            }
         }
 
         public void FromCSV(string[] values)
@@ -60,8 +69,12 @@ namespace BookingApp.Model
             MaxTouristNumber = Convert.ToInt32(values[6]);
             BeginingTime = DateTime.Parse(values[7]);
             Duration = TimeSpan.Parse(values[8]);
+            for (int i = 9; i < values.Length; i++)
+            {
+                Images.Add(values[i]);
+            }
 
-            
+
         }
     }
 

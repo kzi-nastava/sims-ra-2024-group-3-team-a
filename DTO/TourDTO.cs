@@ -1,4 +1,5 @@
 ﻿using BookingApp.Model;
+using BookingApp.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,12 +8,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace BookingApp.DTO
 {
     public class TourDTO
-    { 
-
+    {
+        
         public TourDTO() { }
 
         public TourDTO( Location place, string language, int maxTouristNumber, DateTime beginingTime)
@@ -22,25 +25,36 @@ namespace BookingApp.DTO
           this.language = language;
           this.maxTouristNumber = maxTouristNumber;
           this.beginingTime = beginingTime;
-
-
         }
-
         public TourDTO(Tour tour)
         {
+            id = tour.Id;
+            name = tour.Name;
+            description = tour.Description;
             locationDto = new LocationDTO(tour.Place);
             language = tour.Language;
             maxTouristNumber = tour.MaxTouristNumber;
+            keyPoints = tour.KeyPoint; 
             beginingTime = tour.BeginingTime;
-        }
+            duration = tour.Duration;
+            images = tour.Images;
 
+        }
         public TourDTO(TourDTO tour)
         {
-            locationDto = tour.LocationDTO;
+            id = tour.Id;
+            name = tour.Name;
+            description = tour.Description;
+            locationDto = new LocationDTO(tour.LocationDTO);
             language = tour.Language;
             maxTouristNumber = tour.MaxTouristNumber;
+            keyPoints = tour.KeyPoint;
             beginingTime = tour.BeginingTime;
+            duration = tour.Duration;
+            images = tour.Images;
+
         }
+
 
         private LocationDTO locationDto;
 
@@ -56,7 +70,46 @@ namespace BookingApp.DTO
                 }
             }
         }
+        private int id;
+        public int Id
+        {
+            get { return id; }
+            set
+            {
+                if (value != id)
+                {
+                    id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (value != name)
+                {
+                    name = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
+        private string description;
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                if (value != description)
+                {
+                    description = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         private string language;
 
         public string Language
@@ -85,7 +138,20 @@ namespace BookingApp.DTO
                 }
             }
         }
-       
+        private KeyPoints keyPoints;
+        public KeyPoints KeyPoint
+        {
+            get { return keyPoints; } 
+            set
+            {
+                if (value != keyPoints)
+                {
+                    keyPoints = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
 
         private DateTime beginingTime;
         public DateTime BeginingTime
@@ -115,9 +181,26 @@ namespace BookingApp.DTO
             }
         }
 
+        private List<string> images;
+        public List<string> Images
+        {
+            get { return images; }
+            set
+            {
+                if (value != images)
+                {
+                    images = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Tour ToTour()
         {
-           return new Tour(locationDto.ToLocation(), language, maxTouristNumber, beginingTime);
+           return new Tour(locationDto.ToLocation(), language,maxTouristNumber, beginingTime);
+        }
+        public Tour ToTourAllParameters()
+        {
+            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPoints, beginingTime, duration, images);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
