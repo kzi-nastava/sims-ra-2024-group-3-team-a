@@ -66,7 +66,7 @@ namespace BookingApp.View.Owner
             }
         }
 
-        private void ShowAddAccommodationWindow(object sender, RoutedEventArgs e)
+        private void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
         {
             if(frameMain.Content != null)
             {
@@ -78,7 +78,7 @@ namespace BookingApp.View.Owner
             }  
         }
 
-        private void ShowRateGuestWindow(object sender, RoutedEventArgs e)
+        private void ShowRateGuestPage(object sender, RoutedEventArgs e)
         {
             if(dataGridReservations.SelectedItem != null && frameMain.Content == null)
             {
@@ -94,40 +94,40 @@ namespace BookingApp.View.Owner
             }
         }
 
-        private bool isRateGuestWindowSubscribed = false;
+        private bool isRateGuestWindowOpened = false;
 
-        private bool isAddAccommodationWindowSubscribed = false;
+        private bool isAddAccommodationWindowOpened = false;
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(tabControl.SelectedItem == tabItemAccommodations)
             {
-                if (isRateGuestWindowSubscribed)
+                if (isRateGuestWindowOpened)
                 {
-                    buttonFunction.Click -= ShowRateGuestWindow;
-                    isRateGuestWindowSubscribed = false;
+                    buttonFunction.Click -= ShowRateGuestPage;
+                    isRateGuestWindowOpened = false;
                 }
 
-                if (!isAddAccommodationWindowSubscribed)
+                if (!isAddAccommodationWindowOpened)
                 {
-                    buttonFunction.Click += ShowAddAccommodationWindow;
-                    isAddAccommodationWindowSubscribed = true;
+                    buttonFunction.Click += ShowAddAccommodationPage;
+                    isAddAccommodationWindowOpened = true;
                 }
                 imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\add.png", UriKind.Relative));
                 textBlockFunction.Text = "Add";
             }
             else
             {
-                if (isAddAccommodationWindowSubscribed)
+                if (isAddAccommodationWindowOpened)
                 {
-                    buttonFunction.Click -= ShowAddAccommodationWindow;
-                    isAddAccommodationWindowSubscribed = false;
+                    buttonFunction.Click -= ShowAddAccommodationPage;
+                    isAddAccommodationWindowOpened = false;
                 }
 
-                if (!isRateGuestWindowSubscribed)
+                if (!isRateGuestWindowOpened)
                 {
-                    buttonFunction.Click += ShowRateGuestWindow;
-                    isRateGuestWindowSubscribed = true;
+                    buttonFunction.Click += ShowRateGuestPage;
+                    isRateGuestWindowOpened = true;
                 }
                 imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
                 textBlockFunction.Text = "Rate";
@@ -164,8 +164,7 @@ namespace BookingApp.View.Owner
                     frameNotification.Content = notificationPage;
                 });
             }
-        }
-        
+        } 
     }
 
     public class GuestIdToNameConverter : IValueConverter

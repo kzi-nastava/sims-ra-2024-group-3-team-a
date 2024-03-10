@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="stackPanel" Grid.ColumnSpan="2">
-            <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="20">Accommodation</Label>
+            <Label Foreground="#d4ff00" FontSize="27" HorizontalAlignment="Center" FontWeight="Bold" Content="Accommodation"/>
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"></ColumnDefinition>
@@ -34,31 +34,31 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Label HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Name"/>
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Name"/>
                 <TextBox x:Name="textBoxName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
                          Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
-                <Label HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Type</Label>
-                <ComboBox x:Name="comboBoxStatus" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2">
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Type</Label>
+                <ComboBox x:Name="comboBoxType" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2">
                     <ComboBoxItem x:Name="comboBoxItemApartment">Apartment</ComboBoxItem>
                     <ComboBoxItem x:Name="comboBoxItemHouse">House</ComboBoxItem>
                     <ComboBoxItem x:Name="comboBoxItemCottage">Cottage</ComboBoxItem>
                 </ComboBox>
 
-                <Label HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Capacity</Label>
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Capacity</Label>
                 <TextBox x:Name="textBoxCapacity" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
                          Text="{Binding Path=Capacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
-                <Label HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center">Min Days</Label>
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center">Min Days</Label>
                 <TextBox x:Name="textBoxMinDaysReservation" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
                          Text="{Binding Path=MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
-                <Label HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Cancellation</Label>
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Cancellation</Label>
                 <TextBox x:Name="textBoxCancellationPeriod" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
                          Text="{Binding Path=CancellationPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
             </Grid>
 
-            <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Content="Place"/>
+            <Label Foreground="#d4ff00" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Content="Place"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"></ColumnDefinition>
@@ -69,17 +69,17 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Country"/>
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Country"/>
                 <TextBox x:Name="textBoxCountry" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
                          Text="{Binding Path=PlaceDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
-                <Label HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="City"/>
+                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="City"/>
                 <TextBox x:Name="textBoxCity" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
                          Text="{Binding Path=PlaceDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
             </Grid>
 
-            <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Content="Images"/>
+            <Label Foreground="#d4ff00" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Content="Images"/>
             <Grid Height="50">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -90,7 +90,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Column="1" Content="Add Images" Click="AddImages"></Button>
+                <Button Grid.Column="1" Background="CadetBlue" Content="Add Images" Click="AddImages"></Button>
             </Grid>
 
             <Grid Height="50" Margin="0,20,0,0">
@@ -98,7 +98,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="buttonAdd" HorizontalContentAlignment="Center" Click="Add" Content="Add" Margin="0,10,0,10" HorizontalAlignment="Center" Width="177"/>
+                <Button x:Name="buttonAdd" Background="CadetBlue" HorizontalContentAlignment="Center" Click="Add" Content="Add" Margin="0,10,0,10" HorizontalAlignment="Center" Width="177"/>
             </Grid>
         </StackPanel>
     </Grid>

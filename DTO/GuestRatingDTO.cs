@@ -74,18 +74,18 @@ namespace BookingApp.DTO
                     OnPropertyChanged();
                 }
             }
-        }   
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public GuestRating ToGuestRating()
         {
             return new GuestRating(cleannessRating, rulesRespectRating, comment);
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }    
     }
 }

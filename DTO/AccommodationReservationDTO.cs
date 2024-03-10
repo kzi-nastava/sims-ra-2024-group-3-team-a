@@ -27,15 +27,15 @@ namespace BookingApp.DTO
             ratingDTO = new GuestRatingDTO(reservation.Rating);
         }
 
-        public AccommodationReservationDTO(AccommodationReservationDTO reservation)
+        public AccommodationReservationDTO(AccommodationReservationDTO reservationDTO)
         {
-            id = reservation.Id;
-            accommodationId = reservation.AccommodationId;
-            guestId = reservation.GuestId;
-            beginDate = reservation.BeginDate;
-            endDate = reservation.EndDate;
-            anonymousGuests = reservation.AnonymousGuests;
-            ratingDTO = new GuestRatingDTO(reservation.RatingDTO);
+            id = reservationDTO.Id;
+            accommodationId = reservationDTO.AccommodationId;
+            guestId = reservationDTO.GuestId;
+            beginDate = reservationDTO.BeginDate;
+            endDate = reservationDTO.EndDate;
+            anonymousGuests = reservationDTO.AnonymousGuests;
+            ratingDTO = new GuestRatingDTO(reservationDTO.RatingDTO);
         }
 
         private int id;
@@ -136,16 +136,16 @@ namespace BookingApp.DTO
             }
         }
 
+        public AccommodationReservation ToAccommodationReservation()
+        {
+            return new AccommodationReservation(id, guestId, accommodationId, beginDate, endDate, ratingDTO.ToGuestRating());
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public AccommodationReservation ToAccommodationReservation() 
-        {
-            return new AccommodationReservation(id, guestId, accommodationId, beginDate, endDate, ratingDTO.ToGuestRating());
         }
     }
 }
