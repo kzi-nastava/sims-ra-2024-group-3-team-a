@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BookingApp.Repository
 {
 
     public class KeyPointRepository
     {
-        private const string FilePath = "../../../Resources/Data/tours.csv";
+        private const string FilePath = "../../../Resources/Data/keypoints.csv";
 
         private readonly Serializer<KeyPoints> _serializer;
 
@@ -64,6 +65,11 @@ namespace BookingApp.Repository
             _keypoints.Insert(index, keyPoints);
             _serializer.ToCSV(FilePath, _keypoints);
             return keyPoints;
+        }
+        public KeyPoints GetById(int id)
+        {
+            _keypoints = _serializer.FromCSV(FilePath);
+            return _keypoints.FirstOrDefault(c => c.Id == id);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace BookingApp.Model
         public Tour() 
         {
             Place = new Location();
+            KeyPoint = new KeyPoints();
         }
         public Tour(string name, Location place, string description, string language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,TimeSpan duration, List<string> images)
         {
@@ -72,14 +73,15 @@ namespace BookingApp.Model
             MaxTouristNumber = Convert.ToInt32(values[6]);
             BeginingTime = DateTime.Parse(values[7]);
             Duration = TimeSpan.Parse(values[8]);
-            for (int i = 9; i < values.Length; i++)
+            KeyPoint.Id = Convert.ToInt32(values[9]);
+            if (Images != null)
             {
-                Images.Add(values[i]);
+                for (int i = 10; i < values.Length; i++)
+                {
+                     Images.Add(values[i]);
+                }
             }
-
-
         }
     }
 
-    
 }

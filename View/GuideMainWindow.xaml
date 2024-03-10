@@ -7,30 +7,40 @@
         mc:Ignorable="d"
         Title="GuideMainWindow" Height="600" Width="800">
     <Grid>
-        <Viewbox Stretch="Uniform" Margin="0,0,0,-10">
-         
-                <StackPanel Margin="-250,50,180,70" Height="400" Width="178" >
-                    <!-- Box 1 -->
-                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
-                    <StackPanel>
-                        <!--  <Image Source="image1.png" Width="50" Height="50"/>-->
-                        <TextBlock Text="Text 1" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Tour}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+                <TextBox x:Name = "textboxSearch" Width="200" Margin="0,0,10,0"/>
+                <Button x:Name="buttonSearch" Content="Search" Click="Search_Click" Width="80"/>
             </StackPanel>
-            
 
 
-        </Viewbox>
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
+                    <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
+                    <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
+                    <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
+                    <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
+                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding KeyPointsDTO}"/>
+                    <DataGridTemplateColumn Header="Begin Tour" Width="Auto">
+                         <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Započni turu" Click="Tour_Click" />
+                            </DataTemplate>
+                          </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                 </DataGrid.Columns>
+
+            </DataGrid>
+
+
+
+       
     </Grid>
 </Window>
