@@ -73,8 +73,11 @@ namespace BookingApp.View
                         }
                         case UserRole.Guide:
                         {
-                            MessageBox.Show("You signed in as Guide User!");
-                            break;
+                           // MessageBox.Show("You signed in as Guide User!");
+                                GuideMainWindow guideMainWindow= new GuideMainWindow();
+                                guideMainWindow.Show();
+                                break;
+                            
                         }
                         case UserRole.Tourist:
                         {
