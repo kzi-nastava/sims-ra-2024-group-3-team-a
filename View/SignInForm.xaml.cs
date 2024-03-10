@@ -68,6 +68,8 @@ namespace BookingApp.View
                             OwnerMainWindow ownerMainWindow = new OwnerMainWindow();
                             ownerMainWindow.Show();
                             Close();
+                            /*test test = new test(); 
+                            test.ShowDialog();*/
                             break;
                         }
                         case UserRole.Guest:

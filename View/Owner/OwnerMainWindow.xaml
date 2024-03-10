@@ -29,11 +29,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Frame x:Name="frameNotification" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameNotification" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" NavigationUIVisibility="Hidden" />
             <Frame x:Name="frameMain" Panel.ZIndex="1000" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameSideMenu" Panel.ZIndex="2000" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden" Navigated="frameSideMenu_Navigated" />
 
             <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
-                <TabItem x:Name="tabItemAccommodations" Header="Accommodations" >
+                <TabItem x:Name="tabItemAccommodations" Visibility="Collapsed">
                     <StackPanel>
                         <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding Accommodations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
                             <DataGrid.Columns>
@@ -45,7 +46,7 @@
                     </StackPanel>
                 </TabItem>
 
-                <TabItem x:Name="tabItemUsers" Header="Users" >
+                <TabItem x:Name="tabItemUsers" Visibility="Collapsed">
                     <StackPanel >
                         <DataGrid x:Name="dataGridReservations" RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationReservations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
                             <DataGrid.Columns>
@@ -68,15 +69,21 @@
                     </StackPanel>
                 </TabItem>
             </TabControl>
-
-            <ToolBar Background="CadetBlue" BorderBrush="Blue" BorderThickness="3" Grid.Row="0" Grid.ColumnSpan="3">
-                <Button x:Name="buttonFunction">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Name="imageFunction" Source="../../Resources/Images/add.png" Width="20" Height="25"/>
-                        <TextBlock x:Name="textBlockFunction" Text="Create" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0" />
-                    </StackPanel>
-                </Button>
-            </ToolBar>
+            <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="3" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+                <Grid Background="Transparent" Margin="3,3,3,3">
+                    <Button BorderThickness="0" Background="Transparent" x:Name="buttonFunction" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Name="imageFunction" Source="../../Resources/Images/add.png" Width="20" Height="25"/>
+                            <TextBlock x:Name="textBlockFunction" Text="Create" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                    <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" Margin="0,0,15,0" Click="ShowSideMenu">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" Width="30" Height="37.5"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
         </Grid>
     </ScrollViewer>
 </Window>

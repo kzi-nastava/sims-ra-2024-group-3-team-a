@@ -94,6 +94,11 @@ namespace BookingApp.View.Owner
             }
         }
 
+        private void ShowSideMenu(object sender, RoutedEventArgs e)
+        {
+            frameSideMenu.Content = new SideMenuPage(this);
+        }
+
         private bool isRateGuestWindowOpened = false;
 
         private bool isAddAccommodationWindowOpened = false;
@@ -164,7 +169,12 @@ namespace BookingApp.View.Owner
                     frameNotification.Content = notificationPage;
                 });
             }
-        } 
+        }
+
+        private void frameSideMenu_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+
+        }
     }
 
     public class GuestIdToNameConverter : IValueConverter

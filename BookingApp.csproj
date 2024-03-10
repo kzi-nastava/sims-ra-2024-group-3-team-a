@@ -8,15 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\accommodations.png" />
     <None Remove="Resources\Images\add.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\Owner\menu.png" />
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\accommodations.png" />
     <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -26,7 +30,9 @@
     <Resource Include="Resources\Images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\Owner\menu.png" />
     <Resource Include="Resources\Images\Owner\notification.png" />
+    <Resource Include="Resources\Images\users.png" />
     <Resource Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

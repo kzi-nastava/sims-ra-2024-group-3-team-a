@@ -8,7 +8,7 @@
       d:DesignHeight="30" d:DesignWidth="30"
       Title="NotificationPage">
 
-    <Grid HorizontalAlignment="Right">
+    <Grid HorizontalAlignment="Left">
         <Button x:Name="buttonNotification" BorderThickness="0" Background="Transparent">
             <Image Source="..\..\Resources\Images\Owner\notification.png" HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25"/>
         </Button>

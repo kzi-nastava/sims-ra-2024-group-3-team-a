@@ -70,7 +70,7 @@ namespace BookingApp.View.Owner
             _accommodationDTO.Type = AccomodationType.Apartment;
             _accommodationDTO.Capacity = 0;
             _accommodationDTO.MinDaysReservation = 0;
-            _accommodationDTO.CancellationPeriod = 0;
+            _accommodationDTO.CancellationPeriod = 1;
             _accommodationDTO.PlaceDTO.Country = string.Empty;
             _accommodationDTO.PlaceDTO.City = string.Empty;
             if(_accommodationDTO.Images != null)
