@@ -68,7 +68,6 @@ namespace BookingApp.View
                             OwnerMainWindow ownerMainWindow = new OwnerMainWindow();
                             ownerMainWindow.Show();
                             Close();
-                            MessageBox.Show("You signed in as Owner User!");
                             break;
                         }
                         case UserRole.Guest:

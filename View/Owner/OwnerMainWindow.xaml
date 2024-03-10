@@ -25,12 +25,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="Auto" MaxHeight="500"/>
+                <RowDefinition Height="Auto" MaxHeight="500"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Frame x:Name="frameMain" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameNotification" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameMain" Panel.ZIndex="1000" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
 
-            <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
+            <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
                 <TabItem x:Name="tabItemAccommodations" Header="Accommodations" >
                     <StackPanel>
                         <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding Accommodations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">

@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Application;
 
 namespace BookingApp.View.Owner
 {
@@ -32,6 +33,8 @@ namespace BookingApp.View.Owner
         private readonly AccommodationRepository _accommodationRepository;
         private readonly AccommodationReservationRepository _accommodationReservationRepository;
 
+        private static Timer _notificationTimer;
+
         public OwnerMainWindow()
         {
             InitializeComponent();
@@ -43,6 +46,8 @@ namespace BookingApp.View.Owner
             AccommodationReservations = new ObservableCollection<AccommodationReservationDTO>();
 
             Update();
+
+            SetNotificationTimer();
         }
 
         public void Update()
@@ -90,7 +95,9 @@ namespace BookingApp.View.Owner
         }
 
         private bool isRateGuestWindowSubscribed = false;
+
         private bool isAddAccommodationWindowSubscribed = false;
+
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(tabControl.SelectedItem == tabItemAccommodations)
@@ -127,6 +134,38 @@ namespace BookingApp.View.Owner
             }
             frameMain.Content = null;
         }
+
+        private void SetNotificationTimer()
+        {
+            _notificationTimer = new Timer(1000 * 10);
+
+            _notificationTimer.Elapsed += (sender, e) => Notify(frameNotification, this);
+
+            _notificationTimer.AutoReset = true;
+            _notificationTimer.Enabled = true;
+        }
+
+        private static void Notify(Frame frameNotification, OwnerMainWindow ownerMainWindow)
+        {
+            if(AccommodationReservations.Any(reservation => reservation.RatingDTO.CleannessRating == 0))
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    NotificationPage notificationPage = new NotificationPage(ownerMainWindow);
+                    notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
+                    foreach(var reservation in AccommodationReservations)
+                    {
+                        if(reservation.RatingDTO.CleannessRating == 0)
+                        {
+                            notificationPage.buttonNotification.ToolTip += "You didn't rate Guest" + reservation.GuestId + "\n";
+                        }                       
+                    }
+
+                    frameNotification.Content = notificationPage;
+                });
+            }
+        }
+        
     }
 
     public class GuestIdToNameConverter : IValueConverter
