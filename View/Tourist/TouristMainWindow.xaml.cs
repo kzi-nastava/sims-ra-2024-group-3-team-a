@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Xps;
 
 namespace BookingApp.View
 {
@@ -25,23 +27,36 @@ namespace BookingApp.View
     {
 
         public static ObservableCollection<TourDTO> Tours { get; set; }
-        private static TourDTO tour { get; set; }
+        private static TourDTO tourDTO { get; set; }
 
-        private readonly TourRepository _repository;
+        private static UserDTO _userDTO { get; set; }
 
-        public TourView()
+        private static SignInForm _form;
+
+        private readonly TourRepository _tourRepository;
+
+        private readonly UserRepository _userRepository;
+
+        private static TourReservationDTO tourReservation { get; set; }
+
+        private static TourReservationRepository _tourReservationRepository { get; set; }
+
+        public TourView(User user)
         {
             InitializeComponent();
             DataContext = this;
-            _repository = new TourRepository();
+            _tourRepository = new TourRepository();
+            _userRepository = new UserRepository();
+            _form = new SignInForm();
             Tours = new ObservableCollection<TourDTO>();
-            tour = new TourDTO();
+            tourDTO = new TourDTO();
+            _userDTO= new UserDTO(user);
             Update();
         }
         private void Update()
         {
             Tours.Clear();
-            foreach (Tour tour in _repository.GetAll()) Tours.Add(new TourDTO(tour));
+            foreach (Tour tour in _tourRepository.GetAll()) Tours.Add(new TourDTO(tour));
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -87,6 +102,15 @@ namespace BookingApp.View
 
             return filtered;
         }
+        
+        private void Reservation_Click(object sender, RoutedEventArgs e)
+        {
+            tourDTO = dataGridTour.SelectedItem as TourDTO;
+            TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationRepository, tourDTO, _userDTO);
+            tourReservationWindow.ShowDialog();
+        }
+
+
 
     }
 }

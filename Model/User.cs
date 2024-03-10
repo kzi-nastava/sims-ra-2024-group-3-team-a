@@ -19,6 +19,13 @@ namespace BookingApp.Model
             Password = password;
         }
 
+        public User(int id, string username, string password)
+        {
+            Id = id;
+            Username = username;
+            Password = password;
+        }   
+
         public string[] ToCSV()
         {
             string[] csvValues = { Id.ToString(), Username, Password, Role.ToString() };

@@ -15,19 +15,18 @@ namespace BookingApp.DTO
 
         public TourDTO() { }
 
-        public TourDTO( Location place, string language, int maxTouristNumber, DateTime beginingTime)
+        public TourDTO( string name, Location place, string language, int maxTouristNumber, DateTime beginingTime)
         {
-          
+          this.Name = name;
           this.locationDto= new LocationDTO(place); 
           this.language = language;
           this.maxTouristNumber = maxTouristNumber;
           this.beginingTime = beginingTime;
-
-
         }
 
         public TourDTO(Tour tour)
         {
+            name = tour.Name;
             locationDto = new LocationDTO(tour.Place);
             language = tour.Language;
             maxTouristNumber = tour.MaxTouristNumber;
@@ -36,6 +35,7 @@ namespace BookingApp.DTO
 
         public TourDTO(TourDTO tour)
         {
+            name = tour.Name;
             locationDto = tour.LocationDTO;
             language = tour.Language;
             maxTouristNumber = tour.MaxTouristNumber;
@@ -52,6 +52,26 @@ namespace BookingApp.DTO
                 if (value != locationDto)
                 {
                     locationDto = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string LocationDTOString
+        {
+            get { return locationDto.ToString(); }
+
+        }
+
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (value != name)
+                {
+                    name = value;
                     OnPropertyChanged();
                 }
             }
@@ -115,11 +135,9 @@ namespace BookingApp.DTO
             }
         }
 
-        
-
         public Tour ToTour()
         {
-           return new Tour(locationDto.ToLocation(), language, maxTouristNumber, beginingTime);
+           return new Tour(name,locationDto.ToLocation(), language, maxTouristNumber, beginingTime);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

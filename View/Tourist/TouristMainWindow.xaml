@@ -16,6 +16,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
             <TextBox x:Name = "textboxSearch" Width="200" Margin="0,0,10,0"/>
             <Button x:Name="buttonSearch" Content="Search" Click="Search_Click" Width="80"/>
+            <Button x:Name="buttoneReservation" Content="Reservation" Click="Reservation_Click" Width="80" Margin="10,0,0,0"/>
         </StackPanel>
 
 

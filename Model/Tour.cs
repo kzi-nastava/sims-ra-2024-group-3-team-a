@@ -39,8 +39,9 @@ namespace BookingApp.Model
             Images = images;
         }
 
-        public Tour( Location place, string language, int maxTouristNumber, DateTime beginingTime)
+        public Tour( string name, Location place, string language, int maxTouristNumber, DateTime beginingTime)
         {
+            Name = name;
             Place = place;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
