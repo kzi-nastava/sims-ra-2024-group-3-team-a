@@ -79,7 +79,7 @@ namespace BookingApp.View
                         case UserRole.Tourist:
                         {
                             MessageBox.Show("You signed in as Tourist User!");
-                            TourView tourView = new TourView();
+                            TourView tourView = new TourView(user);
                             tourView.Show();
                             break;
                         }
