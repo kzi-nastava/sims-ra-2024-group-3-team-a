@@ -11,7 +11,10 @@ namespace BookingApp.DTO
 {
     public class AccommodationReservationDTO : INotifyPropertyChanged
     {
-        public AccommodationReservationDTO() { }
+        public AccommodationReservationDTO()
+        {
+            ratingDTO = new GuestRatingDTO();
+        }
 
         public AccommodationReservationDTO(AccommodationReservation reservation) 
         {
@@ -21,16 +24,18 @@ namespace BookingApp.DTO
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
             anonymousGuests = reservation.AnonymousGuests;
+            ratingDTO = new GuestRatingDTO(reservation.Rating);
         }
 
-        public AccommodationReservationDTO(AccommodationReservationDTO reservation)
+        public AccommodationReservationDTO(AccommodationReservationDTO reservationDTO)
         {
-            id = reservation.Id;
-            accommodationId = reservation.AccommodationId;
-            guestId = reservation.GuestId;
-            beginDate = reservation.BeginDate;
-            endDate = reservation.EndDate;
-            anonymousGuests = reservation.AnonymousGuests;
+            id = reservationDTO.Id;
+            accommodationId = reservationDTO.AccommodationId;
+            guestId = reservationDTO.GuestId;
+            beginDate = reservationDTO.BeginDate;
+            endDate = reservationDTO.EndDate;
+            anonymousGuests = reservationDTO.AnonymousGuests;
+            ratingDTO = new GuestRatingDTO(reservationDTO.RatingDTO);
         }
 
         private int id;
@@ -103,6 +108,20 @@ namespace BookingApp.DTO
             }
         }
 
+        private GuestRatingDTO ratingDTO;
+        public GuestRatingDTO RatingDTO
+        {
+            get { return ratingDTO; }
+            set
+            {
+                if (value != ratingDTO)
+                {
+                    ratingDTO = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private List<AnonymousGuest> anonymousGuests;
         public List<AnonymousGuest> AnonymousGuests
         {
@@ -117,16 +136,16 @@ namespace BookingApp.DTO
             }
         }
 
+        public AccommodationReservation ToAccommodationReservation()
+        {
+            return new AccommodationReservation(id, guestId, accommodationId, beginDate, endDate, ratingDTO.ToGuestRating());
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public AccommodationReservation ToAccommodationReservation() 
-        {
-            return new AccommodationReservation(guestId, accommodationId, beginDate, endDate);
         }
     }
 }
