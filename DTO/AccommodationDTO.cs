@@ -12,17 +12,15 @@ namespace BookingApp.DTO
 {
     public class AccommodationDTO : INotifyPropertyChanged
     {
-        private LocationDTO _location;
-
         public AccommodationDTO()
         {
-            _location = new LocationDTO();
+            _locationDTO = new LocationDTO();
             images = new List<string>();
         }
 
-        public AccommodationDTO(LocationDTO location)
+        public AccommodationDTO(LocationDTO locationDTO)
         {
-            _location = location;
+            _locationDTO = locationDTO;
             images = new List<string>();
         }
 
@@ -30,7 +28,7 @@ namespace BookingApp.DTO
         {
             id = accommodation.Id;
             name = accommodation.Name;
-            _location = new LocationDTO(accommodation.Place);
+            _locationDTO = new LocationDTO(accommodation.Place);
             type = accommodation.Type;
             capacity = accommodation.Capacity;
             minDaysReservation = accommodation.MinDaysReservation;
@@ -38,16 +36,16 @@ namespace BookingApp.DTO
             images = accommodation.Images;
         }
 
-        public AccommodationDTO(AccommodationDTO accommodation)
+        public AccommodationDTO(AccommodationDTO accommodationDTO)
         {
-            id = accommodation.Id;
-            name = accommodation.Name;
-            _location = new LocationDTO(accommodation.PlaceDTO);
-            type = accommodation.Type;
-            capacity = accommodation.Capacity;
-            minDaysReservation = accommodation.MinDaysReservation;
-            cancellationPeriod = accommodation.CancellationPeriod;
-            images = accommodation.Images;
+            id = accommodationDTO.Id;
+            name = accommodationDTO.Name;
+            _locationDTO = new LocationDTO(accommodationDTO.PlaceDTO);
+            type = accommodationDTO.Type;
+            capacity = accommodationDTO.Capacity;
+            minDaysReservation = accommodationDTO.MinDaysReservation;
+            cancellationPeriod = accommodationDTO.CancellationPeriod;
+            images = accommodationDTO.Images;
         }
 
         private int id;
@@ -78,14 +76,15 @@ namespace BookingApp.DTO
             }
         }
 
+        private LocationDTO _locationDTO;
         public LocationDTO PlaceDTO
         {
-            get { return _location; }
+            get { return _locationDTO; }
             set
             {
-                if (value != _location)
+                if (value != _locationDTO)
                 {
-                    _location = value;
+                    _locationDTO = value;
                     OnPropertyChanged();
                 }
             }
@@ -159,18 +158,17 @@ namespace BookingApp.DTO
                     OnPropertyChanged();
                 }
             }
-        }   
+        }
+        public Accommodation ToAccommodation()
+        {
+            return new Accommodation(name, _locationDTO.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public  Accommodation ToAccommodation()
-        {
-            return new Accommodation(name, _location.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
-        }   
+        }  
     }
 }

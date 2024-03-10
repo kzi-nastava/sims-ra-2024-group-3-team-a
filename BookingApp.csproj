@@ -8,25 +8,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\accommodations.png" />
     <None Remove="Resources\Images\add.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\Owner\menu.png" />
+    <None Remove="Resources\Images\Owner\notification.png" />
+    <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
+    <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Images\add.png">
+    <Resource Include="Resources\Images\accommodations.png" />
+    <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Images\delete.png">
+    </Resource>
+    <Resource Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Images\edit.png">
+    </Resource>
+    <Resource Include="Resources\Images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Images\view.png">
+    </Resource>
+    <Resource Include="Resources\Images\Owner\menu.png" />
+    <Resource Include="Resources\Images\Owner\notification.png" />
+    <Resource Include="Resources\Images\Owner\OwnerBackground.jpg" />
+    <Resource Include="Resources\Images\users.png" />
+    <Resource Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -14,8 +14,8 @@
 
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <TextBox Width="200" Margin="0,0,10,0"/>
-            <Button Content="Search" Width="80"/>
+            <TextBox Name="textboxSearch" Width="200" Margin="0,0,10,0"/>
+            <Button Content="Search" Click="Search_Click" Width="80"/>
         </StackPanel>
 
 

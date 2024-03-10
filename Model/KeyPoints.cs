@@ -18,8 +18,5 @@ namespace BookingApp.Model
             Type = type;
             Name = name;
         }
-        
-
-
     }
 }

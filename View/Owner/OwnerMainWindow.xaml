@@ -5,39 +5,102 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Owner"
         mc:Ignorable="d"
-        Title="OwnerMainWindow" Height="450" Width="800" ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
+        Title="OwnerMainWindow" Height="750" Width="430" ResizeMode="NoResize" WindowStyle="None"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="760"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="15"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <DataGrid ItemsSource="{Binding Accommodations}"
-               IsReadOnly="True" SelectionMode="Single" 
-           AutoGenerateColumns="False" Height="325" HeadersVisibility="Column" FontSize="13">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="200"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+    <Window.Resources>
+        <local:GuestIdToNameConverter x:Key="GuestIdToNameConverter"/>
+        <local:AccommodationIdToAccommodationConverter x:Key="AccommodationIdToAccommodationConverter"/>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="..\..\Resources\Images\Owner\OwnerBackground.jpg" Stretch="UniformToFill" AlignmentX="Left">
+                    <ImageBrush.Transform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="1"/>
+                        </TransformGroup>
+                    </ImageBrush.Transform>
+                    <ImageBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                            <RotateTransform CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform X="0"/>
+                        </TransformGroup>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto" MaxHeight="500"/>
+                <RowDefinition Height="Auto" MaxHeight="500"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <ToolBar Grid.Row="0" Grid.ColumnSpan="3">
-            <Button Click="ShowAddAccommodationWindow">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../../Resources/Images/add.png" Width="20" Height="25"/>
-                    <TextBlock Text="Create" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0" />
-                </StackPanel>
-            </Button>
-        </ToolBar>
-    </Grid>
+            <Frame x:Name="frameNotification" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameMain" Panel.ZIndex="1000" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="frameSideMenu" Panel.ZIndex="2000" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden" Navigated="frameSideMenu_Navigated" />
+
+            <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
+                <TabItem x:Name="tabItemAccommodations" Visibility="Collapsed">
+                    <StackPanel>
+                        <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding Accommodations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="Place" Binding="{Binding PlaceDTO}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem x:Name="tabItemUsers" Visibility="Collapsed">
+                    <StackPanel >
+                        <DataGrid x:Name="dataGridReservations" RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationReservations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
+                                <DataGridTextColumn Header="Guest">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="GuestId" Converter="{StaticResource GuestIdToNameConverter}"/>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Accommodation">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="AccommodationId" Converter="{StaticResource AccommodationIdToAccommodationConverter}"/>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Clean" Binding="{Binding Path = RatingDTO.CleannessRating}" Width="*"/>
+                                <DataGridTextColumn Header="Rules" Binding="{Binding Path = RatingDTO.RulesRespectRating}" Width="*"/>
+                                <DataGridTextColumn Header="Comment" Binding="{Binding Path = RatingDTO.Comment}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+            <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="3" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+                <Grid Background="Transparent" Margin="3,3,3,3">
+                    <Button BorderThickness="0" Background="Transparent" x:Name="buttonFunction" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Name="imageFunction" Source="../../Resources/Images/add.png" Width="20" Height="25"/>
+                            <TextBlock x:Name="textBlockFunction" Text="Create" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                    <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" Margin="0,0,15,0" Click="ShowSideMenu">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" Width="30" Height="37.5"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </Window>
