@@ -31,8 +31,8 @@ namespace BookingApp.View
             InitializeComponent();
             _tourReservationRepository = tourReservationRepository;
             _tourDTO = new TourDTO(tourDTO);
-            _tourReservationDTO = new TourReservationDTO(tourDTO);
-            _tourReservationDTO(_tourDTO, userDTO);
+            //_tourReservationDTO = new TourReservationDTO(tourDTO);
+            //_tourReservationDTO(_tourDTO, userDTO);
             DataContext = _tourDTO;
 
         }

@@ -98,19 +98,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-        private string name;
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                if (value != name)
-                {
-                    name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
 
         private string description;
         public string Description
@@ -231,7 +218,7 @@ namespace BookingApp.DTO
         }
         public Tour ToTour()
         {
-           return new Tour(locationDto.ToLocation(), language,maxTouristNumber, beginingTime);
+           return new Tour(name, locationDto.ToLocation(), language,maxTouristNumber, beginingTime);
         }
         public Tour ToTourAllParam()
         {
