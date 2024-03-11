@@ -17,7 +17,11 @@ namespace BookingApp.DTO
     public class TourDTO
     {
         
-        public TourDTO() { }
+        public TourDTO() 
+        {
+            locationDto = new LocationDTO();
+            keyPointsDTO = new KeyPointsDTO();
+        }
 
        public TourDTO( Location place, string language, int maxTouristNumber, DateTime beginingTime)
         {
@@ -215,6 +219,7 @@ namespace BookingApp.DTO
         }
         public Tour ToTourAllParam()
         {
+            
             return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images);
         }
 

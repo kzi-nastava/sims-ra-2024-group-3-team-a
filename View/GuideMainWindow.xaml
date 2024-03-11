@@ -11,14 +11,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-                <TextBox x:Name = "textboxSearch" Width="200" Margin="0,0,10,0"/>
-                <Button x:Name="buttonSearch" Content="Search" Click="Search_Click" Width="80"/>
-            </StackPanel>
+            <TextBox x:Name = "textboxSearch" Width="200" Margin="0,0,10,0"/>
+            <Button x:Name="buttonSearch" Content="Search" Click="Search_Click" Width="80"/>
+        </StackPanel>
 
-
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10" AutoGenerateColumns="False">
+        <Grid Grid.Row="1">
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10,10,10,134" AutoGenerateColumns="False" Height="400" >
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
@@ -28,19 +28,20 @@
                     <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
                     <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding KeyPointsDTO}"/>
                     <DataGridTemplateColumn Header="Begin Tour" Width="Auto">
-                         <DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Započni turu" Click="Tour_Click" />
                             </DataTemplate>
-                          </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                 </DataGrid.Columns>
-
+                </DataGrid.Columns>
             </DataGrid>
+            <Button Content="Prikaži sve ture" Click="ShowAll_Click" Margin="29,455,631,0" VerticalAlignment="Top" Height="61"/>
+        </Grid>
 
 
 
-       
+
     </Grid>
 </Window>
