@@ -20,8 +20,10 @@ using System.Windows.Xps;
 
 namespace BookingApp.View
 {
-    
-    public partial class TourView : Window
+    /// <summary>
+    /// Interaction logic for TourView.xaml
+    /// </summary>
+    public partial class TouristMainWindow : Window
     {
 
         public static ObservableCollection<TourDTO> Tours { get; set; }
@@ -39,12 +41,13 @@ namespace BookingApp.View
 
         private static TourReservationRepository _tourReservationRepository { get; set; }
 
-        public TourView(User user)
+        public TouristMainWindow(User user)
         {
             InitializeComponent();
             DataContext = this;
             _tourRepository = new TourRepository();
             _userRepository = new UserRepository();
+            _tourReservationRepository = new TourReservationRepository();
             _form = new SignInForm();
             Tours = new ObservableCollection<TourDTO>();
             tourDTO = new TourDTO();
@@ -106,6 +109,7 @@ namespace BookingApp.View
             tourDTO = dataGridTour.SelectedItem as TourDTO;
             TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationRepository, tourDTO, _userDTO);
             tourReservationWindow.ShowDialog();
+            Close();
         }
 
 

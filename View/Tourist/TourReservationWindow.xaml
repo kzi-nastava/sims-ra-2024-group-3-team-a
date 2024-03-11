@@ -16,6 +16,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -24,26 +28,43 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="5"/>
-        <TextBox x:Name="textBoxName" Grid.Row="0"  Text="{Binding Name}" IsEnabled="False"  Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="textBoxName" Grid.Row="0"  Text="{Binding Tour.Name}" IsEnabled="False"  Grid.Column="1" Margin="5"/>
 
         <TextBlock Text="Location:" Grid.Row="1" Grid.Column="0" Margin="5"/>
-        <TextBox x:Name="textBoxLocation" Text="{Binding LocationDTOString, Mode=OneWay}" IsEnabled="False"  Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="textBoxLocation" Text="{Binding Tour.LocationDTOString, Mode=OneWay}" IsEnabled="False"  Grid.Row="1" Grid.Column="1" Margin="5"/>
 
         <TextBlock Text="Duration:" Grid.Row="2" Grid.Column="0" Margin="5"/>
-        <TextBox x:Name="textBoxDuration" Text="{Binding Duration}" IsEnabled="False"  Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="textBoxDuration" Text="{Binding Tour.Duration}" IsEnabled="False"  Grid.Row="2" Grid.Column="1" Margin="5"/>
 
         <TextBlock Text="Max Tourists:" Grid.Row="3" Grid.Column="0" Margin="5"/>
-        <TextBox  x:Name="textBoxMaxTourists" Text="{Binding MaxTouristNumber}" IsEnabled="False"  Grid.Row="3" Grid.Column="1" Margin="5"/>
+        <TextBox  x:Name="textBoxMaxTourists" Text="{Binding Tour.MaxTouristNumber}" IsEnabled="False"  Grid.Row="3" Grid.Column="1" Margin="5"/>
 
         <TextBlock Text="Beginning Time:" Grid.Row="4" Grid.Column="0" Margin="5"/>
-        <TextBox x:Name="textBoxBeginningTime" Text="{Binding BeginingTime}" IsEnabled="False"  Grid.Row="4" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="textBoxBeginningTime" Text="{Binding Tour.BeginingTime}" IsEnabled="False"  Grid.Row="4" Grid.Column="1" Margin="5"/>
 
         <TextBlock Text="Current Capacity:" Grid.Row="5" Grid.Column="0" Margin="5" FontWeight="Bold"/>
         <TextBox Grid.Row="5" Grid.Column="1" Margin="5" MinWidth="50"/>
 
         <TextBlock Text="User Name:" Grid.Row="6" Grid.Column="0" Margin="5"/>
-        <TextBox x:Name="textBoxUserName" Text="{Binding tourReservationDTO.UserId.Name}" Grid.Row="6" Grid.Column="1" Margin="5,5,500,5" MinWidth="0"/>
+        <TextBox x:Name="textBoxUserName" Text="{Binding User.Username,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Margin="5,5,500,5" MinWidth="0"/>
+
+        <TextBlock Text="Number:" Grid.Row="7" Grid.Column="0" Margin="5"/>
+        <TextBox x:Name="textBoxNumber" Text="{Binding TourReservation.NumberOfTourists}" Grid.Row="7" Grid.Column="1" Margin="5,5,500,5" MinWidth="0"/>
 
         <Button Content="Confirm Tour Reservation"  Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Margin="5" Click="ConfirmReservation_Click"/>
+        <Button x:Name="textBoxOk"  Content="OK"  Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right" Margin="5" Click="OK_Click"/>
+        <Button x:Name="textBoxAdd" Content="Add"  Grid.Row="9" Grid.Column="1" HorizontalAlignment="Right" Margin="5" Click="AddAnonymousTourist_Click"/>
+        <DataGrid x:Name="dataGridAnonymousTourists" Grid.Row="10" Grid.ColumnSpan="3" AutoGenerateColumns="False" Margin="5">
+            
+            <DataGrid.Columns>
+              
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
+                <DataGridTextColumn Header="Age" Binding="{Binding Age}" />
+               
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
+    
 </Window>
