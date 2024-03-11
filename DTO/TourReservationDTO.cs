@@ -29,17 +29,28 @@ namespace BookingApp.DTO
             userId = tourReservation.UserId;
             tourId = tourReservation.TourId;
             userName = tourReservation.UserName;
+            numberOfTourists = tourReservation.NumberOfTourists;
 
         }
 
-        public TourReservationDTO(TourReservationDTO tourReservationDTO)
+        public TourReservationDTO(TourDTO tourDTO, UserDTO userDTO)
         {
-            id = tourReservationDTO.id;
-            userId = tourReservationDTO.userId;
-            tourId = tourReservationDTO.tourId;
-            userName = tourReservationDTO.UserName;
 
+            userId = userDTO.Id;
+            tourId = tourDTO.Id;
+            userName = userDTO.Username;
         }
+        public TourReservationDTO(TourReservationDTO tourReservationDTO, List<AnonymousTouristDTO> anonymousTouristDTO)
+        {
+            id= tourReservationDTO.Id;
+            userId= tourReservationDTO.UserId;
+            tourId = tourReservationDTO.TourId;
+            userName = tourReservationDTO.UserName;
+            anonymousTouristDTOs = anonymousTouristDTO;
+            numberOfTourists = tourReservationDTO.NumberOfTourists;
+        }
+
+
 
         private int id;
 
@@ -102,10 +113,46 @@ namespace BookingApp.DTO
             }
         }
 
+        private List<AnonymousTouristDTO> anonymousTouristDTOs;
+
+        public List<AnonymousTouristDTO>  AnonymousTouristDTOs
+        {
+            get { return anonymousTouristDTOs; }
+            set
+            {
+                if (value != anonymousTouristDTOs)
+                {
+                    anonymousTouristDTOs = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int numberOfTourists;
+
+        public int NumberOfTourists
+        {
+            get { return numberOfTourists; }
+            set
+            {
+                if (value != numberOfTourists)
+                {
+                    numberOfTourists = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public TourReservation ToTourReservation()
         {
-            return new TourReservation(id, userId, tourId, userName);
+            List<AnonymousTourist> anonymousTourists = new List<AnonymousTourist>();
+            foreach(AnonymousTouristDTO anonymousTouristDTO in anonymousTouristDTOs)
+            {
+                anonymousTourists.Add(anonymousTouristDTO.ToAnonymousTourist());
+      
+            }
+
+            return new TourReservation(id, userId, tourId, userName, anonymousTourists, numberOfTourists);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

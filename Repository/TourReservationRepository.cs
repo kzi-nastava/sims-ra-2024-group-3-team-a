@@ -10,7 +10,7 @@ namespace BookingApp.Repository
 {
     public class TourReservationRepository
     {
-        private const string FilePath = "../../../Resources/Data/tours.csv";
+        private const string FilePath = "../../../Resources/Data/tourReservation.csv";
 
         private readonly Serializer<TourReservation> _serializer;
 
