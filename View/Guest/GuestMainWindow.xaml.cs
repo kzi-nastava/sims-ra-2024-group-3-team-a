@@ -109,5 +109,22 @@ namespace BookingApp.View.Guest
 
             return filtered;
         }
+
+        private void MakeReservation_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataGridAccommodation.SelectedItem != null && frameMain.Content == null)
+            {
+                    frameMain.Content = new MakeAccommodationReservationPage();
+                
+            }
+            else if(frameMain.Content == null)
+            {
+                MessageBox.Show("Accommodation not selected");
+            }
+            else
+            {
+                frameMain = null;
+            }
+        }
     }
 }
