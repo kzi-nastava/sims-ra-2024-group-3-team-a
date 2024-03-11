@@ -83,6 +83,19 @@ namespace BookingApp.Model
                 }
             }
         }
+
+        /*public Tour(string name,Location location , string description, string language, int maxTouristNumber,KeyPoints keypoint, DateTime beginingTime, TimeSpan duration, List<string> images)
+        {
+            Name = name;
+            Place = location;
+            Description = description;
+            Language = language;
+            MaxTouristNumber = maxTouristNumber;
+            KeyPoint= keypoint;
+            BeginingTime = beginingTime;
+            Duration = duration;
+            Images = images;
+        }*/
     }
 
 }

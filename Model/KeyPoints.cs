@@ -22,8 +22,9 @@ namespace BookingApp.Model
 
             Middle = new List<string>();
         }
-        public KeyPoints(string begining, List <string> middle, string ending)
+        public KeyPoints(int id, string begining, List <string> middle, string ending)
         {
+            Id = id;
             Begining= begining;
             Middle = middle;
             Ending = ending;

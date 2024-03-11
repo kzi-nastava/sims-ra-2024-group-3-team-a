@@ -20,9 +20,7 @@ using System.Windows.Xps;
 
 namespace BookingApp.View
 {
-    /// <summary>
-    /// Interaction logic for TourView.xaml
-    /// </summary>
+    
     public partial class TourView : Window
     {
 

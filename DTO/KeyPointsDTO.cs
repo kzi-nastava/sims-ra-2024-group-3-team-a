@@ -11,7 +11,10 @@ namespace BookingApp.DTO
 {
     public class KeyPointsDTO : INotifyPropertyChanged
     {
-        public KeyPointsDTO() { }
+        public KeyPointsDTO() 
+        { 
+            middle = new List<string>(); 
+        }
 
         public KeyPointsDTO(string begining, string ending, List<string> middle)
         {
@@ -94,7 +97,7 @@ namespace BookingApp.DTO
 
         public KeyPoints ToKeyPoint()
         {
-            return new KeyPoints(begining,middle, ending);
+            return new KeyPoints (id, begining,middle, ending);
         }
 
         public override string ToString()
