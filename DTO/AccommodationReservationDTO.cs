@@ -122,6 +122,14 @@ namespace BookingApp.DTO
             }
         }
 
+        
+
+        public string DatesConcatenated
+        {
+            get { return $"{beginDate} - {endDate}"; }
+            
+        }
+
         private List<AnonymousGuest> anonymousGuests;
         public List<AnonymousGuest> AnonymousGuests
         {

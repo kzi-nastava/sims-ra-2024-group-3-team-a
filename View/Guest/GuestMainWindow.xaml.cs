@@ -114,16 +114,18 @@ namespace BookingApp.View.Guest
         {
             if (dataGridAccommodation.SelectedItem != null && frameMain.Content == null)
             {
-                    frameMain.Content = new MakeAccommodationReservationPage();
+                    frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem as AccommodationDTO);
                 
             }
             else if(frameMain.Content == null)
             {
                 MessageBox.Show("Accommodation not selected");
+                //AccommodationDTO acc = (AccommodationDTO)dataGridAccommodation.SelectedItem;
+                
             }
             else
             {
-                frameMain = null;
+                frameMain.Content = null;
             }
         }
     }

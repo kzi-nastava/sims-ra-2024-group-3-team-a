@@ -7,11 +7,28 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MakeAccommodationReservationPage">
-
+    
     <Grid>
-        <DatePicker Width="105" HorizontalAlignment="Left" Margin="53,0,0,0"></DatePicker>
-        <DatePicker Width="105" HorizontalAlignment="Left" Margin="163,0,0,0" ></DatePicker>
-        <Button Width="100"> Search for dates! </Button>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DatePicker Width="105" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerBegin" SelectedDate = "{Binding _selectedBeginDate, Mode=TwoWay}" />
+        <DatePicker Width="105" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerEnd" SelectedDate = "{Binding _selectedEndDate, Mode=TwoWay}" />
+        <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+        <Button Width="100" Grid.Row="0" Grid.Column="3" Click="SearchAvailableDatesClick"> Search for dates! </Button>
+        <DataGrid x:Name="dataGridAvailableDates" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDate}"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
     </Grid>
 </Page>
