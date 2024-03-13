@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,18 +23,28 @@ namespace BookingApp.View
     public partial class KeyPointsWindow : Window
     {
         private TourDTO _tour;
+        private AnonymousTouristDTO _selectedTourist;
         private KeyPointsDTO _keypoints;
         private readonly KeyPointRepository _repository;
+        private readonly TourReservationRepository _tourReservationRepository;
+
+   
+        public static ObservableCollection<AnonymousTouristDTO> Tourists { get; set; }
 
         public KeyPointsWindow(TourDTO tour)
         {
             InitializeComponent();
             _tour = tour;
-            DataContext = this;
+            Tourists = new ObservableCollection<AnonymousTouristDTO>();
+            this.DataContext = this;
             _repository = new KeyPointRepository();
+            _tourReservationRepository = new TourReservationRepository();
             Buttons();
+            Update();
+           
            
         }
+
 
         public void Buttons()
         {
@@ -53,8 +64,9 @@ namespace BookingApp.View
                             MyControl1.Content = _keypoints.Begining;
                             MyControl1.Background = new SolidColorBrush(Colors.IndianRed);
                         }
-                        else if (count <= _keypoints.Middle.Count())
+                        else if (keyPointsNum !=2 && count <= _keypoints.Middle.Count())
                         {
+                           // MessageBox.Show(keyPointsNum.ToString());
                             MyControl1.Content = _keypoints.Middle[count - 1];
                         }
                         else
@@ -83,9 +95,37 @@ namespace BookingApp.View
             }
         }
 
-        private void UpdateUI()
+        private void Tourist_Click(object sender, RoutedEventArgs e)
         {
-           
+            Button button = (Button)sender;
+            AnonymousTouristDTO selectedTourist = ((Button)sender).DataContext as AnonymousTouristDTO;
+
+
+            if (_selectedTourist  == null || _selectedTourist != selectedTourist)
+            {
+                _selectedTourist = selectedTourist;
+
+                JoiningPointWindow joiningPointWindow = new JoiningPointWindow(_selectedTourist);
+                joiningPointWindow.Show();
+            }
+
+        }
+        private void Update()
+        {
+            Tourists.Clear();
+
+            foreach (TourReservation reservation in _tourReservationRepository.GetAll())
+            {
+                if (reservation.TourId == _tour.Id)
+                {
+                    foreach ( AnonymousTourist tourist in reservation.AnonymousTourists)
+                    {
+                        AnonymousTouristDTO anonymousTourist = new AnonymousTouristDTO(tourist);
+                        Tourists.Add(anonymousTourist);
+                    }
+                }
+            }
+          
         }
     }
 }

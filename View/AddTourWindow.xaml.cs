@@ -66,16 +66,20 @@ namespace BookingApp.View
         {
             _tourKeyPoints = textBoxKeyPoints.Text;
             string[] tourKeyPoints = _tourKeyPoints.Split(',');
-            if (tourKeyPoints.Length < 1)
+            if (tourKeyPoints.Length < 2)
             {
                 MessageBox.Show("Potrebno uneti najmanje dve kljucne tacke (pocetnu i krajnju)");
                 return;
             }
 
+
             _tourDTO.KeyPointsDTO.Begining = tourKeyPoints[0];
-            for(int i = 1; i < tourKeyPoints.Length-1; i++)
+            if (tourKeyPoints.Length != 1)
             {
-                _tourDTO.KeyPointsDTO.Middle.Add(tourKeyPoints[i]);
+                for (int i = 1; i < tourKeyPoints.Length - 1; i++)
+                {
+                    _tourDTO.KeyPointsDTO.Middle.Add(tourKeyPoints[i]);
+                }
             }
             _tourDTO.KeyPointsDTO.Ending = tourKeyPoints[tourKeyPoints.Length - 1];
  
