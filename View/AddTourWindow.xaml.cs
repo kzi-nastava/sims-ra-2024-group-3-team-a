@@ -65,6 +65,8 @@ namespace BookingApp.View
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
             _tourKeyPoints = textBoxKeyPoints.Text;
+         //   _tourDTO.CurrentCapacity=Int32.Parse(MaxTouristTextBox.Text);
+
             string[] tourKeyPoints = _tourKeyPoints.Split(',');
             if (tourKeyPoints.Length < 1)
             {

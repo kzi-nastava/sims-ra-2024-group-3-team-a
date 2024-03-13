@@ -40,7 +40,7 @@ namespace BookingApp.Model
         {
             if (AnonymousTourists == null)
             {
-                string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString(), UserName };
+                string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString() };
                 return csvValues;
             }
             else
@@ -48,9 +48,11 @@ namespace BookingApp.Model
                 string tourists = string.Empty;
                 foreach (var tourist in AnonymousTourists)
                 {
-                    tourists = tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString();
+                    tourists += tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString() + '|';
                 }
-                string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString(), UserName, tourists };
+
+                tourists = tourists.Substring(0,tourists.Length - 1);
+                string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString(), tourists };
                 return csvValues;
 
             }
@@ -62,10 +64,13 @@ namespace BookingApp.Model
             Id = Convert.ToInt32(values[0]);
             UserId = Convert.ToInt32(values[1]);
             TourId = Convert.ToInt32(values[2]);
-            UserName = Convert.ToString(values[3]);
-            for (int i = 4;i<values.Length;i=i+3) 
+            for (int i = 3;i<values.Length;i=i+3) 
             {
-                AnonymousTourists.Add(new AnonymousTourist(values[i], values[i+1], Convert.ToInt32(values[i+2])));
+                if(i+2<values.Length)
+                {
+                    AnonymousTourists.Add(new AnonymousTourist(values[i], values[i + 1], Convert.ToInt32(values[i + 2])));
+                }
+
             }
 
         }

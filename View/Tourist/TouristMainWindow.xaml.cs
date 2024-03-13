@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,7 +41,7 @@ namespace BookingApp.View
         private static TourReservationDTO tourReservation { get; set; }
 
         private static TourReservationRepository _tourReservationRepository { get; set; }
-
+        public int CurrentCapacity { get; set; }
         public TouristMainWindow(User user)
         {
             InitializeComponent();
@@ -107,9 +108,22 @@ namespace BookingApp.View
         private void Reservation_Click(object sender, RoutedEventArgs e)
         {
             tourDTO = dataGridTour.SelectedItem as TourDTO;
-            TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationRepository, tourDTO, _userDTO);
-            tourReservationWindow.ShowDialog();
-            Close();
+
+            if(tourDTO != null && tourDTO.CurrentCapacity!=0) 
+            {
+                TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationRepository, tourDTO, _userDTO);
+                tourReservationWindow.ShowDialog();
+            }
+          
+            else if(tourDTO.CurrentCapacity==0)
+            {
+                AlternativeToursWindow alternativeToursWidow = new AlternativeToursWindow(tourDTO, _userDTO);
+                alternativeToursWidow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You didn't choose any tour!");
+            }
         }
 
 

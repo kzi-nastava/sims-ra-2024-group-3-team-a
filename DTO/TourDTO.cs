@@ -31,8 +31,16 @@ namespace BookingApp.DTO
           this.maxTouristNumber = maxTouristNumber;
           this.beginingTime = beginingTime;
         }
-
-        public TourDTO(string name, Location place, string description,   string language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration, List<string> images)
+        public TourDTO(string name, Location place, string language, int maxTouristNumber, DateTime beginingTime, int currentCapacity)
+        {
+            this.Name = name;
+            this.locationDto = new LocationDTO(place);
+            this.language = language;
+            this.maxTouristNumber = maxTouristNumber;
+            this.beginingTime = beginingTime;
+            this.currentCapacity = currentCapacity;
+        }
+        public TourDTO(string name, Location place, string description,   string language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration, List<string> images, int currentCapacity)
         {
             this.name = name;
             this.locationDto = new LocationDTO(place);
@@ -43,6 +51,7 @@ namespace BookingApp.DTO
             this.beginingTime = beginingTime;
             this.duration = duration;
             this.images = images;
+            this.currentCapacity = currentCapacity;
 
         }
         public TourDTO(Tour tour)
@@ -57,6 +66,7 @@ namespace BookingApp.DTO
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
             images = tour.Images;
+            currentCapacity = tour.CurrentCapacity;
 
         }
         public TourDTO(TourDTO tour)
@@ -71,7 +81,7 @@ namespace BookingApp.DTO
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
             images = tour.Images;
-
+            currentCapacity= tour.CurrentCapacity;
         }
 
 
@@ -220,14 +230,34 @@ namespace BookingApp.DTO
                 }
             }
         }
+
+        private int currentCapacity;
+        public int CurrentCapacity
+        {
+            get { return currentCapacity; }
+            set
+            {
+                if (value != currentCapacity)
+                {
+                    currentCapacity = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Tour ToTour()
         {
            return new Tour(name, locationDto.ToLocation(), language,maxTouristNumber, beginingTime);
         }
+       
         public Tour ToTourAllParam()
         {
             
             return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images);
+        }
+        public Tour ToTourWithCapacity()
+        {
+
+            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentCapacity);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

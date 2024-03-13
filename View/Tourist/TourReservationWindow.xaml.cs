@@ -28,17 +28,22 @@ namespace BookingApp.View
         private TourReservationDTO _tourReservationDTO;
         private TourDTO _tourDTO;
         private TourReservationRepository _tourReservationRepository;
+        private TourRepository _tourRepository;
+        private AnonymousTouristDTO _anonymousTouristDTO;
         private UserDTO _userDTO;
         public int numberOfTourists;
+        public int CurrentCapacity;
 
         public ObservableCollection<AnonymousTouristDTO> AnonymousTourists { get; set; }
         public TourReservationWindow(TourReservationRepository tourReservationRepository,TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
             _tourReservationRepository = tourReservationRepository;
+            _tourRepository = new TourRepository();
             _tourDTO = new TourDTO(tourDTO);
             _userDTO = userDTO;
             _tourReservationDTO = new TourReservationDTO(tourDTO, _userDTO);
+            _anonymousTouristDTO=new AnonymousTouristDTO();
             AnonymousTourists= new ObservableCollection<AnonymousTouristDTO>();
             DataContext = new { Tour = _tourDTO, User = _userDTO };
             dataGridAnonymousTourists.ItemsSource = AnonymousTourists;
@@ -50,6 +55,10 @@ namespace BookingApp.View
         {
 
             _tourReservationDTO.AnonymousTouristDTOs = AnonymousTourists.ToList();
+            _tourDTO.CurrentCapacity = CurrentCapacity;
+            _tourRepository.Update(_tourDTO.ToTourWithCapacity());
+
+
            _tourReservationRepository.Save(_tourReservationDTO.ToTourReservation());
             Close();
 
@@ -59,7 +68,7 @@ namespace BookingApp.View
         {
             numberOfTourists = numberOfTourists - 1;
             AnonymousTouristWindow anonymousTouristWindow = new AnonymousTouristWindow (this,_tourReservationDTO, AnonymousTourists, numberOfTourists);
-            if (numberOfTourists<0)
+            if (numberOfTourists==0)
             {
                 textBoxAdd.IsEnabled = false;
                
@@ -69,10 +78,37 @@ namespace BookingApp.View
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            numberOfTourists = Int32.Parse(textBoxNumber.Text)-1;
-            numberOfTourists = numberOfTourists- AnonymousTourists.Count();
-            textBoxAdd.IsEnabled = true;
-            MessageBox.Show("You added number of tourists!");
+            if(textBoxNumber.Text.ToString()!="")
+            {
+                numberOfTourists = Int32.Parse(textBoxNumber.Text);
+                numberOfTourists = numberOfTourists - AnonymousTourists.Count();
+                CurrentCapacity = _tourDTO.CurrentCapacity-numberOfTourists;
+                textBoxCurrentCapacity.Text = CurrentCapacity.ToString();
+
+                if (CurrentCapacity < 0) 
+                {
+                    MessageBox.Show("Nuber of tourists you added is out of the range!");
+                    textBoxAdd.IsEnabled = false;
+                }
+                else
+                {
+                    textBoxAdd.IsEnabled = true;
+                    MessageBox.Show("You added number of tourists!");
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("You didn't input number!");
+            }
+           
+        }
+        private void SubmitUserInfo_Click(object sender, RoutedEventArgs e)
+        {
+            _anonymousTouristDTO = new AnonymousTouristDTO(textBoxFirstName.Text, textBoxSurname.Text, Int32.Parse(textBoxAge.Text));
+            AnonymousTourists.Add(_anonymousTouristDTO);
+            numberOfTourists = numberOfTourists - 1;
         }
     }
+   
 }

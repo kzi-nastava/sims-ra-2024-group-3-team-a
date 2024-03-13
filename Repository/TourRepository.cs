@@ -66,5 +66,17 @@ namespace BookingApp.Repository
             _serializer.ToCSV(FilePath, _tours);
             return tour;
         }
+        public List<Tour> GetToursWithSameLocation(Tour tour)
+        {
+            List<Tour> tours = new List<Tour>();
+            foreach(Tour t in GetAll())
+            {
+                if(t.Place.Country==tour.Place.Country && t.Place.City==tour.Place.City && t.Id!=tour.Id && t.CurrentCapacity!=0)
+                {
+                    tours.Add(t);
+                }
+            }
+            return tours;
+        }
     }
 }
