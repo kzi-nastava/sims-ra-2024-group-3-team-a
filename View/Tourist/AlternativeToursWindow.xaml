@@ -1,0 +1,36 @@
+﻿<Window x:Class="BookingApp.View.Tourist.AlternativeToursWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        mc:Ignorable="d"
+        Title="AlternativeToursWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock FontStyle="Oblique" Margin="10">
+            Previously selected tour is full. Here is a list of alternarive tours with the same location:
+        </TextBlock>
+        <Button x:Name="buttoneReservation" Content="Reservation" Grid.Row="2" Click="Reservation_Click" Width="80" Margin="500,0,0,0"/>
+
+        <DataGrid x:Name="dataGridAlternativeTour" IsReadOnly="True" ItemsSource="{Binding AlternativeTours}"  Grid.Row="3" Margin="10" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
+                <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
+                <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
+                <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
+                <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+
+    </Grid>
+</Window>
