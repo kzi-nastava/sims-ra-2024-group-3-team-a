@@ -48,7 +48,7 @@
 
             <Frame x:Name="frameNotification" Panel.ZIndex="1000" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" NavigationUIVisibility="Hidden" />
             <Frame x:Name="frameMain" Panel.ZIndex="1000" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
-            <Frame x:Name="frameSideMenu" Panel.ZIndex="2000" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden" Navigated="frameSideMenu_Navigated" />
+            <Frame x:Name="frameSideMenu" Panel.ZIndex="2000" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden"/>
 
             <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
                 <TabItem x:Name="tabItemAccommodations" Visibility="Collapsed">

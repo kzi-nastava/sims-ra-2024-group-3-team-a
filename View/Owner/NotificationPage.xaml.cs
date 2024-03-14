@@ -21,10 +21,9 @@ namespace BookingApp.View.Owner
     public partial class NotificationPage : Page
     {
         private OwnerMainWindow _ownerMainWindow;
-        public NotificationPage(OwnerMainWindow ownerMainWindow)
+        public NotificationPage()
         {
             InitializeComponent();
-            _ownerMainWindow = ownerMainWindow;
         }
     }
 }

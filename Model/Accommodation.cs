@@ -39,17 +39,8 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-            if(Images != null)
-            {
-                string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString(), images };
-                return csvValues;
-            }  
-            else
-            {
-                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString() };
-                return csvValues;
-            }      
+            string images = Images != null ? string.Join("|", Images) : string.Empty;
+            return new string[] { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString(), images };
         }
 
         public void FromCSV(string[] values)

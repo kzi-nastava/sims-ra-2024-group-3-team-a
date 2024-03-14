@@ -14,13 +14,7 @@ namespace BookingApp.DTO
     {
         public AccommodationDTO()
         {
-            _locationDTO = new LocationDTO();
-            images = new List<string>();
-        }
-
-        public AccommodationDTO(LocationDTO locationDTO)
-        {
-            _locationDTO = locationDTO;
+            locationDTO = new LocationDTO();
             images = new List<string>();
         }
 
@@ -28,7 +22,7 @@ namespace BookingApp.DTO
         {
             id = accommodation.Id;
             name = accommodation.Name;
-            _locationDTO = new LocationDTO(accommodation.Place);
+            locationDTO = new LocationDTO(accommodation.Place);
             type = accommodation.Type;
             capacity = accommodation.Capacity;
             minDaysReservation = accommodation.MinDaysReservation;
@@ -40,7 +34,7 @@ namespace BookingApp.DTO
         {
             id = accommodationDTO.Id;
             name = accommodationDTO.Name;
-            _locationDTO = new LocationDTO(accommodationDTO.PlaceDTO);
+            locationDTO = new LocationDTO(accommodationDTO.PlaceDTO);
             type = accommodationDTO.Type;
             capacity = accommodationDTO.Capacity;
             minDaysReservation = accommodationDTO.MinDaysReservation;
@@ -76,15 +70,15 @@ namespace BookingApp.DTO
             }
         }
 
-        private LocationDTO _locationDTO;
+        private LocationDTO locationDTO;
         public LocationDTO PlaceDTO
         {
-            get { return _locationDTO; }
+            get { return locationDTO; }
             set
             {
-                if (value != _locationDTO)
+                if (value != locationDTO)
                 {
-                    _locationDTO = value;
+                    locationDTO = value;
                     OnPropertyChanged();
                 }
             }
@@ -161,7 +155,7 @@ namespace BookingApp.DTO
         }
         public Accommodation ToAccommodation()
         {
-            return new Accommodation(name, _locationDTO.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
+            return new Accommodation(name, locationDTO.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

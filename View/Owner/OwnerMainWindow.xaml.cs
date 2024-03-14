@@ -77,7 +77,6 @@ namespace BookingApp.View.Owner
                 frameMain.Content = new AddAccommodationPage(this);
             }  
         }
-
         private void ShowRateGuestPage(object sender, RoutedEventArgs e)
         {
             if(dataGridReservations.SelectedItem != null && frameMain.Content == null)
@@ -93,46 +92,43 @@ namespace BookingApp.View.Owner
                 frameMain.Content = null;
             }
         }
-
         private void ShowSideMenu(object sender, RoutedEventArgs e)
         {
             frameSideMenu.Content = new SideMenuPage(this);
         }
 
-        private bool isRateGuestWindowOpened = false;
-
-        private bool isAddAccommodationWindowOpened = false;
-
+        private bool isRateGuestPageOpened = false;
+        private bool isAddAccommodationPageOpened = false;
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(tabControl.SelectedItem == tabItemAccommodations)
             {
-                if (isRateGuestWindowOpened)
+                if (isRateGuestPageOpened)
                 {
                     buttonFunction.Click -= ShowRateGuestPage;
-                    isRateGuestWindowOpened = false;
+                    isRateGuestPageOpened = false;
                 }
 
-                if (!isAddAccommodationWindowOpened)
+                if (!isAddAccommodationPageOpened)
                 {
                     buttonFunction.Click += ShowAddAccommodationPage;
-                    isAddAccommodationWindowOpened = true;
+                    isAddAccommodationPageOpened = true;
                 }
                 imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\add.png", UriKind.Relative));
                 textBlockFunction.Text = "Add";
             }
             else
             {
-                if (isAddAccommodationWindowOpened)
+                if (isAddAccommodationPageOpened)
                 {
                     buttonFunction.Click -= ShowAddAccommodationPage;
-                    isAddAccommodationWindowOpened = false;
+                    isAddAccommodationPageOpened = false;
                 }
 
-                if (!isRateGuestWindowOpened)
+                if (!isRateGuestPageOpened)
                 {
                     buttonFunction.Click += ShowRateGuestPage;
-                    isRateGuestWindowOpened = true;
+                    isRateGuestPageOpened = true;
                 }
                 imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
                 textBlockFunction.Text = "Rate";
@@ -142,21 +138,20 @@ namespace BookingApp.View.Owner
 
         private void SetNotificationTimer()
         {
-            _notificationTimer = new Timer(1000 * 10);
+            _notificationTimer = new Timer(TimeSpan.FromDays(1).TotalMilliseconds);
 
-            _notificationTimer.Elapsed += (sender, e) => Notify(frameNotification, this);
+            _notificationTimer.Elapsed += (sender, e) => Notify(frameNotification);
 
             _notificationTimer.AutoReset = true;
             _notificationTimer.Enabled = true;
         }
-
-        private static void Notify(Frame frameNotification, OwnerMainWindow ownerMainWindow)
+        private static void Notify(Frame frameNotification)
         {
             if(AccommodationReservations.Any(reservation => reservation.RatingDTO.CleannessRating == 0))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    NotificationPage notificationPage = new NotificationPage(ownerMainWindow);
+                    NotificationPage notificationPage = new NotificationPage();
                     notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
                     foreach(var reservation in AccommodationReservations)
                     {
@@ -169,11 +164,6 @@ namespace BookingApp.View.Owner
                     frameNotification.Content = notificationPage;
                 });
             }
-        }
-
-        private void frameSideMenu_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-
         }
     }
 

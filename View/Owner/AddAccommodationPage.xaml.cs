@@ -28,7 +28,7 @@ namespace BookingApp.View.Owner
         private AccommodationDTO _accommodationDTO;
         private OwnerMainWindow _ownerMainWindow;
 
-        private List<string> images;
+        private List<string> _images;
 
         private Brush _defaultBrushBorder;
 
@@ -56,7 +56,7 @@ namespace BookingApp.View.Owner
             else
                 _accommodationDTO.Type = AccomodationType.Cottage;
 
-            _accommodationDTO.Images = images;
+            _accommodationDTO.Images = _images;
 
             _repository.Save(_accommodationDTO.ToAccommodation());
 
@@ -86,11 +86,11 @@ namespace BookingApp.View.Owner
 
             if (response == true)
             {
-                images = openFileDialog.FileNames.ToList();
+                _images = openFileDialog.FileNames.ToList();
 
-                for (int i = 0; i < images.Count; i++)
+                for (int i = 0; i < _images.Count; i++)
                 {
-                    images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, images[i]).ToString();
+                    _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
                 }
             }
         }

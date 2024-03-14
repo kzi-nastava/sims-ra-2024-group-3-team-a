@@ -13,11 +13,11 @@ namespace BookingApp.Model
         public int Age { get; set; }
 
         public AnonymousGuest() { }
-        public AnonymousGuest(string name, string surname,int age)
+        public AnonymousGuest(string name, string surname, int age)
         {
             Name = name;
             Surname = surname;
             Age = age;
-        } 
+        }
     }
 }
