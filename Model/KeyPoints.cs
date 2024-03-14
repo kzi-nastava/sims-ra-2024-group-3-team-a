@@ -29,26 +29,38 @@ namespace BookingApp.Model
             Middle = middle;
             Ending = ending;
         }
+        public KeyPoints(int id, string begining, string ending)
+        {
+            Id = id;
+            Begining = begining;
+            Middle = new List<string>();
+            Ending = ending;
+        }
+
 
           public string[] ToCSV()
-        {
-            if (Middle != null)
-            {
-                string middlePoints = string.Join("|", Middle);
-                string[] csvValues = { Id.ToString(), Begining, Ending, middlePoints };
-                return csvValues;
-            }
-            else
-            {
-                string[] csvValues = { Id.ToString(), Begining, Ending };
-                return csvValues;
-            }
-        }
+          {
+              if (Middle != null)
+              {
+                  string middlePoints = string.Join("|", Middle);
+                  string[] csvValues = { Id.ToString(), Begining, Ending, middlePoints };
+                  return csvValues;
+              }
+              else
+              {
+                  string[] csvValues = { Id.ToString(), Begining, Ending };
+                  return csvValues;
+              }
+          }
+        
         public void FromCSV(string[] values)
         {
             Id = Convert.ToInt32(values[0]);
             Begining = values[1];
             Ending = values[2];
+
+            Middle.Clear();
+
             for (int i = 3; i < values.Length; i++)
             {
                 Middle.Add(values[i]);

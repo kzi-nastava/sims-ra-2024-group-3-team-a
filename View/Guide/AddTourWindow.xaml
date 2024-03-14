@@ -4,8 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
         mc:Ignorable="d"
         Title="Dodaj novu turu" Height="450" Width="800">
+
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -27,27 +30,27 @@
             </Grid.RowDefinitions>
 
 
-            <Label Grid.Column="0" Grid.Row="0" Content="Naziv" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="0" Content="Name" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="1" Content="Grad" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="1" Content="City" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
        HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="2" Content="Država" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="2" Content="Country" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
        HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="3" Content="Opis" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="3" Content="Description" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
        HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="4" Content="Jezik" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="4" Content="Language" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
        HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="5" Content="Maksimalan broj turista" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="5" Content="Max tourist number" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
         HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="6" Content="Ključne tačke" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="6" Content="Key points" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
         HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="7" Content="Datum i vrijeme početka" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="7" Content="Begining time and date" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
         HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="8" Content="Trajanje" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="8" Content="Duration" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
 HorizontalContentAlignment="Center"/>
-            <Label Grid.Column="0" Grid.Row="9" Content="Slike" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+            <Label Grid.Column="0" Grid.Row="9" Content="Images" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
 HorizontalContentAlignment="Center"/>
-            <Button x:Name="SubmitButton" Content="Potvrdi" Click="SubmitButton_Click" Grid.Column="0"
+            <Button x:Name="SubmitButton" Content="Submit" Click="SubmitButton_Click" Grid.Column="0"
                 Grid.Row="10" Margin="100,10,100,10" Background="LightBlue"/>
             <TextBox x:Name="NazivTextBox" Grid.Column="1" Grid.Row="0" Margin="10"
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
@@ -91,7 +94,7 @@ HorizontalContentAlignment="Center"/>
                 </Grid.RowDefinitions>
 
                 <DatePicker x:Name="datePicker" Margin="10"
-          Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
+          Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" />
             <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Content="+" Click="Add_Click"/>
             </Grid>
             </ScrollViewer>
@@ -99,7 +102,7 @@ HorizontalContentAlignment="Center"/>
             <TextBox x:Name="TrajanjeTextBox" Grid.Column="1" Grid.Row="8" Margin="10"
          Text="{Binding Duration,UpdateSourceTrigger=PropertyChanged}"/>
             <Button Grid.Column="1" Grid.Row="9" Background="LightGray" Content="Add Images" Click="AddImages"></Button>
-            <Button x:Name="LeaveButton" Content="Odustani" Click="LeaveButton_Click" Grid.Column="1"
+            <Button x:Name="LeaveButton" Content="Cancel" Click="LeaveButton_Click" Grid.Column="1"
         Grid.Row="10" Margin="100,10,100,10" />
         </Grid>
     </Grid>

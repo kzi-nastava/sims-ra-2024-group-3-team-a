@@ -25,7 +25,7 @@ namespace BookingApp.View
     {
 
         public static ObservableCollection<TourDTO> Tours { get; set; }
-        private static TourDTO tour { get; set; }
+        private static TourDTO _tour { get; set; }
 
         private readonly TourRepository _repository;
         private TourDTO _activeTour; 
@@ -36,7 +36,7 @@ namespace BookingApp.View
             DataContext = this;
             _repository = new TourRepository();
             Tours = new ObservableCollection<TourDTO>();
-            tour = new TourDTO();
+            _tour = new TourDTO();
             Update();
         }
         private void Update()

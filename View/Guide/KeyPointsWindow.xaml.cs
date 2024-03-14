@@ -39,18 +39,20 @@ namespace BookingApp.View
             this.DataContext = this;
             _repository = new KeyPointRepository();
             _tourReservationRepository = new TourReservationRepository();
-            Buttons();
+            AddButton();
             Update();
            
            
         }
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Tura je završena!", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Tour has been canceled!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             _tour.CurrentKeyPoint = null;
+            _tour.IsActive = false;
+            this.Close();
         }
 
-        public void Buttons()
+        public void AddButton()
         {
             KeyPoints keypoint = _repository.GetById(_tour.KeyPointsDTO.Id);
             _keypoints = new KeyPointsDTO(keypoint);
@@ -65,7 +67,7 @@ namespace BookingApp.View
                         Button MyControl1 = new Button();
                         MyControl1.Click += (sender, e) =>
                         {
-                            ButtonClicked(MyControl1);
+                            ClickButton(MyControl1);
                         };
                         if (count == 0)
                         {
@@ -76,14 +78,22 @@ namespace BookingApp.View
                         }
                         else if (keyPointsNum !=2 && count <= _keypoints.Middle.Count())
                         {
-                            MyControl1.Content = _keypoints.Middle[count - 1];
+                            if (_keypoints.Middle[count - 1] != "")
+                            {
+                                MyControl1.Content = _keypoints.Middle[count - 1];
+                               
+                            }
+                            else
+                            {
+                                count++;
+                                continue;
+                            }
                         }
                         else
                         {
                             MyControl1.Content = _keypoints.Ending;
                         }
                         MyControl1.Name = "Button" + count.ToString();
-
                         Grid.SetColumn(MyControl1, j);
                         Grid.SetRow(MyControl1, i);
                         gridMain.Children.Add(MyControl1);
@@ -95,15 +105,16 @@ namespace BookingApp.View
             }
         }
 
-       public void ButtonClicked(Button button)
+       public void ClickButton(Button button)
         {
             _tour.CurrentKeyPoint = button.Content.ToString();
             button.Background = Brushes.IndianRed;
             if(button.Content == _keypoints.Ending)
             {
-                MessageBox.Show("Tura je završena!", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Tura is finished!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                 _tour.CurrentKeyPoint = null;
                 _tour.IsActive=false;
+                 this.Close();
             }
         }
 

@@ -14,7 +14,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="gridMain" ShowGridLines="True"  Grid.Row="0" Margin="10,0,10,150" >
+        <Grid x:Name="gridMain" ShowGridLines="False"  Grid.Row="0" Margin="10,0,10,150" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -34,12 +34,12 @@
             <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False" >
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="IME" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="PREZIME" Width="*" Binding="{Binding Surname}" IsReadOnly="True" />
-                    <DataGridTemplateColumn Header="Prisutan" Width="Auto">
+                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}" IsReadOnly="True" />
+                    <DataGridTemplateColumn Header="PRESENT" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Pridruzi" Click="JoinTourist_Click" />
+                                <Button Content="JOIN" Click="JoinTourist_Click" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -49,7 +49,7 @@
             </DataGrid>
 
         </Grid>
-        <Button Content="Otkazi turu" Click="Cancel_Click" Margin="623,317,24,0" VerticalAlignment="Top" Height="40"/>
+        <Button Content="Cancel tour" Click="Cancel_Click" Margin="623,317,24,0" VerticalAlignment="Top" Height="40"/>
     </Grid>
 
 </Window>
