@@ -1,0 +1,44 @@
+﻿<Page x:Class="BookingApp.View.Owner.SideMenuPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:BookingApp.View.Owner"
+      mc:Ignorable="d"
+      d:DesignHeight="750" d:DesignWidth="286"
+      Title="SideMenuPage">
+    <Border BorderThickness="3" Background="CadetBlue" BorderBrush="#517a7b" CornerRadius="30,0,0,30">
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Click="CloseSideMenu" Margin="10">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Resources/Images/Owner/menu.png" Width="30" Height="37.5"/>
+                </StackPanel>
+            </Button>
+
+            <StackPanel Grid.Row="1">
+                <Button Click="SwitchTabAccommodations" BorderThickness="0" Background="Transparent" x:Name="buttonAccommodationsTab" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\..\Resources\Images\accommodations.png" Height="50" Width="50" />
+                        <Label Content="Accommodations" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Click="SwitchTabUsers" BorderThickness="0" Background="Transparent" x:Name="buttonUsersTab" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\..\Resources\Images\users.png" Height="50" Width="50" />
+                        <Label Content="Users" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>
