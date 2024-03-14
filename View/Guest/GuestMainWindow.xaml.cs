@@ -26,14 +26,18 @@ namespace BookingApp.View.Guest
     {
         public static ObservableCollection<AccommodationDTO> Accommodations { get; set; }
         private readonly AccommodationRepository _repository;
+        private UserDTO _userDTO;
+        private readonly UserRepository _userRepository;
 
-
-        public GuestMainWindow()
+        public GuestMainWindow(User user)
         {
             InitializeComponent();
             DataContext = this;
             _repository = new AccommodationRepository();
+            _userRepository = new UserRepository();
             Accommodations = new ObservableCollection<AccommodationDTO>();
+            _userDTO = new UserDTO(user);
+            
 
             Update();
         }
@@ -114,7 +118,7 @@ namespace BookingApp.View.Guest
         {
             if (dataGridAccommodation.SelectedItem != null && frameMain.Content == null)
             {
-                    frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem as AccommodationDTO);
+                    frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem, _userDTO);
                 
             }
             else if(frameMain.Content == null)

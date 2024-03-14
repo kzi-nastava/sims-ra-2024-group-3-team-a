@@ -31,12 +31,16 @@ namespace BookingApp.View.Guest
         //public static ObservableCollection<Comment> Comments { get; set; }
 
         private AccommodationReservationRepository _accommodationReservationRepository;
+        private AccommodationDTO _accommodationDTO;
+        private UserDTO _userDTO;
 
-        public MakeAccommodationReservationPage(AccommodationDTO accommodationDTO)
+        public MakeAccommodationReservationPage(AccommodationDTO accommodationDTO, UserDTO userDTO)
         {
             InitializeComponent();
             
             DataContext = this;
+            _accommodationDTO = accommodationDTO;
+            _userDTO = userDTO;
             _accommodationReservationRepository = new AccommodationReservationRepository();
             List<AccommodationReservation> accommodationReservations = _accommodationReservationRepository.GetAllByAccommodationId(accommodationDTO.Id);
             _accommodationReservationsDTO = new List<AccommodationReservationDTO>();
@@ -85,78 +89,89 @@ namespace BookingApp.View.Guest
 
         private void SearchAvailableDatesClick(object sender, RoutedEventArgs e)
         {
+           if(!PerformSearchForDates(0))
+           {
+                PerformSearchForDates(5);
+           }
+        }
+        private void ReserveClick(object sender, RoutedEventArgs e)
+        {
+            AccommodationReservationDTO acc_resDTO = (AccommodationReservationDTO)dataGridAvailableDates.SelectedItem;
+            DateOnly beginOfStay = acc_resDTO.BeginDate;
+            DateOnly endOfStay = acc_resDTO.EndDate;
+            frameReserve.Content = new ReservationDetailsPage(_accommodationDTO, _userDTO, beginOfStay, endOfStay); 
+        }
+
+        
+
+        public bool PerformSearchForDates(int area)
+        {
             _freeDates.Clear();
-            
+            bool found = false;
+
             DateTime? date = datePickerBegin.SelectedDate;
             if (date.HasValue)
             {
                 _selectedBeginDate = new DateOnly(date.Value.Year, date.Value.Month, date.Value.Day);
             }
 
+            _selectedBeginDate = _selectedBeginDate.AddDays(-area);
+            
             DateTime? dateEnd = datePickerEnd.SelectedDate;
             if (dateEnd.HasValue)
             {
                 _selectedEndDate = new DateOnly(dateEnd.Value.Year, dateEnd.Value.Month, dateEnd.Value.Day);
             }
+            _selectedEndDate=_selectedEndDate.AddDays(area);
 
-            DaysToStay = Int32.Parse(DaysToStayTextBox.Text); 
+            DaysToStay = Int32.Parse(DaysToStayTextBox.Text);
 
-            int k = 0;
+            //int k = 0;
             DateOnly i = _selectedBeginDate;
-            DateOnly j = i;
-            bool isAvailable = true;
-            bool firstIteration = true;
+            int j = 0;
+            //bool isAvailable = true;
+            //bool firstIteration = true;
             List<DateOnly> unavailableDates = new List<DateOnly>();
-            for (; i <= _selectedEndDate; i=i.AddDays(1))
+
+            for (; i <= _selectedEndDate; i = i.AddDays(1))
             {
-                k = 0;
-
-                for (j = i; j <= _selectedEndDate; j=j.AddDays(1))
+                AccommodationReservationDTO accommodationReservationDTO = new AccommodationReservationDTO();
+                foreach (AccommodationReservationDTO accommodationReservationDTO2 in _accommodationReservationsDTO)
                 {
-                    AccommodationReservationDTO accommodationReservationDTO = new AccommodationReservationDTO();
-                    if (firstIteration && !isAvailable )
+                    if (i >= accommodationReservationDTO2.BeginDate && i <= accommodationReservationDTO2.EndDate)
                     {
-                        unavailableDates.Add(j);
-                    }
-
-                    if (!firstIteration && unavailableDates.Any(c => c == j))
-                    {
-                        k = 0;
-                        continue;
-                    }
-
-                    if (_accommodationReservationsDTO.Any(c => c.EndDate == j))
-                    {
-                        isAvailable = true;
-
-                        continue;
-                    }
-                    else if (_accommodationReservationsDTO.Any(c => c.BeginDate == j))
-                    {
-                        isAvailable = false;
-                        k = 0;
-                        continue;
-                    }
-                    else if (isAvailable)
-                    {
-                        k++;
-                        if (k == DaysToStay && !_freeDates.Any(c => c.EndDate == j))
-                        {
-                            
-                            accommodationReservationDTO.BeginDate = j.AddDays(-DaysToStay+1);
-                            accommodationReservationDTO.EndDate = j;
-                            _freeDates.Add(accommodationReservationDTO);
-                            k = 0;
-                            
-                        }
-                        else if(k == DaysToStay)
-                        {
-                            k = 0;
-                        }
+                        unavailableDates.Add(i);
                     }
                 }
-                firstIteration = false;
             }
+
+            i = _selectedBeginDate;
+            DateOnly g = i;
+
+            for (; g <= _selectedEndDate; g = g.AddDays(1))
+            {
+                j = 0;
+                for (i = g; i <= _selectedEndDate; i = i.AddDays(1))
+                {
+                    AccommodationReservationDTO accommodationReservationDTO = new AccommodationReservationDTO();
+                    if (unavailableDates.Any(c => c == i))
+                    {
+                        j = 0;
+                        continue;
+                    }
+                    j++;
+                    if (j == DaysToStay && !_freeDates.Any(c => c.EndDate == i))
+                    {
+                        accommodationReservationDTO.BeginDate = i.AddDays(-DaysToStay + 1);
+                        accommodationReservationDTO.EndDate = i;
+                        _freeDates.Add(accommodationReservationDTO);
+                        j = 0;
+                        found = true;
+                    }
+                }
+            }
+
+            return found;     
         }
 
 

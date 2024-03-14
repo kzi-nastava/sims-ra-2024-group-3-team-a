@@ -18,8 +18,14 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            
         </Grid.RowDefinitions>
-        <DatePicker Width="105" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerBegin" SelectedDate = "{Binding _selectedBeginDate, Mode=TwoWay}" />
+
+        <Frame Grid.Row="3" x:Name="frameReserve" NavigationUIVisibility="Hidden"/>
+
+            <DatePicker Width="105" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerBegin" SelectedDate = "{Binding _selectedBeginDate, Mode=TwoWay}" />
         <DatePicker Width="105" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerEnd" SelectedDate = "{Binding _selectedEndDate, Mode=TwoWay}" />
         <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
         <Button Width="100" Grid.Row="0" Grid.Column="3" Click="SearchAvailableDatesClick"> Search for dates! </Button>
@@ -30,5 +36,6 @@
             </DataGrid.Columns>
 
         </DataGrid>
+        <Button Width="100" Grid.Row="2" Grid.Column="0" Click="ReserveClick">Reserve!</Button>
     </Grid>
 </Page>
