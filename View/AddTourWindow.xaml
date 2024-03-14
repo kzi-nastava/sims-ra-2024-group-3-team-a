@@ -23,6 +23,7 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
 
@@ -47,7 +48,7 @@ HorizontalContentAlignment="Center"/>
             <Label Grid.Column="0" Grid.Row="9" Content="Slike" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
 HorizontalContentAlignment="Center"/>
             <Button x:Name="SubmitButton" Content="Potvrdi" Click="SubmitButton_Click" Grid.Column="0"
-                Grid.Row="9" Margin="100,10,100,10" Background="LightBlue"/>
+                Grid.Row="10" Margin="100,10,100,10" Background="LightBlue"/>
             <TextBox x:Name="NazivTextBox" Grid.Column="1" Grid.Row="0" Margin="10"
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox x:Name="GradTextBox" Grid.Column="1" Grid.Row="1" Margin="10"
@@ -56,17 +57,50 @@ HorizontalContentAlignment="Center"/>
                  Text="{Binding Path=LocationDTO.Country, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox x:Name="OpisTextBox" Grid.Column="1" Grid.Row="3" Margin="10" 
                   Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBox x:Name="JezikTextBox" Grid.Column="1" Grid.Row="4" Margin="10"
-                 Text="{Binding Language,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox x:Name="comboBoxType" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="1">
+                <ComboBoxItem x:Name="comboBoxItemSrpski">Srpski</ComboBoxItem>
+                <ComboBoxItem x:Name="comboBoxItemEngleski">Engleski</ComboBoxItem>
+                <ComboBoxItem x:Name="comboBoxItemFrancuski">Francuski</ComboBoxItem>
+                <ComboBoxItem x:Name="comboBoxItemNemacki">Nemacki</ComboBoxItem>
+            </ComboBox>
+
             <TextBox x:Name="MaxTouristTextBox" Grid.Column="1" Grid.Row="5" Margin="10"
           Text="{Binding MaxTouristNumber,UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox x:Name="textBoxKeyPoints" Grid.Column="1" Grid.Row="6" Margin="10"/>
-            <TextBox x:Name="DatumTextBox" Grid.Column="1" Grid.Row="7" Margin="10"
-          Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}"/>
+            <ScrollViewer  Grid.Column="1" Grid.Row="7" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <Grid x:Name="GridDates">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <DatePicker x:Name="datePicker" Margin="10"
+          Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
+            <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Content="+" Click="Add_Click"/>
+            </Grid>
+            </ScrollViewer>
+            
             <TextBox x:Name="TrajanjeTextBox" Grid.Column="1" Grid.Row="8" Margin="10"
          Text="{Binding Duration,UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Column="1" Grid.Row="9" Background="LightGray" Content="Add Images" Click="AddImages"></Button>
             <Button x:Name="LeaveButton" Content="Odustani" Click="LeaveButton_Click" Grid.Column="1"
-        Grid.Row="9" Margin="100,10,100,10" />
+        Grid.Row="10" Margin="100,10,100,10" />
         </Grid>
     </Grid>
 </Window>

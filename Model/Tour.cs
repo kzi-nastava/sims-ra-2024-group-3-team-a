@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using BookingApp.Model.Enums;
 using BookingApp.Serializer;
 
 namespace BookingApp.Model
@@ -15,19 +16,21 @@ namespace BookingApp.Model
         public string Name { get; set; }
         public Location Place { get; set; }
         public string Description { get; set; }
-        public string Language { get; set; }
+        public Languages Language { get; set; }
         public int MaxTouristNumber { get; set; }
         public KeyPoints KeyPoint { get; set; }
         public DateTime BeginingTime { get; set; }
         public TimeSpan Duration { get; set; }  
         public List<string> Images { get; set; }
+        public string CurrentKeyPoint { get; set; }
 
+        public bool IsActive { get; set; }
         public Tour() 
         {
             Place = new Location();
             KeyPoint = new KeyPoints();
         }
-        public Tour(string name, Location place, string description, string language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,TimeSpan duration, List<string> images)
+        public Tour(string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,TimeSpan duration, List<string> images, string currentKeyPoint, bool isActive)
         {
             Name = name;
             Place = place;
@@ -38,9 +41,11 @@ namespace BookingApp.Model
             BeginingTime = beginingTime;
             Duration = duration; 
             Images = images;
+            CurrentKeyPoint = currentKeyPoint;
+            IsActive = isActive;
         }
 
-        public Tour( string name, Location place, string language, int maxTouristNumber, DateTime beginingTime)
+        public Tour( string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime)
         {
             Name = name;
             Place = place;
@@ -53,31 +58,33 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language, MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), KeyPoint.Id.ToString(), images };
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint, images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language, MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), KeyPoint.Id.ToString() };
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint };
                 return csvValues;
             }
         }
 
         public void FromCSV(string[] values)
         {
+            //MessageBox.Show(values[0]);
             Id = Convert.ToInt32(values[0]);
             Name = values[1]; 
             Place.City = values[2];
             Place.Country = values[3];
             Description = values[4];
-            Language = values[5];
+            Language = (Languages)Enum.Parse(typeof(Languages), values[5]);
             MaxTouristNumber = Convert.ToInt32(values[6]);
             BeginingTime = DateTime.Parse(values[7]);
             Duration = TimeSpan.Parse(values[8]);
             KeyPoint.Id = Convert.ToInt32(values[9]);
+            CurrentKeyPoint = values[10];
             if (Images != null)
             {
-                for (int i = 10; i < values.Length; i++)
+                for (int i = 11; i < values.Length; i++)
                 {
                      Images.Add(values[i]);
                 }

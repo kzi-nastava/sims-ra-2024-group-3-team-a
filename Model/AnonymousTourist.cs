@@ -17,6 +17,7 @@ namespace BookingApp.Model
         public int Age { get; set; }
         public bool Flag { get; set; }
 
+        public string JoiningKeyPoint { get; set; }
         public AnonymousTourist() { }
         public AnonymousTourist( string name, string surname, int age) 
         {
@@ -24,10 +25,17 @@ namespace BookingApp.Model
             Surname = surname;
             Age = age;
         }
+        public AnonymousTourist(string name, string surname, int age, string joiningKeyPoint)
+        {
+            Name = name;
+            Surname = surname;
+            Age = age;
+            JoiningKeyPoint = joiningKeyPoint;
+        }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Name, Surname, Age.ToString() };
+            string[] csvValues = { Id.ToString(), Name, Surname, Age.ToString(), JoiningKeyPoint };
             return csvValues;
         }
 
@@ -36,6 +44,7 @@ namespace BookingApp.Model
             Name = values[0];
             Surname = values[1];
             Age = Convert.ToInt32(values[2]);
+            JoiningKeyPoint = values[3];
     
         }
     }

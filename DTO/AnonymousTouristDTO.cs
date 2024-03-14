@@ -27,6 +27,8 @@ namespace BookingApp.DTO
             surname = anonymousTourist.Surname;
             age = anonymousTourist.Age;
             flag = anonymousTourist.Flag;
+            joiningKeyPoint = anonymousTourist.JoiningKeyPoint;
+
         }
 
        public AnonymousTouristDTO(AnonymousTouristDTO anonymousTouristDTO)
@@ -36,6 +38,7 @@ namespace BookingApp.DTO
             surname = anonymousTouristDTO.surname;
             age = anonymousTouristDTO.age;
             flag = anonymousTouristDTO.flag;
+            joiningKeyPoint = anonymousTouristDTO.joiningKeyPoint;
 
         }
 
@@ -65,6 +68,8 @@ namespace BookingApp.DTO
                 }
             }
         }
+      
+
         private string name;
 
         public string Name
@@ -106,6 +111,21 @@ namespace BookingApp.DTO
                 if (value != age)
                 {
                     age = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string joiningKeyPoint;
+
+        public string JoiningKeyPoint
+        {
+            get { return joiningKeyPoint; }
+            set
+            {
+                if (value != joiningKeyPoint)
+                {
+                    joiningKeyPoint = value;
                     OnPropertyChanged();
                 }
             }

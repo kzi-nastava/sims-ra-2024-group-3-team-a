@@ -22,7 +22,7 @@ namespace BookingApp.DTO
             this.begining = begining;
             this.ending = ending;
         }
-
+      
         public KeyPointsDTO(KeyPoints keyPoint)
         {
             id = keyPoint.Id;

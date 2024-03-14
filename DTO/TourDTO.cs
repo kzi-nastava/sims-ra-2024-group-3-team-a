@@ -23,7 +23,7 @@ namespace BookingApp.DTO
             keyPointsDTO = new KeyPointsDTO();
         }
 
-        public TourDTO( string name, Location place, string language, int maxTouristNumber, DateTime beginingTime)
+        public TourDTO( string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime)
         {
           this.Name = name;
           this.locationDto= new LocationDTO(place); 
@@ -32,7 +32,7 @@ namespace BookingApp.DTO
           this.beginingTime = beginingTime;
         }
 
-        public TourDTO(string name, Location place, string description,   string language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration, List<string> images)
+        public TourDTO(string name, Location place, string description,   Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration,string currentKeyPoint,bool IsActive, List<string> images)
         {
             this.name = name;
             this.locationDto = new LocationDTO(place);
@@ -42,7 +42,9 @@ namespace BookingApp.DTO
             this.keyPointsDTO = new KeyPointsDTO(keyPoints);
             this.beginingTime = beginingTime;
             this.duration = duration;
+            this.CurrentKeyPoint = currentKeyPoint;
             this.images = images;
+            this.isActive = IsActive;
 
         }
         public TourDTO(Tour tour)
@@ -56,6 +58,7 @@ namespace BookingApp.DTO
             keyPointsDTO = new KeyPointsDTO(tour.KeyPoint);
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
+            currentKeyPoint = tour.CurrentKeyPoint;
             images = tour.Images;
 
         }
@@ -70,6 +73,7 @@ namespace BookingApp.DTO
             keyPointsDTO = new KeyPointsDTO(tour.KeyPointsDTO); ;
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
+            currentKeyPoint = tour.CurrentKeyPoint;
             images = tour.Images;
 
         }
@@ -102,6 +106,20 @@ namespace BookingApp.DTO
                 }
             }
         }
+        private string currentKeyPoint;
+        public string CurrentKeyPoint
+        {
+            get { return currentKeyPoint; }
+            set
+            {
+                if (value != currentKeyPoint)
+                {
+                    currentKeyPoint = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         private string description;
         public string Description
@@ -136,9 +154,9 @@ namespace BookingApp.DTO
             }
         }
 
-        private string language;
+        private Languages language;
 
-        public string Language
+        public Languages Language
         {
             get { return language; }
             set
@@ -220,6 +238,19 @@ namespace BookingApp.DTO
                 }
             }
         }
+        private bool isActive;
+        public bool IsActive
+        {
+            get { return isActive; }
+            set
+            {
+                if (value != isActive)
+                {
+                    isActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Tour ToTour()
         {
            return new Tour(name, locationDto.ToLocation(), language,maxTouristNumber, beginingTime);
@@ -227,7 +258,7 @@ namespace BookingApp.DTO
         public Tour ToTourAllParam()
         {
             
-            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images);
+            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

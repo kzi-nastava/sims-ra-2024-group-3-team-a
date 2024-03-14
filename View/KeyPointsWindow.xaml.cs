@@ -44,7 +44,11 @@ namespace BookingApp.View
            
            
         }
-
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Tura je završena!", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
+            _tour.CurrentKeyPoint = null;
+        }
 
         public void Buttons()
         {
@@ -59,14 +63,19 @@ namespace BookingApp.View
                     if (count < keyPointsNum)
                     {
                         Button MyControl1 = new Button();
+                        MyControl1.Click += (sender, e) =>
+                        {
+                            ButtonClicked(MyControl1);
+                        };
                         if (count == 0)
                         {
                             MyControl1.Content = _keypoints.Begining;
                             MyControl1.Background = new SolidColorBrush(Colors.IndianRed);
+                            _tour.CurrentKeyPoint = _keypoints.Begining;
+                            _tour.IsActive = true;
                         }
                         else if (keyPointsNum !=2 && count <= _keypoints.Middle.Count())
                         {
-                           // MessageBox.Show(keyPointsNum.ToString());
                             MyControl1.Content = _keypoints.Middle[count - 1];
                         }
                         else
@@ -85,30 +94,28 @@ namespace BookingApp.View
 
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+       public void ButtonClicked(Button button)
         {
-            Button b = (Button)sender;
-            b.Background = Brushes.IndianRed;
-            if (gridMain.Children.IndexOf(b) == gridMain.Children.Count - 1)
+            _tour.CurrentKeyPoint = button.Content.ToString();
+            button.Background = Brushes.IndianRed;
+            if(button.Content == _keypoints.Ending)
             {
                 MessageBox.Show("Tura je završena!", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                _tour.CurrentKeyPoint = null;
+                _tour.IsActive=false;
             }
         }
 
-        private void Tourist_Click(object sender, RoutedEventArgs e)
+        private void JoinTourist_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            AnonymousTouristDTO selectedTourist = ((Button)sender).DataContext as AnonymousTouristDTO;
-
-
-            if (_selectedTourist  == null || _selectedTourist != selectedTourist)
-            {
-                _selectedTourist = selectedTourist;
-
-                JoiningPointWindow joiningPointWindow = new JoiningPointWindow(_selectedTourist);
-                joiningPointWindow.Show();
-            }
-
+            AnonymousTouristDTO selectedTourist = new AnonymousTouristDTO();
+            selectedTourist =   ((Button)sender).DataContext as AnonymousTouristDTO;
+            _selectedTourist = selectedTourist;
+            _selectedTourist.JoiningKeyPoint = _tour.CurrentKeyPoint;
+            button.Background = Brushes.IndianRed;
+    
         }
         private void Update()
         {
