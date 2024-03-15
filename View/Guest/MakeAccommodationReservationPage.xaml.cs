@@ -124,13 +124,27 @@ namespace BookingApp.View.Guest
             }
             _selectedEndDate=_selectedEndDate.AddDays(area);
 
+            if (_selectedEndDate < _selectedBeginDate)
+            {
+                _freeDates.Clear();
+                //ReserveButton.IsEnabled = false;
+                MessageBox.Show("Los opseg - krajnji datum je pre pocetnog");
+                return true;
+            }
+
             DaysToStay = Int32.Parse(DaysToStayTextBox.Text);
 
-            //int k = 0;
+            if(DaysToStay < _accommodationDTO.MinDaysReservation)
+            {
+                _freeDates.Clear();
+                //ReserveButton.IsEnabled = false;
+                MessageBox.Show($"Los broj dana, minimum je {_accommodationDTO.MinDaysReservation} dana!");
+                return true;
+            }
+
             DateOnly i = _selectedBeginDate;
-            int j = 0;
-            //bool isAvailable = true;
-            //bool firstIteration = true;
+            int availableDatesCounter = 0;
+            
             List<DateOnly> unavailableDates = new List<DateOnly>();
 
             for (; i <= _selectedEndDate; i = i.AddDays(1))
@@ -150,22 +164,22 @@ namespace BookingApp.View.Guest
 
             for (; g <= _selectedEndDate; g = g.AddDays(1))
             {
-                j = 0;
+                availableDatesCounter = 0;
                 for (i = g; i <= _selectedEndDate; i = i.AddDays(1))
                 {
                     AccommodationReservationDTO accommodationReservationDTO = new AccommodationReservationDTO();
                     if (unavailableDates.Any(c => c == i))
                     {
-                        j = 0;
+                        availableDatesCounter = 0;
                         continue;
                     }
-                    j++;
-                    if (j == DaysToStay && !_freeDates.Any(c => c.EndDate == i))
+                    availableDatesCounter++;
+                    if (availableDatesCounter == DaysToStay && !_freeDates.Any(c => c.EndDate == i))
                     {
                         accommodationReservationDTO.BeginDate = i.AddDays(-DaysToStay + 1);
                         accommodationReservationDTO.EndDate = i;
                         _freeDates.Add(accommodationReservationDTO);
-                        j = 0;
+                        availableDatesCounter = 0;
                         found = true;
                     }
                 }

@@ -10,21 +10,21 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"> </ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0">Unesite broj turista:</Label>
-        <TextBox Grid.Row="0" Grid.Column="1" Width="50" HorizontalAlignment="Left">
-        </TextBox>
-        <Button Grid.Column="3" HorizontalAlignment="Center" Click="NewReservation_Click">Konacno napravi rezervaciju
-        </Button>
 
+        <Label Grid.Row="0">Unesite broj gostiju:</Label>
+        <TextBox x:Name="GuestNumberTextBox" Grid.Row="0" Grid.Column="1" Width="50" HorizontalAlignment="Center" />
+
+        <!-- Adjusted button width and alignment -->
+        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Width="150" Click="NewReservation_Click" HorizontalAlignment="Left">
+            Konacno napravi rezervaciju
+        </Button>
     </Grid>
 </Page>

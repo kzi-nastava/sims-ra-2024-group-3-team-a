@@ -14,6 +14,7 @@ namespace BookingApp.DTO
         public AccommodationReservationDTO()
         {
             ratingDTO = new GuestRatingDTO();
+            anonymousGuests = new List<AnonymousGuest>();
         }
 
         public AccommodationReservationDTO(AccommodationReservation reservation) 
@@ -23,7 +24,7 @@ namespace BookingApp.DTO
             guestId = reservation.GuestId;
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
-            anonymousGuests = reservation.AnonymousGuests;
+            //anonymousGuests = reservation.AnonymousGuests;
             ratingDTO = new GuestRatingDTO(reservation.Rating);
         }
 

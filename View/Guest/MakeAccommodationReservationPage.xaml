@@ -36,6 +36,6 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <Button Width="100" Grid.Row="2" Grid.Column="0" Click="ReserveClick">Reserve!</Button>
+        <Button x:Name="ReserveButton" Width="100" Grid.Row="2" Grid.Column="0" Click="ReserveClick">Reserve!</Button>
     </Grid>
 </Page>
