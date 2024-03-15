@@ -257,7 +257,7 @@ namespace BookingApp.DTO
         public Tour ToTourWithCapacity()
         {
 
-            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentCapacity);
+            return new Tour(id,name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentCapacity);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -41,8 +41,9 @@ namespace BookingApp.Model
             Images = images;
             CurrentCapacity = maxTouristNumber;
         }
-        public Tour(string name, Location place, string description, string language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration, List<string> images, int currentCapacity)
+        public Tour(int id,string name, Location place, string description, string language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration, List<string> images, int currentCapacity)
         {
+            Id = id;
             Name = name;
             Place = place;
             Description = description;

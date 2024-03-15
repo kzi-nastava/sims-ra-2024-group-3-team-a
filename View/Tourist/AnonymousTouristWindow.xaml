@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
         Title="AnonymousTouristWindow" Height="450" Width="800">
-    <Grid Background="LightPink">
+    <Grid x:Name="gridMain" Background="LightPink">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -19,14 +19,15 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Name:" VerticalAlignment="Center"/>
-        <TextBox x:Name="textBoxName" Grid.Row="0" Text="{Binding _anonymousTouristDTO.Name,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left"/>
+        <TextBox x:Name="textBoxName" Grid.Row="0" Text="{Binding _anonymousTouristDTO.Name,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left" TextChanged="textBox_TextChanged"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Text="Surname:" VerticalAlignment="Center"/>
-        <TextBox x:Name="textBoxSurname" Grid.Row="1" Text="{Binding _anonymousTouristDTO.Surname,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left"/>
+            <TextBox x:Name="textBoxSurname" Grid.Row="1" Text="{Binding _anonymousTouristDTO.Surname,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left" TextChanged="textBox_TextChanged"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="Age:" VerticalAlignment="Center"/>
-        <TextBox x:Name="textBoxAge" Grid.Row="2" Text="{Binding _anonymousTouristDTO.Age,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left"/>
+            <TextBox x:Name="textBoxAge" Grid.Row="2" Text="{Binding _anonymousTouristDTO.Age,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left" TextChanged="textBox_TextChanged"/>
 
-        <Button Grid.Row="3" Background="LightBlue" Grid.Column="1" Margin="5" Width="100" Height="30" Click="Submit_Click" Content="Submit" HorizontalAlignment="Left"/>
+        <Button x:Name="buttonSubmit"  Grid.Row="3" Background="LightBlue" Grid.Column="1" Margin="5" Width="100" Height="30" Click="Submit_Click" Content="Submit" HorizontalAlignment="Left"/>
+        <Button Grid.Row="3" Background="LightBlue" Grid.Column="1" Margin="550,0,0,0" Width="100" Height="30" Click="Cancel_Click" Content="Cancel" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

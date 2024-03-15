@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
         Title="AlternativeToursWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Background="AntiqueWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

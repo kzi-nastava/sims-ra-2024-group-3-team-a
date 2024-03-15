@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,18 +29,11 @@ namespace BookingApp.View
     {
 
         public static ObservableCollection<TourDTO> Tours { get; set; }
-        private static TourDTO tourDTO { get; set; }
+        private static TourDTO _tourDTO { get; set; }
 
         private static UserDTO _userDTO { get; set; }
 
-        private static SignInForm _form;
-
         private readonly TourRepository _tourRepository;
-
-        private readonly UserRepository _userRepository;
-
-        private static TourReservationDTO tourReservation { get; set; }
-
         private static TourReservationRepository _tourReservationRepository { get; set; }
         public int CurrentCapacity { get; set; }
         public TouristMainWindow(User user)
@@ -47,15 +41,13 @@ namespace BookingApp.View
             InitializeComponent();
             DataContext = this;
             _tourRepository = new TourRepository();
-            _userRepository = new UserRepository();
             _tourReservationRepository = new TourReservationRepository();
-            _form = new SignInForm();
             Tours = new ObservableCollection<TourDTO>();
-            tourDTO = new TourDTO();
+            _tourDTO = new TourDTO();
             _userDTO= new UserDTO(user);
             Update();
         }
-        private void Update()
+        public void Update()
         {
             Tours.Clear();
             foreach (Tour tour in _tourRepository.GetAll()) Tours.Add(new TourDTO(tour));
@@ -63,40 +55,35 @@ namespace BookingApp.View
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            string searchInput = textboxSearch.Text.ToLower();
-            string[] resultArray = searchInput.Split(',').Select(s => s.Trim()).ToArray();
 
+            string searchCountryInput = searchCountryTextBox.Text.ToLower();
+            string sarchCityInput = searchCityTextBox.Text.ToLower();
+            string searchDurationInput = searchDurationTextBox.Text.ToString();
+            string searchLanguageInput = languageComboBox.Text.ToLower();
+            string searchMaxTouristNumberInput = searchMaxTouristsTextBox.Text.ToLower();
             var filtered = Tours;
+            string allParams = sarchCityInput + searchCountryInput + searchDurationInput + searchLanguageInput + searchMaxTouristNumberInput;
 
-            if (resultArray.Length == 0 || string.IsNullOrWhiteSpace(searchInput))
+            if ((allParams).Length == 0 || string.IsNullOrWhiteSpace(allParams))
             {
                 dataGridTour.ItemsSource = Tours;
             }
 
-            foreach (string input in resultArray)
-            {
-                string value = input;
-
-                if (string.IsNullOrWhiteSpace(value))
-                    continue; 
-
-                filtered = FilterTours(filtered, value);
-            }
-
+            filtered = FilterTours(filtered, searchCountryInput, sarchCityInput, searchDurationInput, searchLanguageInput, searchMaxTouristNumberInput);
             dataGridTour.ItemsSource = filtered;
         }
 
-        private ObservableCollection<BookingApp.DTO.TourDTO> FilterTours(ObservableCollection<BookingApp.DTO.TourDTO> tours, string value)
+        private ObservableCollection<BookingApp.DTO.TourDTO> FilterTours(ObservableCollection<BookingApp.DTO.TourDTO> tours, string searchCountryInput, string searchCityInput, string searchDurationInput,string searchLanguageInput, string searchMaxTouristNumberInput)
         {
             var filtered = new ObservableCollection<BookingApp.DTO.TourDTO>();
 
             foreach (var tour in tours)
             {
-                if (tour.Duration.ToString().Contains(value)
-                    || tour.Language.ToLower().Contains(value)
-                    || tour.BeginingTime.ToString().Contains(value)
-                    || (tour.LocationDTO.City.ToLower() + ", " + tour.LocationDTO.Country.ToLower()).Contains(value)
-                    || tour.MaxTouristNumber.ToString().Contains(value))
+                if (tour.Duration.ToString().Contains(searchDurationInput)
+                    && tour.Language.ToLower().Contains(searchLanguageInput)
+                    && tour.LocationDTO.Country.ToLower().Contains(searchCountryInput)
+                    && tour.LocationDTO.City.ToLower().Contains(searchCityInput)
+                    && tour.MaxTouristNumber.ToString().Contains(searchMaxTouristNumberInput))
                 {
                     filtered.Add(tour);
                 }
@@ -107,18 +94,21 @@ namespace BookingApp.View
         
         private void Reservation_Click(object sender, RoutedEventArgs e)
         {
-            tourDTO = dataGridTour.SelectedItem as TourDTO;
+            _tourDTO = dataGridTour.SelectedItem as TourDTO;
 
-            if(tourDTO != null && tourDTO.CurrentCapacity!=0) 
+            if(_tourDTO != null) 
             {
-                TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationRepository, tourDTO, _userDTO);
-                tourReservationWindow.ShowDialog();
-            }
-          
-            else if(tourDTO.CurrentCapacity==0)
-            {
-                AlternativeToursWindow alternativeToursWidow = new AlternativeToursWindow(tourDTO, _userDTO);
-                alternativeToursWidow.ShowDialog();
+                if(_tourDTO.CurrentCapacity != 0)
+                {
+                    TourReservationWindow tourReservationWindow = new TourReservationWindow(this,_tourReservationRepository, _tourDTO, _userDTO);
+                    tourReservationWindow.ShowDialog();
+                }
+                else if (_tourDTO.CurrentCapacity == 0)
+                {
+                    AlternativeToursWindow alternativeToursWidow = new AlternativeToursWindow(this, _tourDTO, _userDTO);
+                    alternativeToursWidow.ShowDialog();
+                }
+
             }
             else
             {
@@ -126,7 +116,20 @@ namespace BookingApp.View
             }
         }
 
+        private void IncreaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(searchMaxTouristsTextBox.Text, out int value))
+            {
+                searchMaxTouristsTextBox.Text = (value + 1).ToString();
+            }
+        }
 
-
+        private void DecreaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(searchMaxTouristsTextBox.Text, out int value) && value > 0)
+            {
+                searchMaxTouristsTextBox.Text = (value - 1).ToString();
+            }
+        }
     }
 }

@@ -23,34 +23,117 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class AnonymousTouristWindow : Window
     {
-        private static TourReservationDTO _tourReservationDTO;
-        private static AnonymousTouristDTO _anonymousTouristDTO;
-        private static TourRepository _tourRepository;
-        private static List<AnonymousTouristDTO> _anonymousTouristsDTO;
-        private static AnonymousTouristRepository _anonymousTouristRepository;
         private TourReservationWindow _tourReservationWindow;
-        private int _numberOfTourists;
-        ObservableCollection<AnonymousTouristDTO> anonymousTouristsObserver;
 
-        public AnonymousTouristWindow (TourReservationWindow tourReservationWindow, TourReservationDTO tourReservationDTO, ObservableCollection<AnonymousTouristDTO> anonymousTourists, int numberOfTourists)
+        private int _unlistedTouristsCounter;
+
+        private Brush _defaultBrushBorder;
+        public AnonymousTouristWindow (TourReservationWindow tourReservationWindow, TourReservationDTO tourReservationDTO, ObservableCollection<AnonymousTouristDTO> anonymousTourists, int touristCounter)
         {
             InitializeComponent();
-            _tourReservationDTO = tourReservationDTO;
-            _anonymousTouristRepository=new AnonymousTouristRepository();
-            _anonymousTouristDTO= new AnonymousTouristDTO();
-           _anonymousTouristsDTO = new List<AnonymousTouristDTO>();
-            anonymousTouristsObserver = anonymousTourists;
+            DataContext = this;
+            _defaultBrushBorder = textBoxName.BorderBrush.Clone();
+            textBoxAge.Text = 0.ToString();
             _tourReservationWindow = tourReservationWindow;
-            _numberOfTourists = numberOfTourists;
-           DataContext = this;
+            _unlistedTouristsCounter = touristCounter; 
         }
 
         public void Submit_Click(object sender, RoutedEventArgs e)
         {
            AnonymousTouristDTO anonymousTouristDTO = new AnonymousTouristDTO(textBoxName.Text,textBoxSurname.Text, Int32.Parse(textBoxAge.Text) );
            _tourReservationWindow.AnonymousTourists.Add(anonymousTouristDTO);
+
+            DecreasingUnlistedTouristsNumber(_unlistedTouristsCounter);
+
            Close();
-           
+        }
+        private void DecreasingUnlistedTouristsNumber(int number)
+        {
+            number = number - 1;
+            _tourReservationWindow.unlistedTouristsCounter = number;
+
+            if (_tourReservationWindow.AreAllListed(number))
+            {
+                _tourReservationWindow.buttonAdd.IsEnabled = false;
+            }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Cancelled adding of tourist!");
+            Close();
+        }
+        private void textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (CheckInput())
+                buttonSubmit.IsEnabled = true;
+            else
+                buttonSubmit.IsEnabled = false;
+
+        }
+        private bool EmptyTextBoxCheck()
+        {
+            bool validInput = true;
+
+            foreach (var control in gridMain.Children)
+            {
+                if (control is TextBox)
+                {
+                    TextBox textBox = (TextBox)control;
+                    if (textBox.Text == String.Empty)
+                    {
+                        BorderBrushToRed(textBox);
+                        validInput = false;
+                    }
+                    else
+                    {
+                        BorderBrushToDefault(textBox);
+                    }
+                }
+            }
+
+            return validInput;
+        }
+        private bool CheckInput()
+        {
+            bool validInput = EmptyTextBoxCheck();
+
+            if (!int.TryParse(textBoxAge.Text, out int age))
+            {
+                BorderBrushToRed(textBoxAge);
+                validInput = false;
+                
+            }
+            else
+            {
+                if (int.Parse(textBoxAge.Text) < 1)
+                {
+                    BorderBrushToRed(textBoxAge);
+                    validInput = false;
+                   
+                }
+                else
+                {
+                    BorderBrushToDefault(textBoxAge);
+                   
+                }
+            }
+
+            return validInput;
+        }
+        private void BorderBrushToRed(TextBox textBox)
+        {
+            textBox.BorderBrush = Brushes.HotPink;
+            textBox.BorderThickness = new Thickness(2);
+        }
+        private void BorderBrushToDefault(TextBox textBox)
+        {
+            textBox.BorderBrush = _defaultBrushBorder;
+            textBox.BorderThickness = new Thickness(2);
+        }
+
+        private void textBoxName_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
     }

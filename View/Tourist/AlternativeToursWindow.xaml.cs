@@ -24,18 +24,23 @@ namespace BookingApp.View.Tourist
     public partial class AlternativeToursWindow : Window
     {
         private  TourDTO _tourDTO { get; set; }
+
         private TourRepository _tourRepository;
-        private TourReservationRepository _tourReservationRepository;
-        private TourReservationDTO _tourReservationDTO;
+
+        private TouristMainWindow _tourMainWindow; 
+        private TourReservationRepository _tourReservationRepository { get; set; }
+
         private UserDTO _userDTO;
         public ObservableCollection<TourDTO> AlternativeTours { get; set; }
         
 
-        public AlternativeToursWindow(TourDTO tourDTO, UserDTO userDTO)
+        public AlternativeToursWindow(TouristMainWindow tourMainWindow, TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
             DataContext = this;
             _tourRepository = new TourRepository();
+            _tourReservationRepository= new TourReservationRepository();
+            _tourMainWindow = tourMainWindow;
             _tourDTO = tourDTO;
             _userDTO= userDTO;
             AlternativeTours = new ObservableCollection<TourDTO>();
@@ -54,7 +59,7 @@ namespace BookingApp.View.Tourist
 
             if (_tourDTO != null)
             {
-                TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationRepository, _tourDTO, _userDTO);
+                TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourMainWindow,_tourReservationRepository, _tourDTO, _userDTO);
                 tourReservationWindow.ShowDialog();
             }
             else
