@@ -34,7 +34,6 @@ namespace BookingApp.DTO
             country = location.Country;
         }
 
-
         private string city;
         public string City
         {
