@@ -1,6 +1,7 @@
 ﻿using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.View.Owner;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -63,7 +64,9 @@ namespace BookingApp.View
                         }
                         case UserRole.Owner:
                         {
-                            MessageBox.Show("You signed in as Owner User!");
+                            OwnerMainWindow ownerMainWindow = new OwnerMainWindow();
+                            ownerMainWindow.Show();
+                            Close();
                             break;
                         }
                         case UserRole.Guest:

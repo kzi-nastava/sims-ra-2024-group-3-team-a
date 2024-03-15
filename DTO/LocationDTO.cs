@@ -34,7 +34,6 @@ namespace BookingApp.DTO
             country = location.Country;
         }
 
-
         private string city;
         public string City
         {
@@ -72,7 +71,6 @@ namespace BookingApp.DTO
         {
             return City + " " + Country;
         }
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
