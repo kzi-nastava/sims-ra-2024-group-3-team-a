@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
-        Title="AllToursView" Height="450" Width="800">
+        Title="AllToursView" Height="450" Width="800"  ResizeMode="NoResize">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -17,16 +17,16 @@
 
         <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10,10,20,68" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="NAZIV" Width="*" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="LOKACIJA" Width="*" Binding="{Binding LocationDTO}"/>
-                <DataGridTextColumn Header="TRAJANJE" Width="*" Binding="{Binding Duration}"/>
-                <DataGridTextColumn Header="JEZIK" Width="*" Binding="{Binding Language}"/>
-                <DataGridTextColumn Header="MAKS TURISTA" Width="*" Binding="{Binding MaxTouristNumber}"/>
-                <DataGridTextColumn Header="POČETAK" Width="*" Binding="{Binding BeginingTime}"/>
+                <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
+                <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
+                <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
+                <DataGridTextColumn Header="MAKS TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
+                <DataGridTextColumn Header="BEGINING TIME" Width="*" Binding="{Binding BeginingTime}"/>
 
             </DataGrid.Columns>
 
         </DataGrid>
-        <Button Content="Dodaj novu turu" Click="AddTour_Click" Margin="27,383,575,0" VerticalAlignment="Top" Height="29" Grid.Row="1"/>
+        <Button Content="Add new tour" Click="AddTour_Click" Margin="27,383,575,0" VerticalAlignment="Top" Height="29" Grid.Row="1"/>
     </Grid>
 </Window>

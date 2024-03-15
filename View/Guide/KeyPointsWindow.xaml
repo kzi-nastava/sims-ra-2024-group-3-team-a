@@ -1,0 +1,55 @@
+﻿<Window x:Class="BookingApp.View.KeyPointsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View"
+        mc:Ignorable="d"
+        Title="KeyPointsWindow" Height="450" Width="800" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid x:Name="gridMain" ShowGridLines="False"  Grid.Row="0" Margin="10,0,10,150" >
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid x:Name="Grid2" Margin="15,300,200,20" Grid.Row="1">
+            <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False" >
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}" IsReadOnly="True" />
+                    <DataGridTemplateColumn Header="PRESENT" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="JOIN" Click="JoinTourist_Click" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
+        <Button Content="Cancel tour" Click="Cancel_Click" Margin="623,317,24,0" VerticalAlignment="Top" Height="40"/>
+    </Grid>
+
+</Window>

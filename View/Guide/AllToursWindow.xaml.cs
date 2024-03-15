@@ -21,18 +21,20 @@ namespace BookingApp.View
     public partial class AllToursView : Window
     {
         public static ObservableCollection<TourDTO> Tours { get; set; }
-        private static TourDTO tour { get; set; }
+        private static TourDTO _tour { get; set; }
 
         private readonly TourRepository _repository;
+        private GuideMainWindow _guideMainWindow;
 
-        public AllToursView()
+        public AllToursView(GuideMainWindow guideMainWindow)
         {
             InitializeComponent();
             DataContext = this;
             _repository = new TourRepository();
             Tours = new ObservableCollection<TourDTO>();
-            tour = new TourDTO();
+            _tour = new TourDTO();
             Update();
+            _guideMainWindow = guideMainWindow;
         }
         public void Update()
         {
@@ -41,7 +43,7 @@ namespace BookingApp.View
         }
         private void AddTour_Click(object sender, RoutedEventArgs e)
         {
-            AddTourWindow addTourWindow = new AddTourWindow(this);
+            AddTourWindow addTourWindow = new AddTourWindow(this, _guideMainWindow);
             addTourWindow.Show();
         }
 

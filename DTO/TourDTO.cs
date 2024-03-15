@@ -21,9 +21,10 @@ namespace BookingApp.DTO
         {
             locationDto = new LocationDTO();
             keyPointsDTO = new KeyPointsDTO();
+            images = new List<string>();
         }
 
-        public TourDTO( string name, Location place, string language, int maxTouristNumber, DateTime beginingTime)
+        public TourDTO( string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime)
         {
           this.Name = name;
           this.locationDto= new LocationDTO(place); 
@@ -31,7 +32,7 @@ namespace BookingApp.DTO
           this.maxTouristNumber = maxTouristNumber;
           this.beginingTime = beginingTime;
         }
-        public TourDTO(string name, Location place, string language, int maxTouristNumber, DateTime beginingTime, int currentCapacity)
+        public TourDTO(string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime, int currentCapacity)
         {
             this.Name = name;
             this.locationDto = new LocationDTO(place);
@@ -40,7 +41,7 @@ namespace BookingApp.DTO
             this.beginingTime = beginingTime;
             this.currentCapacity = currentCapacity;
         }
-        public TourDTO(string name, Location place, string description,   string language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration, List<string> images, int currentCapacity)
+        public TourDTO(string name, Location place, string description,   Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, int currentCapacity, bool isActive, string currentKeyPoint)
         {
             this.name = name;
             this.locationDto = new LocationDTO(place);
@@ -50,7 +51,9 @@ namespace BookingApp.DTO
             this.keyPointsDTO = new KeyPointsDTO(keyPoints);
             this.beginingTime = beginingTime;
             this.duration = duration;
+            this.CurrentKeyPoint = currentKeyPoint;
             this.images = images;
+            this.isActive = IsActive;
             this.currentCapacity = currentCapacity;
 
         }
@@ -65,8 +68,10 @@ namespace BookingApp.DTO
             keyPointsDTO = new KeyPointsDTO(tour.KeyPoint);
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
+            currentKeyPoint = tour.CurrentKeyPoint;
             images = tour.Images;
             currentCapacity = tour.CurrentCapacity;
+            isActive = tour.IsActive;
 
         }
         public TourDTO(TourDTO tour)
@@ -80,6 +85,7 @@ namespace BookingApp.DTO
             keyPointsDTO = new KeyPointsDTO(tour.KeyPointsDTO); ;
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
+            currentKeyPoint = tour.CurrentKeyPoint;
             images = tour.Images;
             currentCapacity= tour.CurrentCapacity;
         }
@@ -112,6 +118,21 @@ namespace BookingApp.DTO
                 }
             }
         }
+
+        private string currentKeyPoint;
+        public string CurrentKeyPoint
+        {
+            get { return currentKeyPoint; }
+            set
+            {
+                if (value != currentKeyPoint)
+                {
+                    currentKeyPoint = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         private string description;
         public string Description
@@ -146,9 +167,9 @@ namespace BookingApp.DTO
             }
         }
 
-        private string language;
+        private Languages language;
 
-        public string Language
+        public Languages Language
         {
             get { return language; }
             set
@@ -203,8 +224,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private TimeSpan duration;
-        public TimeSpan Duration
+        private double duration;
+        public double Duration
         {
             get { return duration; }
             set
@@ -226,6 +247,19 @@ namespace BookingApp.DTO
                 if (value != images)
                 {
                     images = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private bool isActive;
+        public bool IsActive
+        {
+            get { return isActive; }
+            set
+            {
+                if (value != isActive)
+                {
+                    isActive = value;
                     OnPropertyChanged();
                 }
             }
@@ -252,12 +286,12 @@ namespace BookingApp.DTO
         public Tour ToTourAllParam()
         {
             
-            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images);
+            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
         }
         public Tour ToTourWithCapacity()
         {
 
-            return new Tour(id,name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentCapacity);
+            return new Tour(id,name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive, currentCapacity);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

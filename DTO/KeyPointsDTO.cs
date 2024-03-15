@@ -16,13 +16,6 @@ namespace BookingApp.DTO
             middle = new List<string>(); 
         }
 
-        public KeyPointsDTO(string begining, string ending, List<string> middle)
-        {
-         
-            this.begining = begining;
-            this.ending = ending;
-        }
-
         public KeyPointsDTO(KeyPoints keyPoint)
         {
             id = keyPoint.Id;
@@ -30,6 +23,7 @@ namespace BookingApp.DTO
             ending = keyPoint.Ending;
             middle = keyPoint.Middle;
         }
+            
 
         public KeyPointsDTO(KeyPointsDTO keyPoint)
         {
@@ -37,6 +31,7 @@ namespace BookingApp.DTO
             begining = keyPoint.Begining;
             ending = keyPoint.Ending;
             middle = keyPoint.Middle;
+          
         }
 
         private int id;

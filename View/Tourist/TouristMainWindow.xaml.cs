@@ -80,7 +80,7 @@ namespace BookingApp.View
             foreach (var tour in tours)
             {
                 if (tour.Duration.ToString().Contains(searchDurationInput)
-                    && tour.Language.ToLower().Contains(searchLanguageInput)
+                    && tour.Language.ToString().ToLower().Contains(searchLanguageInput)
                     && tour.LocationDTO.Country.ToLower().Contains(searchCountryInput)
                     && tour.LocationDTO.City.ToLower().Contains(searchCityInput)
                     && tour.MaxTouristNumber.ToString().Contains(searchMaxTouristNumberInput))

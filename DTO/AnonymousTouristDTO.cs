@@ -20,20 +20,55 @@ namespace BookingApp.DTO
             this.age=age;
         }
 
-        public AnonymousTouristDTO(AnonymousTourist anonaymousTourist)
+        public AnonymousTouristDTO(AnonymousTourist anonymousTourist)
         {
-            name = anonaymousTourist.Name;
-            surname = anonaymousTourist.Surname;
-            age = anonaymousTourist.Age;
+            id = anonymousTourist.Id;
+            name = anonymousTourist.Name;
+            surname = anonymousTourist.Surname;
+            age = anonymousTourist.Age;
+            flag = anonymousTourist.Flag;
+            joiningKeyPoint = anonymousTourist.JoiningKeyPoint;
+
         }
 
        public AnonymousTouristDTO(AnonymousTouristDTO anonymousTouristDTO)
         {
+            id = anonymousTouristDTO.Id;
             name = anonymousTouristDTO.name;
             surname = anonymousTouristDTO.surname;
             age = anonymousTouristDTO.age;
+            flag = anonymousTouristDTO.flag;
+            joiningKeyPoint = anonymousTouristDTO.joiningKeyPoint;
 
         }
+
+        private int id;
+        public int Id
+        {
+            get { return id; }
+            set
+            {
+                if (value != id)
+                {
+                    id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private bool flag;
+        public bool Flag
+        {
+            get { return flag; }
+            set
+            {
+                if (value != flag)
+                {
+                    flag = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+      
 
         private string name;
 
@@ -76,6 +111,21 @@ namespace BookingApp.DTO
                 if (value != age)
                 {
                     age = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string joiningKeyPoint;
+
+        public string JoiningKeyPoint
+        {
+            get { return joiningKeyPoint; }
+            set
+            {
+                if (value != joiningKeyPoint)
+                {
+                    joiningKeyPoint = value;
                     OnPropertyChanged();
                 }
             }
