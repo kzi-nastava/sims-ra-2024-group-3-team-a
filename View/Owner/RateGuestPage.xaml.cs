@@ -95,7 +95,7 @@ namespace BookingApp.View.Owner
             }
             else
             {
-                if (int.Parse(textBoxCleannessRating.Text) < 1)
+                if (int.Parse(textBoxCleannessRating.Text) < 1 || int.Parse(textBoxCleannessRating.Text) > 5)
                 {
                     BorderBrushToRed(textBoxCleannessRating);
                     validInput = false;
@@ -113,7 +113,7 @@ namespace BookingApp.View.Owner
             }
             else
             {
-                if (int.Parse(textBoxRulesRespectRating.Text) < 1)
+                if (int.Parse(textBoxRulesRespectRating.Text) < 1 || int.Parse(textBoxRulesRespectRating.Text) > 5)
                 {
                     BorderBrushToRed(textBoxRulesRespectRating);
                     validInput = false;

@@ -61,7 +61,7 @@
             <Button  Background="LightPink" Content="▲" Grid.Column="1" Width="30" Click="IncreaseButtonMinDays_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Button  Background="LightPink" Content="▼" Grid.Column="1" Width="30" Click="DecreaseButtonMinDays_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Button Content="Search" Click="Search_Click" Width="80"/>
-            <Button Content="Make reservation" Click="MakeReservation_Click" Width="80"/>
+            <Button Content="Make reservation" Click="ShowAccommodationReservationPage" Width="80"/>
         </StackPanel>
 
         <Frame Grid.Row="1" x:Name="frameMain" NavigationUIVisibility="Hidden"/>

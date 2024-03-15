@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BookingApp.Model 
 {
@@ -39,8 +40,17 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-            string images = Images != null ? string.Join("|", Images) : string.Empty;
-            return new string[] { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString(), images };
+            if (Images != null)
+            {
+                string images = string.Join("|", Images);
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString(), images };
+                return csvValues;
+            }
+            else
+            {
+                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Type.ToString(), Capacity.ToString(), MinDaysReservation.ToString(), CancellationPeriod.ToString() };
+                return csvValues;
+            }
         }
 
         public void FromCSV(string[] values)

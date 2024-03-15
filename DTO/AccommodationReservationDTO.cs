@@ -14,7 +14,6 @@ namespace BookingApp.DTO
         public AccommodationReservationDTO()
         {
             ratingDTO = new GuestRatingDTO();
-            anonymousGuests = new List<AnonymousGuest>();
         }
 
         public AccommodationReservationDTO(AccommodationReservation reservation) 
@@ -34,7 +33,6 @@ namespace BookingApp.DTO
             guestId = reservationDTO.GuestId;
             beginDate = reservationDTO.BeginDate;
             endDate = reservationDTO.EndDate;
-            anonymousGuests = reservationDTO.AnonymousGuests;
             ratingDTO = new GuestRatingDTO(reservationDTO.RatingDTO);
         }
 
@@ -122,26 +120,10 @@ namespace BookingApp.DTO
             }
         }
 
-        
-
         public string DatesConcatenated
         {
             get { return $"{beginDate} - {endDate}"; }
             
-        }
-
-        private List<AnonymousGuest> anonymousGuests;
-        public List<AnonymousGuest> AnonymousGuests
-        {
-            get { return anonymousGuests; }
-            set
-            {
-                if (value != anonymousGuests)
-                {
-                    anonymousGuests = value;
-                    OnPropertyChanged();
-                }
-            }
         }
 
         public AccommodationReservation ToAccommodationReservation()

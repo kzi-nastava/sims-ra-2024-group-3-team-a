@@ -25,27 +25,30 @@ namespace BookingApp.View.Guest
     {
         private DateOnly _selectedBeginDate;
         private DateOnly _selectedEndDate;
-        private UserRepository _userRepository;
+
         private UserDTO _userDTO;
         private AccommodationDTO _accommodationDTO;
+
         private AccommodationReservationRepository _accommodationReservationRepository;
-        private int GuestNumber;
+
+        private int _guestNumber;
 
         public ReservationDetailsPage(AccommodationDTO accommodationDTO, UserDTO userDTO, DateOnly begin, DateOnly end)
         {
             InitializeComponent();
+
+            _accommodationReservationRepository = new AccommodationReservationRepository();
+
             _accommodationDTO = accommodationDTO;
             _userDTO = userDTO;
             _selectedBeginDate = begin;
-            _selectedEndDate = end;
-            _accommodationReservationRepository = new AccommodationReservationRepository();
-
+            _selectedEndDate = end; 
         }
 
         private void NewReservation_Click(object sender, RoutedEventArgs e)
         {
-            GuestNumber = Int32.Parse(GuestNumberTextBox.Text);
-            if(GuestNumber < 0 || GuestNumber > _accommodationDTO.Capacity ) 
+            _guestNumber = Int32.Parse(GuestNumberTextBox.Text);
+            if(_guestNumber < 0 || _guestNumber > _accommodationDTO.Capacity ) 
             {
                 MessageBox.Show($"Error! Capacity is {_accommodationDTO.Capacity} guests!");
                 return;

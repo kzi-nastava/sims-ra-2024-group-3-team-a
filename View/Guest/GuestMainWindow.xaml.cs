@@ -24,36 +24,28 @@ namespace BookingApp.View.Guest
     /// </summary>
     public partial class GuestMainWindow : Window
     {
-        public static ObservableCollection<AccommodationDTO> Accommodations { get; set; }
-        private readonly AccommodationRepository _repository;
+        public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
+        private readonly AccommodationRepository _accommodationRepository;
         private UserDTO _userDTO;
-        private readonly UserRepository _userRepository;
 
         public GuestMainWindow(User user)
         {
             InitializeComponent();
             DataContext = this;
-            _repository = new AccommodationRepository();
-            _userRepository = new UserRepository();
-            Accommodations = new ObservableCollection<AccommodationDTO>();
-            _userDTO = new UserDTO(user);
-            
+            _accommodationRepository = new AccommodationRepository();
+            AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
+            _userDTO = new UserDTO(user);  
 
             Update();
         }
 
         private void Update()
         {
-            Accommodations.Clear();
-            foreach (var accommodation in _repository.GetAll())
+            AccommodationsDTO.Clear();
+            foreach (var accommodation in _accommodationRepository.GetAll())
             {
-                Accommodations.Add(new AccommodationDTO(accommodation));
+                AccommodationsDTO.Add(new AccommodationDTO(accommodation));
             }
-        }
-
-        private void UpdateEvent(object sender, EventArgs e)
-        {
-            Update();
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -69,11 +61,11 @@ namespace BookingApp.View.Guest
             string allParams = searchCityInput + searchCountryInput + searchNameInput + searchTypeInput + searchCapacityInput + searchMinDaysInput;
 
 
-            var filtered = Accommodations;
+            var filtered = AccommodationsDTO;
 
             if (allParams.Length == 0 || string.IsNullOrWhiteSpace(allParams))
             {
-                dataGridAccommodation.ItemsSource = Accommodations;
+                dataGridAccommodation.ItemsSource = AccommodationsDTO;
             }
 
             filtered = FilterAccommodations(filtered, searchCountryInput, searchCityInput, searchNameInput, searchTypeInput, searchCapacityInput, searchMinDaysInput);
@@ -89,11 +81,11 @@ namespace BookingApp.View.Guest
             foreach (var accommodation in accommodations)
             {
                 if (accommodation.Name.ToString().Contains(searchNameInput)
-            && accommodation.Type.ToString().ToLower().Contains(searchTypeInput)
-            && accommodation.PlaceDTO.Country.ToLower().Contains(searchCountryInput)
-            && accommodation.PlaceDTO.City.ToLower().Contains(searchCityInput)
-            && accommodation.Capacity.ToString().Contains(searchCapacityInput)
-            && accommodation.MinDaysReservation.ToString().Contains(searchMinDaysInput))
+                    && accommodation.Type.ToString().ToLower().Contains(searchTypeInput)
+                    && accommodation.PlaceDTO.Country.ToLower().Contains(searchCountryInput)
+                    && accommodation.PlaceDTO.City.ToLower().Contains(searchCityInput)
+                    && accommodation.Capacity.ToString().Contains(searchCapacityInput)
+                    && accommodation.MinDaysReservation.ToString().Contains(searchMinDaysInput))
                 {
                     filtered.Add(accommodation);
                 }
@@ -102,11 +94,11 @@ namespace BookingApp.View.Guest
             return filtered;
         }
 
-        private void MakeReservation_Click(object sender, RoutedEventArgs e)
+        private void ShowAccommodationReservationPage(object sender, RoutedEventArgs e)
         {
             if (dataGridAccommodation.SelectedItem != null && frameMain.Content == null)
             {
-                    frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem, _userDTO);
+                frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem, _userDTO);
                 
             }
             else if(frameMain.Content == null)
