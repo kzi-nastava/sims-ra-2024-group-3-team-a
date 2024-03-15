@@ -8,9 +8,9 @@ namespace BookingApp.Model.Enums
 {
     public enum Languages
     {
-       Srpski,
-       Engleski,
-       Francuski,
-       Nemacki
+       Serbian,
+       English,
+       French,
+       German
     }
 }

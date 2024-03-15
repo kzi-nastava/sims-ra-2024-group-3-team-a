@@ -20,7 +20,7 @@ namespace BookingApp.Model
         public int MaxTouristNumber { get; set; }
         public KeyPoints KeyPoint { get; set; }
         public DateTime BeginingTime { get; set; }
-        public TimeSpan Duration { get; set; }  
+        public double Duration { get; set; }  
         public List<string> Images { get; set; }
         public string CurrentKeyPoint { get; set; }
 
@@ -29,8 +29,9 @@ namespace BookingApp.Model
         {
             Place = new Location();
             KeyPoint = new KeyPoints();
+            Images = new List<string>();
         }
-        public Tour(string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,TimeSpan duration, List<string> images, string currentKeyPoint, bool isActive)
+        public Tour(string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive)
         {
             Name = name;
             Place = place;
@@ -79,16 +80,14 @@ namespace BookingApp.Model
             Language = (Languages)Enum.Parse(typeof(Languages), values[5]);
             MaxTouristNumber = Convert.ToInt32(values[6]);
             BeginingTime = DateTime.Parse(values[7]);
-            Duration = TimeSpan.Parse(values[8]);
+            Duration = double.Parse(values[8]);
             KeyPoint.Id = Convert.ToInt32(values[9]);
             CurrentKeyPoint = values[10];
-            if (Images != null)
+            for (int i = 11; i < values.Length; i++)
             {
-                for (int i = 11; i < values.Length; i++)
-                {
-                     Images.Add(values[i]);
-                }
+               Images.Add(values[i]);
             }
+            
         }
 
     

@@ -21,6 +21,7 @@ namespace BookingApp.DTO
         {
             locationDto = new LocationDTO();
             keyPointsDTO = new KeyPointsDTO();
+            images = new List<string>();
         }
 
         public TourDTO( string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime)
@@ -32,7 +33,7 @@ namespace BookingApp.DTO
           this.beginingTime = beginingTime;
         }
 
-        public TourDTO(string name, Location place, string description,   Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, TimeSpan duration,string currentKeyPoint,bool IsActive, List<string> images)
+        public TourDTO(string name, Location place, string description,   Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration,string currentKeyPoint,bool IsActive, List<string> images)
         {
             this.name = name;
             this.locationDto = new LocationDTO(place);
@@ -211,8 +212,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private TimeSpan duration;
-        public TimeSpan Duration
+        private double duration;
+        public double Duration
         {
             get { return duration; }
             set

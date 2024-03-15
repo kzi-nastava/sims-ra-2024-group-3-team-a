@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -17,12 +18,12 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-//using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit;
 
 
 namespace BookingApp.View
 {
-  
+
     public partial class AddTourWindow : Window
     {
         private TourRepository _repository;
@@ -32,28 +33,36 @@ namespace BookingApp.View
         private List<DateTime> _dates;
         public event EventHandler TourAdded;
         private AllToursView _allToursView;
+        private GuideMainWindow _guideMainWindow;
+        private Brush _defaultBrushBorder;
 
-        public AddTourWindow(AllToursView allToursView)
+        public AddTourWindow(AllToursView allToursView, GuideMainWindow guideMainWindow)
         {
             InitializeComponent();
             _repository = new TourRepository();
+            _guideMainWindow = guideMainWindow;
+            _defaultBrushBorder = textBoxName.BorderBrush.Clone();
             _keyPointRepository = new KeyPointRepository();
             _tourDTO = new TourDTO();
             _dates = new List<DateTime>();
             _allToursView = allToursView;
-            DataContext = _tourDTO; 
+            DataContext = _tourDTO;
         }
 
         private int _datesNum = 0;
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             _datesNum++;
-            _dates.Add( datePicker.SelectedDate.Value);
-            DatePicker date = new DatePicker();
+            DateTime parsedDateTime;
+            if (DateTime.TryParse(datePicker.Value.ToString(), out parsedDateTime))
+            {
+                _dates.Add(parsedDateTime);
+            }
+            DateTimePicker date = new DateTimePicker();
             date.Text = datePicker.Text;
             date.IsEnabled = false;
             Grid.SetColumn(date, 0);
-            Grid.SetRow(date,_datesNum);
+            Grid.SetRow(date, _datesNum);
             GridDates.Children.Add(date);
         }
 
@@ -81,9 +90,10 @@ namespace BookingApp.View
         {
             _tourKeyPoints = textBoxKeyPoints.Text;
             string[] tourKeyPoints = _tourKeyPoints.Split(',');
+
             if (tourKeyPoints.Length < 2)
             {
-                MessageBox.Show("At least two key points needed (begining i ending)");
+                System.Windows.MessageBox.Show("At least two key points needed (begining i ending)");
                 return;
             }
 
@@ -97,14 +107,14 @@ namespace BookingApp.View
                 }
             }
             _tourDTO.KeyPointsDTO.Ending = tourKeyPoints[tourKeyPoints.Length - 1];
-            if (comboBoxType.SelectedItem == comboBoxItemSrpski)
-                _tourDTO.Language = Languages.Srpski;
-            else if (comboBoxType.SelectedItem == comboBoxItemEngleski)
-                _tourDTO.Language = Languages.Engleski;
-            else if (comboBoxType.SelectedItem == comboBoxItemNemacki)
-                _tourDTO.Language = Languages.Nemacki;
+            if (comboBoxType.SelectedItem == comboBoxItemSerbian)
+                _tourDTO.Language = Languages.Serbian;
+            else if (comboBoxType.SelectedItem == comboBoxItemEnglish)
+                _tourDTO.Language = Languages.English;
+            else if (comboBoxType.SelectedItem == comboBoxItemGerman)
+                _tourDTO.Language = Languages.German;
             else
-                _tourDTO.Language = Languages.Francuski;
+                _tourDTO.Language = Languages.French;
 
             int id = (_keyPointRepository.Save(_tourDTO.KeyPointsDTO.ToKeyPoint())).Id;
             _tourDTO.Images = _images;
@@ -120,12 +130,106 @@ namespace BookingApp.View
 
 
             _allToursView.Update();
+            _guideMainWindow.Update();
             Close();
         }
+
+        private void textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (InputCheck())
+                SubmitButton.IsEnabled = true;
+            else
+                SubmitButton.IsEnabled = false;
+        }
+
+        private bool EmptyTextBoxCheck()
+        {
+            bool validInput = true;
+
+
+            foreach (var control in gridInput.Children)
+            {
+                if (control is TextBox)
+                {
+                    TextBox textBox = (TextBox)control;
+                    if (textBox.Text == string.Empty)
+                    {
+                        textBox.BorderBrush = Brushes.Red;
+                        validInput = false;
+                    }
+                    else
+                    {
+                        textBox.BorderBrush = _defaultBrushBorder;
+                    }
+                }
+            }
+
+
+            return validInput;
+        }
+
+        private bool InputCheck()
+        {
+            bool validInput = EmptyTextBoxCheck();
+
+            if (!int.TryParse(MaxTouristTextBox.Text, out int maxTourist))
+            {
+                BorderBrushToRed(MaxTouristTextBox);
+                validInput = false;
+            }
+            else
+            {
+                if (int.Parse(MaxTouristTextBox.Text) < 1)
+                {
+                    BorderBrushToRed(MaxTouristTextBox);
+                    validInput = false;
+                }
+                else
+                {
+                    BorderBrushToDefault(MaxTouristTextBox);
+                }
+            }
+
+
+            if (!double.TryParse(textBoxDuration.Text, out double duration))
+            {
+                BorderBrushToRed(textBoxDuration);
+                validInput = false;
+            }
+            else
+            {
+                if (double.Parse(textBoxDuration.Text) < 1)
+                {
+                    BorderBrushToRed(textBoxDuration);
+                    validInput = false;
+                }
+                else
+                {
+                    BorderBrushToDefault(textBoxDuration);
+                }
+            }
+
+            return validInput;
+        }
+
+        private void BorderBrushToRed(TextBox textBox)
+        {
+            textBox.BorderBrush = Brushes.Red;
+            textBox.BorderThickness = new Thickness(2);
+        }
+
+        private void BorderBrushToDefault(TextBox textBox)
+        {
+            textBox.BorderBrush = _defaultBrushBorder;
+            textBox.BorderThickness = new Thickness(2);
+        }
+
 
         private void LeaveButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
+  
     }
 }

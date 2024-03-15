@@ -47,7 +47,7 @@ namespace BookingApp.View
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Tour has been canceled!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-            _tour.CurrentKeyPoint = null;
+            _tour.CurrentKeyPoint = "finished";
             _tour.IsActive = false;
             this.Close();
         }
@@ -111,8 +111,8 @@ namespace BookingApp.View
             button.Background = Brushes.IndianRed;
             if(button.Content == _keypoints.Ending)
             {
-                MessageBox.Show("Tura is finished!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-                _tour.CurrentKeyPoint = null;
+                MessageBox.Show("Tour is finished!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                _tour.CurrentKeyPoint = "finished";
                 _tour.IsActive=false;
                  this.Close();
             }

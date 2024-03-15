@@ -39,7 +39,7 @@ namespace BookingApp.View
             _tour = new TourDTO();
             Update();
         }
-        private void Update()
+        public void Update()
         {
             Tours.Clear();
            
@@ -53,49 +53,31 @@ namespace BookingApp.View
             }
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            string searchInput = textboxSearch.Text.ToLower();
-            string[] resultArray = searchInput.Split(',').Select(s => s.Trim()).ToArray();
-
-            var filtered = Tours;
-
-            if (resultArray.Length == 0 || string.IsNullOrWhiteSpace(searchInput))
-            {
-                dataGridTour.ItemsSource = Tours;
-            }
-
-            foreach (string input in resultArray)
-            {
-                string value = input;
-
-                if (string.IsNullOrWhiteSpace(value))
-                    continue;
-
-                filtered = FilterTours(filtered, value);
-            }
-
-            dataGridTour.ItemsSource = filtered;
-        }
 
         private void Tour_Click(object sender, RoutedEventArgs e)
         {
            
             TourDTO selectedTour = ((Button)sender).DataContext as TourDTO;
-
-          
-            if (_activeTour == null || _activeTour != selectedTour)
+            if (selectedTour.CurrentKeyPoint != "finished")
             {
-                _activeTour = selectedTour;
 
-                KeyPointsWindow tourDetailsWindow = new KeyPointsWindow(_activeTour);
-                tourDetailsWindow.Show();
+                if (_activeTour == null || _activeTour != selectedTour)
+                {
+                    _activeTour = selectedTour;
+
+                    KeyPointsWindow tourDetailsWindow = new KeyPointsWindow(_activeTour);
+                    tourDetailsWindow.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("This tour has already finished", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             }
            
         }
         private void ShowAll_Click (object sender, RoutedEventArgs e)
         {
-            AllToursView allToursView = new AllToursView();
+            AllToursView allToursView = new AllToursView(this);
             allToursView.Show();
         }
 
