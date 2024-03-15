@@ -78,5 +78,6 @@ namespace BookingApp.DTO
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

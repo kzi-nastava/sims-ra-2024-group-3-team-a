@@ -16,7 +16,6 @@ namespace BookingApp.Model
         public int AccommodationId { get; set; }
         public DateOnly BeginDate { get; set; }
         public DateOnly EndDate { get; set;}
-        public List<AnonymousGuest> AnonymousGuests { get; set; }
         public GuestRating Rating { get; set; }
 
         public AccommodationReservation()
@@ -36,8 +35,8 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Rating.CleannessRating.ToString(), Rating.RulesRespectRating.ToString(), Rating.Comment };
-            return csvValues;
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Rating.CleannessRating.ToString(), Rating.RulesRespectRating.ToString(), Rating.Comment };
+                return csvValues;
         }
 
         public void FromCSV(string[] values)
