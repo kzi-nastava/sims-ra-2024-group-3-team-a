@@ -24,7 +24,7 @@
 
         <!-- Adjusted button width and alignment -->
         <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Width="150" Click="NewReservation_Click" HorizontalAlignment="Left">
-            Konacno napravi rezervaciju
+            Make reservation
         </Button>
     </Grid>
 </Page>

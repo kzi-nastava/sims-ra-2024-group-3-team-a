@@ -26,9 +26,7 @@ namespace BookingApp.View.Guest
     public partial class MakeAccommodationReservationPage : Page, INotifyPropertyChanged
     {
         private List<AccommodationReservationDTO> _accommodationReservationsDTO;
-        //private  List<AccommodationReservationDTO> _freeDates;
         public static ObservableCollection<AccommodationReservationDTO> _freeDates { get; set; }
-        //public static ObservableCollection<Comment> Comments { get; set; }
 
         private AccommodationReservationRepository _accommodationReservationRepository;
         private AccommodationDTO _accommodationDTO;
@@ -89,9 +87,10 @@ namespace BookingApp.View.Guest
 
         private void SearchAvailableDatesClick(object sender, RoutedEventArgs e)
         {
-           if(!PerformSearchForDates(0))
+            int spanIncrement = Int32.Parse(DaysToStayTextBox.Text);
+            if (!PerformSearchForDates(0))
            {
-                PerformSearchForDates(5);
+                PerformSearchForDates(spanIncrement);
            }
         }
         private void ReserveClick(object sender, RoutedEventArgs e)
@@ -104,7 +103,7 @@ namespace BookingApp.View.Guest
 
         
 
-        public bool PerformSearchForDates(int area)
+        public bool PerformSearchForDates(int timeSpanIncrement)
         {
             _freeDates.Clear();
             bool found = false;
@@ -115,20 +114,19 @@ namespace BookingApp.View.Guest
                 _selectedBeginDate = new DateOnly(date.Value.Year, date.Value.Month, date.Value.Day);
             }
 
-            _selectedBeginDate = _selectedBeginDate.AddDays(-area);
+            _selectedBeginDate = _selectedBeginDate.AddDays(-timeSpanIncrement);
             
             DateTime? dateEnd = datePickerEnd.SelectedDate;
             if (dateEnd.HasValue)
             {
                 _selectedEndDate = new DateOnly(dateEnd.Value.Year, dateEnd.Value.Month, dateEnd.Value.Day);
             }
-            _selectedEndDate=_selectedEndDate.AddDays(area);
+            _selectedEndDate=_selectedEndDate.AddDays(timeSpanIncrement);
 
             if (_selectedEndDate < _selectedBeginDate)
             {
                 _freeDates.Clear();
-                //ReserveButton.IsEnabled = false;
-                MessageBox.Show("Los opseg - krajnji datum je pre pocetnog");
+                MessageBox.Show("Error! Improper TimeSpan - Begin Date must be before End Date!");
                 return true;
             }
 
@@ -138,53 +136,51 @@ namespace BookingApp.View.Guest
             {
                 _freeDates.Clear();
                 //ReserveButton.IsEnabled = false;
-                MessageBox.Show($"Los broj dana, minimum je {_accommodationDTO.MinDaysReservation} dana!");
+                MessageBox.Show($"Improper no of days, enter minimum {_accommodationDTO.MinDaysReservation} days!");
                 return true;
             }
 
-            DateOnly i = _selectedBeginDate;
+            DateOnly dateIterator = _selectedBeginDate;
             int availableDatesCounter = 0;
             
             List<DateOnly> unavailableDates = new List<DateOnly>();
 
-            for (; i <= _selectedEndDate; i = i.AddDays(1))
+            for (; dateIterator <= _selectedEndDate; dateIterator = dateIterator.AddDays(1))
             {
                 AccommodationReservationDTO accommodationReservationDTO = new AccommodationReservationDTO();
                 foreach (AccommodationReservationDTO accommodationReservationDTO2 in _accommodationReservationsDTO)
                 {
-                    if (i >= accommodationReservationDTO2.BeginDate && i <= accommodationReservationDTO2.EndDate)
+                    if (dateIterator >= accommodationReservationDTO2.BeginDate && dateIterator <= accommodationReservationDTO2.EndDate)
                     {
-                        unavailableDates.Add(i);
+                        unavailableDates.Add(dateIterator);
                     }
                 }
             }
-
-            i = _selectedBeginDate;
-            DateOnly g = i;
-
-            for (; g <= _selectedEndDate; g = g.AddDays(1))
+            
+            DateOnly i = _selectedBeginDate;
+            DateOnly j = _selectedBeginDate;
+            for (; i <= _selectedEndDate; i = i.AddDays(1))
             {
                 availableDatesCounter = 0;
-                for (i = g; i <= _selectedEndDate; i = i.AddDays(1))
+                for (j = i; j <= _selectedEndDate; j = j.AddDays(1))
                 {
                     AccommodationReservationDTO accommodationReservationDTO = new AccommodationReservationDTO();
-                    if (unavailableDates.Any(c => c == i))
+                    if (unavailableDates.Any(c => c == j))
                     {
                         availableDatesCounter = 0;
                         continue;
                     }
                     availableDatesCounter++;
-                    if (availableDatesCounter == DaysToStay && !_freeDates.Any(c => c.EndDate == i))
+                    if (availableDatesCounter == DaysToStay && !_freeDates.Any(c => c.EndDate == j))
                     {
-                        accommodationReservationDTO.BeginDate = i.AddDays(-DaysToStay + 1);
-                        accommodationReservationDTO.EndDate = i;
+                        accommodationReservationDTO.BeginDate = j.AddDays(-DaysToStay + 1);
+                        accommodationReservationDTO.EndDate = j;
                         _freeDates.Add(accommodationReservationDTO);
                         availableDatesCounter = 0;
                         found = true;
                     }
                 }
             }
-
             return found;     
         }
 

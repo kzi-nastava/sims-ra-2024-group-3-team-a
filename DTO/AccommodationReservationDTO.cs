@@ -24,7 +24,6 @@ namespace BookingApp.DTO
             guestId = reservation.GuestId;
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
-            //anonymousGuests = reservation.AnonymousGuests;
             ratingDTO = new GuestRatingDTO(reservation.Rating);
         }
 

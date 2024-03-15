@@ -47,11 +47,10 @@ namespace BookingApp.View.Guest
             GuestNumber = Int32.Parse(GuestNumberTextBox.Text);
             if(GuestNumber < 0 || GuestNumber > _accommodationDTO.Capacity ) 
             {
-                MessageBox.Show($"Uneli ste los broj gostiju - maksimum je {_accommodationDTO.Capacity}");
+                MessageBox.Show($"Error! Capacity is {_accommodationDTO.Capacity} guests!");
                 return;
             }
             GuestRating rating = new GuestRating(0, 0, "");
-            //List<AnonymousGuest> anonymousGuests = new List<AnonymousGuest>();
             AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, rating);
             _accommodationReservationRepository.Save(acc);
         }

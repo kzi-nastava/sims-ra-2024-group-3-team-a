@@ -58,56 +58,44 @@ namespace BookingApp.View.Guest
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            string searchInput = textboxSearch.Text.ToLower();
-            string[] resultArray = searchInput.Split(',').Select(s => s.Trim()).ToArray();
+            string searchNameInput = searchNameTextBox.Text.ToLower();
+            string searchCountryInput = searchCountryTextBox.Text.ToLower();
+            string searchCityInput = searchCityTextBox.Text.ToLower();
+            string searchTypeInput = searchTypeTextBox.Text.ToLower();
+
+            string searchCapacityInput = searchCapacityTextBox.Text.ToLower();
+            string searchMinDaysInput = searchMinDaysTextBox.Text.ToLower();
+
+            string allParams = searchCityInput + searchCountryInput + searchNameInput + searchTypeInput + searchCapacityInput + searchMinDaysInput;
+
 
             var filtered = Accommodations;
 
-            if (resultArray.Length == 0 || string.IsNullOrWhiteSpace(searchInput))
+            if (allParams.Length == 0 || string.IsNullOrWhiteSpace(allParams))
             {
                 dataGridAccommodation.ItemsSource = Accommodations;
             }
 
-            foreach (string input in resultArray)
-            {
-                string value = input;
+            filtered = FilterAccommodations(filtered, searchCountryInput, searchCityInput, searchNameInput, searchTypeInput, searchCapacityInput, searchMinDaysInput);
 
-                if (string.IsNullOrWhiteSpace(value))
-                    continue;
-
-                filtered = FilterAccommodations(filtered, value);
-            }
 
             dataGridAccommodation.ItemsSource = filtered;
         }
 
-        private ObservableCollection<BookingApp.DTO.AccommodationDTO> FilterAccommodations(ObservableCollection<BookingApp.DTO.AccommodationDTO> accommodations, string value)
+        private ObservableCollection<AccommodationDTO> FilterAccommodations(ObservableCollection<AccommodationDTO> accommodations, string searchCountryInput,string searchCityInput,string searchNameInput,string searchTypeInput,string searchCapacityInput,string searchMinDaysInput )
         {
-            var filtered = new ObservableCollection<BookingApp.DTO.AccommodationDTO>();
+            var filtered = new ObservableCollection<AccommodationDTO>();
 
             foreach (var accommodation in accommodations)
             {
-                int result;
-
-                if (int.TryParse(value, out result))
+                if (accommodation.Name.ToString().Contains(searchNameInput)
+            && accommodation.Type.ToString().ToLower().Contains(searchTypeInput)
+            && accommodation.PlaceDTO.Country.ToLower().Contains(searchCountryInput)
+            && accommodation.PlaceDTO.City.ToLower().Contains(searchCityInput)
+            && accommodation.Capacity.ToString().Contains(searchCapacityInput)
+            && accommodation.MinDaysReservation.ToString().Contains(searchMinDaysInput))
                 {
-                    if (
-                         accommodation.Capacity >= result
-    
-                        || accommodation.MinDaysReservation <= result)
-                    {
-                        filtered.Add(accommodation);
-                    }
-                }
-                else
-                {
-                    if (accommodation.Name.ToLower().Contains(value)
-                        || accommodation.Type.ToString().ToLower().Contains(value) 
-                        || (accommodation.PlaceDTO.City.ToLower() + ", " + accommodation.PlaceDTO.Country.ToLower()).Contains(value))
-                       
-                    {
-                        filtered.Add(accommodation);
-                    }
+                    filtered.Add(accommodation);
                 }
             }
 
@@ -123,13 +111,41 @@ namespace BookingApp.View.Guest
             }
             else if(frameMain.Content == null)
             {
-                MessageBox.Show("Accommodation not selected");
-                //AccommodationDTO acc = (AccommodationDTO)dataGridAccommodation.SelectedItem;
-                
+                MessageBox.Show("Accommodation not selected");      
             }
             else
             {
                 frameMain.Content = null;
+            }
+        }
+
+        private void IncreaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(searchCapacityTextBox.Text, out int value))
+            {
+                searchCapacityTextBox.Text = (value + 1).ToString();
+            }
+        }
+        private void DecreaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(searchCapacityTextBox.Text, out int value))
+            {
+                searchCapacityTextBox.Text = (value - 1).ToString();
+            }
+        }
+
+        private void IncreaseButtonMinDays_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(searchMinDaysTextBox.Text, out int value))
+            {
+                searchMinDaysTextBox.Text = (value + 1).ToString();
+            }
+        }
+        private void DecreaseButtonMinDays_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(searchMinDaysTextBox.Text, out int value))
+            {
+                searchMinDaysTextBox.Text = (value - 1).ToString();
             }
         }
     }
