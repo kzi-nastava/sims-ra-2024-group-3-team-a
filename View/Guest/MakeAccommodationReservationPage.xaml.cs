@@ -32,28 +32,30 @@ namespace BookingApp.View.Guest
         private AccommodationDTO _accommodationDTO;
         private UserDTO _userDTO;
 
+        public int DaysToStay;
+
         public MakeAccommodationReservationPage(AccommodationDTO accommodationDTO, UserDTO userDTO)
         {
             InitializeComponent();
-            
             DataContext = this;
             _accommodationDTO = accommodationDTO;
             _userDTO = userDTO;
+
             _accommodationReservationRepository = new AccommodationReservationRepository();
             List<AccommodationReservation> accommodationReservations = _accommodationReservationRepository.GetAllByAccommodationId(accommodationDTO.Id);
             _accommodationReservationsDTO = new List<AccommodationReservationDTO>();
+
             foreach(AccommodationReservation accommodationReservation in accommodationReservations)
             {
                 
                 _accommodationReservationsDTO.Add(new AccommodationReservationDTO(accommodationReservation));
             }
-            _freeDates = new  ObservableCollection<AccommodationReservationDTO>();
+
+            _freeDates = new ObservableCollection<AccommodationReservationDTO>();
             dataGridAvailableDates.ItemsSource = _freeDates;
-            
         }
 
         public DateOnly _selectedBeginDate;
-
         public DateOnly SelectedBeginDate
         {
             get { return _selectedBeginDate; }
@@ -68,7 +70,6 @@ namespace BookingApp.View.Guest
         }
 
         public DateOnly _selectedEndDate;
-
         public DateOnly SelectedEndDate
         {
             get { return _selectedEndDate; }
@@ -82,26 +83,22 @@ namespace BookingApp.View.Guest
             }
         }
 
-        public int DaysToStay;
-
-
-        private void SearchAvailableDatesClick(object sender, RoutedEventArgs e)
+        private void SearchAvailableDates_Click(object sender, RoutedEventArgs e)
         {
             int spanIncrement = Int32.Parse(DaysToStayTextBox.Text);
             if (!PerformSearchForDates(0))
-           {
+            {
                 PerformSearchForDates(spanIncrement);
-           }
+            }
         }
-        private void ReserveClick(object sender, RoutedEventArgs e)
+
+        private void ShowReservationDetailsPage(object sender, RoutedEventArgs e)
         {
             AccommodationReservationDTO acc_resDTO = (AccommodationReservationDTO)dataGridAvailableDates.SelectedItem;
             DateOnly beginOfStay = acc_resDTO.BeginDate;
             DateOnly endOfStay = acc_resDTO.EndDate;
             frameReserve.Content = new ReservationDetailsPage(_accommodationDTO, _userDTO, beginOfStay, endOfStay); 
         }
-
-        
 
         public bool PerformSearchForDates(int timeSpanIncrement)
         {
@@ -135,7 +132,6 @@ namespace BookingApp.View.Guest
             if(DaysToStay < _accommodationDTO.MinDaysReservation)
             {
                 _freeDates.Clear();
-                //ReserveButton.IsEnabled = false;
                 MessageBox.Show($"Improper no of days, enter minimum {_accommodationDTO.MinDaysReservation} days!");
                 return true;
             }
@@ -184,14 +180,11 @@ namespace BookingApp.View.Guest
             return found;     
         }
 
-
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
