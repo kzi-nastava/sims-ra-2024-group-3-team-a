@@ -9,36 +9,33 @@ using System.Xml.Linq;
 
 namespace BookingApp.Model
 {
-    public class TourReservation: ISerializable
+    public class TourReservation : ISerializable
     {
         public int Id { get; set; }
-
         public int UserId { get; set; }
-
         public string UserName { get; set; }
         public int TourId { get; set; }
-        public List<AnonymousTourist> AnonymousTourists  { get; set; }
-
+        public List<Tourist> Tourists  { get; set; }
         public int NumberOfTourists { get; set; }
 
         public TourReservation() 
         {
-            AnonymousTourists= new List<AnonymousTourist>();
+            Tourists = new List<Tourist>();
         }
-        public TourReservation(int id, int userId, int tourId, string userName ,List<AnonymousTourist> anonymousTourists, int numberOfTourists)
+
+        public TourReservation(int id, int userId, int tourId, string userName, List<Tourist> tourists, int numberOfTourists)
         {
             Id = id;
             UserId = userId;
             TourId = tourId;
             UserName = userName;
-            NumberOfTourists = numberOfTourists;
-            AnonymousTourists = anonymousTourists;
-
+            Tourists = tourists;
+            NumberOfTourists = numberOfTourists; 
         }
 
         public string[] ToCSV()
         {
-            if (AnonymousTourists == null)
+            if (Tourists == null)
             {
                 string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString() };
                 return csvValues;
@@ -46,7 +43,7 @@ namespace BookingApp.Model
             else
             {
                 string tourists = string.Empty;
-                foreach (var tourist in AnonymousTourists)
+                foreach (var tourist in Tourists)
                 {
                     tourists += tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString() + '|';
                 }
@@ -54,9 +51,7 @@ namespace BookingApp.Model
                 tourists = tourists.Substring(0,tourists.Length - 1);
                 string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString(), tourists };
                 return csvValues;
-
             }
-
         }
 
         public void FromCSV(string[] values)
@@ -68,11 +63,9 @@ namespace BookingApp.Model
             {
                 if(i+2<values.Length)
                 {
-                    AnonymousTourists.Add(new AnonymousTourist(values[i], values[i + 1], Convert.ToInt32(values[i + 2])));
+                    Tourists.Add(new Tourist(values[i], values[i + 1], Convert.ToInt32(values[i + 2])));
                 }
-
             }
-
         }
     }
 }

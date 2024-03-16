@@ -73,6 +73,6 @@
             </DataGrid.Columns>
             
         </DataGrid>
-        <Button Background="LightPink" x:Name="buttoneReservation" Grid.Row="2" Content="Reservation" Click="Reservation_Click" Width="80" Margin="0,0,700,0"/>
+        <Button Background="LightPink" x:Name="buttoneReservation" Grid.Row="2" Content="Reservation" Click=" ShowAppropriateWindow" Width="80" Margin="0,0,700,0"/>
     </Grid>
 </Window>

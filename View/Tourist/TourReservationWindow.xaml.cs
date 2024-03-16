@@ -33,7 +33,7 @@ namespace BookingApp.View
 
         private readonly TourRepository _tourRepository;
 
-        private AnonymousTouristDTO _anonymousTouristDTO;
+        private TouristDTO _touristDTO;
 
         private TouristMainWindow _tourMainWindow;
 
@@ -45,7 +45,7 @@ namespace BookingApp.View
 
         private Brush _defaultBrushBorder;
 
-        public ObservableCollection<AnonymousTouristDTO> AnonymousTourists { get; set; }
+        public ObservableCollection<TouristDTO> Tourists { get; set; }
         public TourReservationWindow(TouristMainWindow tourMainWindow, TourReservationRepository tourReservationRepository,TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
@@ -56,11 +56,11 @@ namespace BookingApp.View
             _tourDTO = new TourDTO(tourDTO);
             _userDTO = userDTO;
             _tourReservationDTO = new TourReservationDTO(tourDTO, _userDTO);
-            _anonymousTouristDTO=new AnonymousTouristDTO();
+            _touristDTO=new TouristDTO();
             _tourMainWindow = tourMainWindow;
-            AnonymousTourists = new ObservableCollection<AnonymousTouristDTO>();
+            Tourists = new ObservableCollection<TouristDTO>();
             DataContext = new { Tour = _tourDTO, User = _userDTO };
-            dataGridAnonymousTourists.ItemsSource = AnonymousTourists;
+            dataGridAnonymousTourists.ItemsSource = Tourists;
             buttonSubmitInfo.IsEnabled = false;
         }
        
@@ -71,7 +71,7 @@ namespace BookingApp.View
             {
                 UpdateTour(CurrentCapacity);
 
-                _tourReservationDTO.AnonymousTouristDTOs = AnonymousTourists.ToList();
+                _tourReservationDTO.TouristsDTO = Tourists.ToList();
                 _tourReservationRepository.Save(_tourReservationDTO.ToTourReservation());
 
                 _tourMainWindow.Update();
@@ -88,9 +88,9 @@ namespace BookingApp.View
 
         }
 
-        private void AddAnonymousTourist_Click(object sender, RoutedEventArgs e )
+        private void ShowAnonymousTouristWindow(object sender, RoutedEventArgs e)
         {
-            AnonymousTouristWindow anonymousTouristWindow = new AnonymousTouristWindow(this, _tourReservationDTO, AnonymousTourists, unlistedTouristsCounter);
+            AnonymousTouristWindow anonymousTouristWindow = new AnonymousTouristWindow(this, _tourReservationDTO, Tourists, unlistedTouristsCounter);
             anonymousTouristWindow.Show();
         }
 
@@ -114,16 +114,16 @@ namespace BookingApp.View
         {
            
            
-            if(AnonymousTourists.Count() > 0)
+            if(Tourists.Count() > 0)
             {
-                _anonymousTouristDTO = new AnonymousTouristDTO(textBoxFirstName.Text, textBoxSurname.Text, Int32.Parse(textBoxAge.Text));
-                AnonymousTourists[0] = _anonymousTouristDTO;
+                _touristDTO = new TouristDTO(textBoxFirstName.Text, textBoxSurname.Text, Int32.Parse(textBoxAge.Text));
+                Tourists[0] = _touristDTO;
 
             }
            else
            {
-                _anonymousTouristDTO = new AnonymousTouristDTO(textBoxFirstName.Text, textBoxSurname.Text, Int32.Parse(textBoxAge.Text));
-                AnonymousTourists.Add(_anonymousTouristDTO);
+                _touristDTO = new TouristDTO(textBoxFirstName.Text, textBoxSurname.Text, Int32.Parse(textBoxAge.Text));
+                Tourists.Add(_touristDTO);
                 unlistedTouristsCounter = unlistedTouristsCounter - 1;
 
                 if(AreAllListed(unlistedTouristsCounter))
@@ -154,11 +154,11 @@ namespace BookingApp.View
                 buttonAdd.IsEnabled = false;
                
             }
-            else if (AnonymousTourists.Count() >= 0)
+            else if (Tourists.Count() >= 0)
             {
-                if (unlistedTouristCounter > AnonymousTourists.Count())
+                if (unlistedTouristCounter > Tourists.Count())
                 {
-                    unlistedTouristCounter = unlistedTouristCounter - AnonymousTourists.Count();
+                    unlistedTouristCounter = unlistedTouristCounter - Tourists.Count();
                     buttonAdd.IsEnabled = true;
                     return unlistedTouristCounter;
                 }
@@ -180,12 +180,10 @@ namespace BookingApp.View
 
         private void RemoveTourist_Click(object sender, RoutedEventArgs e)
         {
-            _anonymousTouristDTO = dataGridAnonymousTourists.SelectedItem as AnonymousTouristDTO;
-            AnonymousTourists.Remove(_anonymousTouristDTO);
+            _touristDTO = dataGridAnonymousTourists.SelectedItem as TouristDTO;
+            Tourists.Remove(_touristDTO);
 
-            //unlistedTouristsCounter = unlistedTouristsCounter + 1;
-
-            if(unlistedTouristsCounter > AnonymousTourists.Count()) 
+            if(unlistedTouristsCounter > Tourists.Count()) 
                 buttonAdd.IsEnabled = true;
             else
                 buttonAdd.IsEnabled = false; 
@@ -281,7 +279,5 @@ namespace BookingApp.View
             textBox.BorderBrush = _defaultBrushBorder;
             textBox.BorderThickness = new Thickness(2);
         }
-
-       
     }
 }

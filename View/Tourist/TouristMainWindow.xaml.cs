@@ -26,16 +26,15 @@ namespace BookingApp.View
     /// Interaction logic for TourView.xaml
     /// </summary>
     public partial class TouristMainWindow : Window
-    {
-
+    { 
         public static ObservableCollection<TourDTO> Tours { get; set; }
         private static TourDTO _tourDTO { get; set; }
-
         private static UserDTO _userDTO { get; set; }
 
         private readonly TourRepository _tourRepository;
         private static TourReservationRepository _tourReservationRepository { get; set; }
         public int CurrentCapacity { get; set; }
+
         public TouristMainWindow(User user)
         {
             InitializeComponent();
@@ -47,10 +46,12 @@ namespace BookingApp.View
             _userDTO= new UserDTO(user);
             Update();
         }
+
         public void Update()
         {
             Tours.Clear();
-            foreach (Tour tour in _tourRepository.GetAll()) Tours.Add(new TourDTO(tour));
+            foreach (Tour tour in _tourRepository.GetAll())
+                Tours.Add(new TourDTO(tour));
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -92,7 +93,7 @@ namespace BookingApp.View
             return filtered;
         }
         
-        private void Reservation_Click(object sender, RoutedEventArgs e)
+        private void ShowAppropriateWindow(object sender, RoutedEventArgs e)
         {
             _tourDTO = dataGridTour.SelectedItem as TourDTO;
 
@@ -108,7 +109,6 @@ namespace BookingApp.View
                     AlternativeToursWindow alternativeToursWidow = new AlternativeToursWindow(this, _tourDTO, _userDTO);
                     alternativeToursWidow.ShowDialog();
                 }
-
             }
             else
             {

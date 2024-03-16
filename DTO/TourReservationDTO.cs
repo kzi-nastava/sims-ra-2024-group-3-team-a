@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace BookingApp.DTO
 {
-     public class TourReservationDTO
+     public class TourReservationDTO : INotifyPropertyChanged
     {
-
         public TourReservationDTO() { }
 
         public TourReservationDTO(int id, int userId, int tourId, string userName)
@@ -20,7 +19,6 @@ namespace BookingApp.DTO
             this.userId = userId;
             this.tourId = tourId;
             this.userName = userName;
-        
         }
 
         public TourReservationDTO(TourReservation tourReservation)
@@ -30,7 +28,6 @@ namespace BookingApp.DTO
             tourId = tourReservation.TourId;
             userName = tourReservation.UserName;
             numberOfTourists = tourReservation.NumberOfTourists;
-
         }
 
         public TourReservationDTO(TourDTO tourDTO, UserDTO userDTO)
@@ -40,20 +37,18 @@ namespace BookingApp.DTO
             tourId = tourDTO.Id;
             userName = userDTO.Username;
         }
-        public TourReservationDTO(TourReservationDTO tourReservationDTO, List<AnonymousTouristDTO> anonymousTouristDTO)
+
+        public TourReservationDTO(TourReservationDTO tourReservationDTO, List<TouristDTO> anonymousTouristDTO)
         {
-            id= tourReservationDTO.Id;
-            userId= tourReservationDTO.UserId;
+            id = tourReservationDTO.Id;
+            userId = tourReservationDTO.UserId;
             tourId = tourReservationDTO.TourId;
             userName = tourReservationDTO.UserName;
-            anonymousTouristDTOs = anonymousTouristDTO;
+            touristsDTO = anonymousTouristDTO;
             numberOfTourists = tourReservationDTO.NumberOfTourists;
         }
 
-
-
         private int id;
-
         public int Id
         {
             get { return id; }
@@ -68,7 +63,6 @@ namespace BookingApp.DTO
         }
 
         private int userId;
-
         public int UserId
         {
             get { return userId; }
@@ -82,9 +76,7 @@ namespace BookingApp.DTO
             }
         }
 
-
         private int tourId;
-
         public int TourId
         {
             get { return tourId; }
@@ -99,7 +91,6 @@ namespace BookingApp.DTO
         }
 
         private string userName;
-
         public string UserName
         {
             get { return userName; }
@@ -113,23 +104,21 @@ namespace BookingApp.DTO
             }
         }
 
-        private List<AnonymousTouristDTO> anonymousTouristDTOs;
-
-        public List<AnonymousTouristDTO>  AnonymousTouristDTOs
+        private List<TouristDTO> touristsDTO;
+        public List<TouristDTO>  TouristsDTO
         {
-            get { return anonymousTouristDTOs; }
+            get { return touristsDTO; }
             set
             {
-                if (value != anonymousTouristDTOs)
+                if (value != touristsDTO)
                 {
-                    anonymousTouristDTOs = value;
+                    touristsDTO = value;
                     OnPropertyChanged();
                 }
             }
         }
 
         private int numberOfTourists;
-
         public int NumberOfTourists
         {
             get { return numberOfTourists; }
@@ -145,14 +134,14 @@ namespace BookingApp.DTO
 
         public TourReservation ToTourReservation()
         {
-            List<AnonymousTourist> anonymousTourists = new List<AnonymousTourist>();
-            foreach(AnonymousTouristDTO anonymousTouristDTO in anonymousTouristDTOs)
+            List<Tourist> tourists = new List<Tourist>();
+
+            foreach(TouristDTO touristDTO in touristsDTO)
             {
-                anonymousTourists.Add(anonymousTouristDTO.ToAnonymousTourist());
-      
+                tourists.Add(touristDTO.ToTourist());
             }
 
-            return new TourReservation(id, userId, tourId, userName, anonymousTourists, numberOfTourists);
+            return new TourReservation(id, userId, tourId, userName, tourists, numberOfTourists);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -160,6 +149,5 @@ namespace BookingApp.DTO
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-    }
+     }
 }

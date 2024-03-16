@@ -28,22 +28,26 @@ namespace BookingApp.View.Tourist
         private int _unlistedTouristsCounter;
 
         private Brush _defaultBrushBorder;
-        public AnonymousTouristWindow (TourReservationWindow tourReservationWindow, TourReservationDTO tourReservationDTO, ObservableCollection<AnonymousTouristDTO> anonymousTourists, int touristCounter)
+
+        public AnonymousTouristWindow (TourReservationWindow tourReservationWindow, TourReservationDTO tourReservationDTO, ObservableCollection<TouristDTO> anonymousTourists, int touristCounter)
         {
             InitializeComponent();
             DataContext = this;
+
+            _unlistedTouristsCounter = touristCounter;
+
             _defaultBrushBorder = textBoxName.BorderBrush.Clone();
             textBoxAge.Text = 0.ToString();
-            _tourReservationWindow = tourReservationWindow;
-            _unlistedTouristsCounter = touristCounter; 
+
+            _tourReservationWindow = tourReservationWindow;  
         }
 
-        public void Submit_Click(object sender, RoutedEventArgs e)
+        public void AddToReservationList_Click(object sender, RoutedEventArgs e)
         {
-           AnonymousTouristDTO anonymousTouristDTO = new AnonymousTouristDTO(textBoxName.Text,textBoxSurname.Text, Int32.Parse(textBoxAge.Text) );
-           _tourReservationWindow.AnonymousTourists.Add(anonymousTouristDTO);
+           TouristDTO touristDTO = new TouristDTO(textBoxName.Text,textBoxSurname.Text, Int32.Parse(textBoxAge.Text));
+           _tourReservationWindow.Tourists.Add(touristDTO);
 
-            DecreasingUnlistedTouristsNumber(_unlistedTouristsCounter);
+           DecreasingUnlistedTouristsNumber(_unlistedTouristsCounter);
 
            Close();
         }
@@ -130,11 +134,6 @@ namespace BookingApp.View.Tourist
         {
             textBox.BorderBrush = _defaultBrushBorder;
             textBox.BorderThickness = new Thickness(2);
-        }
-
-        private void textBoxName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

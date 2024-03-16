@@ -24,36 +24,37 @@ namespace BookingApp.View.Tourist
     public partial class AlternativeToursWindow : Window
     {
         private  TourDTO _tourDTO { get; set; }
+        private UserDTO _userDTO;
 
         private TourRepository _tourRepository;
-
-        private TouristMainWindow _tourMainWindow; 
         private TourReservationRepository _tourReservationRepository { get; set; }
 
-        private UserDTO _userDTO;
+        private TouristMainWindow _tourMainWindow; 
         public ObservableCollection<TourDTO> AlternativeTours { get; set; }
         
-
         public AlternativeToursWindow(TouristMainWindow tourMainWindow, TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
             DataContext = this;
             _tourRepository = new TourRepository();
             _tourReservationRepository= new TourReservationRepository();
+
             _tourMainWindow = tourMainWindow;
+
             _tourDTO = tourDTO;
             _userDTO= userDTO;
+
             AlternativeTours = new ObservableCollection<TourDTO>();
+
             Update();
-
-
         }
         private void Update()
         {
             AlternativeTours.Clear();
-            foreach (Tour tour in _tourRepository.GetToursWithSameLocation(_tourDTO.ToTour()))  AlternativeTours.Add(new TourDTO(tour));
+            foreach (Tour tour in _tourRepository.GetToursWithSameLocation(_tourDTO.ToTour()))
+                AlternativeTours.Add(new TourDTO(tour));
         }
-        private void Reservation_Click(object sender, RoutedEventArgs e)
+        private void ShowTourReservationWindow(object sender, RoutedEventArgs e)
         {
             _tourDTO = dataGridAlternativeTour.SelectedItem as TourDTO;
 

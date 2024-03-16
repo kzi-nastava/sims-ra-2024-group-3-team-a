@@ -65,7 +65,7 @@
 
         <Button x:Name= "buttonConfirm" Background="Gold" Content="Confirm Tour Reservation"  Grid.Row="10" Grid.Column="2" HorizontalAlignment="Right" Margin="5" Click="ConfirmReservation_Click"/>
         <Button x:Name="buttonOK"  Content="OK" Background="LightPink" Grid.Row="7" Grid.Column="0" Width="40" HorizontalAlignment="Right" Margin="200,0,0,0" Click="ConfirmTouristsNumber_Click"/>
-        <Button x:Name="buttonAdd" Background="LightBlue" Content="+"  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" Click="AddAnonymousTourist_Click"/>
+        <Button x:Name="buttonAdd" Background="LightBlue" Content="+"  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" Click="ShowAnonymousTouristWindow"/>
         <Button x:Name="buttonRemove" Background="LightBlue" Content="-"  Width="12" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,5,0" Click="RemoveTourist_Click"/>
 
         <DataGrid Background="lightGreen" x:Name="dataGridAnonymousTourists" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5">

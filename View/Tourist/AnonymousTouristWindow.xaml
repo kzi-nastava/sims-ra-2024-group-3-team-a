@@ -27,7 +27,7 @@
         <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="Age:" VerticalAlignment="Center"/>
             <TextBox x:Name="textBoxAge" Grid.Row="2" Text="{Binding _anonymousTouristDTO.Age,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5" Width="150" Height="20" HorizontalAlignment="Left" TextChanged="textBox_TextChanged"/>
 
-        <Button x:Name="buttonSubmit"  Grid.Row="3" Background="LightBlue" Grid.Column="1" Margin="5" Width="100" Height="30" Click="Submit_Click" Content="Submit" HorizontalAlignment="Left"/>
+        <Button x:Name="buttonSubmit"  Grid.Row="3" Background="LightBlue" Grid.Column="1" Margin="5" Width="100" Height="30" Click="AddToReservationList_Click" Content="Submit" HorizontalAlignment="Left"/>
         <Button Grid.Row="3" Background="LightBlue" Grid.Column="1" Margin="550,0,0,0" Width="100" Height="30" Click="Cancel_Click" Content="Cancel" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

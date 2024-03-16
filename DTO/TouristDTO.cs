@@ -9,37 +9,35 @@ using System.Threading.Tasks;
 
 namespace BookingApp.DTO
 {
-    public class AnonymousTouristDTO
+    public class TouristDTO : INotifyPropertyChanged
     {
-       public AnonymousTouristDTO() { }
+        public TouristDTO() { }
 
-        public AnonymousTouristDTO(string name, string surname, int age)
+        public TouristDTO(string name, string surname, int age)
         {
-            this.name=name;
-            this.surname=surname;
-            this.age=age;
+            this.name = name;
+            this.surname = surname;
+            this.age = age;
         }
 
-        public AnonymousTouristDTO(AnonymousTourist anonymousTourist)
+        public TouristDTO(Tourist tourist)
         {
-            id = anonymousTourist.Id;
-            name = anonymousTourist.Name;
-            surname = anonymousTourist.Surname;
-            age = anonymousTourist.Age;
-            flag = anonymousTourist.Flag;
-            joiningKeyPoint = anonymousTourist.JoiningKeyPoint;
-
+            id = tourist.Id;
+            name = tourist.Name;
+            surname = tourist.Surname;
+            age = tourist.Age;
+            flag = tourist.Flag;
+            joiningKeyPoint = tourist.JoiningKeyPoint;
         }
 
-       public AnonymousTouristDTO(AnonymousTouristDTO anonymousTouristDTO)
+        public TouristDTO(TouristDTO touristDTO)
         {
-            id = anonymousTouristDTO.Id;
-            name = anonymousTouristDTO.name;
-            surname = anonymousTouristDTO.surname;
-            age = anonymousTouristDTO.age;
-            flag = anonymousTouristDTO.flag;
-            joiningKeyPoint = anonymousTouristDTO.joiningKeyPoint;
-
+            id = touristDTO.Id;
+            name = touristDTO.name;
+            surname = touristDTO.surname;
+            age = touristDTO.age;
+            flag = touristDTO.flag;
+            joiningKeyPoint = touristDTO.joiningKeyPoint;
         }
 
         private int id;
@@ -55,6 +53,7 @@ namespace BookingApp.DTO
                 }
             }
         }
+
         private bool flag;
         public bool Flag
         {
@@ -69,9 +68,7 @@ namespace BookingApp.DTO
             }
         }
       
-
         private string name;
-
         public string Name
         {
             get { return name; }
@@ -86,7 +83,6 @@ namespace BookingApp.DTO
         }
 
         private string surname;
-
         public string Surname
         {
             get { return surname; }
@@ -100,9 +96,7 @@ namespace BookingApp.DTO
             }
         }
 
-
         private int age;
-
         public int Age
         {
             get { return age; }
@@ -117,7 +111,6 @@ namespace BookingApp.DTO
         }
 
         private string joiningKeyPoint;
-
         public string JoiningKeyPoint
         {
             get { return joiningKeyPoint; }
@@ -130,10 +123,12 @@ namespace BookingApp.DTO
                 }
             }
         }
-        public AnonymousTourist ToAnonymousTourist()
+
+        public Tourist ToTourist()
         {
-            return new AnonymousTourist(name,surname,age);
+            return new Tourist(name,surname,age);
         }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

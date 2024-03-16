@@ -23,19 +23,19 @@ namespace BookingApp.View
     public partial class KeyPointsWindow : Window
     {
         private TourDTO _tour;
-        private AnonymousTouristDTO _selectedTourist;
+        private TouristDTO _selectedTourist;
         private KeyPointsDTO _keypoints;
         private readonly KeyPointRepository _repository;
         private readonly TourReservationRepository _tourReservationRepository;
 
    
-        public static ObservableCollection<AnonymousTouristDTO> Tourists { get; set; }
+        public static ObservableCollection<TouristDTO> Tourists { get; set; }
 
         public KeyPointsWindow(TourDTO tour)
         {
             InitializeComponent();
             _tour = tour;
-            Tourists = new ObservableCollection<AnonymousTouristDTO>();
+            Tourists = new ObservableCollection<TouristDTO>();
             this.DataContext = this;
             _repository = new KeyPointRepository();
             _tourReservationRepository = new TourReservationRepository();
@@ -121,8 +121,8 @@ namespace BookingApp.View
         private void JoinTourist_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            AnonymousTouristDTO selectedTourist = new AnonymousTouristDTO();
-            selectedTourist =   ((Button)sender).DataContext as AnonymousTouristDTO;
+            TouristDTO selectedTourist = new TouristDTO();
+            selectedTourist =   ((Button)sender).DataContext as TouristDTO;
             _selectedTourist = selectedTourist;
             _selectedTourist.JoiningKeyPoint = _tour.CurrentKeyPoint;
             button.Background = Brushes.IndianRed;
@@ -136,9 +136,9 @@ namespace BookingApp.View
             {
                 if (reservation.TourId == _tour.Id)
                 {
-                    foreach ( AnonymousTourist tourist in reservation.AnonymousTourists)
+                    foreach (Model.Tourist tourist in reservation.Tourists)
                     {
-                        AnonymousTouristDTO anonymousTourist = new AnonymousTouristDTO(tourist);
+                        TouristDTO anonymousTourist = new TouristDTO(tourist);
                         Tourists.Add(anonymousTourist);
                     }
                 }
