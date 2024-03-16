@@ -27,23 +27,29 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class OwnerMainWindow : Window
     {
-        public static ObservableCollection<AccommodationDTO> Accommodations { get; set; }
-        public static ObservableCollection<AccommodationReservationDTO> AccommodationReservations { get; set; }
+        public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO { get; set; }
 
         private readonly AccommodationRepository _accommodationRepository;
         private readonly AccommodationReservationRepository _accommodationReservationRepository;
+        private readonly UserRepository _userRepository;
+
+        private UserDTO _loggedInOwner;
 
         private static Timer _notificationTimer;
 
-        public OwnerMainWindow()
+        public OwnerMainWindow(User owner)
         {
             InitializeComponent();
             DataContext = this;
             _accommodationRepository = new AccommodationRepository();
             _accommodationReservationRepository = new AccommodationReservationRepository();
+            _userRepository = new UserRepository();
 
-            Accommodations = new ObservableCollection<AccommodationDTO>();
-            AccommodationReservations = new ObservableCollection<AccommodationReservationDTO>();
+            AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
+            AccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+
+            _loggedInOwner = new UserDTO(owner);
 
             Update();
 
@@ -52,18 +58,38 @@ namespace BookingApp.View.Owner
 
         public void Update()
         {
-            Accommodations.Clear();
-            AccommodationReservations.Clear();
+            AccommodationsDTO.Clear();
+            AccommodationReservationsDTO.Clear();
             foreach (var accommodation in _accommodationRepository.GetAll())
             {
-                Accommodations.Add(new AccommodationDTO(accommodation));
+                AccommodationDTO accommodationDTO = new AccommodationDTO(accommodation);
+                if(IsLoggedOwner(accommodationDTO))   
+                    AccommodationsDTO.Add(accommodationDTO);
             }
 
             foreach (var reservation in _accommodationReservationRepository.GetAll())
             {
-                if(reservation.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservation.EndDate.AddDays(5))
-                    AccommodationReservations.Add(new AccommodationReservationDTO(reservation));
+                AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
+                AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
+                if(IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
+                    AccommodationReservationsDTO.Add(reservationDTO);
             }
+        }
+        private bool IsLoggedOwner(AccommodationDTO accommodationDTO)
+        {
+            if(accommodationDTO.OwnerId == _loggedInOwner.Id)
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool IsNotExpired(AccommodationReservationDTO reservationDTO)
+        {
+            if(reservationDTO.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservationDTO.EndDate.AddDays(5))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
@@ -138,26 +164,27 @@ namespace BookingApp.View.Owner
 
         private void SetNotificationTimer()
         {
-            _notificationTimer = new Timer(TimeSpan.FromDays(1).TotalMilliseconds);
+            _notificationTimer = new Timer(5000);
 
-            _notificationTimer.Elapsed += (sender, e) => Notify(frameNotification);
+            _notificationTimer.Elapsed += (sender, e) => Notify(frameNotification, _userRepository);
 
             _notificationTimer.AutoReset = true;
             _notificationTimer.Enabled = true;
         }
-        private static void Notify(Frame frameNotification)
+        private static void Notify(Frame frameNotification, UserRepository userRepository)
         {
-            if(AccommodationReservations.Any(reservation => reservation.RatingDTO.CleannessRating == 0))
+            if(AccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.CleannessRating == 0))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     NotificationPage notificationPage = new NotificationPage();
                     notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
-                    foreach(var reservation in AccommodationReservations)
+                    foreach(var reservation in AccommodationReservationsDTO)
                     {
                         if(reservation.RatingDTO.CleannessRating == 0)
                         {
-                            notificationPage.buttonNotification.ToolTip += "You didn't rate Guest" + reservation.GuestId + "\n";
+                            UserDTO guest = new UserDTO(userRepository.GetById(reservation.GuestId));
+                            notificationPage.buttonNotification.ToolTip += "You didn't rate Guest " + guest.Username + "\n";
                         }                       
                     }
 

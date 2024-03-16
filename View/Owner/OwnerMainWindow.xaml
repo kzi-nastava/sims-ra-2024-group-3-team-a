@@ -53,7 +53,7 @@
             <TabControl x:Name="tabControl" Background="Transparent" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
                 <TabItem x:Name="tabItemAccommodations" Visibility="Collapsed">
                     <StackPanel>
-                        <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding Accommodations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
+                        <DataGrid RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationsDTO}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
@@ -65,7 +65,7 @@
 
                 <TabItem x:Name="tabItemUsers" Visibility="Collapsed">
                     <StackPanel >
-                        <DataGrid x:Name="dataGridReservations" RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationReservations}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
+                        <DataGrid x:Name="dataGridReservations" RowBackground="CadetBlue" BorderBrush="Blue" BorderThickness="3" ItemsSource="{Binding AccommodationReservationsDTO}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" FontSize="13">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*"/>
                                 <DataGridTextColumn Header="Guest">
