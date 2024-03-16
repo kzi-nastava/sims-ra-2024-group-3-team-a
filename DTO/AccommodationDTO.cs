@@ -21,6 +21,7 @@ namespace BookingApp.DTO
         public AccommodationDTO(Accommodation accommodation)
         {
             id = accommodation.Id;
+            ownerId = accommodation.OwnerId;
             name = accommodation.Name;
             locationDTO = new LocationDTO(accommodation.Place);
             type = accommodation.Type;
@@ -33,6 +34,7 @@ namespace BookingApp.DTO
         public AccommodationDTO(AccommodationDTO accommodationDTO)
         {
             id = accommodationDTO.Id;
+            ownerId = accommodationDTO.OwnerId;
             name = accommodationDTO.Name;
             locationDTO = new LocationDTO(accommodationDTO.PlaceDTO);
             type = accommodationDTO.Type;
@@ -51,6 +53,20 @@ namespace BookingApp.DTO
                 if (value != id)
                 {
                     id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int ownerId;
+        public int OwnerId
+        {
+            get { return ownerId; }
+            set
+            {
+                if (value != ownerId)
+                {
+                    ownerId = value;
                     OnPropertyChanged();
                 }
             }
@@ -155,7 +171,7 @@ namespace BookingApp.DTO
         }
         public Accommodation ToAccommodation()
         {
-            return new Accommodation(name, locationDTO.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
+            return new Accommodation(id, ownerId, name, locationDTO.ToLocation(), type, capacity, minDaysReservation, cancellationPeriod, images);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

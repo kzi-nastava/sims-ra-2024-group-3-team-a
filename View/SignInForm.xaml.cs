@@ -65,7 +65,7 @@ namespace BookingApp.View
                         }
                         case UserRole.Owner:
                         {
-                            OwnerMainWindow ownerMainWindow = new OwnerMainWindow();
+                            OwnerMainWindow ownerMainWindow = new OwnerMainWindow(user);
                             ownerMainWindow.Show();
                             Close();
                             break;
