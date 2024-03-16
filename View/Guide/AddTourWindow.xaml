@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Dodaj novu turu" Height="450" Width="800"  ResizeMode="NoResize">
 
-    <Grid>
+    <Grid Background="AntiqueWhite">
         <Grid x:Name="gridInput">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -50,7 +50,7 @@
 HorizontalContentAlignment="Center"/>
             <Label Grid.Column="0" Grid.Row="9" Content="Images" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
 HorizontalContentAlignment="Center"/>
-            <Button x:Name="SubmitButton" Content="Submit" Click="SubmitButton_Click" Grid.Column="0"
+            <Button x:Name="SubmitButton" Content="Submit" Click="Submit" Grid.Column="0"
                 Grid.Row="10" Margin="100,10,100,10" Background="LightBlue"/>
             <TextBox x:Name="textBoxName" Grid.Column="1" Grid.Row="0" Margin="10"
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged" />
@@ -95,14 +95,14 @@ HorizontalContentAlignment="Center"/>
 
                 <xctk:DateTimePicker x:Name="datePicker" Margin="10"
           Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" />
-            <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Content="+" Click="Add_Click"/>
+            <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Content="+" Click="AddDates"/>
             </Grid>
             </ScrollViewer>
             
             <TextBox x:Name="textBoxDuration" Grid.Column="1" Grid.Row="8" Margin="10"
          Text="{Binding Duration,UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
             <Button Grid.Column="1" Grid.Row="9" Background="LightGray" Content="Add Images" Click="AddImages"></Button>
-            <Button x:Name="LeaveButton" Content="Cancel" Click="LeaveButton_Click" Grid.Column="1"
+            <Button x:Name="LeaveButton" Content="Cancel" Click="LeaveButtonClick" Grid.Column="1"
         Grid.Row="10" Margin="100,10,100,10" />
         </Grid>
     </Grid>

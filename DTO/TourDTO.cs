@@ -286,7 +286,7 @@ namespace BookingApp.DTO
         public Tour ToTourAllParam()
         {
             
-            return new Tour(name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
+            return new Tour(id,name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
         }
         public Tour ToTourWithCapacity()
         {

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
         Title="GuideMainWindow" Height="600" Width="800"  ResizeMode="NoResize">
-    <Grid>
+    <Grid Background="AntiqueWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -25,14 +25,14 @@
                     <DataGridTemplateColumn Header="" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Begin tour" Click="Tour_Click" />
+                                <Button Content="Begin tour" Click="ShowActiveTourWindow" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Show all tours" Click="ShowAll_Click" Margin="29,455,631,0" VerticalAlignment="Top" Height="61"/>
+            <Button Content="Show all tours" Click="ShowAllToursWindow" Margin="29,455,631,0" VerticalAlignment="Top" Height="61"/>
         </Grid>
 
 

@@ -21,31 +21,29 @@ namespace BookingApp.View
     public partial class AllToursView : Window
     {
         public static ObservableCollection<TourDTO> Tours { get; set; }
-        private static TourDTO _tour { get; set; }
-
-        private readonly TourRepository _repository;
+        private readonly TourRepository _TourRepository;
         private GuideMainWindow _guideMainWindow;
 
         public AllToursView(GuideMainWindow guideMainWindow)
         {
             InitializeComponent();
             DataContext = this;
-            _repository = new TourRepository();
+            _TourRepository = new TourRepository();
             Tours = new ObservableCollection<TourDTO>();
-            _tour = new TourDTO();
             Update();
             _guideMainWindow = guideMainWindow;
         }
+
         public void Update()
         {
             Tours.Clear();
-            foreach (Tour tour in _repository.GetAll()) Tours.Add(new TourDTO(tour));
+            foreach (Tour tour in _TourRepository.GetAll()) Tours.Add(new TourDTO(tour));
         }
-        private void AddTour_Click(object sender, RoutedEventArgs e)
+
+        private void ShowAddTourWindow(object sender, RoutedEventArgs e)
         {
             AddTourWindow addTourWindow = new AddTourWindow(this, _guideMainWindow);
             addTourWindow.Show();
         }
-
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
         Title="AllToursView" Height="450" Width="800"  ResizeMode="NoResize">
-    <Grid>
+    <Grid Background="AntiqueWhite">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,6 +27,6 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <Button Content="Add new tour" Click="AddTour_Click" Margin="27,383,575,0" VerticalAlignment="Top" Height="29" Grid.Row="1"/>
+        <Button Content="Add new tour" Click="ShowAddTourWindow" Margin="27,383,575,0" VerticalAlignment="Top" Height="29" Grid.Row="1"/>
     </Grid>
 </Window>
