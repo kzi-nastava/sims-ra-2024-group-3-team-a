@@ -23,15 +23,13 @@ namespace BookingApp.DTO
             ending = keyPoint.Ending;
             middle = keyPoint.Middle;
         }
-            
-
+          
         public KeyPointsDTO(KeyPointsDTO keyPoint)
         {
             id = keyPoint.Id;
             begining = keyPoint.Begining;
             ending = keyPoint.Ending;
             middle = keyPoint.Middle;
-          
         }
 
         private int id;

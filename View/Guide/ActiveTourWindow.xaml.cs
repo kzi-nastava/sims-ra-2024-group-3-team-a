@@ -20,43 +20,45 @@ using System.Windows.Shapes;
 
 namespace BookingApp.View
 {
-    public partial class KeyPointsWindow : Window
+    public partial class ActiveTourWindow : Window
     {
-        private TourDTO _tour;
-        private TouristDTO _selectedTourist;
-        private KeyPointsDTO _keypoints;
-        private readonly KeyPointRepository _repository;
+        private TourDTO _tourDTO;
+        private TouristDTO _touristDTO;
+        private KeyPointsDTO _keypointsDTO;
+
+        private readonly KeyPointsRepository _keyPointsRepository;
         private readonly TourReservationRepository _tourReservationRepository;
+        private readonly TourRepository _tourRepository;
 
    
         public static ObservableCollection<TouristDTO> Tourists { get; set; }
 
-        public KeyPointsWindow(TourDTO tour)
+        public ActiveTourWindow(TourDTO tour)
         {
             InitializeComponent();
-            _tour = tour;
+            _tourDTO = tour;
             Tourists = new ObservableCollection<TouristDTO>();
             this.DataContext = this;
-            _repository = new KeyPointRepository();
+            _keyPointsRepository = new KeyPointsRepository();
             _tourReservationRepository = new TourReservationRepository();
-            AddButton();
+            _tourRepository = new TourRepository();
+            AddKeyPointsButtons();
             Update();
-           
-           
         }
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void CancelTour(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Tour has been canceled!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-            _tour.CurrentKeyPoint = "finished";
-            _tour.IsActive = false;
+            _tourDTO.CurrentKeyPoint = "finished";
+            _tourDTO.IsActive = false;
+            _tourRepository.Update(_tourDTO.ToTourAllParam());
             this.Close();
         }
 
-        public void AddButton()
+        public void AddKeyPointsButtons()
         {
-            KeyPoints keypoint = _repository.GetById(_tour.KeyPointsDTO.Id);
-            _keypoints = new KeyPointsDTO(keypoint);
-            int keyPointsNum = _keypoints.Middle.Count() + 2;
+            KeyPoints keypoint = _keyPointsRepository.GetById(_tourDTO.KeyPointsDTO.Id);
+            _keypointsDTO = new KeyPointsDTO(keypoint);
+            int keyPointsNum = _keypointsDTO.Middle.Count() + 2;
             int count = 0;
             for (int i = 0; i < 6; i++)
             {
@@ -71,17 +73,17 @@ namespace BookingApp.View
                         };
                         if (count == 0)
                         {
-                            MyControl1.Content = _keypoints.Begining;
+                            MyControl1.Content = _keypointsDTO.Begining;
                             MyControl1.Background = new SolidColorBrush(Colors.IndianRed);
-                            _tour.CurrentKeyPoint = _keypoints.Begining;
-                            _tour.IsActive = true;
+                            _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
+                            _tourDTO.IsActive = true;
                         }
-                        else if (keyPointsNum !=2 && count <= _keypoints.Middle.Count())
+                        else if (keyPointsNum != 2 && count <= _keypointsDTO.Middle.Count())
                         {
-                            if (_keypoints.Middle[count - 1] != "")
+                            if (_keypointsDTO.Middle[count - 1] != "")
                             {
-                                MyControl1.Content = _keypoints.Middle[count - 1];
-                               
+                                MyControl1.Content = _keypointsDTO.Middle[count - 1];
+
                             }
                             else
                             {
@@ -91,7 +93,7 @@ namespace BookingApp.View
                         }
                         else
                         {
-                            MyControl1.Content = _keypoints.Ending;
+                            MyControl1.Content = _keypointsDTO.Ending;
                         }
                         MyControl1.Name = "Button" + count.ToString();
                         Grid.SetColumn(MyControl1, j);
@@ -101,20 +103,20 @@ namespace BookingApp.View
                         count++;
                     }
                 }
-
             }
         }
 
        public void ClickButton(Button button)
         {
-            _tour.CurrentKeyPoint = button.Content.ToString();
+            _tourDTO.CurrentKeyPoint = button.Content.ToString();
             button.Background = Brushes.IndianRed;
-            if(button.Content == _keypoints.Ending)
+            if(button.Content == _keypointsDTO.Ending)
             {
                 MessageBox.Show("Tour is finished!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-                _tour.CurrentKeyPoint = "finished";
-                _tour.IsActive=false;
-                 this.Close();
+                _tourDTO.CurrentKeyPoint = "finished";
+                _tourDTO.IsActive=false;
+                _tourRepository.Update(_tourDTO.ToTourAllParam());
+                this.Close();
             }
         }
 
@@ -123,10 +125,9 @@ namespace BookingApp.View
             Button button = (Button)sender;
             TouristDTO selectedTourist = new TouristDTO();
             selectedTourist =   ((Button)sender).DataContext as TouristDTO;
-            _selectedTourist = selectedTourist;
-            _selectedTourist.JoiningKeyPoint = _tour.CurrentKeyPoint;
+            _touristDTO = selectedTourist;
+            _touristDTO.JoiningKeyPoint = _tourDTO.CurrentKeyPoint;
             button.Background = Brushes.IndianRed;
-    
         }
         private void Update()
         {
@@ -134,7 +135,7 @@ namespace BookingApp.View
 
             foreach (TourReservation reservation in _tourReservationRepository.GetAll())
             {
-                if (reservation.TourId == _tour.Id)
+                if (reservation.TourId == _tourDTO.Id)
                 {
                     foreach (Model.Tourist tourist in reservation.Tourists)
                     {
@@ -143,7 +144,6 @@ namespace BookingApp.View
                     }
                 }
             }
-          
         }
     }
 }

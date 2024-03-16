@@ -10,7 +10,7 @@ using System.Xml.Linq;
 namespace BookingApp.Repository
 {
 
-    public class KeyPointRepository
+    public class KeyPointsRepository
     {
         private const string FilePath = "../../../Resources/Data/keypoints.csv";
 
@@ -18,7 +18,7 @@ namespace BookingApp.Repository
 
         private List<KeyPoints> _keypoints;
 
-        public KeyPointRepository()
+        public KeyPointsRepository()
         {
             _serializer = new Serializer<KeyPoints>();
             _keypoints = _serializer.FromCSV(FilePath);
@@ -66,11 +66,11 @@ namespace BookingApp.Repository
             _serializer.ToCSV(FilePath, _keypoints);
             return keyPoints;
         }
+
         public KeyPoints GetById(int id)
         {
             _keypoints = _serializer.FromCSV(FilePath);
             return _keypoints.FirstOrDefault(c => c.Id == id);
         }
-
     }
 }

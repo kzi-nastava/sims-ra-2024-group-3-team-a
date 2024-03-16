@@ -26,11 +26,13 @@ namespace BookingApp.View
 
     public partial class AddTourWindow : Window
     {
-        private TourRepository _repository;
-        private KeyPointRepository _keyPointRepository;
+        private TourRepository _tourRepository;
+        private KeyPointsRepository _keyPointRepository;
+
         private TourDTO _tourDTO;
         private string _tourKeyPoints;
         private List<DateTime> _dates;
+
         public event EventHandler TourAdded;
         private AllToursView _allToursView;
         private GuideMainWindow _guideMainWindow;
@@ -39,10 +41,10 @@ namespace BookingApp.View
         public AddTourWindow(AllToursView allToursView, GuideMainWindow guideMainWindow)
         {
             InitializeComponent();
-            _repository = new TourRepository();
+            _tourRepository = new TourRepository();
             _guideMainWindow = guideMainWindow;
             _defaultBrushBorder = textBoxName.BorderBrush.Clone();
-            _keyPointRepository = new KeyPointRepository();
+            _keyPointRepository = new KeyPointsRepository();
             _tourDTO = new TourDTO();
             _dates = new List<DateTime>();
             _allToursView = allToursView;
@@ -50,7 +52,7 @@ namespace BookingApp.View
         }
 
         private int _datesNum = 0;
-        private void Add_Click(object sender, RoutedEventArgs e)
+        private void AddDates(object sender, RoutedEventArgs e)
         {
             _datesNum++;
             DateTime parsedDateTime;
@@ -67,7 +69,6 @@ namespace BookingApp.View
         }
 
         private List<string> _images;
-
         private void AddImages(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -86,7 +87,7 @@ namespace BookingApp.View
             }
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        private void Submit(object sender, RoutedEventArgs e)
         {
             _tourKeyPoints = textBoxKeyPoints.Text;
             string[] tourKeyPoints = _tourKeyPoints.Split(',');
@@ -97,7 +98,6 @@ namespace BookingApp.View
                 return;
             }
 
-
             _tourDTO.KeyPointsDTO.Begining = tourKeyPoints[0];
             if (tourKeyPoints.Length != 1)
             {
@@ -106,6 +106,7 @@ namespace BookingApp.View
                     _tourDTO.KeyPointsDTO.Middle.Add(tourKeyPoints[i]);
                 }
             }
+
             _tourDTO.KeyPointsDTO.Ending = tourKeyPoints[tourKeyPoints.Length - 1];
             if (comboBoxType.SelectedItem == comboBoxItemSerbian)
                 _tourDTO.Language = Languages.Serbian;
@@ -125,9 +126,8 @@ namespace BookingApp.View
                 TourDTO tourDTO = new TourDTO(_tourDTO);
                 tourDTO.BeginingTime = date;
                 tourDTO.Images = _images;
-                _repository.Save(tourDTO.ToTourAllParam());
+                _tourRepository.Save(tourDTO.ToTourAllParam());
             }
-
 
             _allToursView.Update();
             _guideMainWindow.Update();
@@ -146,7 +146,6 @@ namespace BookingApp.View
         {
             bool validInput = true;
 
-
             foreach (var control in gridInput.Children)
             {
                 if (control is TextBox)
@@ -163,8 +162,6 @@ namespace BookingApp.View
                     }
                 }
             }
-
-
             return validInput;
         }
 
@@ -189,7 +186,6 @@ namespace BookingApp.View
                     BorderBrushToDefault(MaxTouristTextBox);
                 }
             }
-
 
             if (!double.TryParse(textBoxDuration.Text, out double duration))
             {
@@ -224,12 +220,9 @@ namespace BookingApp.View
             textBox.BorderThickness = new Thickness(2);
         }
 
-
-        private void LeaveButton_Click(object sender, RoutedEventArgs e)
+        private void LeaveButtonClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
-  
     }
 }

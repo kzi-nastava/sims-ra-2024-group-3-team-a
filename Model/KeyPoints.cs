@@ -19,9 +19,9 @@ namespace BookingApp.Model
 
         public KeyPoints()
         {
-
             Middle = new List<string>();
         }
+
         public KeyPoints(int id, string begining, List <string> middle, string ending)
         {
             Id = id;
@@ -29,6 +29,7 @@ namespace BookingApp.Model
             Middle = middle;
             Ending = ending;
         }
+
         public KeyPoints(int id, string begining, string ending)
         {
             Id = id;
@@ -37,21 +38,20 @@ namespace BookingApp.Model
             Ending = ending;
         }
 
-
-          public string[] ToCSV()
-          {
-              if (Middle != null)
-              {
-                  string middlePoints = string.Join("|", Middle);
-                  string[] csvValues = { Id.ToString(), Begining, Ending, middlePoints };
-                  return csvValues;
-              }
-              else
-              {
-                  string[] csvValues = { Id.ToString(), Begining, Ending };
-                  return csvValues;
-              }
-          }
+        public string[] ToCSV()
+        {
+             if (Middle != null)
+             {
+                 string middlePoints = string.Join("|", Middle);
+                 string[] csvValues = { Id.ToString(), Begining, Ending, middlePoints };
+                 return csvValues;
+             }
+             else
+             {
+                 string[] csvValues = { Id.ToString(), Begining, Ending };
+                 return csvValues;
+             }
+        }
         
         public void FromCSV(string[] values)
         {
@@ -65,10 +65,6 @@ namespace BookingApp.Model
             {
                 Middle.Add(values[i]);
             }
-
-
         }
-
-
     }
 }

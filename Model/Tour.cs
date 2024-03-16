@@ -24,16 +24,18 @@ namespace BookingApp.Model
         public List<string> Images { get; set; }
         public string CurrentKeyPoint { get; set; }
         public int CurrentCapacity { get; set; }
-
         public bool IsActive { get; set; }
+
         public Tour() 
         {
             Place = new Location();
             KeyPoint = new KeyPoints();
             Images = new List<string>();
         }
-        public Tour(string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive)
+
+        public Tour(int id, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive)
         {
+            Id = id;
             Name = name;
             Place = place;
             Description = description;
@@ -47,6 +49,7 @@ namespace BookingApp.Model
             CurrentKeyPoint = currentKeyPoint;
             IsActive = isActive;    
         }
+
         public Tour(int id,string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity)
         {
             Id = id;
@@ -90,7 +93,6 @@ namespace BookingApp.Model
 
         public void FromCSV(string[] values)
         {
-  
             Id = Convert.ToInt32(values[0]);
             Name = values[1]; 
             Place.City = values[2];
@@ -107,10 +109,6 @@ namespace BookingApp.Model
             {
                Images.Add(values[i]);
             }
-            
         }
-
-    
     }
-
 }
