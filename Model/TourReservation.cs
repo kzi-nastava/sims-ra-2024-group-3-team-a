@@ -42,16 +42,21 @@ namespace BookingApp.Model
             }
             else
             {
-                string tourists = string.Empty;
-                foreach (var tourist in Tourists)
-                {
-                    tourists += tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString() + '|';
-                }
-
-                tourists = tourists.Substring(0,tourists.Length - 1);
+                string tourists = CreateTouristsString();
                 string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString(), tourists };
                 return csvValues;
             }
+        }
+        private string CreateTouristsString()
+        {
+            string tourists = string.Empty;
+            foreach (var tourist in Tourists)
+            {
+                tourists += tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString() + '|';
+            }
+
+            tourists = tourists.Substring(0, tourists.Length - 1);
+            return tourists;
         }
 
         public void FromCSV(string[] values)

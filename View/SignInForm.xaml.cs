@@ -75,22 +75,21 @@ namespace BookingApp.View
                             GuestMainWindow guestMainWindow = new GuestMainWindow(user);
                             guestMainWindow.Show();
                             Close();
-                            MessageBox.Show("You signed in as Guest User!");
                             break;
                         }
                         case UserRole.Guide:
                         {
-                           // MessageBox.Show("You signed in as Guide User!");
-                                GuideMainWindow guideMainWindow= new GuideMainWindow();
-                                guideMainWindow.Show();
-                                break;
+                            GuideMainWindow guideMainWindow= new GuideMainWindow(user);
+                            guideMainWindow.Show();
+                            Close();
+                            break;
                             
                         }
                         case UserRole.Tourist:
                         {
-                            MessageBox.Show("You signed in as Tourist User!");
                             TouristMainWindow tourView = new TouristMainWindow(user);
                             tourView.Show();
+                            Close();
                             break;
                         }
                     }

@@ -69,7 +69,7 @@ namespace BookingApp.Repository
             List<Tour> tours = new List<Tour>();
             foreach(Tour t in GetAll())
             {
-                if(t.Place.Country==tour.Place.Country && t.Place.City==tour.Place.City && t.Id!=tour.Id && t.CurrentCapacity!=0)
+                if(t.Place.Country==tour.Place.Country && t.Place.City==tour.Place.City && t.CurrentCapacity!=0)
                 {
                     tours.Add(t);
                 }

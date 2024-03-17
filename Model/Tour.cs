@@ -13,6 +13,7 @@ namespace BookingApp.Model
     public class Tour : ISerializable
     {
         public int Id { get; set; }
+        public int GuideId { get; set; }
         public string Name { get; set; }
         public Location Place { get; set; }
         public string Description { get; set; }
@@ -33,9 +34,10 @@ namespace BookingApp.Model
             Images = new List<string>();
         }
 
-        public Tour(int id, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive)
+        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive)
         {
             Id = id;
+            GuideId = guideId;
             Name = name;
             Place = place;
             Description = description;
@@ -50,9 +52,10 @@ namespace BookingApp.Model
             IsActive = isActive;    
         }
 
-        public Tour(int id,string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity)
+        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity)
         {
             Id = id;
+            GuideId = guideId;
             Name = name;
             Place = place;
             Description = description;
@@ -81,12 +84,12 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint, images };
+                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint, images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint };
+                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint };
                 return csvValues;
             }
         }
@@ -94,18 +97,19 @@ namespace BookingApp.Model
         public void FromCSV(string[] values)
         {
             Id = Convert.ToInt32(values[0]);
-            Name = values[1]; 
-            Place.City = values[2];
-            Place.Country = values[3];
-            Description = values[4];
-            Language = (Languages)Enum.Parse(typeof(Languages), values[5]);
-            MaxTouristNumber = Convert.ToInt32(values[6]);
-            BeginingTime = DateTime.Parse(values[7]);
-            Duration = double.Parse(values[8]);
-            CurrentCapacity = Convert.ToInt32(values[9]);
-            KeyPoint.Id = Convert.ToInt32(values[10]);
-            CurrentKeyPoint = values[11];
-            for (int i = 12; i < values.Length; i++)
+            GuideId = Convert.ToInt32(values[1]);
+            Name = values[2]; 
+            Place.City = values[3];
+            Place.Country = values[4];
+            Description = values[5];
+            Language = (Languages)Enum.Parse(typeof(Languages), values[6]);
+            MaxTouristNumber = Convert.ToInt32(values[7]);
+            BeginingTime = DateTime.Parse(values[8]);
+            Duration = double.Parse(values[9]);
+            CurrentCapacity = Convert.ToInt32(values[10]);
+            KeyPoint.Id = Convert.ToInt32(values[11]);
+            CurrentKeyPoint = values[12];
+            for (int i = 13; i < values.Length; i++)
             {
                Images.Add(values[i]);
             }

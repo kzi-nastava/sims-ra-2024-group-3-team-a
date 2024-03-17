@@ -18,18 +18,20 @@ using System.Windows.Shapes;
 
 namespace BookingApp.View
 {
-    public partial class AllToursView : Window
+    public partial class AllToursWindow : Window
     {
         public static ObservableCollection<TourDTO> Tours { get; set; }
         private readonly TourRepository _TourRepository;
         private GuideMainWindow _guideMainWindow;
+        private UserDTO _loggedGuide;
 
-        public AllToursView(GuideMainWindow guideMainWindow)
+        public AllToursWindow(GuideMainWindow guideMainWindow, UserDTO guide)
         {
             InitializeComponent();
             DataContext = this;
             _TourRepository = new TourRepository();
             Tours = new ObservableCollection<TourDTO>();
+            _loggedGuide = guide;
             Update();
             _guideMainWindow = guideMainWindow;
         }
@@ -37,12 +39,16 @@ namespace BookingApp.View
         public void Update()
         {
             Tours.Clear();
-            foreach (Tour tour in _TourRepository.GetAll()) Tours.Add(new TourDTO(tour));
+            foreach (Tour tour in _TourRepository.GetAll())
+            {
+                if(tour.GuideId == _loggedGuide.Id)
+                    Tours.Add(new TourDTO(tour));
+            }          
         }
 
         private void ShowAddTourWindow(object sender, RoutedEventArgs e)
         {
-            AddTourWindow addTourWindow = new AddTourWindow(this, _guideMainWindow);
+            AddTourWindow addTourWindow = new AddTourWindow(this, _guideMainWindow, _loggedGuide);
             addTourWindow.Show();
         }
     }

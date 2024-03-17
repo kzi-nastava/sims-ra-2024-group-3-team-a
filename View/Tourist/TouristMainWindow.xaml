@@ -45,14 +45,15 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
             <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Country" x:Name="searchCountryTextBox" Width="100" Margin="5"/>
             <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="City" x:Name="searchCityTextBox" Width="100" Margin="5"/>
-            <TextBox x:Name="searchDurationTextBox" Width="50" Margin="5"/>
+            <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Duration (in hours)" x:Name="searchDurationTextBox" Width="150" Margin="5"/>
             <ComboBox x:Name="languageComboBox" Width="100" Margin="5">
+                <ComboBoxItem Content=""/>
                 <ComboBoxItem Content="English"/>
                 <ComboBoxItem Content="Spanish"/>
                 <ComboBoxItem Content="French"/>
                 <ComboBoxItem Content="Serbian"/>
             </ComboBox>
-            <TextBox x:Name="searchMaxTouristsTextBox" Grid.Column="0" Text="" HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="5"/>
+            <TextBox Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="max number of tourists" x:Name="searchMaxTouristsTextBox" Grid.Column="0" Text="" HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="5"/>
             <Button  Background="LightPink" Content="▲" Grid.Column="1" Width="30" Click="IncreaseButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Button  Background="LightPink" Content="▼" Grid.Column="1" Width="30" Click="DecreaseButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Button  Background="LightBlue"  x:Name="buttonSearch" Content="Search" Click="Search_Click" Margin="5"/>

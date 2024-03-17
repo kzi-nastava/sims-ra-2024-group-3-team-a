@@ -68,7 +68,7 @@
         <Button x:Name="buttonAdd" Background="LightBlue" Content="+"  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" Click="ShowAnonymousTouristWindow"/>
         <Button x:Name="buttonRemove" Background="LightBlue" Content="-"  Width="12" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,5,0" Click="RemoveTourist_Click"/>
 
-        <DataGrid Background="lightGreen" x:Name="dataGridAnonymousTourists" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5">
+        <DataGrid Background="lightGreen" x:Name="dataGridTourists" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5">
 
             <DataGrid.Columns>
 

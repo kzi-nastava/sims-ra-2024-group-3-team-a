@@ -18,52 +18,18 @@ namespace BookingApp.DTO
     {
         public TourDTO() 
         {
-            locationDto = new LocationDTO();
+            locationDTO = new LocationDTO();
             keyPointsDTO = new KeyPointsDTO();
             images = new List<string>();
-        }
-
-        public TourDTO(string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime)
-        {
-            this.Name = name;
-            this.locationDto = new LocationDTO(place); 
-            this.language = language;
-            this.maxTouristNumber = maxTouristNumber;
-            this.beginingTime = beginingTime;
-        }
-
-        public TourDTO(string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime, int currentCapacity)
-        {
-            this.Name = name;
-            this.locationDto = new LocationDTO(place);
-            this.language = language;
-            this.maxTouristNumber = maxTouristNumber;
-            this.beginingTime = beginingTime;
-            this.currentCapacity = currentCapacity;
-        }
-
-        public TourDTO(string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, int currentCapacity, bool isActive, string currentKeyPoint)
-        {
-            this.name = name;
-            this.locationDto = new LocationDTO(place);
-            this.description = description;
-            this.language = language;
-            this.maxTouristNumber = maxTouristNumber;
-            this.keyPointsDTO = new KeyPointsDTO(keyPoints);
-            this.beginingTime = beginingTime;
-            this.duration = duration;
-            this.CurrentKeyPoint = currentKeyPoint;
-            this.images = images;
-            this.isActive = IsActive;
-            this.currentCapacity = currentCapacity;
         }
 
         public TourDTO(Tour tour)
         {
             id = tour.Id;
+            guideId = tour.GuideId;
             name = tour.Name;
             description = tour.Description;
-            locationDto = new LocationDTO(tour.Place);
+            locationDTO = new LocationDTO(tour.Place);
             language = tour.Language;
             maxTouristNumber = tour.MaxTouristNumber;
             keyPointsDTO = new KeyPointsDTO(tour.KeyPoint);
@@ -78,9 +44,10 @@ namespace BookingApp.DTO
         public TourDTO(TourDTO tourDTO)
         {
             id = tourDTO.Id;
+            guideId = tourDTO.GuideId;
             name = tourDTO.Name;
             description = tourDTO.Description;
-            locationDto = new LocationDTO(tourDTO.LocationDTO);
+            locationDTO = new LocationDTO(tourDTO.LocationDTO);
             language = tourDTO.Language;
             maxTouristNumber = tourDTO.MaxTouristNumber;
             keyPointsDTO = new KeyPointsDTO(tourDTO.KeyPointsDTO); ;
@@ -91,15 +58,15 @@ namespace BookingApp.DTO
             currentCapacity= tourDTO.CurrentCapacity;
         }
 
-        private LocationDTO locationDto;
+        private LocationDTO locationDTO;
         public LocationDTO LocationDTO
         {
-            get { return locationDto; }
+            get { return locationDTO; }
             set
             {
-                if (value != locationDto)
+                if (value != locationDTO)
                 {
-                    locationDto = value;
+                    locationDTO = value;
                     OnPropertyChanged();
                 }
             }
@@ -114,6 +81,20 @@ namespace BookingApp.DTO
                 if (value != id)
                 {
                     id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int guideId;
+        public int GuideId
+        {
+            get { return guideId; }
+            set
+            {
+                if (value != guideId)
+                {
+                    guideId = value;
                     OnPropertyChanged();
                 }
             }
@@ -149,7 +130,7 @@ namespace BookingApp.DTO
 
         public string LocationDTOString
         {
-            get { return locationDto.ToString(); }
+            get { return locationDTO.ToString(); }
 
         }
 
@@ -282,19 +263,19 @@ namespace BookingApp.DTO
 
         public Tour ToTour()
         {
-           return new Tour(name, locationDto.ToLocation(), language,maxTouristNumber, beginingTime);
+           return new Tour(name, locationDTO.ToLocation(), language,maxTouristNumber, beginingTime);
         }
        
         public Tour ToTourAllParam()
         {
             
-            return new Tour(id,name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
+            return new Tour(id,guideId, name, locationDTO.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
         }
 
         public Tour ToTourWithCapacity()
         {
 
-            return new Tour(id,name, locationDto.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive, currentCapacity);
+            return new Tour(id,guideId,name, locationDTO.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive, currentCapacity);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

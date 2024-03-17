@@ -26,12 +26,10 @@ namespace BookingApp.View.Owner
             InitializeComponent();
             _ownerMainWindow = ownerMainWindow;
         }
-
         public void CloseSideMenu(object sender, RoutedEventArgs e)
         {
             _ownerMainWindow.frameSideMenu.Content = null;
         }
-
         public void SwitchTabAccommodations(object sender, RoutedEventArgs e)
         {
             _ownerMainWindow.tabControl.SelectedItem = _ownerMainWindow.tabItemAccommodations;

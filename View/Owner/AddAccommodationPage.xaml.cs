@@ -25,24 +25,28 @@ namespace BookingApp.View.Owner
     public partial class AddAccommodationPage : Page
     {
         private AccommodationRepository _repository;
+
         private AccommodationDTO _accommodationDTO;
+        private UserDTO _loggedInOwner;
+
         private OwnerMainWindow _ownerMainWindow;
 
         private List<string> _images;
-
         private Brush _defaultBrushBorder;
 
-        public AddAccommodationPage(OwnerMainWindow ownerMainWindow)
+        public AddAccommodationPage(OwnerMainWindow ownerMainWindow, UserDTO loggedInOwner)
         {
             InitializeComponent();
             _defaultBrushBorder = textBoxName.BorderBrush.Clone();
             comboBoxType.SelectedItem = comboBoxItemApartment;
             
             _repository = new AccommodationRepository();
+            
             _accommodationDTO = new AccommodationDTO();
-            _ownerMainWindow = ownerMainWindow;
-
             _accommodationDTO.CancellationPeriod = 1;
+            _loggedInOwner = loggedInOwner;
+
+            _ownerMainWindow = ownerMainWindow;
 
             DataContext = _accommodationDTO;
         }
@@ -56,15 +60,16 @@ namespace BookingApp.View.Owner
             else
                 _accommodationDTO.Type = AccomodationType.Cottage;
 
+            _accommodationDTO.OwnerId = _loggedInOwner.Id;
             _accommodationDTO.Images = _images;
 
             _repository.Save(_accommodationDTO.ToAccommodation());
 
-            setDefaultValues();
+            SetDefaultValues();
             _ownerMainWindow.Update();
         }
 
-        private void setDefaultValues()
+        private void SetDefaultValues()
         {
             _accommodationDTO.Name = string.Empty;
             _accommodationDTO.Type = AccomodationType.Apartment;
@@ -97,7 +102,7 @@ namespace BookingApp.View.Owner
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
-            if(InputCheck())
+            if(CheckInput())
                 buttonAdd.IsEnabled = true;
             else
                 buttonAdd.IsEnabled = false;
@@ -115,14 +120,12 @@ namespace BookingApp.View.Owner
                         TextBox textBox = (TextBox)control;
                         if (textBox.Text == string.Empty)
                         {
-                            textBox.BorderBrush = Brushes.Red;
-                            textBox.BorderThickness = new Thickness(2);
+                            BorderBrushToRed(textBox);
                             validInput = false;
                         }
                         else
                         {
-                            textBox.BorderBrush = _defaultBrushBorder;
-                            textBox.BorderThickness = new Thickness(2);
+                            BorderBrushToDefault(textBox);
                         }
                     } 
                 }
@@ -130,7 +133,7 @@ namespace BookingApp.View.Owner
 
             return validInput;
         }
-        private bool InputCheck()
+        private bool CheckInput()
         {
             bool validInput = EmptyTextBoxCheck();
 
