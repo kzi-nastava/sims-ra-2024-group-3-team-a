@@ -58,21 +58,28 @@ namespace BookingApp.View.Owner
 
         public void Update()
         {
-            AccommodationsDTO.Clear();
-            AccommodationReservationsDTO.Clear();
-            foreach (var accommodation in _accommodationRepository.GetAll())
-            {
-                AccommodationDTO accommodationDTO = new AccommodationDTO(accommodation);
-                if(IsLoggedOwner(accommodationDTO))   
-                    AccommodationsDTO.Add(accommodationDTO);
-            }
-
+            UpdateAccomodationReservations();
+            UpdateAccommodations();   
+        }
+        private void UpdateAccomodationReservations()
+        {
+            AccommodationReservationsDTO.Clear();          
             foreach (var reservation in _accommodationReservationRepository.GetAll())
             {
                 AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
                 AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
-                if(IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
+                if (IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
                     AccommodationReservationsDTO.Add(reservationDTO);
+            }
+        }
+        private void UpdateAccommodations()
+        {
+            AccommodationsDTO.Clear();
+            foreach (var accommodation in _accommodationRepository.GetAll())
+            {
+                AccommodationDTO accommodationDTO = new AccommodationDTO(accommodation);
+                if (IsLoggedOwner(accommodationDTO))
+                    AccommodationsDTO.Add(accommodationDTO);
             }
         }
         private bool IsLoggedOwner(AccommodationDTO accommodationDTO)
@@ -95,71 +102,86 @@ namespace BookingApp.View.Owner
         private void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
         {
             if(frameMain.Content != null)
-            {
                 frameMain.Content = null;
-            }
             else
-            {
-                frameMain.Content = new AddAccommodationPage(this);
-            }  
+                frameMain.Content = new AddAccommodationPage(this, _loggedInOwner); 
         }
         private void ShowRateGuestPage(object sender, RoutedEventArgs e)
         {
             if(dataGridReservations.SelectedItem != null && frameMain.Content == null)
-            {
                 frameMain.Content = new RateGuestPage(this, dataGridReservations.SelectedItem as AccommodationReservationDTO);
-            }
             else if(frameMain.Content == null)
-            {
                 MessageBox.Show("User to rate not selected!");
-            }
             else
-            {
                 frameMain.Content = null;
-            }
         }
         private void ShowSideMenu(object sender, RoutedEventArgs e)
         {
             frameSideMenu.Content = new SideMenuPage(this);
         }
 
-        private bool isRateGuestPageOpened = false;
-        private bool isAddAccommodationPageOpened = false;
+        private bool _isRateGuestPageOpened = false;
+        private bool _isAddAccommodationPageOpened = false;
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(tabControl.SelectedItem == tabItemAccommodations)
-            {
-                if (isRateGuestPageOpened)
-                {
-                    buttonFunction.Click -= ShowRateGuestPage;
-                    isRateGuestPageOpened = false;
-                }
-
-                if (!isAddAccommodationPageOpened)
-                {
-                    buttonFunction.Click += ShowAddAccommodationPage;
-                    isAddAccommodationPageOpened = true;
-                }
-                imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\add.png", UriKind.Relative));
-                textBlockFunction.Text = "Add";
-            }
+            if (tabControl.SelectedItem == tabItemAccommodations)
+                HandleAccommodationsTabSelection();
             else
-            {
-                if (isAddAccommodationPageOpened)
-                {
-                    buttonFunction.Click -= ShowAddAccommodationPage;
-                    isAddAccommodationPageOpened = false;
-                }
+                HandleUsersTabSelection();
+        }
+        private void HandleAccommodationsTabSelection()
+        {
+            UnsubscribeFromRateGuestPage();
 
-                if (!isRateGuestPageOpened)
-                {
-                    buttonFunction.Click += ShowRateGuestPage;
-                    isRateGuestPageOpened = true;
-                }
-                imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
-                textBlockFunction.Text = "Rate";
+            if (!_isAddAccommodationPageOpened)
+                SubscribeToAddAccommodationPage();
+
+            SetAddAccommodationFunctionality();
+        }
+        private void HandleUsersTabSelection()
+        {
+            UnsubscribeFromAddAccommodationPage();
+
+            if (!_isRateGuestPageOpened)
+                SubscribeToRateGuestPage();
+
+            SetRateGuestFunctionality();
+        }
+        private void SubscribeToAddAccommodationPage()
+        {
+            buttonFunction.Click += ShowAddAccommodationPage;
+            _isAddAccommodationPageOpened = true;
+        }
+        private void UnsubscribeFromAddAccommodationPage()
+        {
+            if (_isAddAccommodationPageOpened)
+            {
+                buttonFunction.Click -= ShowAddAccommodationPage;
+                _isAddAccommodationPageOpened = false;
             }
-            frameMain.Content = null;
+        }
+        private void SubscribeToRateGuestPage()
+        {
+            buttonFunction.Click += ShowRateGuestPage;
+            _isRateGuestPageOpened = true;
+        }
+        private void UnsubscribeFromRateGuestPage()
+        {
+            if (_isRateGuestPageOpened)
+            {
+                buttonFunction.Click -= ShowRateGuestPage;
+                _isRateGuestPageOpened = false;
+            }
+        }
+        private void SetAddAccommodationFunctionality()
+        {
+            imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\add.png", UriKind.Relative));
+            textBlockFunction.Text = "Add";
+        }
+        private void SetRateGuestFunctionality()
+        {
+            imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
+            textBlockFunction.Text = "Rate";
         }
 
         private void SetNotificationTimer()

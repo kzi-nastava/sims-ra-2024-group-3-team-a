@@ -51,7 +51,7 @@ namespace BookingApp.View.Owner
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
-            if (InputCheck())
+            if (CheckInput())
                 buttonAdd.IsEnabled = true;
             else
                 buttonAdd.IsEnabled = false;
@@ -69,14 +69,12 @@ namespace BookingApp.View.Owner
                         TextBox textBox = (TextBox)control;
                         if (textBox.Text == string.Empty)
                         {
-                            textBox.BorderBrush = Brushes.Red;
-                            textBox.BorderThickness = new Thickness(2);
+                            BorderBrushToRed(textBox);
                             validInput = false;
                         }
                         else
                         {
-                            textBox.BorderBrush = _defaultBrushBorder;
-                            textBox.BorderThickness = new Thickness(2);
+                            BorderBrushToDefault(textBox);       
                         }
                     }
                 }
@@ -84,7 +82,7 @@ namespace BookingApp.View.Owner
 
             return validInput;
         }
-        private bool InputCheck()
+        private bool CheckInput()
         {
             bool validInput = EmptyTextBoxCheck();
 
