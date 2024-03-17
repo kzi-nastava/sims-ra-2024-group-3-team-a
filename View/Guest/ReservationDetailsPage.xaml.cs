@@ -31,14 +31,10 @@ namespace BookingApp.View.Guest
 
         private AccommodationReservationRepository _accommodationReservationRepository;
 
-        private int _guestNumber;
-
         public ReservationDetailsPage(AccommodationDTO accommodationDTO, UserDTO userDTO, DateOnly begin, DateOnly end)
         {
             InitializeComponent();
-
             _accommodationReservationRepository = new AccommodationReservationRepository();
-
             _accommodationDTO = accommodationDTO;
             _userDTO = userDTO;
             _selectedBeginDate = begin;
@@ -47,15 +43,23 @@ namespace BookingApp.View.Guest
 
         private void NewReservation_Click(object sender, RoutedEventArgs e)
         {
-            _guestNumber = Int32.Parse(GuestNumberTextBox.Text);
-            if(_guestNumber < 0 || _guestNumber > _accommodationDTO.Capacity ) 
+            int _guestNumber;
+            if(int.TryParse(GuestNumberTextBox.Text, out _guestNumber))
             {
-                MessageBox.Show($"Error! Capacity is {_accommodationDTO.Capacity} guests!");
-                return;
+                if (_guestNumber < 0 || _guestNumber > _accommodationDTO.Capacity)
+                {
+                    MessageBox.Show($"Error! Capacity is {_accommodationDTO.Capacity} guests!");
+                    return;
+                }
+                GuestRating rating = new GuestRating(0, 0, "");
+                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, rating);
+                _accommodationReservationRepository.Save(acc);
+                MessageBox.Show("Reservation successful!");
             }
-            GuestRating rating = new GuestRating(0, 0, "");
-            AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, rating);
-            _accommodationReservationRepository.Save(acc);
+            else
+            {
+                MessageBox.Show("Please enter number of guests!");
+            }
         }
     }
 }

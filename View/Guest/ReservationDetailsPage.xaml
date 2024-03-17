@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0">Unesite broj gostiju:</Label>
+        <Label Grid.Row="0">Enter number of guests:</Label>
         <TextBox x:Name="GuestNumberTextBox" Grid.Row="0" Grid.Column="1" Width="50" HorizontalAlignment="Center" />
 
         <!-- Adjusted button width and alignment -->

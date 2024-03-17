@@ -60,7 +60,6 @@ namespace BookingApp.View.Guest
 
             string allParams = searchCityInput + searchCountryInput + searchNameInput + searchTypeInput + searchCapacityInput + searchMinDaysInput;
 
-
             var filtered = AccommodationsDTO;
 
             if (allParams.Length == 0 || string.IsNullOrWhiteSpace(allParams))
@@ -70,7 +69,6 @@ namespace BookingApp.View.Guest
 
             filtered = FilterAccommodations(filtered, searchCountryInput, searchCityInput, searchNameInput, searchTypeInput, searchCapacityInput, searchMinDaysInput);
 
-
             dataGridAccommodation.ItemsSource = filtered;
         }
 
@@ -78,19 +76,21 @@ namespace BookingApp.View.Guest
         {
             var filtered = new ObservableCollection<AccommodationDTO>();
 
+            int? CapacityConvert = string.IsNullOrEmpty(searchCapacityInput) ? (int?)null : int.Parse(searchCapacityInput);
+            int? MinDaysConvert = string.IsNullOrEmpty(searchMinDaysInput) ? (int?)null : int.Parse(searchMinDaysInput);
+
             foreach (var accommodation in accommodations)
             {
                 if (accommodation.Name.ToString().Contains(searchNameInput)
                     && accommodation.Type.ToString().ToLower().Contains(searchTypeInput)
                     && accommodation.PlaceDTO.Country.ToLower().Contains(searchCountryInput)
                     && accommodation.PlaceDTO.City.ToLower().Contains(searchCityInput)
-                    && accommodation.Capacity.ToString().Contains(searchCapacityInput)
-                    && accommodation.MinDaysReservation.ToString().Contains(searchMinDaysInput))
+                    && (accommodation.Capacity >= CapacityConvert || CapacityConvert == null )
+                    && (accommodation.MinDaysReservation <= MinDaysConvert || MinDaysConvert == null))
                 {
                     filtered.Add(accommodation);
                 }
             }
-
             return filtered;
         }
 

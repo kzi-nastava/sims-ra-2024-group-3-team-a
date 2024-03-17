@@ -27,7 +27,7 @@
 
             <DatePicker Width="105" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerBegin" SelectedDate = "{Binding _selectedBeginDate, Mode=TwoWay}" />
         <DatePicker Width="105" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerEnd" SelectedDate = "{Binding _selectedEndDate, Mode=TwoWay}" />
-        <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+        <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"  Text="0" ></TextBox>
         <Button Width="100" Grid.Row="0" Grid.Column="3" Click="SearchAvailableDates_Click"> Search for dates! </Button>
         <DataGrid x:Name="dataGridAvailableDates" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" >
             <DataGrid.Columns>
