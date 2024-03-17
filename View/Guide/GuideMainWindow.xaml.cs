@@ -26,14 +26,18 @@ namespace BookingApp.View
 
         public static ObservableCollection<TourDTO> Tours { get; set; }
         private readonly TourRepository _tourRepository;
-        private TourDTO _tourDTO; 
 
-        public GuideMainWindow()
+        private TourDTO _tourDTO;
+        private UserDTO _loggedInGuide;
+
+
+        public GuideMainWindow(User guide)
         {
             InitializeComponent();
             DataContext = this;
             _tourRepository = new TourRepository();
             Tours = new ObservableCollection<TourDTO>();
+            _loggedInGuide = new UserDTO(guide);
             Update();
         }
 
@@ -44,7 +48,7 @@ namespace BookingApp.View
             foreach (Tour tour in _tourRepository.GetAll())
             {
                 TourDTO tourDTO = new TourDTO(tour);
-                if (tourDTO.BeginingTime.Date == DateTime.Today)
+                if (tourDTO.BeginingTime.Date == DateTime.Today && tourDTO.GuideId == _loggedInGuide.Id)
                 {
                     Tours.Add(tourDTO);
                 }
@@ -73,7 +77,7 @@ namespace BookingApp.View
 
         private void ShowAllToursWindow (object sender, RoutedEventArgs e)
         {
-            AllToursView allToursView = new AllToursView(this);
+            AllToursWindow allToursView = new AllToursWindow(this, _loggedInGuide);
             allToursView.Show();
         }
     }

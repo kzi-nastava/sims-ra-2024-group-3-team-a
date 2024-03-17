@@ -33,12 +33,15 @@ namespace BookingApp.View
         private string _tourKeyPoints;
         private List<DateTime> _dates;
 
+        private UserDTO _loggedGuide;
+
         public event EventHandler TourAdded;
-        private AllToursView _allToursView;
+        private AllToursWindow _allToursView;
         private GuideMainWindow _guideMainWindow;
         private Brush _defaultBrushBorder;
 
-        public AddTourWindow(AllToursView allToursView, GuideMainWindow guideMainWindow)
+
+        public AddTourWindow(AllToursWindow allToursView, GuideMainWindow guideMainWindow, UserDTO guide)
         {
             InitializeComponent();
             _tourRepository = new TourRepository();
@@ -48,6 +51,7 @@ namespace BookingApp.View
             _tourDTO = new TourDTO();
             _dates = new List<DateTime>();
             _allToursView = allToursView;
+            _loggedGuide = guide;
             DataContext = _tourDTO;
         }
 
@@ -98,28 +102,13 @@ namespace BookingApp.View
                 return;
             }
 
-            _tourDTO.KeyPointsDTO.Begining = tourKeyPoints[0];
-            if (tourKeyPoints.Length != 1)
-            {
-                for (int i = 1; i < tourKeyPoints.Length - 1; i++)
-                {
-                    _tourDTO.KeyPointsDTO.Middle.Add(tourKeyPoints[i]);
-                }
-            }
-
-            _tourDTO.KeyPointsDTO.Ending = tourKeyPoints[tourKeyPoints.Length - 1];
-            if (comboBoxType.SelectedItem == comboBoxItemSerbian)
-                _tourDTO.Language = Languages.Serbian;
-            else if (comboBoxType.SelectedItem == comboBoxItemEnglish)
-                _tourDTO.Language = Languages.English;
-            else if (comboBoxType.SelectedItem == comboBoxItemGerman)
-                _tourDTO.Language = Languages.German;
-            else
-                _tourDTO.Language = Languages.French;
+            SetKeyPoints(tourKeyPoints);
+            SetLanguage();
 
             int id = (_keyPointRepository.Save(_tourDTO.KeyPointsDTO.ToKeyPoint())).Id;
-            _tourDTO.Images = _images;
             _tourDTO.KeyPointsDTO.Id = id;
+            _tourDTO.Images = _images;
+            _tourDTO.GuideId = _loggedGuide.Id;
 
             foreach (var date in _dates)
             {
@@ -132,6 +121,31 @@ namespace BookingApp.View
             _allToursView.Update();
             _guideMainWindow.Update();
             Close();
+        }
+        
+        private void SetLanguage()
+        {
+            if (comboBoxType.SelectedItem == comboBoxItemSerbian)
+                _tourDTO.Language = Languages.Serbian;
+            else if (comboBoxType.SelectedItem == comboBoxItemEnglish)
+                _tourDTO.Language = Languages.English;
+            else if (comboBoxType.SelectedItem == comboBoxItemGerman)
+                _tourDTO.Language = Languages.German;
+            else
+                _tourDTO.Language = Languages.French;
+        }
+
+        private void SetKeyPoints(string[] keyPoints)
+        {
+            _tourDTO.KeyPointsDTO.Begining = keyPoints[0];
+            if (keyPoints.Length != 1)
+            {
+                for (int i = 1; i < keyPoints.Length - 1; i++)
+                {
+                    _tourDTO.KeyPointsDTO.Middle.Add(keyPoints[i]);
+                }
+            }
+            _tourDTO.KeyPointsDTO.Ending = keyPoints[keyPoints.Length - 1];
         }
 
         private void textBox_TextChanged(object sender, EventArgs e)
