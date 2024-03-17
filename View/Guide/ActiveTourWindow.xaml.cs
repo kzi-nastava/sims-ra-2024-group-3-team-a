@@ -60,29 +60,24 @@ namespace BookingApp.View
             _keypointsDTO = new KeyPointsDTO(keypoint);
             int keyPointsNum = _keypointsDTO.Middle.Count() + 2;
             int count = 0;
+
             for (int i = 0; i < 6; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
                     if (count < keyPointsNum)
                     {
-                        Button MyControl1 = new Button();
-                        MyControl1.Click += (sender, e) =>
-                        {
-                            ClickButton(MyControl1);
-                        };
+                        Button button = CreateButton(count);
+
                         if (count == 0)
                         {
-                            MyControl1.Content = _keypointsDTO.Begining;
-                            MyControl1.Background = new SolidColorBrush(Colors.IndianRed);
-                            _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
-                            _tourDTO.IsActive = true;
+                            SetInitialButtonProperties(button);
                         }
                         else if (keyPointsNum != 2 && count <= _keypointsDTO.Middle.Count())
                         {
                             if (_keypointsDTO.Middle[count - 1] != "")
                             {
-                                MyControl1.Content = _keypointsDTO.Middle[count - 1];
+                                button.Content = _keypointsDTO.Middle[count - 1];
 
                             }
                             else
@@ -93,20 +88,39 @@ namespace BookingApp.View
                         }
                         else
                         {
-                            MyControl1.Content = _keypointsDTO.Ending;
+                            button.Content = _keypointsDTO.Ending;
                         }
-                        MyControl1.Name = "Button" + count.ToString();
-                        Grid.SetColumn(MyControl1, j);
-                        Grid.SetRow(MyControl1, i);
-                        gridMain.Children.Add(MyControl1);
-
+                        button.Name = "Button" + count.ToString();
+                        AddButtonToGrid(button, i, j);
                         count++;
                     }
                 }
             }
         }
 
-       public void ClickButton(Button button)
+        private Button CreateButton(int count)
+        {
+            Button button = new Button();
+            button.Click += (sender, e) => ClickButton(button);
+            return button;
+        }
+
+        private void SetInitialButtonProperties(Button button)
+        {
+            button.Content = _keypointsDTO.Begining;
+            button.Background = new SolidColorBrush(Colors.IndianRed);
+            _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
+            _tourDTO.IsActive = true;
+        }
+
+        private void AddButtonToGrid(Button button, int row, int column)
+        {
+            Grid.SetColumn(button, column);
+            Grid.SetRow(button, row);
+            gridMain.Children.Add(button);
+        }
+
+        public void ClickButton(Button button)
         {
             _tourDTO.CurrentKeyPoint = button.Content.ToString();
             button.Background = Brushes.IndianRed;
@@ -120,7 +134,7 @@ namespace BookingApp.View
             }
         }
 
-        private void JoinTourist_Click(object sender, RoutedEventArgs e)
+        private void TouristJoiningPoint(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             TouristDTO selectedTourist = new TouristDTO();
