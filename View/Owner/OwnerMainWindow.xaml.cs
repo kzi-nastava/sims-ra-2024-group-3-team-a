@@ -108,10 +108,11 @@ namespace BookingApp.View.Owner
         }
         private void ShowRateGuestPage(object sender, RoutedEventArgs e)
         {
-            if(dataGridReservations.SelectedItem != null && frameMain.Content == null)
-                frameMain.Content = new RateGuestPage(this, dataGridReservations.SelectedItem as AccommodationReservationDTO);
+            var selectedReservation = dataGridReservations.SelectedItem;
+            if (selectedReservation != null && frameMain.Content == null && (selectedReservation as AccommodationReservationDTO).RatingDTO.CleannessRating == 0)
+                frameMain.Content = new RateGuestPage(this, selectedReservation as AccommodationReservationDTO);
             else if(frameMain.Content == null)
-                MessageBox.Show("User to rate not selected!");
+                MessageBox.Show("User to rate not selected or user already rated!");
             else
                 frameMain.Content = null;
         }
