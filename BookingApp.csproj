@@ -10,8 +10,19 @@
   <ItemGroup>
     <None Remove="Resources\Images\accommodations.png" />
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\back.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\inbox.png" />
+    <None Remove="Resources\Images\inbox_alert.png" />
+    <None Remove="Resources\Images\Owner\AccommodationPicture1.jpg" />
+    <None Remove="Resources\Images\Owner\AccommodationPicture1.png" />
+    <None Remove="Resources\Images\Owner\Beach.jpg" />
+    <None Remove="Resources\Images\Owner\Beach.png" />
+    <None Remove="Resources\Images\Owner\Cottage.jpg" />
+    <None Remove="Resources\Images\Owner\Cottage.png" />
+    <None Remove="Resources\Images\Owner\Hotel.jpg" />
+    <None Remove="Resources\Images\Owner\Hotel.png" />
     <None Remove="Resources\Images\Owner\menu.png" />
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
@@ -25,12 +36,19 @@
     <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\back.png" />
     <Resource Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\inbox.png" />
+    <Resource Include="Resources\Images\inbox_alert.png" />
+    <Resource Include="Resources\Images\Owner\AccommodationPicture1.png" />
+    <Resource Include="Resources\Images\Owner\Beach.png" />
+    <Resource Include="Resources\Images\Owner\Cottage.png" />
+    <Resource Include="Resources\Images\Owner\Hotel.png" />
     <Resource Include="Resources\Images\Owner\menu.png" />
     <Resource Include="Resources\Images\Owner\notification.png" />
     <Resource Include="Resources\Images\Owner\OwnerBackground.jpg" />

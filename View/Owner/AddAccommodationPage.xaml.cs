@@ -66,7 +66,16 @@ namespace BookingApp.View.Owner
             _repository.Save(_accommodationDTO.ToAccommodation());
 
             SetDefaultValues();
-            _ownerMainWindow.Update();
+            _ownerMainWindow.frameMain.Content = new AccommodationsPage(_ownerMainWindow);
+        }
+
+        private void ShowSideMenu(object sender, RoutedEventArgs e)
+        {
+            _ownerMainWindow.ShowSideMenu(sender, e);
+        }
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            _ownerMainWindow.frameMain.GoBack();
         }
 
         private void SetDefaultValues()
