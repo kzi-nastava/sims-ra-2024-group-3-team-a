@@ -25,7 +25,7 @@ namespace BookingApp.Model
         public List<string> Images { get; set; }
         public string CurrentKeyPoint { get; set; }
         public int CurrentCapacity { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive  { get; set; }
 
         public Tour() 
         {
@@ -84,12 +84,12 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint, images };
+                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint,IsActive.ToString(), images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint };
+                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint, IsActive.ToString() };
                 return csvValues;
             }
         }
@@ -109,7 +109,8 @@ namespace BookingApp.Model
             CurrentCapacity = Convert.ToInt32(values[10]);
             KeyPoint.Id = Convert.ToInt32(values[11]);
             CurrentKeyPoint = values[12];
-            for (int i = 13; i < values.Length; i++)
+            IsActive =Convert.ToBoolean( values[13]);
+            for (int i = 14; i < values.Length; i++)
             {
                Images.Add(values[i]);
             }

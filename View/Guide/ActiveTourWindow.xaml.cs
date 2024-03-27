@@ -30,13 +30,18 @@ namespace BookingApp.View
         private readonly TourReservationRepository _tourReservationRepository;
         private readonly TourRepository _tourRepository;
 
-   
+        private Boolean _doesActiveTourExist;
+        private GuideMainWindow _guideMainWindow;
+
+
         public static ObservableCollection<TouristDTO> Tourists { get; set; }
 
-        public ActiveTourWindow(TourDTO tour)
+        public ActiveTourWindow(TourDTO tour, Boolean activeTourExists, GuideMainWindow guideMainWindow)
         {
             InitializeComponent();
             _tourDTO = tour;
+            _doesActiveTourExist = activeTourExists;
+            _guideMainWindow = guideMainWindow;
             Tourists = new ObservableCollection<TouristDTO>();
             this.DataContext = this;
             _keyPointsRepository = new KeyPointsRepository();
@@ -51,6 +56,7 @@ namespace BookingApp.View
             _tourDTO.CurrentKeyPoint = "finished";
             _tourDTO.IsActive = false;
             _tourRepository.Update(_tourDTO.ToTourAllParam());
+            _guideMainWindow.Update();
             this.Close();
         }
 
@@ -68,16 +74,25 @@ namespace BookingApp.View
                     if (count < keyPointsNum)
                     {
                         Button button = CreateButton(count);
-
+                        
                         if (count == 0)
                         {
                             SetInitialButtonProperties(button);
+                            if (IsButtonLastKeyPoint(button))
+                            {
+                                button.Background = new SolidColorBrush(Colors.IndianRed);
+                            }
+
                         }
                         else if (keyPointsNum != 2 && count <= _keypointsDTO.Middle.Count())
                         {
                             if (_keypointsDTO.Middle[count - 1] != "")
                             {
                                 button.Content = _keypointsDTO.Middle[count - 1];
+                                if (IsButtonLastKeyPoint(button))
+                                {
+                                    button.Background = new SolidColorBrush(Colors.IndianRed);
+                                }
 
                             }
                             else
@@ -89,7 +104,12 @@ namespace BookingApp.View
                         else
                         {
                             button.Content = _keypointsDTO.Ending;
+                            if (IsButtonLastKeyPoint(button))
+                            {
+                                button.Background = new SolidColorBrush(Colors.IndianRed);
+                            }
                         }
+
                         button.Name = "Button" + count.ToString();
                         AddButtonToGrid(button, i, j);
                         count++;
@@ -97,7 +117,15 @@ namespace BookingApp.View
                 }
             }
         }
-
+        private Boolean IsButtonLastKeyPoint(Button b)
+        {
+            if (b.Content.ToString() == _tourDTO.CurrentKeyPoint)
+            {
+                return true;
+            }
+            else return false;
+        }
+        
         private Button CreateButton(int count)
         {
             Button button = new Button();
@@ -108,9 +136,13 @@ namespace BookingApp.View
         private void SetInitialButtonProperties(Button button)
         {
             button.Content = _keypointsDTO.Begining;
-            button.Background = new SolidColorBrush(Colors.IndianRed);
-            _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
             _tourDTO.IsActive = true;
+            _tourRepository.Update(_tourDTO.ToTourAllParam());
+            if (_doesActiveTourExist == false)
+            {
+                button.Background = new SolidColorBrush(Colors.IndianRed);
+                _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
+            }
         }
 
         private void AddButtonToGrid(Button button, int row, int column)
@@ -123,6 +155,7 @@ namespace BookingApp.View
         public void ClickButton(Button button)
         {
             _tourDTO.CurrentKeyPoint = button.Content.ToString();
+            _tourRepository.Update(_tourDTO.ToTourAllParam());
             button.Background = Brushes.IndianRed;
             if(button.Content == _keypointsDTO.Ending)
             {
@@ -130,6 +163,7 @@ namespace BookingApp.View
                 _tourDTO.CurrentKeyPoint = "finished";
                 _tourDTO.IsActive=false;
                 _tourRepository.Update(_tourDTO.ToTourAllParam());
+                _guideMainWindow.Update();
                 this.Close();
             }
         }
@@ -143,6 +177,8 @@ namespace BookingApp.View
             _touristDTO.JoiningKeyPoint = _tourDTO.CurrentKeyPoint;
             button.Background = Brushes.IndianRed;
         }
+        
+
         private void Update()
         {
             Tourists.Clear();
@@ -158,6 +194,8 @@ namespace BookingApp.View
                     }
                 }
             }
+          
+
         }
     }
 }
