@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:BookingApp.View.Owner"
       mc:Ignorable="d"
-      d:DesignHeight="500" d:DesignWidth="430"
+      d:DesignHeight="750" d:DesignWidth="430"
       Title="AddAccommodationPage">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,13 +13,25 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="65"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        <!--Accommodations Toolbar-->
+        <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"  Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+            <Grid Background="Transparent" Margin="3,3,3,3">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00">ACCOMODATIONS</Label>
+                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="ShowSideMenu" Width="40" Height="40">
+                    <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
+                </Button>
+                <Button BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Click="GoBack" Width="40" Height="40">
+                    <Image Name="imageBack" Source="../../Resources/Images/back.png" />
+                </Button>
+            </Grid>
+        </Border>
 
-        <StackPanel x:Name="stackPanel" Grid.ColumnSpan="2">
-            <Label Foreground="#d4ff00" FontSize="27" HorizontalAlignment="Center" FontWeight="Bold" Content="Accommodation"/>
+        <StackPanel x:Name="stackPanel" Grid.Row="1" Grid.ColumnSpan="2">
+            <Label Foreground="#d4ff00" FontSize="27" HorizontalAlignment="Center" FontWeight="Bold" Content="New Accommodation"/>
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"></ColumnDefinition>
