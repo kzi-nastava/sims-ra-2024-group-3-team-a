@@ -68,13 +68,13 @@
                 </StackPanel>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Cleanness:"/>
-                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="3" Grid.Column="1" Content="{Binding Path=RatingDTO.CleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="3" Grid.Column="1" Content="{Binding Path=RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Content="Rules:"/>
-                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="4" Grid.Column="1" Content="{Binding Path=RatingDTO.RulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="4" Grid.Column="1" Content="{Binding Path=RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Comment:</Label>
-                <TextBlock TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="5" Grid.Column="1" Text="{Binding Path=RatingDTO.Comment}"/>
+                <TextBlock TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="5" Grid.Column="1" Text="{Binding Path=RatingDTO.OwnerComment}"/>
             </Grid>
         </StackPanel>
     </Grid>

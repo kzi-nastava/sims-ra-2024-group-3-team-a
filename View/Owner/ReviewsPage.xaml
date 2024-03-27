@@ -52,11 +52,11 @@
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Cleanness Rating: "/>
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.CleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Rules Respect Rating: "/>
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.RulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>

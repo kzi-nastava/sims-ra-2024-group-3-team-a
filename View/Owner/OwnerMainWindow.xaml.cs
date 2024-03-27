@@ -29,10 +29,12 @@ namespace BookingApp.View.Owner
     {
         public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
         public static ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<MessageDTO> MessagesDTO { get; set; }
 
         private readonly AccommodationRepository _accommodationRepository;
         private readonly AccommodationReservationRepository _accommodationReservationRepository;
         private readonly UserRepository _userRepository;
+        private readonly MessageRepository _messageRepository;
 
         public UserDTO LoggedInOwner;
 
@@ -45,9 +47,11 @@ namespace BookingApp.View.Owner
             _accommodationRepository = new AccommodationRepository();
             _accommodationReservationRepository = new AccommodationReservationRepository();
             _userRepository = new UserRepository();
+            _messageRepository = new MessageRepository();
 
             AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
             AccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            MessagesDTO = new ObservableCollection<MessageDTO>();
 
             LoggedInOwner = new UserDTO(owner);
 
@@ -61,6 +65,7 @@ namespace BookingApp.View.Owner
         {
             UpdateAccomodationReservations();
             UpdateAccommodations();
+            UpdateMessages();
         }
         private void UpdateAccommodations()
         {
@@ -99,6 +104,16 @@ namespace BookingApp.View.Owner
             }
             return false;
         }
+        private void UpdateMessages()
+        {
+            MessagesDTO.Clear();
+            _messageRepository.SetMessages();
+            foreach (var message in _messageRepository.GetAll())
+            {
+                MessageDTO messageDTO = new MessageDTO(message);
+                MessagesDTO.Add(messageDTO);
+            }
+        }
 
         public void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
         {
@@ -125,7 +140,7 @@ namespace BookingApp.View.Owner
         }
         private static void Notify(Frame frameNotification, UserRepository userRepository)
         {
-            if(AccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.CleannessRating == 0))
+            if(AccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.OwnerCleannessRating == 0))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -133,7 +148,7 @@ namespace BookingApp.View.Owner
                     notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
                     foreach(var reservation in AccommodationReservationsDTO)
                     {
-                        if(reservation.RatingDTO.CleannessRating == 0)
+                        if(reservation.RatingDTO.OwnerCleannessRating == 0)
                         {
                             UserDTO guest = new UserDTO(userRepository.GetById(reservation.GuestId));
                             notificationPage.buttonNotification.ToolTip += "You didn't rate Guest " + guest.Username + "\n";

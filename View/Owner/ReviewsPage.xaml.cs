@@ -65,7 +65,7 @@ namespace BookingApp.View.Owner
 
             var selectedItem = myReviewsList.SelectedItem as AccommodationReservationDTO;
 
-            if(selectedItem.RatingDTO.CleannessRating == 0)
+            if(selectedItem.RatingDTO.OwnerCleannessRating == 0)
             {
                 _ownerMainWindow.frameMain.Content = new MyReviewNotRatedPage(_ownerMainWindow, selectedItem);
                 myReviewsList.SelectedItem = null;

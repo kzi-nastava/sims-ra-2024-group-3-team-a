@@ -68,15 +68,15 @@
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Cleanness "/>
                 <TextBox x:Name="textBoxCleannessRating" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=RatingDTO.CleannessRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=RatingDTO.OwnerCleannessRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Content="Rules"/>
                 <TextBox x:Name="textBoxRulesRespectRating" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=RatingDTO.RulesRespectRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=RatingDTO.OwnerRulesRespectRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Comment</Label>
                 <TextBox x:Name="textBoxComment" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=RatingDTO.Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=RatingDTO.OwnerComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
             </Grid>
 
             <Grid Height="50" Margin="0,20,0,0">

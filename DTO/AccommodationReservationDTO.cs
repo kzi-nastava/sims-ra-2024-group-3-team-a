@@ -13,7 +13,7 @@ namespace BookingApp.DTO
     {
         public AccommodationReservationDTO()
         {
-            ratingDTO = new GuestRatingDTO();
+            ratingDTO = new ReviewDTO();
         }
 
         public AccommodationReservationDTO(AccommodationReservation reservation) 
@@ -23,7 +23,7 @@ namespace BookingApp.DTO
             guestId = reservation.GuestId;
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
-            ratingDTO = new GuestRatingDTO(reservation.Rating);
+            ratingDTO = new ReviewDTO(reservation.Rating);
         }
 
         public AccommodationReservationDTO(AccommodationReservationDTO reservationDTO)
@@ -33,7 +33,7 @@ namespace BookingApp.DTO
             guestId = reservationDTO.GuestId;
             beginDate = reservationDTO.BeginDate;
             endDate = reservationDTO.EndDate;
-            ratingDTO = new GuestRatingDTO(reservationDTO.RatingDTO);
+            ratingDTO = new ReviewDTO(reservationDTO.RatingDTO);
         }
 
         private int id;
@@ -106,8 +106,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private GuestRatingDTO ratingDTO;
-        public GuestRatingDTO RatingDTO
+        private ReviewDTO ratingDTO;
+        public ReviewDTO RatingDTO
         {
             get { return ratingDTO; }
             set
