@@ -16,14 +16,14 @@ namespace BookingApp.Model
         public int AccommodationId { get; set; }
         public DateOnly BeginDate { get; set; }
         public DateOnly EndDate { get; set;}
-        public GuestRating Rating { get; set; }
+        public Review Rating { get; set; }
 
         public AccommodationReservation()
         { 
-            Rating = new GuestRating();
+            Rating = new Review();
         }
 
-        public AccommodationReservation(int id, int guestId, int accommodationId, DateOnly beginDate, DateOnly endDate, GuestRating rating)
+        public AccommodationReservation(int id, int guestId, int accommodationId, DateOnly beginDate, DateOnly endDate, Review rating)
         {
             Id = id;
             GuestId = guestId;
@@ -35,8 +35,18 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Rating.CleannessRating.ToString(), Rating.RulesRespectRating.ToString(), Rating.Comment };
+
+            if (Rating.GuestImages != null)
+            {
+                string images = string.Join("|", Rating.GuestImages);
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, images };
                 return csvValues;
+            }
+            else
+            {
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment };
+                return csvValues;
+            }
         }
 
         public void FromCSV(string[] values)
@@ -46,9 +56,16 @@ namespace BookingApp.Model
             AccommodationId = Convert.ToInt32(values[2]);
             BeginDate = DateOnly.Parse(values[3]);
             EndDate = DateOnly.Parse(values[4]);
-            Rating.CleannessRating = Convert.ToInt32(values[5]);
-            Rating.RulesRespectRating = Convert.ToInt32(values[6]);
-            Rating.Comment = values[7];
+            Rating.OwnerCleannessRating = Convert.ToInt32(values[5]);
+            Rating.OwnerRulesRespectRating = Convert.ToInt32(values[6]);
+            Rating.OwnerComment = values[7];
+            Rating.GuestCleannessRating = Convert.ToInt32(values[8]);
+            Rating.GuestHospitalityRating = Convert.ToInt32(values[9]);
+            Rating.GuestComment = values[10];
+            for (int i = 11; i < values.Length; i++)
+            {
+                Rating.GuestImages.Add(values[i]);
+            }
         }
     }
 }
