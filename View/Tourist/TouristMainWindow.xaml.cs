@@ -67,11 +67,11 @@ namespace BookingApp.View
 
             if ((allParams).Length == 0 || string.IsNullOrWhiteSpace(allParams))
             {
-                dataGridTour.ItemsSource = Tours;
+             //   dataGridTour.ItemsSource = Tours;
             }
 
             filtered = FilterTours(filtered, searchCountryInput, sarchCityInput, searchDurationInput, searchLanguageInput, searchMaxTouristNumberInput);
-            dataGridTour.ItemsSource = filtered;
+          //  dataGridTour.ItemsSource = filtered;
         }
 
         private ObservableCollection<BookingApp.DTO.TourDTO> FilterTours(ObservableCollection<BookingApp.DTO.TourDTO> tours, string searchCountryInput, string searchCityInput, string searchDurationInput,string searchLanguageInput, string searchMaxTouristNumberInput)
@@ -95,7 +95,7 @@ namespace BookingApp.View
         
         private void ShowAppropriateWindow(object sender, RoutedEventArgs e)
         {
-            _tourDTO = dataGridTour.SelectedItem as TourDTO;
+           // _tourDTO = dataGridTour.SelectedItem as TourDTO;
 
             if(_tourDTO != null) 
             {
