@@ -44,5 +44,12 @@ namespace BookingApp.View.Owner
         {
             _ownerMainWindow.frameMain.Content = new InboxPage(_ownerMainWindow);
         }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            _ownerMainWindow.Close();
+        }
     }
 }

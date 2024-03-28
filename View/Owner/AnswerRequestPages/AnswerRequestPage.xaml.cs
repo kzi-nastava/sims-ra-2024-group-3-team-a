@@ -30,6 +30,7 @@ namespace BookingApp.View.Owner.AnswerRequestPages
         public static ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO { get; set; }
 
         private AccommodationReservationChangeRequestDTO _accommodationReservationChangeRequestDTO;
+        private AccommodationReservationDTO _accommodationReservationDTO;
 
         private AccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
         private AccommodationReservationRepository _accommodationReservationRepository;
@@ -49,6 +50,7 @@ namespace BookingApp.View.Owner.AnswerRequestPages
             _ownerMainWindow = ownerMainWindow;
             _messageDTO = messageDTO;
             _accommodationReservationChangeRequestDTO = new AccommodationReservationChangeRequestDTO(_accommodationReservationChangeRequestRepository.GetById(_messageDTO.RequestId));
+            _accommodationReservationDTO = new AccommodationReservationDTO(_accommodationReservationRepository.GetById(_accommodationReservationChangeRequestDTO.AccommodationReservationId));
 
             SetAllReservations();
             calendarOccupiedDays.DisplayDateStart = new DateTime(_accommodationReservationChangeRequestDTO.BeginDateNew.Year, _accommodationReservationChangeRequestDTO.BeginDateNew.Month, _accommodationReservationChangeRequestDTO.BeginDateNew.Day);
@@ -68,7 +70,7 @@ namespace BookingApp.View.Owner.AnswerRequestPages
         {
             foreach(var reservation in AccommodationReservationsDTO)
             {
-                if (reservation.AccommodationId == _accommodationReservationRepository.GetById(_accommodationReservationChangeRequestDTO.AccommodationReservationId).AccommodationId && reservation.GuestId != _accommodationReservationRepository.GetById(_accommodationReservationChangeRequestDTO.AccommodationReservationId).GuestId)
+                if (reservation.AccommodationId == _accommodationReservationDTO.AccommodationId && reservation.GuestId != _accommodationReservationDTO.GuestId)
                 {
                     DateTime beginDate = new DateTime(reservation.BeginDate.Year, reservation.BeginDate.Month, reservation.BeginDate.Day);
                     DateTime endDate = new DateTime(reservation.EndDate.Year, reservation.EndDate.Month, reservation.EndDate.Day);
@@ -92,6 +94,9 @@ namespace BookingApp.View.Owner.AnswerRequestPages
             _accommodationReservationChangeRequestDTO.Status = AccommodationChangeRequestStatus.Accepted;
             _accommodationReservationChangeRequestRepository.Update(_accommodationReservationChangeRequestDTO.ToAccommodationReservationChangeRequest());
             _messageRepository.Delete(_messageDTO.ToMessage());
+            _accommodationReservationDTO.BeginDate = _accommodationReservationChangeRequestDTO.BeginDateNew;
+            _accommodationReservationDTO.EndDate = _accommodationReservationChangeRequestDTO.EndDateNew;
+            _accommodationReservationRepository.Update(_accommodationReservationDTO.ToAccommodationReservation());
             _ownerMainWindow.frameMain.Content = new InboxPage(_ownerMainWindow);
         }
 

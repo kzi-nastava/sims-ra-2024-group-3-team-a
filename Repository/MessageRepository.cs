@@ -92,9 +92,9 @@ namespace BookingApp.Repository
         {
             foreach (var reservation in _accommodationReservationRepository.GetAll())
             {
-                if (!_messages.Any(message => message.RequestId == reservation.Id) && reservation.Rating.GuestCleannessRating != 0)
+                if (!_messages.Any(message => message.RequestId == reservation.Id) && reservation.Rating.GuestCleannessRating != 0 && reservation.Rating.OwnerCleannessRating != 0)
                 {
-                    string content = "You have a new review from " + _userRepository.GetById(reservation.GuestId) + "." +
+                    string content = "You have a new review from " + _userRepository.GetById(reservation.GuestId).Username + "." +
                                      " He rated your cleanliness with: " + reservation.Rating.GuestCleannessRating + "." +
                                      " He rated your hospitality with: " + reservation.Rating.GuestHospitalityRating + "." +
                                      " And has additional comment: " + reservation.Rating.GuestComment;

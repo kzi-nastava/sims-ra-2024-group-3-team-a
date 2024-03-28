@@ -1,4 +1,5 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.DTO;
+using BookingApp.Model;
 using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,22 @@ namespace BookingApp.Repository
         public List<AccommodationReservation> GetAllByAccommodationId(int id)
         {
             return _accomodationReservations.FindAll(c => c.AccommodationId == id);
+        }
+
+        public double GetAverageRating(List<AccommodationReservationDTO> finishedReservations)
+        {
+            int ratingSum = 0;
+            int ratingCount = 0;
+            foreach(var reservation in finishedReservations)
+            {
+                if(reservation.RatingDTO.GuestCleanlinessRating != 0)
+                {
+                    ratingCount++;
+                    int rating = (reservation.RatingDTO.GuestCleanlinessRating + reservation.RatingDTO.GuestHospitalityRating) / 2;
+                    ratingSum += rating;
+                }
+            }
+            return (double)ratingSum / (double)ratingCount;
         }
     }
 }

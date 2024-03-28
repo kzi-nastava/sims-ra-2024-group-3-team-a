@@ -28,7 +28,8 @@ namespace BookingApp.View.Owner
     public partial class OwnerMainWindow : Window
     {
         public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
-        public static ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> UserReviewedAccommodationReservationsDTO { get; set; }
         public static ObservableCollection<MessageDTO> MessagesDTO { get; set; }
 
         private readonly AccommodationRepository _accommodationRepository;
@@ -39,6 +40,7 @@ namespace BookingApp.View.Owner
         public UserDTO LoggedInOwner;
 
         private static Timer _notificationTimer;
+        public double AverageRating { get; set; }
 
         public OwnerMainWindow(User owner)
         {
@@ -50,7 +52,8 @@ namespace BookingApp.View.Owner
             _messageRepository = new MessageRepository();
 
             AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
-            AccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            FinishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            UserReviewedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
             MessagesDTO = new ObservableCollection<MessageDTO>();
 
             LoggedInOwner = new UserDTO(owner);
@@ -79,14 +82,24 @@ namespace BookingApp.View.Owner
         }
         private void UpdateAccomodationReservations()
         {
-            AccommodationReservationsDTO.Clear();
+            FinishedAccommodationReservationsDTO.Clear();
+            UserReviewedAccommodationReservationsDTO.Clear();
             foreach (var reservation in _accommodationReservationRepository.GetAll())
             {
                 AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
                 AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
                 if (IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
-                    AccommodationReservationsDTO.Add(reservationDTO);
+                    FinishedAccommodationReservationsDTO.Add(reservationDTO);
             }
+
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
+                AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
+                if (IsLoggedOwner(accommodationDTO) && IsUserReviewed(reservationDTO))
+                    UserReviewedAccommodationReservationsDTO.Add(reservationDTO);
+            }
+            AverageRating = _accommodationReservationRepository.GetAverageRating(UserReviewedAccommodationReservationsDTO.ToList());
         }
         private bool IsLoggedOwner(AccommodationDTO accommodationDTO)
         {
@@ -99,6 +112,14 @@ namespace BookingApp.View.Owner
         private bool IsNotExpired(AccommodationReservationDTO reservationDTO)
         {
             if (reservationDTO.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservationDTO.EndDate.AddDays(5))
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool IsUserReviewed(AccommodationReservationDTO reservationDTO)
+        {
+            if (reservationDTO.RatingDTO.GuestCleanlinessRating != 0 && reservationDTO.RatingDTO.OwnerCleannessRating != 0)
             {
                 return true;
             }
@@ -140,13 +161,13 @@ namespace BookingApp.View.Owner
         }
         private static void Notify(Frame frameNotification, UserRepository userRepository)
         {
-            if(AccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.OwnerCleannessRating == 0))
+            if(FinishedAccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.OwnerCleannessRating == 0))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     NotificationPage notificationPage = new NotificationPage();
                     notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
-                    foreach(var reservation in AccommodationReservationsDTO)
+                    foreach(var reservation in FinishedAccommodationReservationsDTO)
                     {
                         if(reservation.RatingDTO.OwnerCleannessRating == 0)
                         {
