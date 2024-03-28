@@ -31,39 +31,90 @@
             </Grid>
         </Border>
 
-        <!--Reservations list-->
-        <StackPanel Grid.Row="1">
-            <ListView x:Name="myReviewsList" ItemsSource="{Binding AccommodationReservationsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="ShowMyReviewPage">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Black" BorderThickness="5">
-                            <StackPanel Orientation="Vertical" Width="390">
-                                <StackPanel.Background>
-                                    <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
-                                </StackPanel.Background>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Accommodation:"/>
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Date:"/>
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=BeginDate}"/>
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="-"/>
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=EndDate}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Cleanness Rating: "/>
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
+
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <!--My Reviews list-->
+            <TabItem Header="From Me" Foreground="#d4ff00" Background="CadetBlue">
+                <StackPanel>
+                    <ListView x:Name="myReviewsList" ItemsSource="{Binding  FinishedAccommodationReservationsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="ShowMyReviewPage">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="Black" BorderThickness="5">
+                                    <StackPanel Orientation="Vertical" Width="390">
+                                        <StackPanel.Background>
+                                            <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                                        </StackPanel.Background>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Accommodation:"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Date:"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=BeginDate}"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="-"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=EndDate}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Cleanness Rating: "/>
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Rules Respect Rating: "/>
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Rules Respect Rating: "/>
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="For Me" Foreground="#d4ff00" Background="CadetBlue">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Background="CadetBlue">Average Rating: </Label>
+                    <Label Grid.Row="0" Grid.Column="1" Foreground="#d4ff00" Background="CadetBlue" Content="{Binding Path=AverageRating}"/>
+                    <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="listViewUserReviews" ItemsSource="{Binding UserReviewedAccommodationReservationsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="ShowUserReviewPage">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="Black" BorderThickness="5">
+                                    <StackPanel Orientation="Vertical" Width="390">
+                                        <StackPanel.Background>
+                                            <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                                        </StackPanel.Background>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Accommodation:"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Date:"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=BeginDate}"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="-"/>
+                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=EndDate}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Cleanness Rating: "/>
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.GuestCleanlinessRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Hospitality Rating: "/>
+                                                <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=RatingDTO.GuestHospitalityRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>
