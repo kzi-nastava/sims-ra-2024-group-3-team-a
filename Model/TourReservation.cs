@@ -52,7 +52,7 @@ namespace BookingApp.Model
             string tourists = string.Empty;
             foreach (var tourist in Tourists)
             {
-                tourists += tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString() + '|';
+                tourists += tourist.Name + '|' + tourist.Surname + '|' + tourist.Age.ToString() + '|' + tourist.JoiningKeyPoint + '|';
             }
 
             tourists = tourists.Substring(0, tourists.Length - 1);
@@ -64,11 +64,11 @@ namespace BookingApp.Model
             Id = Convert.ToInt32(values[0]);
             UserId = Convert.ToInt32(values[1]);
             TourId = Convert.ToInt32(values[2]);
-            for (int i = 3;i<values.Length;i=i+3) 
+            for (int i = 3;i<values.Length;i=i+4) 
             {
-                if(i+2<values.Length)
+                if(i+3<values.Length)
                 {
-                    Tourists.Add(new Tourist(values[i], values[i + 1], Convert.ToInt32(values[i + 2])));
+                    Tourists.Add(new Tourist(values[i], values[i + 1], Convert.ToInt32(values[i + 2]), values[i+3]));
                 }
             }
         }
