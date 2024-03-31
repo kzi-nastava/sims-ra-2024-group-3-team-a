@@ -19,7 +19,10 @@ namespace BookingApp.Model
         public string GuestComment { get; set; }
         public List<string> GuestImages { get; set; }
 
-        public Review() { }
+        public Review() 
+        { 
+            GuestImages = new List<string>();
+        }
 
         public Review(int cleannessRating, int rulesRespectRating, string comment, int guestCleannessRating, int guestHospitalityRating, string guestComment, List<string> guestImages)
         {

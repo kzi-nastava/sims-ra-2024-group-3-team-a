@@ -15,6 +15,7 @@
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
+    <None Remove="Resources\Images\logout.png" />
     <None Remove="Resources\Images\Owner\AccommodationPicture1.jpg" />
     <None Remove="Resources\Images\Owner\AccommodationPicture1.png" />
     <None Remove="Resources\Images\Owner\Beach.jpg" />
@@ -45,6 +46,7 @@
     </Resource>
     <Resource Include="Resources\Images\inbox.png" />
     <Resource Include="Resources\Images\inbox_alert.png" />
+    <Resource Include="Resources\Images\logout.png" />
     <Resource Include="Resources\Images\Owner\AccommodationPicture1.png" />
     <Resource Include="Resources\Images\Owner\Beach.png" />
     <Resource Include="Resources\Images\Owner\Cottage.png" />

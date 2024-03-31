@@ -24,7 +24,9 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class ReviewsPage : Page
     {
-        public static ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> UserReviewedAccommodationReservationsDTO { get; set; }
+        public double AverageRating { get; set; }
 
         private readonly AccommodationRepository _accommodationRepository;
         private readonly AccommodationReservationRepository _accommodationReservationRepository;
@@ -42,13 +44,15 @@ namespace BookingApp.View.Owner
             _accommodationReservationRepository = new AccommodationReservationRepository();
             _userRepository = new UserRepository();
 
-            AccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            FinishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
 
             _ownerMainWindow = ownerMainWindow;
             _loggedInOwner = _ownerMainWindow.LoggedInOwner;
 
             _ownerMainWindow.Update();
-            AccommodationReservationsDTO = OwnerMainWindow.AccommodationReservationsDTO;
+            FinishedAccommodationReservationsDTO = OwnerMainWindow.FinishedAccommodationReservationsDTO;
+            UserReviewedAccommodationReservationsDTO = OwnerMainWindow.UserReviewedAccommodationReservationsDTO;
+            AverageRating = _ownerMainWindow.AverageRating;
         }
 
         private void ShowSideMenu(object sender, RoutedEventArgs e)
@@ -75,6 +79,19 @@ namespace BookingApp.View.Owner
                 _ownerMainWindow.frameMain.Content = new MyReviewRatedPage(_ownerMainWindow, selectedItem);
                 myReviewsList.SelectedItem = null;
             }
+        }
+
+        private void ShowUserReviewPage(object sender, SelectionChangedEventArgs e)
+        {
+            if (listViewUserReviews.SelectedItem == null)
+            {
+                return;
+            }
+
+            var selectedItem = listViewUserReviews.SelectedItem as AccommodationReservationDTO;
+
+            _ownerMainWindow.frameMain.Content = new UserReviewDetailsPage(_ownerMainWindow, selectedItem);
+            listViewUserReviews.SelectedItem = null;
         }
     }
 

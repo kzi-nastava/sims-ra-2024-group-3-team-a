@@ -57,6 +57,11 @@ namespace BookingApp.View.Owner
                 _ownerMainWindow.frameMain.Content = new RequestDetailsPage(_ownerMainWindow, selectedItem);
                 listViewInbox.SelectedItem = null;
             }
+            else if(selectedItem.Type == MessageType.NewReviewNotification)
+            {
+                _ownerMainWindow.frameMain.Content = new NewReviewDetailsPage(_ownerMainWindow, selectedItem);
+                listViewInbox.SelectedItem = null;
+            }
         }
 
         private void ShowSideMenu(object sender, RoutedEventArgs e)
