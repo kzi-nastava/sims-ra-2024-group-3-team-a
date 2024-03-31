@@ -3,6 +3,7 @@ using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace BookingApp.Repository
     public class TourRepository
     {
         private const string FilePath = "../../../Resources/Data/tours.csv";
+        private TourReservationRepository _tourReservationRepository {get; set;}
 
         private readonly Serializer<Tour> _serializer;
 
@@ -75,6 +77,39 @@ namespace BookingApp.Repository
                 }
             }
             return tours;
+        }
+        public List<Tour> GetActiveTours()
+        {
+        _tourReservationRepository = new TourReservationRepository();
+        List<Tour> activeTours = new List<Tour>();
+            foreach (Tour t in GetAll())
+            {
+                foreach (TourReservation tr in _tourReservationRepository.GetAll())
+                {
+                    if (t.Id == tr.TourId && t.IsActive)
+                    {
+                        activeTours.Add(t);
+                    }
+                }
+            }
+            return activeTours;
+        }
+
+        public List<Tour> GetUnactiveTours()
+        {
+            _tourReservationRepository = new TourReservationRepository();
+            List<Tour> unactiveTours = new List<Tour>();
+            foreach (Tour t in GetAll())
+            {
+                foreach (TourReservation tr in _tourReservationRepository.GetAll())
+                {
+                    if (t.Id == tr.TourId && !t.IsActive)
+                    {
+                        unactiveTours.Add(t);
+                    }
+                }
+            }
+            return unactiveTours;
         }
     }
 }
