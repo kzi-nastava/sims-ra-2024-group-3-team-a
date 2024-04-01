@@ -81,7 +81,7 @@ namespace BookingApp.View.Guest
 
             foreach (var accommodation in accommodations)
             {
-                if (accommodation.Name.ToString().Contains(searchNameInput)
+                if (accommodation.Name.ToLower().Contains(searchNameInput)
                     && accommodation.Type.ToString().ToLower().Contains(searchTypeInput)
                     && accommodation.PlaceDTO.Country.ToLower().Contains(searchCountryInput)
                     && accommodation.PlaceDTO.City.ToLower().Contains(searchCityInput)
@@ -109,6 +109,27 @@ namespace BookingApp.View.Guest
             {
                 frameMain.Content = null;
             }
+        }
+
+        private void ShowGuestReservationsPage(object sender, RoutedEventArgs e)
+        {
+
+            frameMain.Content = new GuestReservationsPage(_userDTO);
+
+
+            //if (dataGridAccommodation.SelectedItem != null && frameMain.Content == null)
+            //{
+            //    frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem, _userDTO);
+
+            //}
+            //else if (frameMain.Content == null)
+            //{
+            //    MessageBox.Show("Accommodation not selected");
+            //}
+            //else
+            //{
+            //    frameMain.Content = null;
+            //}
         }
 
         private void IncreaseButton_Click(object sender, RoutedEventArgs e)
