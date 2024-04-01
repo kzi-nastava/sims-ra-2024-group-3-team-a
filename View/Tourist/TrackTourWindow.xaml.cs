@@ -1,12 +1,10 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
-using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,9 +16,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BookingApp.View
+namespace BookingApp.View.Tourist
 {
-    public partial class ActiveTourWindow : Window
+    /// <summary>
+    /// Interaction logic for TrackTourWindow.xaml
+    /// </summary>
+    public partial class TrackTourWindow : Window
     {
         private TourDTO _tourDTO;
         private TouristDTO _touristDTO;
@@ -29,35 +30,19 @@ namespace BookingApp.View
         private readonly KeyPointsRepository _keyPointsRepository;
         private readonly TourReservationRepository _tourReservationRepository;
         private readonly TourRepository _tourRepository;
-
-        private Boolean _doesActiveTourExist;
-        private GuideMainWindow _guideMainWindow;
-
-
         public static ObservableCollection<TouristDTO> Tourists { get; set; }
-
-        public ActiveTourWindow(TourDTO tour, Boolean activeTourExists, GuideMainWindow guideMainWindow)
+        public TrackTourWindow(TourDTO tourDTO)
         {
             InitializeComponent();
-            _tourDTO = tour;
-            _doesActiveTourExist = activeTourExists;
-            _guideMainWindow = guideMainWindow;
-            Tourists = new ObservableCollection<TouristDTO>();
-            this.DataContext = this;
+            _tourDTO = tourDTO;
+            
             _keyPointsRepository = new KeyPointsRepository();
             _tourReservationRepository = new TourReservationRepository();
             _tourRepository = new TourRepository();
+            Tourists = new ObservableCollection<TouristDTO>();
+            DataContext = new { Tour = _tourDTO, Tourist = Tourists };
             AddKeyPointsButtons();
             Update();
-        }
-        private void CancelTour(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Tour has been canceled!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-            _tourDTO.CurrentKeyPoint = "finished";
-            _tourDTO.IsActive = false;
-            _tourRepository.Update(_tourDTO.ToTourAllParam());
-            _guideMainWindow.Update();
-            this.Close();
         }
 
         public void AddKeyPointsButtons()
@@ -74,7 +59,7 @@ namespace BookingApp.View
                     if (count < keyPointsNum)
                     {
                         Button button = CreateButton(count);
-                        
+
                         if (count == 0)
                         {
                             SetInitialButtonProperties(button);
@@ -125,24 +110,16 @@ namespace BookingApp.View
             }
             else return false;
         }
-        
+
         private Button CreateButton(int count)
         {
             Button button = new Button();
-            button.Click += (sender, e) => ClickButton(button);
             return button;
         }
 
         private void SetInitialButtonProperties(Button button)
         {
-            button.Content = _keypointsDTO.Begining;
-            _tourDTO.IsActive = true;
-            _tourRepository.Update(_tourDTO.ToTourAllParam());
-            if (_doesActiveTourExist == false)
-            {
-                button.Background = new SolidColorBrush(Colors.IndianRed);
-                _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
-            }
+            button.Content = _keypointsDTO.Begining;  
         }
 
         private void AddButtonToGrid(Button button, int row, int column)
@@ -151,34 +128,6 @@ namespace BookingApp.View
             Grid.SetRow(button, row);
             gridMain.Children.Add(button);
         }
-
-        public void ClickButton(Button button)
-        {
-            _tourDTO.CurrentKeyPoint = button.Content.ToString();
-            _tourRepository.Update(_tourDTO.ToTourAllParam());
-            button.Background = Brushes.IndianRed;
-            if(button.Content == _keypointsDTO.Ending)
-            {
-                MessageBox.Show("Tour is finished!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-                _tourDTO.CurrentKeyPoint = "finished";
-                _tourDTO.IsActive=false;
-                _tourRepository.Update(_tourDTO.ToTourAllParam());
-                _guideMainWindow.Update();
-                this.Close();
-            }
-        }
-
-        private void TouristJoiningPoint(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            TouristDTO selectedTourist = new TouristDTO();
-            selectedTourist =   ((Button)sender).DataContext as TouristDTO;
-            _touristDTO = selectedTourist;
-            _touristDTO.JoiningKeyPoint = _tourDTO.CurrentKeyPoint;
-            button.Background = Brushes.IndianRed;
-        }
-        
-
         private void Update()
         {
             Tourists.Clear();
@@ -194,7 +143,7 @@ namespace BookingApp.View
                     }
                 }
             }
-          
+
 
         }
     }

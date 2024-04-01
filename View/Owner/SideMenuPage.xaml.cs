@@ -30,14 +30,26 @@ namespace BookingApp.View.Owner
         {
             _ownerMainWindow.frameSideMenu.Content = null;
         }
-        public void SwitchTabAccommodations(object sender, RoutedEventArgs e)
+        public void ShowAccommodationsPage(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.tabControl.SelectedItem = _ownerMainWindow.tabItemAccommodations;
+            _ownerMainWindow.frameMain.Content = new AccommodationsPage(_ownerMainWindow);
         }
 
-        public void SwitchTabUsers(object sender, RoutedEventArgs e)
+        public void ShowReviewsPage(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.tabControl.SelectedItem = _ownerMainWindow.tabItemUsers;
+            _ownerMainWindow.frameMain.Content = new ReviewsPage(_ownerMainWindow);
+        }
+
+        public void ShowInboxPage(object sender, RoutedEventArgs e)
+        {
+            _ownerMainWindow.frameMain.Content = new InboxPage(_ownerMainWindow);
+        }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            _ownerMainWindow.Close();
         }
     }
 }

@@ -5,12 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:BookingApp.View.Owner"
       mc:Ignorable="d"
-      d:DesignHeight="30" d:DesignWidth="30"
+      d:DesignHeight="25" d:DesignWidth="25"
       Title="NotificationPage">
 
     <Grid HorizontalAlignment="Left">
         <Button x:Name="buttonNotification" BorderThickness="0" Background="Transparent">
-            <Image Source="..\..\Resources\Images\Owner\notification.png" HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25"/>
+            <Image Source="..\..\Resources\Images\Owner\notification.png" HorizontalAlignment="Center" Height="25" Width="25" VerticalAlignment="Center" />
         </Button>
     </Grid>
 </Page>

@@ -12,30 +12,41 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="744"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Click="CloseSideMenu" Margin="10">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../../Resources/Images/Owner/menu.png" Width="30" Height="37.5"/>
-                </StackPanel>
-            </Button>
-
-            <StackPanel Grid.Row="1">
-                <Button Click="SwitchTabAccommodations" BorderThickness="0" Background="Transparent" x:Name="buttonAccommodationsTab" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+            <StackPanel Grid.Row="0">
+                <Button Grid.Row="0" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Click="CloseSideMenu" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Resources/Images/Owner/menu.png" Width="30" Height="37.5"/>
+                    </StackPanel>
+                </Button>
+                <Button Click="ShowAccommodationsPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\accommodations.png" Height="50" Width="50" />
                         <Label Content="Accommodations" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 
-                <Button Click="SwitchTabUsers" BorderThickness="0" Background="Transparent" x:Name="buttonUsersTab" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Click="ShowReviewsPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\users.png" Height="50" Width="50" />
-                        <Label Content="Users" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        <Label Content="Reviews" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Click="ShowInboxPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\..\Resources\Images\inbox.png" Height="50" Width="50" />
+                        <Label Content="Inbox" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Click="LogOut" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\..\Resources\Images\logout.png" Height="50" Width="50" />
+                        <Label Content="Log Out" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

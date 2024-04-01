@@ -51,7 +51,7 @@ namespace BookingApp.View.Guest
                     MessageBox.Show($"Error! Capacity is {_accommodationDTO.Capacity} guests!");
                     return;
                 }
-                GuestRating rating = new GuestRating(0, 0, "");
+                Review rating = new Review();
                 AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, rating);
                 _accommodationReservationRepository.Save(acc);
                 MessageBox.Show("Reservation successful!");

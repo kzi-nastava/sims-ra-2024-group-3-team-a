@@ -28,15 +28,19 @@ namespace BookingApp.View.Owner
     public partial class OwnerMainWindow : Window
     {
         public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
-        public static ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> UserReviewedAccommodationReservationsDTO { get; set; }
+        public static ObservableCollection<MessageDTO> MessagesDTO { get; set; }
 
         private readonly AccommodationRepository _accommodationRepository;
         private readonly AccommodationReservationRepository _accommodationReservationRepository;
         private readonly UserRepository _userRepository;
+        private readonly MessageRepository _messageRepository;
 
-        private UserDTO _loggedInOwner;
+        public UserDTO LoggedInOwner;
 
         private static Timer _notificationTimer;
+        public double AverageRating { get; set; }
 
         public OwnerMainWindow(User owner)
         {
@@ -45,32 +49,26 @@ namespace BookingApp.View.Owner
             _accommodationRepository = new AccommodationRepository();
             _accommodationReservationRepository = new AccommodationReservationRepository();
             _userRepository = new UserRepository();
+            _messageRepository = new MessageRepository();
 
             AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
-            AccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            FinishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            UserReviewedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
+            MessagesDTO = new ObservableCollection<MessageDTO>();
 
-            _loggedInOwner = new UserDTO(owner);
+            LoggedInOwner = new UserDTO(owner);
 
             Update();
-
             SetNotificationTimer();
+
+            frameMain.Content = new AccommodationsPage(this);
         }
 
         public void Update()
         {
             UpdateAccomodationReservations();
-            UpdateAccommodations();   
-        }
-        private void UpdateAccomodationReservations()
-        {
-            AccommodationReservationsDTO.Clear();          
-            foreach (var reservation in _accommodationReservationRepository.GetAll())
-            {
-                AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
-                AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
-                if (IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
-                    AccommodationReservationsDTO.Add(reservationDTO);
-            }
+            UpdateAccommodations();
+            UpdateMessages();
         }
         private void UpdateAccommodations()
         {
@@ -82,9 +80,30 @@ namespace BookingApp.View.Owner
                     AccommodationsDTO.Add(accommodationDTO);
             }
         }
+        private void UpdateAccomodationReservations()
+        {
+            FinishedAccommodationReservationsDTO.Clear();
+            UserReviewedAccommodationReservationsDTO.Clear();
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
+                AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
+                if (IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
+                    FinishedAccommodationReservationsDTO.Add(reservationDTO);
+            }
+
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
+                AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
+                if (IsLoggedOwner(accommodationDTO) && IsUserReviewed(reservationDTO))
+                    UserReviewedAccommodationReservationsDTO.Add(reservationDTO);
+            }
+            AverageRating = _accommodationReservationRepository.GetAverageRating(UserReviewedAccommodationReservationsDTO.ToList());
+        }
         private bool IsLoggedOwner(AccommodationDTO accommodationDTO)
         {
-            if(accommodationDTO.OwnerId == _loggedInOwner.Id)
+            if (accommodationDTO.OwnerId == LoggedInOwner.Id)
             {
                 return true;
             }
@@ -92,97 +111,43 @@ namespace BookingApp.View.Owner
         }
         private bool IsNotExpired(AccommodationReservationDTO reservationDTO)
         {
-            if(reservationDTO.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservationDTO.EndDate.AddDays(5))
+            if (reservationDTO.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservationDTO.EndDate.AddDays(5))
             {
                 return true;
             }
             return false;
         }
+        private bool IsUserReviewed(AccommodationReservationDTO reservationDTO)
+        {
+            if (reservationDTO.RatingDTO.GuestCleanlinessRating != 0 && reservationDTO.RatingDTO.OwnerCleannessRating != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void UpdateMessages()
+        {
+            MessagesDTO.Clear();
+            _messageRepository.SetMessages();
+            foreach (var message in _messageRepository.GetAll())
+            {
+                MessageDTO messageDTO = new MessageDTO(message);
+                MessagesDTO.Add(messageDTO);
+            }
+        }
 
-        private void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
+        public void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
         {
-            if(frameMain.Content != null)
-                frameMain.Content = null;
+            if (frameMain.Content is AddAccommodationPage)
+                frameMain.Content = new AccommodationsPage(this);
             else
-                frameMain.Content = new AddAccommodationPage(this, _loggedInOwner); 
+            {
+                frameMain.Content = new AddAccommodationPage(this, LoggedInOwner);
+            }
         }
-        private void ShowRateGuestPage(object sender, RoutedEventArgs e)
-        {
-            var selectedReservation = dataGridReservations.SelectedItem;
-            if (selectedReservation != null && frameMain.Content == null && (selectedReservation as AccommodationReservationDTO).RatingDTO.CleannessRating == 0)
-                frameMain.Content = new RateGuestPage(this, selectedReservation as AccommodationReservationDTO);
-            else if(frameMain.Content == null)
-                MessageBox.Show("User to rate not selected or user already rated!");
-            else
-                frameMain.Content = null;
-        }
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
+        public void ShowSideMenu(object sender, RoutedEventArgs e)
         {
             frameSideMenu.Content = new SideMenuPage(this);
-        }
-
-        private bool _isRateGuestPageOpened = false;
-        private bool _isAddAccommodationPageOpened = false;
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (tabControl.SelectedItem == tabItemAccommodations)
-                HandleAccommodationsTabSelection();
-            else
-                HandleUsersTabSelection();
-        }
-        private void HandleAccommodationsTabSelection()
-        {
-            UnsubscribeFromRateGuestPage();
-
-            if (!_isAddAccommodationPageOpened)
-                SubscribeToAddAccommodationPage();
-
-            SetAddAccommodationFunctionality();
-        }
-        private void HandleUsersTabSelection()
-        {
-            UnsubscribeFromAddAccommodationPage();
-
-            if (!_isRateGuestPageOpened)
-                SubscribeToRateGuestPage();
-
-            SetRateGuestFunctionality();
-        }
-        private void SubscribeToAddAccommodationPage()
-        {
-            buttonFunction.Click += ShowAddAccommodationPage;
-            _isAddAccommodationPageOpened = true;
-        }
-        private void UnsubscribeFromAddAccommodationPage()
-        {
-            if (_isAddAccommodationPageOpened)
-            {
-                buttonFunction.Click -= ShowAddAccommodationPage;
-                _isAddAccommodationPageOpened = false;
-            }
-        }
-        private void SubscribeToRateGuestPage()
-        {
-            buttonFunction.Click += ShowRateGuestPage;
-            _isRateGuestPageOpened = true;
-        }
-        private void UnsubscribeFromRateGuestPage()
-        {
-            if (_isRateGuestPageOpened)
-            {
-                buttonFunction.Click -= ShowRateGuestPage;
-                _isRateGuestPageOpened = false;
-            }
-        }
-        private void SetAddAccommodationFunctionality()
-        {
-            imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\add.png", UriKind.Relative));
-            textBlockFunction.Text = "Add";
-        }
-        private void SetRateGuestFunctionality()
-        {
-            imageFunction.Source = new BitmapImage(new Uri(@"..\..\Resources\Images\edit.png", UriKind.Relative));
-            textBlockFunction.Text = "Rate";
         }
 
         private void SetNotificationTimer()
@@ -196,15 +161,15 @@ namespace BookingApp.View.Owner
         }
         private static void Notify(Frame frameNotification, UserRepository userRepository)
         {
-            if(AccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.CleannessRating == 0))
+            if(FinishedAccommodationReservationsDTO.Any(reservation => reservation.RatingDTO.OwnerCleannessRating == 0))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     NotificationPage notificationPage = new NotificationPage();
                     notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
-                    foreach(var reservation in AccommodationReservationsDTO)
+                    foreach(var reservation in FinishedAccommodationReservationsDTO)
                     {
-                        if(reservation.RatingDTO.CleannessRating == 0)
+                        if(reservation.RatingDTO.OwnerCleannessRating == 0)
                         {
                             UserDTO guest = new UserDTO(userRepository.GetById(reservation.GuestId));
                             notificationPage.buttonNotification.ToolTip += "You didn't rate Guest " + guest.Username + "\n";
@@ -214,71 +179,6 @@ namespace BookingApp.View.Owner
                     frameNotification.Content = notificationPage;
                 });
             }
-        }
-    }
-
-    public class GuestIdToNameConverter : IValueConverter
-    {
-        private readonly UserRepository _userRepository = new UserRepository();
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            int guestId = (int)value;
-            var guest = _userRepository.GetById(guestId);
-            if (guest != null)
-            {
-                return guest.Username;
-            }
-            else
-            {
-                return "Unknown Guest";
-            }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            string guestName = value as string;
-            if (guestName != null)
-            {
-                var guest = _userRepository.GetByUsername(guestName);
-                if (guest != null)
-                {
-                    return guest.Id;
-                }
-            }
-            return DependencyProperty.UnsetValue;
-        }
-    }
-    public class AccommodationIdToAccommodationConverter : IValueConverter
-    {
-        private readonly AccommodationRepository _accommodationRepository = new AccommodationRepository();
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            int accommodationId = (int)value;
-            var accommodation = _accommodationRepository.GetById(accommodationId);
-            if (accommodation != null)
-            {
-                return accommodation.Name;
-            }
-            else
-            {
-                return "Unknown Accommodation";
-            }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            string accommodationName = value as string;
-            if (accommodationName != null)
-            {
-                var accommodation = _accommodationRepository.GetByName(accommodationName);
-                if (accommodation != null)
-                {
-                    return accommodation.Id;
-                }
-            }
-            return DependencyProperty.UnsetValue;
         }
     }
 }

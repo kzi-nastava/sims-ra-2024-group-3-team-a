@@ -25,6 +25,7 @@ namespace BookingApp.View
     {
 
         public static ObservableCollection<TourDTO> Tours { get; set; }
+        private Boolean _doesActiveTourExist = false;
         private readonly TourRepository _tourRepository;
 
         private TourDTO _tourDTO;
@@ -58,16 +59,30 @@ namespace BookingApp.View
         private void ShowActiveTourWindow(object sender, RoutedEventArgs e)
         {
             TourDTO selectedTour = ((Button)sender).DataContext as TourDTO;
-            if (selectedTour.CurrentKeyPoint != "finished")
+            foreach (Tour tour in _tourRepository.GetAll())
             {
-
-                if (_tourDTO == null || _tourDTO != selectedTour)
+                if (tour.IsActive == true)
                 {
-                    _tourDTO = selectedTour;
-
-                    ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_tourDTO);
-                    tourDetailsWindow.Show();
+                    _doesActiveTourExist = true;
+                    break;
                 }
+                {
+                    _doesActiveTourExist = false;
+                }
+                
+
+            }
+            if (selectedTour.CurrentKeyPoint != "finished"   )
+            {
+                if(_doesActiveTourExist ==true && selectedTour.IsActive != true)
+                {
+                    MessageBox.Show("Another tour has already started", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                _tourDTO = selectedTour;
+                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_tourDTO, _doesActiveTourExist, this);
+                tourDetailsWindow.ShowDialog();
+                _tourRepository.Update(_tourDTO.ToTourAllParam());
             }
             else
             {
