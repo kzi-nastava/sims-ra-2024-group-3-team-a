@@ -77,6 +77,11 @@ namespace BookingApp.Repository
             return _accomodationReservations.FindAll(c => c.AccommodationId == id);
         }
 
+        public List<AccommodationReservation> GetAllByGuestId(int id)
+        {
+            return _accomodationReservations.FindAll(c => c.GuestId == id);
+        }
+
         public double GetAverageRating(List<AccommodationReservationDTO> finishedReservations)
         {
             int ratingSum = 0;
