@@ -175,6 +175,11 @@ namespace BookingApp.View
             Button button = (Button)sender;
             TouristDTO selectedTourist = new TouristDTO();
             selectedTourist =   ((Button)sender).DataContext as TouristDTO;
+            if (selectedTourist.JoiningKeyPoint != string.Empty)
+            {
+                MessageBox.Show("This tourist has already joined the tour", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             _touristDTO = selectedTourist;
             _touristDTO.JoiningKeyPoint = _tourDTO.CurrentKeyPoint;
             if (_counter != 0)
