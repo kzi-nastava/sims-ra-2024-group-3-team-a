@@ -131,5 +131,11 @@ namespace BookingApp.View
                 searchMaxTouristsTextBox.Text = (value - 1).ToString();
             }
         }
+      
+        private void ShowMyToursWindow(object sender, RoutedEventArgs e)
+        {
+            MyToursWindow myToursWindow = new MyToursWindow();
+            myToursWindow.ShowDialog();
+        }
     }
 }
