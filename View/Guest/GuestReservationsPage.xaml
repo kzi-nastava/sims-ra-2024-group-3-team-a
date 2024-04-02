@@ -44,7 +44,7 @@
         
         <Label Grid.Row="2"  Grid.Column="0" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Comment:</Label>
         <TextBox Text="" Width="105" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" x:Name="CommentForOwnerTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
-        <Button Width="100" Grid.Row="1" Grid.Column="3" Click="Button_Click" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Submit</Button>
+        <Button Width="100" Grid.Row="1" Grid.Column="3" Click="SubmitRateOwner_Click" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Submit</Button>
         <Button Width="100" Grid.Row="2" Grid.Column="2" Click="AddImages" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Add images</Button>
 
         <DataGrid x:Name="dataGridMyReservations" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" >

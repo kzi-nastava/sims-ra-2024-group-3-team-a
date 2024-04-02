@@ -32,7 +32,6 @@ namespace BookingApp.View.Guest
         private UserDTO _userDTO;
         public static ObservableCollection<AccommodationReservationDTO> _myReservations { get; set; }
         private List<AccommodationReservationDTO> _myReservationsDTO;
-        //private List<AccommodationReservationChangeRequestDTO> _
 
         public GuestMainWindow(User user)
         {

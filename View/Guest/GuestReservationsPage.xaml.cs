@@ -86,10 +86,17 @@ namespace BookingApp.View.Guest
                 AccommodationReservationDTO selectedReservation = (AccommodationReservationDTO)dataGridMyReservations.SelectedItem;
                 AccommodationRepository accommodationRepository = new AccommodationRepository();
                 Accommodation selectedAccommodation = accommodationRepository.GetById(selectedReservation.AccommodationId);
-                if (selectedReservation.BeginDate >= DateOnly.FromDateTime(DateTime.Today).AddDays(selectedAccommodation.CancellationPeriod))
+                if (selectedReservation.Canceled == true)
                 {
-                    _accommodationReservationRepository.Delete(selectedReservation.ToAccommodationReservation());
-                    _myReservations.Remove(selectedReservation);
+                    MessageBox.Show("Reservation already canceled!");
+                }
+                else if (selectedReservation.BeginDate >= DateOnly.FromDateTime(DateTime.Today).AddDays(selectedAccommodation.CancellationPeriod))
+                {
+                    //_accommodationReservationRepository.Delete(selectedReservation.ToAccommodationReservation());
+                    //_myReservations.Remove(selectedReservation);
+                    selectedReservation.Canceled = true;
+                    _accommodationReservationRepository.Update(selectedReservation.ToAccommodationReservation());
+                    MessageBox.Show("Cancellation successful!");
                 }
                 else
                 {
@@ -191,7 +198,7 @@ namespace BookingApp.View.Guest
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SubmitRateOwner_Click(object sender, RoutedEventArgs e)
         {
             AccommodationReservationDTO selectedReservation = (AccommodationReservationDTO)dataGridMyReservations.SelectedItem;
             int cleanliness = Convert.ToInt32(cleanlinessTextBox.Text);
