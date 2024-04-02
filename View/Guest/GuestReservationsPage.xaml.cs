@@ -28,19 +28,29 @@ namespace BookingApp.View.Guest
     public partial class GuestReservationsPage : Page, INotifyPropertyChanged
     {
         public static ObservableCollection<AccommodationReservationDTO> _myReservations { get; set; }
+        public static ObservableCollection<AccommodationReservationChangeRequestDTO> _myChangeRequests { get; set; }
         private List<AccommodationReservationDTO> _myReservationsDTO;
         private AccommodationReservationRepository _accommodationReservationRepository;
+        private AccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
         private UserDTO _userDTO;
-        public GuestReservationsPage(UserDTO userDTO)
+
+        public DateOnly _selectedNewBeginDate;
+        public DateOnly _selectedNewEndDate;
+        private AccommodationReservationDTO _selectedReservation;
+        public GuestReservationsPage(UserDTO userDTO, ObservableCollection<AccommodationReservationChangeRequestDTO> myChangeRequests)
         {
             InitializeComponent();
             DataContext = this;
             _userDTO = userDTO;
             _myReservationsDTO = new List<AccommodationReservationDTO>();
             _myReservations = new ObservableCollection<AccommodationReservationDTO>();
+            _myChangeRequests = myChangeRequests;
             
             _accommodationReservationRepository = new AccommodationReservationRepository();
             List<AccommodationReservation> myReservations = _accommodationReservationRepository.GetAllByGuestId(_userDTO.Id);
+
+            _accommodationReservationChangeRequestRepository = new AccommodationReservationChangeRequestRepository();
+            //List<AccommodationReservation> myReservations = _accommodationReservationRepository.GetAllByGuestId(_userDTO.Id);
 
             foreach (AccommodationReservation accommodationReservation in myReservations)
             {
@@ -91,12 +101,50 @@ namespace BookingApp.View.Guest
 
         private void RequestChange_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dataGridMyReservations.SelectedItem == null)
+            {
+                MessageBox.Show("Please select reservation to request date change!");
+            }
+            else
+            {
+                _selectedReservation = (AccommodationReservationDTO)dataGridMyReservations.SelectedItem;
+                if (_selectedReservation.BeginDate <= DateOnly.FromDateTime(DateTime.Now))
+                {
+                    MessageBox.Show("This reservation is already over!");
+                    return;
+                }
+                else
+                {
+                    frameRequestChange.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void SubmitRequest_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime? selectedBeginDate = datePickerNewBegin.SelectedDate;
+            if (selectedBeginDate.HasValue)
+            {
+                DateTime dateTime = selectedBeginDate.Value;
+                _selectedNewBeginDate = DateOnly.FromDateTime(dateTime);
+            }
+            DateTime? selectedEndDate = datePickerNewEnd.SelectedDate;
+            if (selectedEndDate.HasValue)
+            {
+                DateTime dateTime = selectedEndDate.Value;
+                _selectedNewEndDate = DateOnly.FromDateTime(dateTime);
+            }
+
+            AccommodationReservationChangeRequest changeRequest = new AccommodationReservationChangeRequest(0, _selectedReservation.Id, _selectedNewBeginDate, _selectedNewEndDate, Model.Enums.AccommodationChangeRequestStatus.WaitingForApproval,"");
+            _accommodationReservationChangeRequestRepository.Save(changeRequest);
+            _myChangeRequests.Add(new AccommodationReservationChangeRequestDTO(changeRequest));
+            MessageBox.Show("Submitted request");
+            
         }
     }
 }

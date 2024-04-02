@@ -26,7 +26,13 @@ namespace BookingApp.View.Guest
     {
         public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
         private readonly AccommodationRepository _accommodationRepository;
+        private readonly AccommodationReservationRepository _accommodationReservationRepository;
+        public static ObservableCollection<AccommodationReservationChangeRequestDTO> _myChangeRequestsDTO {  get; set; }
+        private readonly AccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
         private UserDTO _userDTO;
+        public static ObservableCollection<AccommodationReservationDTO> _myReservations { get; set; }
+        private List<AccommodationReservationDTO> _myReservationsDTO;
+        //private List<AccommodationReservationChangeRequestDTO> _
 
         public GuestMainWindow(User user)
         {
@@ -34,8 +40,24 @@ namespace BookingApp.View.Guest
             DataContext = this;
             _accommodationRepository = new AccommodationRepository();
             AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
-            _userDTO = new UserDTO(user);  
+            _myChangeRequestsDTO = new ObservableCollection<AccommodationReservationChangeRequestDTO>();
+            _userDTO = new UserDTO(user);
+            _myReservationsDTO = new List<AccommodationReservationDTO>();
+            _myReservations = new ObservableCollection<AccommodationReservationDTO>();
 
+            _accommodationReservationChangeRequestRepository = new AccommodationReservationChangeRequestRepository();
+            _accommodationReservationRepository = new AccommodationReservationRepository();
+            List<AccommodationReservation> myReservations = _accommodationReservationRepository.GetAllByGuestId(_userDTO.Id);
+
+            foreach (AccommodationReservation accommodationReservation in myReservations)
+            {
+                _myReservationsDTO.Add(new AccommodationReservationDTO(accommodationReservation));
+            }
+            foreach (AccommodationReservationDTO accommodationReservationDTO in _myReservationsDTO)
+            {
+                _myReservations.Add(accommodationReservationDTO);
+            }
+            dataGridMyRequests.ItemsSource = _myChangeRequestsDTO;
             Update();
         }
 
@@ -46,6 +68,18 @@ namespace BookingApp.View.Guest
             {
                 AccommodationsDTO.Add(new AccommodationDTO(accommodation));
             }
+            _myChangeRequestsDTO.Clear();
+            foreach (var request in _accommodationReservationChangeRequestRepository.GetAll())
+            {
+               foreach (var reservation in _myReservations)
+                {
+                    if (request.AccommodationReservationId == reservation.Id)
+                    {
+                        _myChangeRequestsDTO.Add(new AccommodationReservationChangeRequestDTO(request));
+                    }
+                }
+            }
+
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -113,23 +147,11 @@ namespace BookingApp.View.Guest
 
         private void ShowGuestReservationsPage(object sender, RoutedEventArgs e)
         {
+            
+            frameMain.Content = new GuestReservationsPage(_userDTO, _myChangeRequestsDTO);
+            frameMyRequests.Visibility = Visibility.Collapsed;
+            frameMain.Visibility = Visibility.Visible;
 
-            frameMain.Content = new GuestReservationsPage(_userDTO);
-
-
-            //if (dataGridAccommodation.SelectedItem != null && frameMain.Content == null)
-            //{
-            //    frameMain.Content = new MakeAccommodationReservationPage((AccommodationDTO)dataGridAccommodation.SelectedItem, _userDTO);
-
-            //}
-            //else if (frameMain.Content == null)
-            //{
-            //    MessageBox.Show("Accommodation not selected");
-            //}
-            //else
-            //{
-            //    frameMain.Content = null;
-            //}
         }
 
         private void IncreaseButton_Click(object sender, RoutedEventArgs e)
@@ -160,6 +182,12 @@ namespace BookingApp.View.Guest
             {
                 searchMinDaysTextBox.Text = (value - 1).ToString();
             }
+        }
+
+        private void ShowMyRequests_Click(object sender, RoutedEventArgs e)
+        {
+            frameMain.Visibility = Visibility.Collapsed;
+            frameMyRequests.Visibility = Visibility.Visible;
         }
     }
 }

@@ -65,7 +65,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Data\" />
+    <None Update="Resources\Data\accommodationReservationChangeRequests.csv">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
 </Project>

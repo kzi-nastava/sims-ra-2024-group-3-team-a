@@ -67,10 +67,21 @@
         </StackPanel>
 
         <Button Content="My Reservations" Grid.Row="1" Width="150" HorizontalAlignment="Left" Click="ShowGuestReservationsPage"></Button>
-        <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Click="ShowGuestReservationsPage"></Button>
+        <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Click="ShowMyRequests_Click"></Button>
 
         <Frame Grid.Row="2" Grid.ColumnSpan="2" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
         
+        <Frame x:Name="frameMyRequests" Grid.Row="3" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden" Visibility="Collapsed">
+        </Frame>
+        <DataGrid x:Name="dataGridMyRequests" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Visibility="{Binding ElementName=frameMyRequests, Path=Visibility}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDateNew}"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDateNew}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Owner comment" Binding="{Binding RejectedMessage}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
 
         <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" Grid.Row="4" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
