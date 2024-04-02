@@ -52,7 +52,7 @@ namespace BookingApp.View.Guest
                     return;
                 }
                 Review rating = new Review();
-                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, rating);
+                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, false, rating);
                 _accommodationReservationRepository.Save(acc);
                 MessageBox.Show("Reservation successful!");
             }
