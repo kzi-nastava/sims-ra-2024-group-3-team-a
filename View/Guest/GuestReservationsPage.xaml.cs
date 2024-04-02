@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.View.Guest
 {
@@ -37,6 +39,7 @@ namespace BookingApp.View.Guest
         public DateOnly _selectedNewBeginDate;
         public DateOnly _selectedNewEndDate;
         private AccommodationReservationDTO _selectedReservation;
+        private List<string> _images;
         public GuestReservationsPage(UserDTO userDTO, ObservableCollection<AccommodationReservationChangeRequestDTO> myChangeRequests)
         {
             InitializeComponent();
@@ -45,6 +48,7 @@ namespace BookingApp.View.Guest
             _myReservationsDTO = new List<AccommodationReservationDTO>();
             _myReservations = new ObservableCollection<AccommodationReservationDTO>();
             _myChangeRequests = myChangeRequests;
+            _images = new List<string>();
             
             _accommodationReservationRepository = new AccommodationReservationRepository();
             List<AccommodationReservation> myReservations = _accommodationReservationRepository.GetAllByGuestId(_userDTO.Id);
@@ -96,7 +100,29 @@ namespace BookingApp.View.Guest
 
         private void RateOwner_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dataGridMyReservations.SelectedItem == null)
+            {
+                MessageBox.Show("Please select reservation to rate!");
+            }
+            else
+            {
+                _selectedReservation = (AccommodationReservationDTO)dataGridMyReservations.SelectedItem;
+                if (_selectedReservation.EndDate.AddDays(5) < DateOnly.FromDateTime(DateTime.Now))
+                {
+                    MessageBox.Show("You can't rate this - it was over more than 5 days ago!");
+                    return;
+                }
+                else if (_selectedReservation.EndDate > DateOnly.FromDateTime(DateTime.Now))
+                {
+                    MessageBox.Show("You can't rate this - reservation not over yet!");
+                    return;
+                }
+                else
+                {
+                    frameRateOwner.Visibility = Visibility.Visible;
+                }
+                
+            }
         }
 
         private void RequestChange_Click(object sender, RoutedEventArgs e)
@@ -145,6 +171,42 @@ namespace BookingApp.View.Guest
             _myChangeRequests.Add(new AccommodationReservationChangeRequestDTO(changeRequest));
             MessageBox.Show("Submitted request");
             
+        }
+
+        private void AddImages(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if (response == true)
+            {
+                _images = openFileDialog.FileNames.ToList();
+
+                for (int i = 0; i < _images.Count; i++)
+                {
+                    _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AccommodationReservationDTO selectedReservation = (AccommodationReservationDTO)dataGridMyReservations.SelectedItem;
+            int cleanliness = Convert.ToInt32(cleanlinessTextBox.Text);
+            int correctness = Convert.ToInt32(ownerCorrectnessTextBox.Text);
+            string comment = CommentForOwnerTextBox.Text;
+            List<string> images = new List<string>();
+
+            //ReviewDTO guestReview = new ReviewDTO(cleanliness, correctness, comment, images);
+            selectedReservation.RatingDTO.GuestCleanlinessRating = cleanliness;
+            selectedReservation.RatingDTO.GuestHospitalityRating = correctness;
+            selectedReservation.RatingDTO.GuestComment = comment;
+            selectedReservation.RatingDTO.GuestImages = _images;
+            _accommodationReservationRepository.Update(selectedReservation.ToAccommodationReservation());
+            MessageBox.Show("Rated Owner successfully!");
+
         }
     }
 }

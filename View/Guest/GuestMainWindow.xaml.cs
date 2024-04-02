@@ -189,5 +189,17 @@ namespace BookingApp.View.Guest
             frameMain.Visibility = Visibility.Collapsed;
             frameMyRequests.Visibility = Visibility.Visible;
         }
+
+        private void LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            SignInForm signInForm = new SignInForm();
+            this.Close();
+            signInForm.Show();
+        }
+
+        private void MyInbox_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
