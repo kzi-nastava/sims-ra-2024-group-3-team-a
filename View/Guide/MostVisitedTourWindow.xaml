@@ -1,0 +1,49 @@
+﻿<Window x:Class="BookingApp.View.Guide.MostVisitedTourWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Guide"
+        mc:Ignorable="d"
+        Title="MostVisitedTourWindow" Height="450" Width="800">
+    <Grid>
+        <TextBlock Text="Most visited tour :" FontSize="20" HorizontalAlignment="Center"></TextBlock>
+        <ListBox ItemsSource="{Binding Tours}"  IsHitTestVisible="False" Margin="160,126,160,126">
+            <ListBox.ItemTemplate >
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="Godina: "/>
+                        <Run Text="{Binding BeginingTime, StringFormat='yyyy'}" FontWeight="Bold"/>
+                        <LineBreak/>
+                        <Run Text="Naziv ture: "/>
+                        <Run Text="{Binding Name}" />
+                        <LineBreak/>
+                        <Run Text="Lokacija: "/>
+                        <Run Text="{Binding Path=LocationDTO.City}"/>
+                        <Run Text=", "/>
+                        <Run Text="{Binding Path=LocationDTO.Country}"/>
+                        <LineBreak/>
+                        <Run Text="Datum: "/>
+                        <Run Text="{Binding BeginingTime}"/>
+                        <LineBreak/>
+                        <Run Text="Broj turista: "/>
+                        <Run Text="{Binding TouristsPresent}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock Text="No tours available" FontSize="16" HorizontalAlignment="Center"
+               Margin="160,126,160,126">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Tours.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+</Window>
