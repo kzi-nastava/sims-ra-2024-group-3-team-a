@@ -9,20 +9,22 @@
     <Grid Background="AntiqueWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1">
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10,10,10,134" AutoGenerateColumns="False" Height="400" >
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
                 <DataGrid.Columns>
-
                     <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
                     <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
                     <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
                     <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
                     <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
                     <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding KeyPointsDTO}"/>
-                    <DataGridTemplateColumn Header="" Width="Auto">
+                    <DataGridTemplateColumn Header="" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Begin tour" Click="ShowActiveTourWindow" />
@@ -32,7 +34,11 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Show all tours" Click="ShowAllToursWindow" Margin="29,455,631,0" VerticalAlignment="Top" Height="61"/>
+
+        </Grid>
+        <Grid Grid.Row="2" Height="264" VerticalAlignment="Center">
+            <Button Content="Show all tours" Click="ShowAllToursWindow"  VerticalAlignment="Top" Height="61" Margin="52,71,499,0"/>
+            <Button Content="Statistics" Click="ShowTourStatisticsWindow"  VerticalAlignment="Top" Height="61" Margin="423,71,127,0"  />
         </Grid>
 
 
