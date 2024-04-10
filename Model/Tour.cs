@@ -26,6 +26,7 @@ namespace BookingApp.Model
         public string CurrentKeyPoint { get; set; }
         public int CurrentCapacity { get; set; }
         public bool IsActive  { get; set; }
+        public int TouristsPresent { get; set; }
 
         public Tour() 
         {
@@ -34,7 +35,7 @@ namespace BookingApp.Model
             Images = new List<string>();
         }
 
-        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive)
+        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive, int presentTourists)
         {
             Id = id;
             GuideId = guideId;
@@ -49,10 +50,11 @@ namespace BookingApp.Model
             Images = images;
             CurrentCapacity = maxTouristNumber;
             CurrentKeyPoint = currentKeyPoint;
-            IsActive = isActive;    
+            IsActive = isActive;
+            TouristsPresent = presentTourists;
         }
 
-        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity)
+        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, KeyPoints keyPoints, DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity, int presentTourists)
         {
             Id = id;
             GuideId = guideId;
@@ -68,6 +70,7 @@ namespace BookingApp.Model
             CurrentKeyPoint = currentKeyPoint;
             IsActive = isActive;
             CurrentCapacity = currentCapacity;
+            TouristsPresent = presentTourists;
         }
 
         public Tour( string name, Location place, Languages language, int maxTouristNumber, DateTime beginingTime)
@@ -84,12 +87,12 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint,IsActive.ToString(), images };
+                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint,IsActive.ToString(),TouristsPresent.ToString(), images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint, IsActive.ToString() };
+                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint,IsActive.ToString(), TouristsPresent.ToString() };
                 return csvValues;
             }
         }
@@ -110,7 +113,8 @@ namespace BookingApp.Model
             KeyPoint.Id = Convert.ToInt32(values[11]);
             CurrentKeyPoint = values[12];
             IsActive =Convert.ToBoolean( values[13]);
-            for (int i = 14; i < values.Length; i++)
+            TouristsPresent = Convert.ToInt32(values[14]);
+            for (int i = 15; i < values.Length; i++)
             {
                Images.Add(values[i]);
             }

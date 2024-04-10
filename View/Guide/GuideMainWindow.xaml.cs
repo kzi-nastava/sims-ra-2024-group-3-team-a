@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.View.Guide;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -95,5 +96,12 @@ namespace BookingApp.View
             AllToursWindow allToursView = new AllToursWindow(this, _loggedInGuide);
             allToursView.Show();
         }
+        private void ShowTourStatisticsWindow(object sender, RoutedEventArgs e)
+        {
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
+            tourStatistics.Show();
+            
+        }
+
     }
 }

@@ -36,6 +36,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
@@ -43,10 +46,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" Grid.ColumnSpan="4">
             <!--<TextBox Name="textboxSearch" Width="100" Margin="0,0,10,0"/> -->
             <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Name" x:Name="searchNameTextBox" Width="100" Margin="5"/>
             <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Country" x:Name="searchCountryTextBox" Width="100" Margin="5"/>
@@ -64,10 +68,26 @@
             <Button Content="Make reservation" Click="ShowAccommodationReservationPage" Width="80"/>
         </StackPanel>
 
-        <Frame Grid.Row="1" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
-        
+        <Button Content="My Reservations" Grid.Row="1" Width="150" HorizontalAlignment="Left" Click="ShowGuestReservationsPage"></Button>
+        <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Click="ShowMyRequests_Click"></Button>
+        <Button Content="My Inbox" Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Left" Click="MyInbox_Click"></Button>
+        <Button Content="Log out" Grid.Row="1" Grid.Column="3" Width="150" HorizontalAlignment="Left" Click="LogOut_Click"></Button>
 
-        <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" Grid.Row="3" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False">
+        <Frame Grid.Row="2" Grid.ColumnSpan="4" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
+        
+        <Frame x:Name="frameMyRequests" Grid.Row="3" Grid.ColumnSpan="4" NavigationUIVisibility="Hidden" Visibility="Collapsed">
+        </Frame>
+        <DataGrid x:Name="dataGridMyRequests" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Visibility="{Binding ElementName=frameMyRequests, Path=Visibility}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDateNew}"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDateNew}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Owner comment" Binding="{Binding RejectedMessage}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" Grid.Row="4" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="4">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="City" Binding="{Binding PlaceDTO.City}" Width="*"/>

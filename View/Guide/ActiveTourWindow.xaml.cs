@@ -32,6 +32,7 @@ namespace BookingApp.View
 
         private Boolean _doesActiveTourExist;
         private GuideMainWindow _guideMainWindow;
+        private int _counter ;
 
 
         public static ObservableCollection<TouristDTO> Tourists { get; set; }
@@ -140,6 +141,7 @@ namespace BookingApp.View
             _tourRepository.Update(_tourDTO.ToTourAllParam());
             if (_doesActiveTourExist == false)
             {
+                _counter = 0;
                 button.Background = new SolidColorBrush(Colors.IndianRed);
                 _tourDTO.CurrentKeyPoint = _keypointsDTO.Begining;
             }
@@ -173,9 +175,41 @@ namespace BookingApp.View
             Button button = (Button)sender;
             TouristDTO selectedTourist = new TouristDTO();
             selectedTourist =   ((Button)sender).DataContext as TouristDTO;
+            if (selectedTourist.JoiningKeyPoint != string.Empty)
+            {
+                MessageBox.Show("This tourist has already joined the tour", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             _touristDTO = selectedTourist;
             _touristDTO.JoiningKeyPoint = _tourDTO.CurrentKeyPoint;
+            if (_counter != 0)
+            {
+                _counter++;
+                _tourDTO.TouristsPresent = _counter;
+            }
+            else
+            {
+                _counter = _tourDTO.TouristsPresent;
+                _counter++;
+                _tourDTO.TouristsPresent = _counter;
+            }
+            foreach (TourReservation reservation in _tourReservationRepository.GetAll())
+            {
+                if (reservation.TourId == _tourDTO.Id)
+                {
+                    foreach (Model.Tourist tourist in reservation.Tourists)
+                    {
+                        if (_touristDTO.Name == tourist.Name && _touristDTO.Surname == tourist.Surname)
+                        {
+                            tourist.JoiningKeyPoint = _tourDTO.CurrentKeyPoint;
+                            _tourReservationRepository.Update(reservation);
+                        }
+                    }
+                }
+            }
+            _tourRepository.Update(_tourDTO.ToTourAllParam());
             button.Background = Brushes.IndianRed;
+            button.IsEnabled = false;
         }
         
 

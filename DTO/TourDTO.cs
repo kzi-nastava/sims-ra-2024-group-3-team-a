@@ -38,7 +38,8 @@ namespace BookingApp.DTO
             currentKeyPoint = tour.CurrentKeyPoint;
             images = tour.Images;
             isActive = tour.IsActive;
-            currentCapacity = tour.CurrentCapacity; 
+            currentCapacity = tour.CurrentCapacity;
+            touristsPresent = tour.TouristsPresent;
         }
 
         public TourDTO(TourDTO tourDTO)
@@ -56,6 +57,7 @@ namespace BookingApp.DTO
             currentKeyPoint = tourDTO.CurrentKeyPoint;
             images = tourDTO.Images;
             currentCapacity= tourDTO.CurrentCapacity;
+            touristsPresent= tourDTO.TouristsPresent;
         }
 
         private LocationDTO locationDTO;
@@ -261,6 +263,19 @@ namespace BookingApp.DTO
             }
         }
 
+        private int touristsPresent;
+        public int TouristsPresent
+        {
+            get { return touristsPresent; }
+            set
+            {
+                if (value != touristsPresent)
+                {
+                    touristsPresent = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Tour ToTour()
         {
            return new Tour(name, locationDTO.ToLocation(), language,maxTouristNumber, beginingTime);
@@ -269,13 +284,13 @@ namespace BookingApp.DTO
         public Tour ToTourAllParam()
         {
             
-            return new Tour(id,guideId, name, locationDTO.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive);
+            return new Tour(id,guideId, name, locationDTO.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive, touristsPresent);
         }
 
         public Tour ToTourWithCapacity()
         {
 
-            return new Tour(id,guideId,name, locationDTO.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive, currentCapacity);
+            return new Tour(id,guideId,name, locationDTO.ToLocation(), description, language, maxTouristNumber, keyPointsDTO.ToKeyPoint(), beginingTime, duration, images, currentKeyPoint, isActive, currentCapacity, touristsPresent);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

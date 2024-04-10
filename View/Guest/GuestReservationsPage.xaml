@@ -1,0 +1,58 @@
+﻿<Page x:Class="BookingApp.View.Guest.GuestReservationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookingApp.View.Guest"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="GuestReservationsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Width="120" Grid.Row="0" HorizontalAlignment="Center" Click="CancelReservation_Click">Cancel Reservation</Button>
+        <Button Width="100" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Click="RateOwner_Click">Rate</Button>
+        <Button Width="100" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Click="RequestChange_Click">Request Change</Button>
+        <Button Width="100" Grid.Row="0" Grid.Column="3" Click="Back_Click">Back</Button>
+
+        <Frame x:Name="frameRequestChange" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4" NavigationUIVisibility="Hidden" Visibility="Collapsed">
+        </Frame>
+        <DatePicker Width="105" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerNewBegin" SelectedDate = "{Binding _selectedNewBeginDate, Mode=TwoWay}" Visibility="{Binding ElementName=frameRequestChange, Path=Visibility}"/>
+        <DatePicker Width="105" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerNewEnd" SelectedDate = "{Binding _selectedNewEndDate, Mode=TwoWay}" Visibility="{Binding ElementName=frameRequestChange, Path=Visibility}"/>
+        <Button Width="100" Grid.Row="1" Grid.Column="4" Click="SubmitRequest_Click" Visibility="{Binding ElementName=frameRequestChange, Path=Visibility}">Submit Request</Button>
+
+        <Frame x:Name="frameRateOwner" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4" NavigationUIVisibility="Hidden" Visibility="Collapsed">
+        </Frame>
+        <Label Grid.Row="1" Grid.Column="0" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Cleanliness:</Label>
+        <TextBox Text="0" Width="105" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" x:Name="cleanlinessTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
+
+        <Label Grid.Row="1" Grid.Column="1" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Correctness:</Label>
+        <TextBox Text="0" Width="105" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" x:Name="ownerCorrectnessTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
+        
+        <Label Grid.Row="2"  Grid.Column="0" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Comment:</Label>
+        <TextBox Text="" Width="105" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" x:Name="CommentForOwnerTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
+        <Button Width="100" Grid.Row="1" Grid.Column="3" Click="SubmitRateOwner_Click" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Submit</Button>
+        <Button Width="100" Grid.Row="2" Grid.Column="2" Click="AddImages" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Add images</Button>
+
+        <DataGrid x:Name="dataGridMyReservations" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDate}"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</Page>
