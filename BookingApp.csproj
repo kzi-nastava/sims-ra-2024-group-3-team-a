@@ -64,4 +64,10 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Data\accommodationReservationChangeRequests.csv">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
 </Project>

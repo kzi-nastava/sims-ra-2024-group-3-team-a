@@ -46,7 +46,8 @@
             <MenuItem Header="Home"></MenuItem>
             <MenuItem Header="My Tours" Click="ShowMyToursWindow"></MenuItem>
             <MenuItem Header="Tour Requests"></MenuItem>
-            <MenuItem Header="Create Request"></MenuItem>
+            <MenuItem Header="Create Request" ></MenuItem>
+            <MenuItem Header="Rate Tour" Click="ShowFinishedTours"></MenuItem>
         </Menu>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
             <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Country" x:Name="searchCountryTextBox" Width="100" Margin="5"/>

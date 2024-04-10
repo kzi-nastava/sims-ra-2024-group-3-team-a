@@ -137,5 +137,10 @@ namespace BookingApp.View
             MyToursWindow myToursWindow = new MyToursWindow();
             myToursWindow.ShowDialog();
         }
+        private void ShowFinishedTours(object sender, RoutedEventArgs e)
+        {
+           FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
+           finishedToursWindow.ShowDialog();
+        }
     }
 }
