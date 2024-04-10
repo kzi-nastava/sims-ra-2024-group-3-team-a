@@ -111,5 +111,22 @@ namespace BookingApp.Repository
             }
             return unactiveTours;
         }
+
+        public List<Tour> GetFinishedTours()
+        {
+            _tourReservationRepository = new TourReservationRepository();
+            List<Tour> finishedTours = new List<Tour>();
+            foreach (Tour t in GetAll())
+            {
+                foreach (TourReservation tr in _tourReservationRepository.GetAll())
+                {
+                    if (t.Id == tr.TourId && t.CurrentKeyPoint.Equals("finished"))
+                    {
+                        finishedTours.Add(t);
+                    }
+                }
+            }
+            return finishedTours;
+        }
     }
 }
