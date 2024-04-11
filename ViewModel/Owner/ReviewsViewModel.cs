@@ -20,22 +20,23 @@ namespace BookingApp.ViewModel.Owner
         private ObservableCollection<AccommodationReservationDTO> _finishedAccommodationReservationsDTO;
         private ObservableCollection<AccommodationReservationDTO> _userReviewedAccommodationReservationsDTO;
         private double _averageRating;
+
         private RelayCommand _showSideMenuCommand;
 
-        private User _loggedInUser;
+        private UserDTO _loggedInUser;
         private AccommodationReservationDTO _selectedMyReviewDTO = null;
         private AccommodationReservationDTO _selectedUserReviewDTO = null;
 
-        public ReviewsViewModel(User loggedInUser)
+        public ReviewsViewModel(UserDTO loggedInUser)
         {
             _accommodationReservationService = new AccommodationReservationService();
-            List<AccommodationReservationDTO> finishedAccommodationReservationsList = _accommodationReservationService.GetFinishedAccommodationReservations(loggedInUser).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
+            List<AccommodationReservationDTO> finishedAccommodationReservationsList = _accommodationReservationService.GetFinishedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
             _finishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(finishedAccommodationReservationsList);
 
-            List<AccommodationReservationDTO> _userReviewedAccommodationReservationsList = _accommodationReservationService.GetUserReviewedAccommodationReservations(loggedInUser).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
+            List<AccommodationReservationDTO> _userReviewedAccommodationReservationsList = _accommodationReservationService.GetUserReviewedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
             _userReviewedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(_userReviewedAccommodationReservationsList);
 
-            _averageRating = _accommodationReservationService.GetAverageRating(loggedInUser);
+            _averageRating = _accommodationReservationService.GetAverageRating(loggedInUser.ToUser());
 
             _loggedInUser = loggedInUser;
 

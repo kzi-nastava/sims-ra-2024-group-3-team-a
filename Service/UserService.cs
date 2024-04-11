@@ -21,5 +21,25 @@ namespace BookingApp.Service
         {
             return _userRepository.GetById(id);
         }
+
+        public List<User> GetAll()
+        {
+            return _userRepository.GetAll();
+        }
+
+        public User Save(User user)
+        {
+            return _userRepository.Save(user);
+        }
+
+        public void Delete(User user)
+        {
+            _userRepository.Delete(user);
+        }
+
+        public User Update(User user)
+        {
+            return _userRepository.Update(user);
+        }
     }
 }

@@ -29,38 +29,12 @@ namespace BookingApp.View.Owner
     {
         private InboxViewModel _inboxViewModel;
 
-        public InboxPage(User loggedInUser)
+        public InboxPage(UserDTO loggedInUser)
         {
             InitializeComponent();
             
             _inboxViewModel = new InboxViewModel(loggedInUser);
             DataContext = _inboxViewModel;
         }
-
-        /*private void ShowMessageDetailsPage(object sender, SelectionChangedEventArgs e)
-        {
-            if (listViewInbox.SelectedItem == null)
-            {
-                return;
-            }
-
-            var selectedItem = listViewInbox.SelectedItem as MessageDTO;
-
-            if(selectedItem.Type == MessageType.AccommodationChangeRequest)
-            {
-                _ownerMainWindow.frameMain.Content = new RequestDetailsPage(_ownerMainWindow, selectedItem);
-                listViewInbox.SelectedItem = null;
-            }
-            else if(selectedItem.Type == MessageType.NewReviewNotification)
-            {
-                _ownerMainWindow.frameMain.Content = new NewReviewDetailsPage(_ownerMainWindow, selectedItem);
-                listViewInbox.SelectedItem = null;
-            }
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }*/
     }
 }

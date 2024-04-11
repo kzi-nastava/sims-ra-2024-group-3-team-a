@@ -29,7 +29,7 @@ namespace BookingApp.View.Owner
         public ReviewsPage()
         {
             InitializeComponent();
-            _reviewsViewModel = new ReviewsViewModel(OwnerMainWindow.LoggedInOwner.ToUser());
+            _reviewsViewModel = new ReviewsViewModel(OwnerMainWindow.LoggedInOwner);
             DataContext = _reviewsViewModel;
         }
     }

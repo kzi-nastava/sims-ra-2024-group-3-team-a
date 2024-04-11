@@ -20,7 +20,6 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class SideMenuPage : Page
     {
-        private OwnerMainWindow _ownerMainWindow;
         public SideMenuPage()
         {
             InitializeComponent();
@@ -31,7 +30,7 @@ namespace BookingApp.View.Owner
         }
         public void ShowAccommodationsPage(object sender, RoutedEventArgs e)
         {
-            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(OwnerMainWindow.LoggedInOwner.ToUser());
+            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(OwnerMainWindow.LoggedInOwner);
         }
 
         public void ShowReviewsPage(object sender, RoutedEventArgs e)
@@ -41,14 +40,19 @@ namespace BookingApp.View.Owner
 
         public void ShowInboxPage(object sender, RoutedEventArgs e)
         {
-            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner.ToUser());
+            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner);
         }
 
         private void LogOut(object sender, RoutedEventArgs e)
         {
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
-            _ownerMainWindow.Close();
+            OwnerMainWindow.GetInstance().Close();
+        }
+
+        public void ShowProfileMenuPage(object sender, RoutedEventArgs e)
+        {
+            OwnerMainWindow.MainFrame.Content = new ProfileMenuPage();
         }
     }
 }

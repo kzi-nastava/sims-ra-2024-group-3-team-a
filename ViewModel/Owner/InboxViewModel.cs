@@ -23,7 +23,7 @@ namespace BookingApp.ViewModel.Owner
 
         private MessageDTO _selectedMessageDTO = null;
 
-        public InboxViewModel(User loggedInUser)
+        public InboxViewModel(UserDTO loggedInUser)
         {
             _messageSerivce = new MessageService();
             _messageSerivce.UpdateAndCreateMessages();

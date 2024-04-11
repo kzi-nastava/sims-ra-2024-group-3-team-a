@@ -1,10 +1,6 @@
-﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Repository;
-using BookingApp.ViewModel.Owner;
+﻿using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,18 +17,18 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Owner
 {
     /// <summary>
-    /// Interaction logic for AccommodationsPage.xaml
+    /// Interaction logic for ProfileMenuPage.xaml
     /// </summary>
-    public partial class AccommodationsPage : Page
+    public partial class ProfileMenuPage : Page
     {
-        private AccommodationsViewModel _accommodationViewModel;
+        private ProfileMenuViewModel _profileMenuViewModel; 
 
-        public AccommodationsPage(UserDTO loggedInUser)
+        public ProfileMenuPage()
         {
             InitializeComponent();
-            
-            _accommodationViewModel = new AccommodationsViewModel(loggedInUser);
-            DataContext = _accommodationViewModel;
+
+            _profileMenuViewModel = new ProfileMenuViewModel();
+            DataContext = _profileMenuViewModel;
         }
     }
 }

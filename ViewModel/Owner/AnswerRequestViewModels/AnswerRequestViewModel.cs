@@ -161,7 +161,7 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
             _accommodationReservationDTO.BeginDate = _accommodationReservationChangeRequestDTO.BeginDateNew;
             _accommodationReservationDTO.EndDate = _accommodationReservationChangeRequestDTO.EndDateNew;
             _accommodationReservationService.Update(_accommodationReservationDTO.ToAccommodationReservation());
-            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner.ToUser());
+            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner);
         }
 
         private void RejectRequest()

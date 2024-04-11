@@ -20,12 +20,12 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showAddAccommodationPageCommand;
 
-        private User _loggedInUser;
+        private UserDTO _loggedInUser;
 
-        public AccommodationsViewModel(User loggedInUser)
+        public AccommodationsViewModel(UserDTO loggedInUser)
         {
             _accommodationService = new AccommodationService();
-            List<AccommodationDTO> accommodationsDTO = _accommodationService.GetAccommodationsForOwner(loggedInUser).Select(accommodation => new AccommodationDTO(accommodation)).ToList(); ;
+            List<AccommodationDTO> accommodationsDTO = _accommodationService.GetAccommodationsForOwner(loggedInUser.ToUser()).Select(accommodation => new AccommodationDTO(accommodation)).ToList(); ;
             _accommodationsDTO = new ObservableCollection<AccommodationDTO>(accommodationsDTO);
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);

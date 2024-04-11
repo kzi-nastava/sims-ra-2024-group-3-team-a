@@ -62,7 +62,7 @@ namespace BookingApp.View.Owner
             _repository.Save(_accommodationDTO.ToAccommodation());
 
             SetDefaultValues();
-            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInOwner.ToUser());
+            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInOwner);
         }
 
         private void ShowSideMenu(object sender, RoutedEventArgs e)

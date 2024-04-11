@@ -75,6 +75,21 @@ namespace BookingApp.Service
 
             return averageRating;
         }
+        public void SetSuperOwner(User loggedInOwner)
+        {
+            int reviewNumber = GetUserReviewedAccommodationReservations(loggedInOwner).Count();
+            double averageRating = GetAverageRating(loggedInOwner);
+            if (averageRating >= 4.5 && reviewNumber > 50)
+            {
+                loggedInOwner.IsSuper = true;
+                _userService.Update(loggedInOwner);
+            }
+            else
+            {
+                loggedInOwner.IsSuper = false;
+                _userService.Update(loggedInOwner);
+            }
+        }
         private bool IsLoggedOwner(Accommodation accommodation, User loggedInOwner)
         {
             if (accommodation.OwnerId == loggedInOwner.Id)

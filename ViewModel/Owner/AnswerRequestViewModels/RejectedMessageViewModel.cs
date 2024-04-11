@@ -107,7 +107,7 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
             _accommodationReservationChangeRequestDTO.Status = AccommodationChangeRequestStatus.Rejected;
             _accommodationReservationChangeRequestService.Update(_accommodationReservationChangeRequestDTO.ToAccommodationReservationChangeRequest());
             _messageService.Delete(_messageDTO.ToMessage());
-            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner.ToUser());
+            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner);
         }
 
     }
