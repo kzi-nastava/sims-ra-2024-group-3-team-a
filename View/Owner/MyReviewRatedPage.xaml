@@ -26,10 +26,10 @@
         <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"  Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
             <Grid Background="Transparent" Margin="3,3,3,3">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="42" FontWeight="Bold" Foreground="#d4ff00">REVIEWS</Label>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="ShowSideMenu" Width="40" Height="40">
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
                     <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
                 </Button>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Click="GoBack" Width="40" Height="40">
+                <Button Command="{Binding GoBackCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40">
                     <Image Name="imageBack" Source="../../Resources/Images/back.png" />
                 </Button>
             </Grid>
@@ -53,28 +53,28 @@
                 <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,25">
                     <StackPanel Orientation="Horizontal" Margin="35,0,35,0">
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="Guest Username:"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=GuestId, Converter={StaticResource GuestIdToNameConverter}}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationReservationDTO.GuestId, Converter={StaticResource GuestIdToNameConverter}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="35,0,35,0">
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="Accommodation:"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationReservationDTO.AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="35,0,35,0">
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="Date:"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=BeginDate}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationReservationDTO.BeginDate}"/>
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="-"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=EndDate}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationReservationDTO.EndDate}"/>
                     </StackPanel>
                 </StackPanel>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Cleanness:"/>
-                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="3" Grid.Column="1" Content="{Binding Path=RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="3" Grid.Column="1" Content="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Content="Rules:"/>
-                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="4" Grid.Column="1" Content="{Binding Path=RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                <Label Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="4" Grid.Column="1" Content="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Comment:</Label>
-                <TextBlock TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="5" Grid.Column="1" Text="{Binding Path=RatingDTO.OwnerComment}"/>
+                <TextBlock TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="5" Grid.Column="1" Text="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerComment}"/>
             </Grid>
         </StackPanel>
     </Grid>

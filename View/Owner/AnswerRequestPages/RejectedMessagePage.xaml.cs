@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner.AnswerRequestViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,46 +24,13 @@ namespace BookingApp.View.Owner.AnswerRequestPages
     /// </summary>
     public partial class RejectedMessagePage : Page
     {
-        private AccommodationReservationChangeRequestDTO _accommodationReservationChangeRequestDTO;
-        private MessageDTO _messageDTO;
+        private RejectedMessageViewModel _rejectedMessageViewModel;
 
-        private AccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
-        private MessageRepository _messageRepository;
-
-        private OwnerMainWindow _ownerMainWindow;
-
-        public string RejectedMessage { get; set; }
-
-        public RejectedMessagePage(OwnerMainWindow ownerMainWindow, AccommodationReservationChangeRequestDTO accommodationReservationChangeRequestDTO, MessageDTO messageDTO)
+        public RejectedMessagePage(AccommodationReservationChangeRequestDTO accommodationReservationChangeRequestDTO, MessageDTO messageDTO)
         {
             InitializeComponent();
-            DataContext = this;
-
-            _ownerMainWindow = ownerMainWindow;
-            _accommodationReservationChangeRequestDTO = accommodationReservationChangeRequestDTO;
-
-            _accommodationReservationChangeRequestRepository = new AccommodationReservationChangeRequestRepository();
-            _messageRepository = new MessageRepository();
-            _messageDTO = messageDTO;
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }
-
-        private void GoBack(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.frameMain.GoBack();
-        }
-
-        private void ConfirmRejectRequest(object sender, RoutedEventArgs e)
-        {
-            _accommodationReservationChangeRequestDTO.RejectedMessage = RejectedMessage;
-            _accommodationReservationChangeRequestDTO.Status = AccommodationChangeRequestStatus.Rejected;
-            _accommodationReservationChangeRequestRepository.Update(_accommodationReservationChangeRequestDTO.ToAccommodationReservationChangeRequest());
-            _messageRepository.Delete(_messageDTO.ToMessage());
-            _ownerMainWindow.frameMain.Content = new InboxPage(_ownerMainWindow);
+            _rejectedMessageViewModel = new RejectedMessageViewModel(accommodationReservationChangeRequestDTO, messageDTO);
+            DataContext = _rejectedMessageViewModel;
         }
     }
 }

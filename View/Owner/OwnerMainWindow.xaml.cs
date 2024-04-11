@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,20 +28,22 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class OwnerMainWindow : Window
     {
-        public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
+        public static OwnerMainWindow Instance;
+
         public static ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO { get; set; }
-        public static ObservableCollection<AccommodationReservationDTO> UserReviewedAccommodationReservationsDTO { get; set; }
-        public static ObservableCollection<MessageDTO> MessagesDTO { get; set; }
 
         private readonly AccommodationRepository _accommodationRepository;
         private readonly AccommodationReservationRepository _accommodationReservationRepository;
         private readonly UserRepository _userRepository;
-        private readonly MessageRepository _messageRepository;
 
-        public UserDTO LoggedInOwner;
+        private readonly AccommodationReservationService _accommodationReservationService;
+
+        public static UserDTO LoggedInOwner;
 
         private static Timer _notificationTimer;
-        public double AverageRating { get; set; }
+
+        public static Frame MainFrame;
+        public static Frame SideMenuFrame;
 
         public OwnerMainWindow(User owner)
         {
@@ -49,57 +52,46 @@ namespace BookingApp.View.Owner
             _accommodationRepository = new AccommodationRepository();
             _accommodationReservationRepository = new AccommodationReservationRepository();
             _userRepository = new UserRepository();
-            _messageRepository = new MessageRepository();
 
-            AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
+            _accommodationReservationService = new AccommodationReservationService();
+            _accommodationReservationService.SetSuperOwner(owner);
+
             FinishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
-            UserReviewedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
-            MessagesDTO = new ObservableCollection<MessageDTO>();
 
             LoggedInOwner = new UserDTO(owner);
 
             Update();
             SetNotificationTimer();
 
-            frameMain.Content = new AccommodationsPage(this);
+            MainFrame = frameMain;
+            SideMenuFrame = frameSideMenu;
+            MainFrame.Content = new AccommodationsPage(LoggedInOwner);
+
+            if(Instance == null)
+            {
+                Instance = this;
+            }
+        }
+
+        public static OwnerMainWindow GetInstance()
+        {
+            return Instance;
         }
 
         public void Update()
         {
             UpdateAccomodationReservations();
-            UpdateAccommodations();
-            UpdateMessages();
-        }
-        private void UpdateAccommodations()
-        {
-            AccommodationsDTO.Clear();
-            foreach (var accommodation in _accommodationRepository.GetAll())
-            {
-                AccommodationDTO accommodationDTO = new AccommodationDTO(accommodation);
-                if (IsLoggedOwner(accommodationDTO))
-                    AccommodationsDTO.Add(accommodationDTO);
-            }
         }
         private void UpdateAccomodationReservations()
         {
             FinishedAccommodationReservationsDTO.Clear();
-            UserReviewedAccommodationReservationsDTO.Clear();
             foreach (var reservation in _accommodationReservationRepository.GetAll())
             {
                 AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
                 AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
-                if (IsLoggedOwner(accommodationDTO) && IsNotExpired(reservationDTO))
+                if (IsLoggedOwner(accommodationDTO) && (IsNotExpired(reservationDTO) || IsOwnerReviewed(reservationDTO)))
                     FinishedAccommodationReservationsDTO.Add(reservationDTO);
             }
-
-            foreach (var reservation in _accommodationReservationRepository.GetAll())
-            {
-                AccommodationReservationDTO reservationDTO = new AccommodationReservationDTO(reservation);
-                AccommodationDTO accommodationDTO = new AccommodationDTO(_accommodationRepository.GetById(reservationDTO.AccommodationId));
-                if (IsLoggedOwner(accommodationDTO) && IsUserReviewed(reservationDTO))
-                    UserReviewedAccommodationReservationsDTO.Add(reservationDTO);
-            }
-            AverageRating = _accommodationReservationRepository.GetAverageRating(UserReviewedAccommodationReservationsDTO.ToList());
         }
         private bool IsLoggedOwner(AccommodationDTO accommodationDTO)
         {
@@ -117,37 +109,13 @@ namespace BookingApp.View.Owner
             }
             return false;
         }
-        private bool IsUserReviewed(AccommodationReservationDTO reservationDTO)
+        private bool IsOwnerReviewed(AccommodationReservationDTO reservationDTO)
         {
-            if (reservationDTO.RatingDTO.GuestCleanlinessRating != 0 && reservationDTO.RatingDTO.OwnerCleannessRating != 0)
+            if (reservationDTO.RatingDTO.OwnerCleannessRating != 0)
             {
                 return true;
             }
             return false;
-        }
-        private void UpdateMessages()
-        {
-            MessagesDTO.Clear();
-            _messageRepository.SetMessages();
-            foreach (var message in _messageRepository.GetAll())
-            {
-                MessageDTO messageDTO = new MessageDTO(message);
-                MessagesDTO.Add(messageDTO);
-            }
-        }
-
-        public void ShowAddAccommodationPage(object sender, RoutedEventArgs e)
-        {
-            if (frameMain.Content is AddAccommodationPage)
-                frameMain.Content = new AccommodationsPage(this);
-            else
-            {
-                frameMain.Content = new AddAccommodationPage(this, LoggedInOwner);
-            }
-        }
-        public void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            frameSideMenu.Content = new SideMenuPage(this);
         }
 
         private void SetNotificationTimer()
