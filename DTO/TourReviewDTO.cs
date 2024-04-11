@@ -13,13 +13,23 @@ namespace BookingApp.DTO
 {
     public class TourReviewDTO : INotifyPropertyChanged
     {
-        public TourReviewDTO() { }
+        public TourReviewDTO() 
+        {
+            images = new List<string>();
+        }
 
         public TourReviewDTO(TourReview tourReview)
         {
-
+            id = tourReview.Id;
+            touristId = tourReview.TouristId;
+            guideKnowledgeRating = tourReview.GuideKnowledgeRating;
+            guideLanguageRating = tourReview.GuideLanguageRating;
+            tourEntertainmentRating = tourReview.TourEntertainmentRating;
+            comment = tourReview.Comment;
+            isValid = tourReview.IsValid;
+            images= tourReview.Images;
         }
-
+        
         private int id;
         public int Id
         {
@@ -119,6 +129,20 @@ namespace BookingApp.DTO
             }
         }
 
+        private Boolean isValid;
+        public Boolean IsValid
+        {
+            get { return isValid; }
+            set
+            {
+                if (value != isValid)
+                {
+                    isValid = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private List<string> images;
         public List<string> Images
         {
@@ -134,7 +158,7 @@ namespace BookingApp.DTO
         }
         public TourReview ToTourReview()
         {
-            return new TourReview(id, touristId, tourId, guideKnowledgeRating, guideLanguageRating, tourEntertainmentRating, comment, images);
+            return new TourReview(id, touristId, tourId, guideKnowledgeRating, guideLanguageRating, tourEntertainmentRating, comment,isValid, images);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -64,7 +64,7 @@ namespace BookingApp.View
         }
         private void ShowTourReviewsWindow()
         {
-            TourReviewsWindow tourReviews = new TourReviewsWindow();
+            TourReviewsWindow tourReviews = new TourReviewsWindow(_tourDTO);
             tourReviews.Show();
 
         }
