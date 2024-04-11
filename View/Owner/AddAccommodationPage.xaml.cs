@@ -29,12 +29,10 @@ namespace BookingApp.View.Owner
         private AccommodationDTO _accommodationDTO;
         private UserDTO _loggedInOwner;
 
-        private OwnerMainWindow _ownerMainWindow;
-
         private List<string> _images;
         private Brush _defaultBrushBorder;
 
-        public AddAccommodationPage(OwnerMainWindow ownerMainWindow, UserDTO loggedInOwner)
+        public AddAccommodationPage(UserDTO loggedInOwner)
         {
             InitializeComponent();
             _defaultBrushBorder = textBoxName.BorderBrush.Clone();
@@ -45,8 +43,6 @@ namespace BookingApp.View.Owner
             _accommodationDTO = new AccommodationDTO();
             _accommodationDTO.CancellationPeriod = 1;
             _loggedInOwner = loggedInOwner;
-
-            _ownerMainWindow = ownerMainWindow;
 
             DataContext = _accommodationDTO;
         }
@@ -66,16 +62,16 @@ namespace BookingApp.View.Owner
             _repository.Save(_accommodationDTO.ToAccommodation());
 
             SetDefaultValues();
-            _ownerMainWindow.frameMain.Content = new AccommodationsPage(_ownerMainWindow);
+            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInOwner.ToUser());
         }
 
         private void ShowSideMenu(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.ShowSideMenu(sender, e);
+            OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
         }
         private void GoBack(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.frameMain.GoBack();
+            OwnerMainWindow.MainFrame.GoBack();
         }
 
         private void SetDefaultValues()

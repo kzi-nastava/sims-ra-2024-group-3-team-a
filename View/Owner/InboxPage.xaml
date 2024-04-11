@@ -20,7 +20,7 @@
         <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
             <Grid Background="Transparent" Margin="3,3,3,3">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="43" FontWeight="Bold" Foreground="#d4ff00">INBOX</Label>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="ShowSideMenu" Width="40" Height="40">
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
                     <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
                 </Button>
             </Grid>
@@ -28,7 +28,7 @@
 
         <!--Messages list-->
         <StackPanel Grid.Row="1">
-            <ListView x:Name="listViewInbox" ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="ShowMessageDetailsPage">
+            <ListView x:Name="listViewInbox" ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedMessageDTO}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Black" BorderThickness="5">

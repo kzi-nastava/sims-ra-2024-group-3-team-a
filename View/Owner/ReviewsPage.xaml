@@ -25,7 +25,7 @@
         <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
             <Grid Background="Transparent" Margin="3,3,3,3">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="42" FontWeight="Bold" Foreground="#d4ff00">REVIEWS</Label>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="ShowSideMenu" Width="40" Height="40">
+                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Command="{Binding Path=ShowSideMenuCommand}" Width="40" Height="40">
                     <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
                 </Button>
             </Grid>
@@ -36,7 +36,7 @@
             <!--My Reviews list-->
             <TabItem Header="From Me" Foreground="#d4ff00" Background="CadetBlue">
                 <StackPanel>
-                    <ListView x:Name="myReviewsList" ItemsSource="{Binding  FinishedAccommodationReservationsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="ShowMyReviewPage">
+                    <ListView x:Name="myReviewsList" ItemsSource="{Binding FinishedAccommodationReservationsDTO}" SelectedItem="{Binding SelectedMyReviewDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="Black" BorderThickness="5">
@@ -82,7 +82,7 @@
 
                     <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Background="CadetBlue">Average Rating: </Label>
                     <Label Grid.Row="0" Grid.Column="1" Foreground="#d4ff00" Background="CadetBlue" Content="{Binding Path=AverageRating}"/>
-                    <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="listViewUserReviews" ItemsSource="{Binding UserReviewedAccommodationReservationsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="ShowUserReviewPage">
+                    <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="listViewUserReviews" ItemsSource="{Binding UserReviewedAccommodationReservationsDTO}" SelectedItem="{Binding SelectedUserReviewDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="Black" BorderThickness="5">

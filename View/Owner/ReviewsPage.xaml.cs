@@ -1,5 +1,6 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,74 +25,12 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class ReviewsPage : Page
     {
-        public static ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO { get; set; }
-        public static ObservableCollection<AccommodationReservationDTO> UserReviewedAccommodationReservationsDTO { get; set; }
-        public double AverageRating { get; set; }
-
-        private readonly AccommodationRepository _accommodationRepository;
-        private readonly AccommodationReservationRepository _accommodationReservationRepository;
-        private readonly UserRepository _userRepository;
-
-        private UserDTO _loggedInOwner;
-        private OwnerMainWindow _ownerMainWindow;
-
-        public ReviewsPage(OwnerMainWindow ownerMainWindow)
+        private ReviewsViewModel _reviewsViewModel;
+        public ReviewsPage()
         {
             InitializeComponent();
-            DataContext = this;
-
-            _accommodationRepository = new AccommodationRepository();
-            _accommodationReservationRepository = new AccommodationReservationRepository();
-            _userRepository = new UserRepository();
-
-            FinishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>();
-
-            _ownerMainWindow = ownerMainWindow;
-            _loggedInOwner = _ownerMainWindow.LoggedInOwner;
-
-            _ownerMainWindow.Update();
-            FinishedAccommodationReservationsDTO = OwnerMainWindow.FinishedAccommodationReservationsDTO;
-            UserReviewedAccommodationReservationsDTO = OwnerMainWindow.UserReviewedAccommodationReservationsDTO;
-            AverageRating = _ownerMainWindow.AverageRating;
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }
-
-        private void ShowMyReviewPage(object sender, SelectionChangedEventArgs e)
-        {
-            if(myReviewsList.SelectedItem == null)
-            {
-                return;
-            }
-
-            var selectedItem = myReviewsList.SelectedItem as AccommodationReservationDTO;
-
-            if(selectedItem.RatingDTO.OwnerCleannessRating == 0)
-            {
-                _ownerMainWindow.frameMain.Content = new MyReviewNotRatedPage(_ownerMainWindow, selectedItem);
-                myReviewsList.SelectedItem = null;
-            }
-            else
-            {
-                _ownerMainWindow.frameMain.Content = new MyReviewRatedPage(_ownerMainWindow, selectedItem);
-                myReviewsList.SelectedItem = null;
-            }
-        }
-
-        private void ShowUserReviewPage(object sender, SelectionChangedEventArgs e)
-        {
-            if (listViewUserReviews.SelectedItem == null)
-            {
-                return;
-            }
-
-            var selectedItem = listViewUserReviews.SelectedItem as AccommodationReservationDTO;
-
-            _ownerMainWindow.frameMain.Content = new UserReviewDetailsPage(_ownerMainWindow, selectedItem);
-            listViewUserReviews.SelectedItem = null;
+            _reviewsViewModel = new ReviewsViewModel(OwnerMainWindow.LoggedInOwner.ToUser());
+            DataContext = _reviewsViewModel;
         }
     }
 
@@ -159,7 +98,6 @@ namespace BookingApp.View.Owner
             return DependencyProperty.UnsetValue;
         }
     }
-
     public class RatingToStarsConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

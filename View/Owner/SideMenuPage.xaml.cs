@@ -21,28 +21,27 @@ namespace BookingApp.View.Owner
     public partial class SideMenuPage : Page
     {
         private OwnerMainWindow _ownerMainWindow;
-        public SideMenuPage(OwnerMainWindow ownerMainWindow)
+        public SideMenuPage()
         {
             InitializeComponent();
-            _ownerMainWindow = ownerMainWindow;
         }
         public void CloseSideMenu(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.frameSideMenu.Content = null;
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowAccommodationsPage(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.frameMain.Content = new AccommodationsPage(_ownerMainWindow);
+            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(OwnerMainWindow.LoggedInOwner.ToUser());
         }
 
         public void ShowReviewsPage(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.frameMain.Content = new ReviewsPage(_ownerMainWindow);
+            OwnerMainWindow.MainFrame.Content = new ReviewsPage();
         }
 
         public void ShowInboxPage(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.frameMain.Content = new InboxPage(_ownerMainWindow);
+            OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner.ToUser());
         }
 
         private void LogOut(object sender, RoutedEventArgs e)

@@ -1,7 +1,9 @@
 ﻿using BookingApp.DTO;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using BookingApp.View.Owner.AnswerRequestPages;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,25 +27,17 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class InboxPage : Page
     {
-        public static ObservableCollection<MessageDTO> MessagesDTO { get; set; }
+        private InboxViewModel _inboxViewModel;
 
-        private readonly MessageRepository _messageRepository;
-
-        private OwnerMainWindow _ownerMainWindow;
-
-        public InboxPage(OwnerMainWindow ownerMainWindow)
+        public InboxPage(User loggedInUser)
         {
             InitializeComponent();
-            DataContext = this;
-            _ownerMainWindow = ownerMainWindow;
-
-            _messageRepository = new MessageRepository();
-
-            _ownerMainWindow.Update();
-            MessagesDTO = OwnerMainWindow.MessagesDTO;
+            
+            _inboxViewModel = new InboxViewModel(loggedInUser);
+            DataContext = _inboxViewModel;
         }
 
-        private void ShowMessageDetailsPage(object sender, SelectionChangedEventArgs e)
+        /*private void ShowMessageDetailsPage(object sender, SelectionChangedEventArgs e)
         {
             if (listViewInbox.SelectedItem == null)
             {
@@ -67,6 +61,6 @@ namespace BookingApp.View.Owner
         private void ShowSideMenu(object sender, RoutedEventArgs e)
         {
             _ownerMainWindow.ShowSideMenu(sender, e);
-        }
+        }*/
     }
 }
