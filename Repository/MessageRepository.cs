@@ -81,7 +81,7 @@ namespace BookingApp.Repository
             return current;
         }
 
-        public void SetMessages()
+        /*public void SetMessages()
         {
             _messages = _serializer.FromCSV(FilePath);
             SetAllUserReviewsMessages();
@@ -119,6 +119,6 @@ namespace BookingApp.Repository
                     Save(message);
                 }
             }
-        }
+        }*/
     }
 }

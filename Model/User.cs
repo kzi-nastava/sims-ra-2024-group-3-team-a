@@ -10,6 +10,7 @@ namespace BookingApp.Model
         public string Username { get; set; }
         public string Password { get; set; }
         public UserRole Role { get; set; }
+        public bool IsSuper { get; set; }
 
         public User() { }
 
@@ -19,16 +20,17 @@ namespace BookingApp.Model
             Password = password;
         }
 
-        public User(int id, string username, string password)
+        public User(int id, string username, string password, bool isSuper)
         {
             Id = id;
             Username = username;
             Password = password;
+            IsSuper = isSuper;
         }   
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Username, Password, Role.ToString() };
+            string[] csvValues = { Id.ToString(), Username, Password, Role.ToString(), IsSuper.ToString() };
             return csvValues;
         }
 
@@ -38,6 +40,7 @@ namespace BookingApp.Model
             Username = values[1];
             Password = values[2];
             Role = (UserRole)Enum.Parse(typeof(UserRole), values[3]);
+            IsSuper = Convert.ToBoolean(values[4]);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using BookingApp.DTO;
-using BookingApp.Repository;
-using BookingApp.ViewModel.Owner;
+﻿using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +17,18 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Owner
 {
     /// <summary>
-    /// Interaction logic for NewReviewDetailsPage.xaml
+    /// Interaction logic for ProfileMenuPage.xaml
     /// </summary>
-    public partial class NewReviewDetailsPage : Page
+    public partial class ProfileMenuPage : Page
     {
-        private NewReviewDetailsViewModel _newReviewDetailsViewModel;
+        private ProfileMenuViewModel _profileMenuViewModel; 
 
-        public NewReviewDetailsPage(MessageDTO messageDTO)
+        public ProfileMenuPage()
         {
             InitializeComponent();
 
-            _newReviewDetailsViewModel = new NewReviewDetailsViewModel(messageDTO);
-            DataContext = _newReviewDetailsViewModel;
+            _profileMenuViewModel = new ProfileMenuViewModel();
+            DataContext = _profileMenuViewModel;
         }
     }
 }

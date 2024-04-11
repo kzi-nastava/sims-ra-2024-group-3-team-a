@@ -1,5 +1,6 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,29 +23,13 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class MyReviewRatedPage : Page
     {
-        private OwnerMainWindow _ownerMainWindow;
+        private MyReviewRatedViewModel _myReviewRatedViewModel;
 
-        private AccommodationReservationRepository _repository;
-        private AccommodationReservationDTO _accommodationReservationDTO;
-
-        public MyReviewRatedPage(OwnerMainWindow ownerMainWindow, AccommodationReservationDTO reservation)
+        public MyReviewRatedPage(AccommodationReservationDTO reservation)
         {
             InitializeComponent();
-            _ownerMainWindow = ownerMainWindow;
-            _accommodationReservationDTO = reservation;
-
-            _repository = new AccommodationReservationRepository();
-            
-            DataContext = _accommodationReservationDTO;
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }
-        private void GoBack(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.frameMain.GoBack();
+            _myReviewRatedViewModel = new MyReviewRatedViewModel(reservation);
+            DataContext = _myReviewRatedViewModel;
         }
     }
 }

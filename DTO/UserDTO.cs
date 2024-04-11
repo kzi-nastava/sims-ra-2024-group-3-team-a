@@ -16,13 +16,13 @@ namespace BookingApp.DTO
     {
         public UserDTO() { }
 
-        public UserDTO(int id, string username, string password, UserRole role)
+        public UserDTO(int id, string username, string password, UserRole role, bool isSuper)
         {
             this.id = id;
             this.username=username;
             this.password = password;
             this.role=role;
-        
+            this.isSuper = isSuper;
         }
 
         public UserDTO(User user)
@@ -30,8 +30,8 @@ namespace BookingApp.DTO
             id = user.Id;
             username=user.Username;
             password=user.Password;
-            role=user.Role; 
-            
+            role=user.Role;
+            isSuper = user.IsSuper;
         }
 
         public UserDTO(UserDTO userDTO)
@@ -40,6 +40,7 @@ namespace BookingApp.DTO
             username=userDTO.username;
             password=userDTO.password;
             role=userDTO.role;
+            isSuper=userDTO.isSuper;
         }
         
         private int id;
@@ -95,9 +96,23 @@ namespace BookingApp.DTO
             }
         }
 
+        private bool isSuper;
+        public bool IsSuper
+        {
+            get { return isSuper; }
+            set
+            {
+                if (value != isSuper)
+                {
+                    isSuper = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public User ToUser()
         {
-            return new User(id,username,password);
+            return new User(id,username,password,isSuper);
         }
 
 

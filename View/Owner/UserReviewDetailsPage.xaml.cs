@@ -2,6 +2,7 @@
 using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,29 +25,14 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class UserReviewDetailsPage : Page
     {
-        private OwnerMainWindow _ownerMainWindow;
+        private UserReviewDetailsViewModel _userReviewDetailsViewModel;
 
-        private AccommodationReservationRepository _repository;
-        private AccommodationReservationDTO _accommodationReservationDTO;
-
-        public UserReviewDetailsPage(OwnerMainWindow ownerMainWindow, AccommodationReservationDTO accommodationReservationDTO)
+        public UserReviewDetailsPage(AccommodationReservationDTO accommodationReservationDTO)
         {
             InitializeComponent();
-            DataContext = this;
-
-            _ownerMainWindow = ownerMainWindow;
-
-            _accommodationReservationDTO = accommodationReservationDTO;
-            DataContext = _accommodationReservationDTO;
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }
-        private void GoBack(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.frameMain.GoBack();
+            
+            _userReviewDetailsViewModel = new UserReviewDetailsViewModel(accommodationReservationDTO);
+            DataContext = _userReviewDetailsViewModel;
         }
     }
 }
