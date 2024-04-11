@@ -23,21 +23,18 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class MyReviewNotRatedPage : Page
     {
-        private OwnerMainWindow _ownerMainWindow;
-
         private AccommodationReservationRepository _repository;
         private AccommodationReservationDTO _accommodationReservationDTO;
 
         private Brush _defaultBrushBorder;
 
-        public MyReviewNotRatedPage(OwnerMainWindow ownerMainWindow, AccommodationReservationDTO reservation)
+        public MyReviewNotRatedPage(AccommodationReservationDTO reservation)
         {
             InitializeComponent();
             _defaultBrushBorder = textBoxCleannessRating.BorderBrush.Clone();
 
             _repository = new AccommodationReservationRepository();
             _accommodationReservationDTO = new AccommodationReservationDTO(reservation);
-            _ownerMainWindow = ownerMainWindow;
 
             DataContext = _accommodationReservationDTO;  
         }
@@ -45,16 +42,16 @@ namespace BookingApp.View.Owner
         private void Rate(object sender, RoutedEventArgs e)
         {
             _repository.Update(_accommodationReservationDTO.ToAccommodationReservation());
-            _ownerMainWindow.frameMain.Content = new ReviewsPage(_ownerMainWindow);
+            OwnerMainWindow.MainFrame.Content = new ReviewsPage();
         }
 
         private void ShowSideMenu(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.ShowSideMenu(sender, e);
+            OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
         }
         private void GoBack(object sender, RoutedEventArgs e)
         {
-            _ownerMainWindow.frameMain.GoBack();
+            OwnerMainWindow.MainFrame.GoBack();
         }
 
         private void textBox_TextChanged(object sender, EventArgs e)

@@ -1,10 +1,10 @@
 ﻿<Page x:Class="BookingApp.View.Owner.AnswerRequestPages.AnswerRequestPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:BookingApp.View.Owner.AnswerRequestPages"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AnswerRequestPage">
 
@@ -24,24 +24,25 @@
         <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="3" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
             <Grid Background="Transparent" Margin="3,3,3,3">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="43" FontWeight="Bold" Foreground="#d4ff00">INBOX</Label>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="ShowSideMenu" Width="40" Height="40">
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
                     <Image Name="imageSideMenu" Source="../../../Resources/Images/Owner/menu.png" />
                 </Button>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Click="GoBack" Width="40" Height="40">
+                <Button Command="{Binding GoBackCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40">
                     <Image Name="imageBack" Source="../../../Resources/Images/back.png" />
                 </Button>
             </Grid>
         </Border>
-        
+
         <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Margin="25,25,25,25" TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Text="{Binding Path=_messageDTO.Content}"/>
-        <Calendar x:Name="calendarOccupiedDays" Grid.Row="2" Grid.Column="1" SelectionMode="None"/>
+        <Calendar x:Name="calendarOccupiedDays" Grid.Row="2" Grid.Column="1" SelectionMode="None" DisplayDateStart="{Binding CalendarBeginDate}" DisplayDateEnd="{Binding CalendarEndDate}"/>
+
         <Grid Grid.Row="3" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Margin="40,15,40,15" FontSize="22" Background="CadetBlue" Foreground="#d4ff00" Click="AcceptRequest">Accept</Button>
-            <Button Grid.Column="1" Margin="40,15,40,15" FontSize="22" Background="CadetBlue" Foreground="#d4ff00" Click="RejectRequest">Reject</Button>
+            <Button Command="{Binding AcceptRequestCommand}" Grid.Column="0" Margin="40,15,40,15" FontSize="22" Background="CadetBlue" Foreground="#d4ff00">Accept</Button>
+            <Button Command="{Binding RejectRequestCommand}" Grid.Column="1" Margin="40,15,40,15" FontSize="22" Background="CadetBlue" Foreground="#d4ff00">Reject</Button>
         </Grid>
     </Grid>
 </Page>

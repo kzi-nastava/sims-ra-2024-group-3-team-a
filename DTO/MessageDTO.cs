@@ -19,6 +19,7 @@ namespace BookingApp.DTO
             id = messageDTO.Id;
             requestId = messageDTO.RequestId;
             sender = messageDTO.Sender;
+            recieverId = messageDTO.RecieverId;
             header = messageDTO.Header;
             content = messageDTO.Content;
             type = messageDTO.Type;
@@ -30,6 +31,7 @@ namespace BookingApp.DTO
             id = message.Id;
             requestId = message.RequestId;
             sender = message.Sender;
+            recieverId = message.RecieverId;
             header = message.Header;
             content = message.Content;
             type = message.Type;
@@ -73,6 +75,20 @@ namespace BookingApp.DTO
                 if (value != sender)
                 {
                     sender = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int recieverId;
+        public int RecieverId
+        {
+            get { return recieverId; }
+            set
+            {
+                if (value != recieverId)
+                {
+                    recieverId = value;
                     OnPropertyChanged();
                 }
             }
@@ -136,7 +152,7 @@ namespace BookingApp.DTO
 
         public Message ToMessage()
         {
-            return new Message(id, requestId, sender, header, content, type, isRead);
+            return new Message(id, requestId, sender, recieverId, header, content, type, isRead);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -30,13 +30,15 @@ namespace BookingApp.Model
 
         public  List<string> Images { get; set; }
 
+        public Boolean IsValid { get; set; }
+
 
         public TourReview()
         {
             Images = new List<string>();
         }
 
-        public TourReview(int id, int touristId, int tourId, int guideKnowledgeRating, int guideLanguageRating, int tourEntertainmentRating, string comment, List<string> images)
+        public TourReview(int id, int touristId, int tourId, int guideKnowledgeRating, int guideLanguageRating, int tourEntertainmentRating, string comment,bool isValid, List<string> images)
         {
             Id = id;
             TouristId = touristId;
@@ -46,6 +48,7 @@ namespace BookingApp.Model
             TourEntertainmentRating = tourEntertainmentRating;
             Comment = comment;
             Images = images;
+            IsValid = isValid;
         }
 
         public string[] ToCSV()
@@ -53,12 +56,12 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(), TourEntertainmentRating.ToString(), Comment, images };
+                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(), TourEntertainmentRating.ToString(), Comment, IsValid.ToString(),  images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(),TourEntertainmentRating.ToString(), Comment };
+                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(),TourEntertainmentRating.ToString(), Comment, IsValid.ToString() };
                 return csvValues;
             }
         }
@@ -71,9 +74,10 @@ namespace BookingApp.Model
             GuideLanguageRating = Convert.ToInt32(values[4]);
             TourEntertainmentRating = Convert.ToInt32(values[5]);
             Comment = values[6];
+            IsValid = Convert.ToBoolean(values[7]);
 
             Images = new List<string>();
-            for (int i = 7; i < values.Length; i++)
+            for (int i = 8; i < values.Length; i++)
             {
                 Images.Add(values[i]);
             }

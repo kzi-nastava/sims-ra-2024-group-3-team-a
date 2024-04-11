@@ -124,6 +124,21 @@ namespace BookingApp.DTO
             }
         }
 
+        private TourReviewDTO review;
+        public TourReviewDTO Review
+        {
+            get { return review; }
+            set
+            {
+                if (value != review)
+                {
+                    review = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         public Tourist ToTourist()
         {
             return new Tourist(name,surname,age);

@@ -1,5 +1,7 @@
 ﻿using BookingApp.DTO;
+using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,36 +25,14 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class AccommodationsPage : Page
     {
-        public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
+        private AccommodationsViewModel _accommodationViewModel;
 
-        private readonly AccommodationRepository _accommodationRepository;
-
-        private OwnerMainWindow _ownerMainWindow;
-        private UserDTO _loggedInOwner;
-
-        public AccommodationsPage(OwnerMainWindow ownerMainWindow)
+        public AccommodationsPage(UserDTO loggedInUser)
         {
             InitializeComponent();
-            _accommodationRepository = new AccommodationRepository();
-            AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
-
-            DataContext = this;
-            _ownerMainWindow = ownerMainWindow;
             
-            _loggedInOwner = _ownerMainWindow.LoggedInOwner;
-
-            _ownerMainWindow.Update();
-
-            AccommodationsDTO = OwnerMainWindow.AccommodationsDTO;
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }
-        private void ShowAddAccomodationPage(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowAddAccommodationPage(sender, e);
+            _accommodationViewModel = new AccommodationsViewModel(loggedInUser);
+            DataContext = _accommodationViewModel;
         }
     }
 }

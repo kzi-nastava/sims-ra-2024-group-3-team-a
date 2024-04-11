@@ -1,5 +1,6 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,34 +23,14 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class NewReviewDetailsPage : Page
     {
-        private OwnerMainWindow _ownerMainWindow;
-        private MessageDTO _messageDTO;
+        private NewReviewDetailsViewModel _newReviewDetailsViewModel;
 
-        private MessageRepository _messageRepository;
-
-        public NewReviewDetailsPage(OwnerMainWindow ownerMainWindow, MessageDTO messageDTO)
+        public NewReviewDetailsPage(MessageDTO messageDTO)
         {
             InitializeComponent();
 
-            _ownerMainWindow = ownerMainWindow;
-            _messageDTO = messageDTO;
-            _messageDTO.IsRead = true;
-
-            _messageRepository = new MessageRepository();
-
-            _messageRepository.Update(_messageDTO.ToMessage());
-
-            DataContext = _messageDTO;
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.ShowSideMenu(sender, e);
-        }
-
-        private void GoBack(object sender, RoutedEventArgs e)
-        {
-            _ownerMainWindow.frameMain.Content = new InboxPage(_ownerMainWindow);
+            _newReviewDetailsViewModel = new NewReviewDetailsViewModel(messageDTO);
+            DataContext = _newReviewDetailsViewModel;
         }
     }
 }

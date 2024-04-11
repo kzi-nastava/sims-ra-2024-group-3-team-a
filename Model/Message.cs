@@ -14,6 +14,7 @@ namespace BookingApp.Model
         public int Id { get; set; }
         public int RequestId { get; set; }
         public string Sender { get; set; }
+        public int RecieverId { get; set; }
         public string Header { get; set; }
         public string Content { get; set; }
         public MessageType Type { get; set; }
@@ -21,11 +22,12 @@ namespace BookingApp.Model
 
         public Message() { }
 
-        public Message(int id, int requestId, string sender, string header, string content, MessageType type, bool isRead)
+        public Message(int id, int requestId, string sender, int recieverId, string header, string content, MessageType type, bool isRead)
         {
             Id = id;
             RequestId = requestId;
             Sender = sender;
+            RecieverId = recieverId;
             Header = header;
             Content = content;
             Type = type;
@@ -34,7 +36,7 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), RequestId.ToString(), Sender, Header, Content, Type.ToString(), IsRead.ToString() };
+            string[] csvValues = { Id.ToString(), RequestId.ToString(), Sender, RecieverId.ToString(), Header, Content, Type.ToString(), IsRead.ToString() };
             return csvValues;
         }
 
@@ -43,10 +45,11 @@ namespace BookingApp.Model
             Id = Convert.ToInt32(values[0]);
             RequestId = Convert.ToInt32(values[1]);
             Sender = values[2];
-            Header = values[3];
-            Content = values[4];
-            Type = (MessageType)Enum.Parse(typeof(MessageType), values[5]);
-            IsRead = Convert.ToBoolean(values[6]);
+            RecieverId = Convert.ToInt32(values[3]);
+            Header = values[4];
+            Content = values[5];
+            Type = (MessageType)Enum.Parse(typeof(MessageType), values[6]);
+            IsRead = Convert.ToBoolean(values[7]);
         }
     }
 }

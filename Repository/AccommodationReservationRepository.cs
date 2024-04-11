@@ -82,16 +82,16 @@ namespace BookingApp.Repository
             return _accomodationReservations.FindAll(c => c.GuestId == id);
         }
 
-        public double GetAverageRating(List<AccommodationReservationDTO> finishedReservations)
+        public double GetAverageRating(List<AccommodationReservation> finishedReservations)
         {
             int ratingSum = 0;
             int ratingCount = 0;
             foreach(var reservation in finishedReservations)
             {
-                if(reservation.RatingDTO.GuestCleanlinessRating != 0)
+                if(reservation.Rating.GuestCleannessRating != 0)
                 {
                     ratingCount++;
-                    int rating = (reservation.RatingDTO.GuestCleanlinessRating + reservation.RatingDTO.GuestHospitalityRating) / 2;
+                    int rating = (reservation.Rating.GuestCleannessRating + reservation.Rating.GuestHospitalityRating) / 2;
                     ratingSum += rating;
                 }
             }
