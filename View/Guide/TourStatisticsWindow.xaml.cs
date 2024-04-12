@@ -46,17 +46,17 @@ namespace BookingApp.View.Guide
             _maxTouristsCounter = -1;
             foreach( Tour tour in _tourRepository.GetAll())
             {
+                if (tour.CurrentKeyPoint == "finished")
+                {
+                    TourDTO tourDTO = new TourDTO(tour);
+                    ToursFinished.Add(tourDTO);
+                }
                 if (tour.TouristsPresent > _maxTouristsCounter && tour.CurrentKeyPoint == "finished" ){
 
                     _maxTouristsCounter=tour.TouristsPresent;
                     _tourDTO = new TourDTO(tour);
+                }
 
-                }
-                if(tour.CurrentKeyPoint == "finished")
-                {
-                    _tourDTO = new TourDTO(tour);
-                    ToursFinished.Add(_tourDTO);
-                }
             }
             Tours.Add(_tourDTO);
         }
