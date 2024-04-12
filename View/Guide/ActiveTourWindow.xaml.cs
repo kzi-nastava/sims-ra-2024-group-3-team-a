@@ -54,13 +54,15 @@ namespace BookingApp.View
         }
         private void CancelTour(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Tour has been canceled!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             _tourDTO.CurrentKeyPoint = "finished";
             _tourDTO.IsActive = false;
             _tourRepository.Update(_tourDTO.ToTourAllParam());
             _guideMainWindow.Update();
             this.Close();
-            ShowTourReviewsWindow();
+            if (_tourDTO.TouristsPresent != 0)
+            {
+                ShowTourReviewsWindow();
+            }
         }
         private void ShowTourReviewsWindow()
         {
@@ -169,13 +171,15 @@ namespace BookingApp.View
             button.Background = Brushes.IndianRed;
             if(button.Content == _keypointsDTO.Ending)
             {
-                //MessageBox.Show("Tour is finished!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                 _tourDTO.CurrentKeyPoint = "finished";
                 _tourDTO.IsActive=false;
                 _tourRepository.Update(_tourDTO.ToTourAllParam());
                 _guideMainWindow.Update();
                 this.Close();
-                ShowTourReviewsWindow();
+                if (_tourDTO.TouristsPresent != 0)
+                {
+                    ShowTourReviewsWindow();
+                }
             }
         }
 

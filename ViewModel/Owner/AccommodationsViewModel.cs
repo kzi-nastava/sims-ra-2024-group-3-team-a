@@ -75,7 +75,7 @@ namespace BookingApp.ViewModel.Owner
 
         public void ShowAddAccommodationPage()
         {
-            OwnerMainWindow.MainFrame.Content = new AddAccommodationPage(new UserDTO(_loggedInUser));
+            OwnerMainWindow.MainFrame.Content = new AddAccommodationPage(_loggedInUser);
         }
 
         public void ShowSideMenu()

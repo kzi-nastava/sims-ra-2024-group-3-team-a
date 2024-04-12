@@ -4,6 +4,7 @@ using BookingApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ using System.Windows.Shapes;
 
 namespace BookingApp.View.Guide
 {
+
     /// <summary>
     /// Interaction logic for TourReviewsWindow.xaml
     /// </summary>
@@ -26,11 +28,13 @@ namespace BookingApp.View.Guide
         private TouristDTO _touristDTO;
         private TourDTO _tourDTO;
         private TourReviewDTO _tourReviewDTO; 
+
         private TourReservationRepository _tourReservationRepository;
         private TourReviewRepository _tourReviewRepository;
+        private TouristRepository _touristRepository;
         private UserRepository _userRepository;
 
-        public ObservableCollection<TourReviewDTO> Reviews { get; set; }
+
         public ObservableCollection<TouristDTO> Tourists { get; set; }
         public TourReviewsWindow(TourDTO tour)
         {
@@ -40,8 +44,8 @@ namespace BookingApp.View.Guide
             _tourReservationRepository = new TourReservationRepository();
             _tourReviewRepository = new TourReviewRepository();
             _userRepository = new UserRepository();
+            _touristRepository = new TouristRepository();
             Tourists = new ObservableCollection<TouristDTO>();
-            Reviews = new ObservableCollection<TourReviewDTO>();
             _tourDTO = tour;
             Update();
             DataContext = this;
@@ -56,8 +60,9 @@ namespace BookingApp.View.Guide
                     {
                         if (tourist.JoiningKeyPoint != "")
                         {
+                            AddReview(tourReservation, tourist);
                             _touristDTO = new TouristDTO(tourist);
-                            AddReview(tourReservation);
+                            _touristRepository.Save(_touristDTO.ToTourist());
                             Tourists.Add(_touristDTO);
                         }
                     }
@@ -66,14 +71,14 @@ namespace BookingApp.View.Guide
             }
         }
 
-        private void AddReview(TourReservation tourReservation)//TouristDTO tourist)
+        private void AddReview(TourReservation tourReservation, Model.Tourist tourist)
         {
             foreach (TourReview tourReview in _tourReviewRepository.GetAll())
             {
-                if (tourReview.TouristId == tourReservation.UserId && _touristDTO.Name == FindUserName(tourReview.TouristId))
+                if (tourReview.TouristId == tourReservation.UserId && tourist.Name == FindUserName(tourReview.TouristId) && tourReservation.TourId==tourReview.TourId)
                 {
                     TourReviewDTO tourReviewDTO = new TourReviewDTO(tourReview);
-                    _touristDTO.Review = tourReviewDTO;
+                    tourist.Review = tourReview;
                 }
             }
         }
@@ -88,10 +93,17 @@ namespace BookingApp.View.Guide
             Button button = (Button)sender;
             TouristDTO selectedTourist  = new TouristDTO();
             selectedTourist = ((Button)sender).DataContext as TouristDTO;
-            ReviewDetailsWindow reviewDetails = new ReviewDetailsWindow(selectedTourist);
-            reviewDetails.Show();
-
+            if (selectedTourist.Review != null)
+            {
+                ReviewDetailsWindow reviewDetails = new ReviewDetailsWindow(selectedTourist);
+                reviewDetails.Show();
+            }
+            else
+            {
+                MessageBox.Show("There is no further information about this review", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
     }
+   
 }

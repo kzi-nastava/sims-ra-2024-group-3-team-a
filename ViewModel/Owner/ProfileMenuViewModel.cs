@@ -15,10 +15,10 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showSideMenuCommand;
         private UserDTO _ownerDTO;
 
-        public ProfileMenuViewModel()
+        public ProfileMenuViewModel(UserDTO loggedInUser)
         {
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
-            _ownerDTO = OwnerMainWindow.LoggedInOwner;
+            _ownerDTO = loggedInUser;
         }
 
         public UserDTO OwnerDTO
