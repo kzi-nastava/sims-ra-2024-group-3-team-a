@@ -76,7 +76,6 @@ namespace BookingApp.View
                 _tourReservationDTO.TouristsDTO = Tourists.ToList();
                 _tourReservationRepository.Save(_tourReservationDTO.ToTourReservation());
 
-                _tourMainWindow.Update();
 
                 MessageBox.Show("Successfully added reservation!");
                 Close();
