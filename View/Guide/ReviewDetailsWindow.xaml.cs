@@ -22,20 +22,26 @@ namespace BookingApp.View.Guide
     /// </summary>
     public partial class ReviewDetailsWindow : Window
     {
-        //private readonly TourReviewRepository _tourReviewRepository;
         private readonly TouristDTO _touristDTO;
+        private readonly TouristRepository _touristRepository;
         public static ObservableCollection<TourReviewDTO> Reviews { get; set; }
         public ReviewDetailsWindow(TouristDTO touristDTO)
         {
             InitializeComponent();
             _touristDTO = touristDTO;
-           // _tourReviewRepository = new TourReviewRepository();
             Reviews = new ObservableCollection<TourReviewDTO>();
+            _touristRepository = new TouristRepository();
             Update();
+            DataContext = Reviews;
         }
         private void Update()
         {
-            
+            Reviews.Add(_touristDTO.Review);
+        }
+        private void MarkAsInvalid(object sender, RoutedEventArgs e)
+        {
+            _touristDTO.Review.IsNotValid = "nije validna";
+            _touristRepository.Update(_touristDTO.ToTourist());
         }
     }
 }

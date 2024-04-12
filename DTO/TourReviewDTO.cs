@@ -26,7 +26,7 @@ namespace BookingApp.DTO
             guideLanguageRating = tourReview.GuideLanguageRating;
             tourEntertainmentRating = tourReview.TourEntertainmentRating;
             comment = tourReview.Comment;
-            isValid = tourReview.IsValid;
+            isNotValid = tourReview.IsNotValid;
             images= tourReview.Images;
         }
         
@@ -129,15 +129,15 @@ namespace BookingApp.DTO
             }
         }
 
-        private Boolean isValid;
-        public Boolean IsValid
+        private string isNotValid;
+        public string IsNotValid
         {
-            get { return isValid; }
+            get { return isNotValid; }
             set
             {
-                if (value != isValid)
+                if (value != isNotValid)
                 {
-                    isValid = value;
+                    isNotValid = value;
                     OnPropertyChanged();
                 }
             }
@@ -158,7 +158,7 @@ namespace BookingApp.DTO
         }
         public TourReview ToTourReview()
         {
-            return new TourReview(id, touristId, tourId, guideKnowledgeRating, guideLanguageRating, tourEntertainmentRating, comment,isValid, images);
+            return new TourReview(id, touristId, tourId, guideKnowledgeRating, guideLanguageRating, tourEntertainmentRating, comment,isNotValid, images);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

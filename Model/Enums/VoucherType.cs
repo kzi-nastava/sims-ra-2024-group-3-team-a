@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BookingApp.Model.Enums
 {
-    public enum AccommodationType
+    public enum VoucherType
     {
-        Apartment,
-        House,
-        Cottage
+        GuideQuitJob,
+        GuideCanceledTour,
+        Gift
     }
 }

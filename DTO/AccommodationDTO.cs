@@ -100,8 +100,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private AccomodationType type;
-        public AccomodationType Type
+        private AccommodationType type;
+        public AccommodationType Type
         {
             get { return type; }
             set
