@@ -16,7 +16,7 @@ namespace BookingApp.Model
         public int OwnerId { get; set; }
         public string Name { get; set; }
         public Location Place {  get; set; }
-        public AccomodationType Type { get; set; }
+        public AccommodationType Type { get; set; }
         public int Capacity { get; set; }
         public int MinDaysReservation { get; set; }
         public int CancellationPeriod { get; set; }
@@ -28,7 +28,7 @@ namespace BookingApp.Model
             Images = new List<string>();
         }
 
-        public Accommodation(int id, int ownerId, string name, Location place, AccomodationType type, int capacity, int minDaysReservation, int cancellationPeriod, List<string> images)
+        public Accommodation(int id, int ownerId, string name, Location place, AccommodationType type, int capacity, int minDaysReservation, int cancellationPeriod, List<string> images)
         {
             Id = id;
             OwnerId = ownerId;
@@ -63,7 +63,7 @@ namespace BookingApp.Model
             Name = values[2];
             Place.City = values[3];
             Place.Country = values[4];
-            Type = (AccomodationType)Enum.Parse(typeof(AccomodationType), values[5]);
+            Type = (AccommodationType)Enum.Parse(typeof(AccommodationType), values[5]);
             Capacity = Convert.ToInt32(values[6]);
             MinDaysReservation = Convert.ToInt32(values[7]);
             CancellationPeriod = Convert.ToInt32(values[8]);

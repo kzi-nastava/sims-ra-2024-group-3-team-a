@@ -21,10 +21,10 @@
         <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"  Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
             <Grid Background="Transparent" Margin="3,3,3,3">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00">ACCOMODATIONS</Label>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="ShowSideMenu" Width="40" Height="40">
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
                     <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
                 </Button>
-                <Button BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Click="GoBack" Width="40" Height="40">
+                <Button Command="{Binding GoBackCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40">
                     <Image Name="imageBack" Source="../../Resources/Images/back.png" />
                 </Button>
             </Grid>
@@ -48,26 +48,23 @@
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Name"/>
                 <TextBox x:Name="textBoxName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationDTO.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Type</Label>
-                <ComboBox x:Name="comboBoxType" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2">
-                    <ComboBoxItem x:Name="comboBoxItemApartment">Apartment</ComboBoxItem>
-                    <ComboBoxItem x:Name="comboBoxItemHouse">House</ComboBoxItem>
-                    <ComboBoxItem x:Name="comboBoxItemCottage">Cottage</ComboBoxItem>
-                </ComboBox>
+                <ComboBox x:Name="comboBoxType" ItemsSource="{Binding AccommodationTypes}" SelectedItem="{Binding AccommodationDTO.Type, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"/>
+
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Capacity</Label>
                 <TextBox x:Name="textBoxCapacity" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=Capacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationDTO.Capacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center">Min Days</Label>
                 <TextBox x:Name="textBoxMinDaysReservation" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationDTO.MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Cancellation</Label>
                 <TextBox x:Name="textBoxCancellationPeriod" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=CancellationPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationDTO.CancellationPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
             </Grid>
 
             <Label Foreground="#d4ff00" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Content="Place"/>
@@ -83,11 +80,11 @@
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Country"/>
                 <TextBox x:Name="textBoxCountry" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=PlaceDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationDTO.PlaceDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="City"/>
                 <TextBox x:Name="textBoxCity" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=PlaceDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationDTO.PlaceDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
             </Grid>
 
@@ -102,7 +99,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Column="1" Background="CadetBlue" Content="Add Images" Click="AddImages"></Button>
+                <Button Command="{Binding AddImagesCommand}" Grid.Column="1" Background="CadetBlue" Content="Add Images"></Button>
             </Grid>
 
             <Grid Height="50" Margin="0,20,0,0">
@@ -110,7 +107,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="buttonAdd" Background="CadetBlue" HorizontalContentAlignment="Center" Click="Add" Content="Add" Margin="0,10,0,10" HorizontalAlignment="Center" Width="177"/>
+                <Button x:Name="buttonAdd" Command="{Binding AddCommand}" Background="CadetBlue" HorizontalContentAlignment="Center" Content="Add" Margin="0,10,0,10" HorizontalAlignment="Center" Width="177"/>
             </Grid>
         </StackPanel>
     </Grid>

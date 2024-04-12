@@ -17,40 +17,40 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <Button Grid.Row="0" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Click="CloseSideMenu" Margin="10">
+                <Button Command="{Binding CloseSideMenuCommand}" Grid.Row="0" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="../../Resources/Images/Owner/menu.png" Width="30" Height="37.5"/>
                     </StackPanel>
                 </Button>
-                <Button Click="ShowAccommodationsPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding ShowAccommodationsPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\accommodations.png" Height="50" Width="50" />
                         <Label Content="Accommodations" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 
-                <Button Click="ShowReviewsPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding ShowReviewsPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\users.png" Height="50" Width="50" />
                         <Label Content="Reviews" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 
-                <Button Click="ShowInboxPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding ShowInboxPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\inbox.png" Height="50" Width="50" />
                         <Label Content="Inbox" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 
-                <Button Click="ShowProfileMenuPage" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding ShowProfileMenuPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\profile.png" Height="50" Width="50" />
                         <Label Content="Profile" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 
-                <Button Click="LogOut" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding LogOutCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\logout.png" Height="50" Width="50" />
                         <Label Content="Log Out" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>

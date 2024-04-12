@@ -1,5 +1,6 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,35 +24,16 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class MyReviewNotRatedPage : Page
     {
-        private AccommodationReservationRepository _repository;
-        private AccommodationReservationDTO _accommodationReservationDTO;
-
         private Brush _defaultBrushBorder;
+
+        private MyReviewNotRatedViewModel _myReviewNotRatedViewModel;
 
         public MyReviewNotRatedPage(AccommodationReservationDTO reservation)
         {
             InitializeComponent();
-            _defaultBrushBorder = textBoxCleannessRating.BorderBrush.Clone();
 
-            _repository = new AccommodationReservationRepository();
-            _accommodationReservationDTO = new AccommodationReservationDTO(reservation);
-
-            DataContext = _accommodationReservationDTO;  
-        }
-
-        private void Rate(object sender, RoutedEventArgs e)
-        {
-            _repository.Update(_accommodationReservationDTO.ToAccommodationReservation());
-            OwnerMainWindow.MainFrame.Content = new ReviewsPage();
-        }
-
-        private void ShowSideMenu(object sender, RoutedEventArgs e)
-        {
-            OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
-        }
-        private void GoBack(object sender, RoutedEventArgs e)
-        {
-            OwnerMainWindow.MainFrame.GoBack();
+            _myReviewNotRatedViewModel = new MyReviewNotRatedViewModel(reservation);
+            DataContext = _myReviewNotRatedViewModel;
         }
 
         private void textBox_TextChanged(object sender, EventArgs e)

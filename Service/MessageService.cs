@@ -50,7 +50,7 @@ namespace BookingApp.Service
         {
             foreach (var reservation in _accommodationReservationService.GetAll())
             {
-                if (!messages.Any(message => message.RequestId == reservation.Id) && reservation.Rating.GuestCleannessRating != 0 && reservation.Rating.OwnerCleannessRating != 0)
+                if (!(messages.Any(message => message.RequestId == reservation.Id && message.Type == MessageType.NewReviewNotification)) && reservation.Rating.GuestCleannessRating != 0 && reservation.Rating.OwnerCleannessRating != 0)
                 {
                     string content = "You have a new review from " + _userService.GetById(reservation.GuestId).Username + "." +
                                      " He rated your cleanliness with: " + reservation.Rating.GuestCleannessRating + "." +
@@ -69,7 +69,7 @@ namespace BookingApp.Service
         {
             foreach (var request in _accommodationReservationChangeRequestService.GetAll())
             {
-                if (!messages.Any(message => message.RequestId == request.Id) && request.Status == AccommodationChangeRequestStatus.WaitingForApproval)
+                if (!(messages.Any(message => message.RequestId == request.Id && message.Type == MessageType.AccommodationChangeRequest)) && request.Status == AccommodationChangeRequestStatus.WaitingForApproval)
                 {
                     AccommodationReservation accommodationReservation = _accommodationReservationService.GetById(request.AccommodationReservationId);
                     String content = "You have a request to change date for accommodation " + _accommodationService.GetById(accommodationReservation.AccommodationId).Name + " from " + accommodationReservation.BeginDate + " - " + accommodationReservation.EndDate + " to " +

@@ -1,4 +1,5 @@
-﻿using BookingApp.ViewModel.Owner;
+﻿using BookingApp.DTO;
+using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,11 @@ namespace BookingApp.View.Owner
     {
         private ProfileMenuViewModel _profileMenuViewModel; 
 
-        public ProfileMenuPage()
+        public ProfileMenuPage(UserDTO loggedInUser)
         {
             InitializeComponent();
 
-            _profileMenuViewModel = new ProfileMenuViewModel();
+            _profileMenuViewModel = new ProfileMenuViewModel(loggedInUser);
             DataContext = _profileMenuViewModel;
         }
     }

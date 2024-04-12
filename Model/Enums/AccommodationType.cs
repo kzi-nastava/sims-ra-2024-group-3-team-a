@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookingApp.Model.Enums
 {
-    public enum AccomodationType
+    public enum AccommodationType
     {
         Apartment,
         House,
