@@ -26,7 +26,7 @@ namespace BookingApp.Model
             Name = name;
             Surname = surname;
             Age = age;
-            JoiningKeyPoint = "none";
+            JoiningKeyPoint = "";
         }
 
         public Tourist(string name, string surname, int age, string joiningKeyPoint)

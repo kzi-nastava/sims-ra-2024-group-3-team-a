@@ -30,6 +30,7 @@
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
+    <None Remove="Resources\Images\Tourist\message.png" />
     <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
   </ItemGroup>
@@ -58,6 +59,7 @@
     <Resource Include="Resources\Images\Owner\OwnerBackground.jpg" />
     <Resource Include="Resources\Images\profile.png" />
     <Resource Include="Resources\Images\star_icon.png" />
+    <Resource Include="Resources\Images\Tourist\message.png" />
     <Resource Include="Resources\Images\users.png" />
     <Resource Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
