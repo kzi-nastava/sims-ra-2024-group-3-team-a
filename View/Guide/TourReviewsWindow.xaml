@@ -34,17 +34,11 @@
                     <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Review.GuideLanguageRating}"/>
                     <DataGridTextColumn Header="KNOWLEDGE" Width="*" Binding="{Binding  Path=Review.GuideKnowledgeRating}"/>
                     <DataGridTextColumn Header="ENTERTAINMENT" Width="*" Binding="{Binding  Path=Review.TourEntertainmentRating}"/>
+                    <DataGridTextColumn Header="VALIDATION" Width="*" Binding="{Binding Path=Review.IsNotValid}" />
                     <DataGridTemplateColumn Header="MORE" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="+" Click="ShowReviewDetails" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="IS VALID" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=Review.IsValid }"  />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
