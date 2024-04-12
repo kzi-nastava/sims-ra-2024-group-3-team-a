@@ -11,6 +11,7 @@ namespace BookingApp.Model.Enums
         NotRatedNotification,
         NewReviewNotification,
         AccommodationChangeRequest,
-        ForumOpened
+        ForumOpened,
+        TourAttendance
     }
 }

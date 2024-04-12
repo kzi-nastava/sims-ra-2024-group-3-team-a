@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,17 +30,14 @@ namespace BookingApp.View.Tourist
 
         private TourDTO _tourDTO;
 
-        private readonly TourReservationRepository _tourReservationRepository;
-
-        private readonly TourRepository _tourRepository;
+        private readonly TourService _tourService;
 
         public MyToursWindow()
         {
             InitializeComponent();
 
             _tourDTO= new TourDTO();
-            _tourReservationRepository = new TourReservationRepository();
-            _tourRepository = new TourRepository();
+            _tourService = new TourService();
             ActiveTours = new ObservableCollection<TourDTO>();
             UnactiveTours = new ObservableCollection<TourDTO>();
 
@@ -51,14 +49,14 @@ namespace BookingApp.View.Tourist
         private void UpdateActiveTours()
         {
             ActiveTours.Clear();
-            foreach (Tour tour in _tourRepository.GetActiveTours())
+            foreach (Tour tour in _tourService.GetActiveTours())
                 ActiveTours.Add(new TourDTO(tour));
         }
 
         private void UpdateUnactiveTours()
         {
             UnactiveTours.Clear();
-            foreach (Tour tour in _tourRepository.GetUnactiveTours())
+            foreach (Tour tour in _tourService.GetUnactiveTours())
                 UnactiveTours.Add(new TourDTO(tour));
         }
 

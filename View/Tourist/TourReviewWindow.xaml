@@ -24,6 +24,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
+                
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -84,8 +85,41 @@
                     </Border>
                   
                 </Grid>
-                <Button Grid.Row="3" Click="RateTour_Click"></Button>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="3" Grid.Column="0" Content="Rate" Background="GreenYellow" Width="100" Click="RateTour_Click"></Button>
+                </Grid>
             </Grid>
+               
         </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row ="1">Add a comment:</TextBlock>
+            <TextBox Grid.Row="2" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourReview.Comment}"/>
+            <TextBlock Grid.Row ="3">Add photos:</TextBlock>
+            <Button Grid.Row ="4" Width="200" Height="50" Background="DarkGray" Click="AddImages">Upload button</Button>
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            <Button  Width="100" Grid.Column="2" Background="LightPink" Height="50" Click="CloseWindow" >Cancel</Button>
+            </Grid>
+        </Grid>
+        
+
     </Grid>
 </Window>

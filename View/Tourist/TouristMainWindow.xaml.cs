@@ -1,6 +1,8 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
+using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.Service;
 using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,8 @@ namespace BookingApp.View
         private static TourDTO _tourDTO { get; set; }
         private static UserDTO _userDTO { get; set; }
 
+        private MessageService _messageService { get; set; }
+
         private readonly TourRepository _tourRepository;
         private static TourReservationRepository _tourReservationRepository { get; set; }
         public int CurrentCapacity { get; set; }
@@ -41,10 +45,12 @@ namespace BookingApp.View
             DataContext = this;
             _tourRepository = new TourRepository();
             _tourReservationRepository = new TourReservationRepository();
+            _messageService = new MessageService();
             Tours = new ObservableCollection<TourDTO>();
             _tourDTO = new TourDTO();
             _userDTO= new UserDTO(user);
             Update();
+            OpenPopup();
         }
 
         public void Update()
@@ -141,6 +147,43 @@ namespace BookingApp.View
         {
            FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
            finishedToursWindow.ShowDialog();
+        }
+
+        private void ShowInboxWindow(object sender, RoutedEventArgs e)
+        {
+            InboxWindow inboxWindow = new InboxWindow(_userDTO);
+            inboxWindow.ShowDialog();
+        }
+
+        private void OpenPopup()
+        {
+            int count = 0;
+            foreach(Message message in _messageService.GetAll())
+            { 
+                if( message.Type.Equals(MessageType.TourAttendance) && !message.IsRead)
+                {
+                    count++;
+                }
+            }
+
+            if (count > 0) 
+            {
+                popupWindow.IsOpen = true;
+            }
+        }
+
+       
+
+        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+        {
+            popupWindow.IsOpen = false;
+        }
+
+        private void LogOutClick(object sender, RoutedEventArgs e)
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            Close();
         }
     }
 }
