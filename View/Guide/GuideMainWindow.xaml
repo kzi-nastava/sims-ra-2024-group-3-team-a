@@ -14,7 +14,7 @@
 
 
         </Grid.RowDefinitions>
-
+       
         <Grid Grid.Row="1">
             <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
                 <DataGrid.Columns>
@@ -39,6 +39,10 @@
         <Grid Grid.Row="2" Height="264" VerticalAlignment="Center">
             <Button Content="Show all tours" Click="ShowAllToursWindow"  VerticalAlignment="Top" Height="61" Margin="52,71,499,0"/>
             <Button Content="Statistics" Click="ShowTourStatisticsWindow"  VerticalAlignment="Top" Height="61" Margin="423,71,127,0"  />
+
+            <Button Content="Logout" Click="LogoutClick"  VerticalAlignment="Top" Height="61" Margin="685,71,12,15"  />
+           
+
         </Grid>
 
 
