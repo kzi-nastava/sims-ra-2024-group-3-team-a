@@ -37,7 +37,7 @@ namespace BookingApp.Model
         {
             if (Tourists == null)
             {
-                string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString() };
+                string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString()};
                 return csvValues;
             }
             else

@@ -18,6 +18,7 @@ namespace BookingApp.Model
         public bool Flag { get; set; }
         public string JoiningKeyPoint { get; set; }
 
+        public TourReview Review { get; set; }
         public Tourist() { }
 
         public Tourist(string name, string surname, int age) 
