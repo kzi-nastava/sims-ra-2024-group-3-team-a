@@ -53,6 +53,18 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
             _rejectRequest = new RelayCommand(RejectRequest);
         }
 
+        public MessageDTO MessageDTO
+        {
+            get
+            {
+                return _messageDTO;
+            }
+            set
+            {
+                _messageDTO = value;
+                OnPropertyChanged();
+            }
+        }
         public DateTime CalendarBeginDate
         {
             get

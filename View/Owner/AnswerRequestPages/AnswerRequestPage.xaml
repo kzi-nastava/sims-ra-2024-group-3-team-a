@@ -33,8 +33,8 @@
             </Grid>
         </Border>
 
-        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Margin="25,25,25,25" TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Text="{Binding Path=_messageDTO.Content}"/>
-        <Calendar x:Name="calendarOccupiedDays" Grid.Row="2" Grid.Column="1" SelectionMode="None" DisplayDateStart="{Binding CalendarBeginDate}" DisplayDateEnd="{Binding CalendarEndDate}"/>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Margin="25,25,25,25" TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Text="{Binding Path=MessageDTO.Content}"/>
+        <Calendar x:Name="calendarOccupiedDays" Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Background="CadetBlue" SelectionMode="None" DisplayDateStart="{Binding CalendarBeginDate}" DisplayDateEnd="{Binding CalendarEndDate}"/>
 
         <Grid Grid.Row="3" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
