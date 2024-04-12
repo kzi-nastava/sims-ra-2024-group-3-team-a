@@ -27,7 +27,6 @@ namespace BookingApp.View.Guide
         private TourDTO _tourDTO;
         public static ObservableCollection<TourDTO> Tours { get; set; }
         private TourRepository _tourRepository;
-        private TourReservationRepository _tourReservationRepository;
         private int _maxTouristsCounter;
         public MostVisitedTourWindow(int year)
         {
