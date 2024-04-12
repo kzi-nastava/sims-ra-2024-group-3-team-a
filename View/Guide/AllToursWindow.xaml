@@ -9,13 +9,17 @@
     <Grid Background="AntiqueWhite">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
 
 
-        <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="1" Margin="10,10,20,68" AutoGenerateColumns="False">
+        <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="0"  Margin="10,10,20,68" AutoGenerateColumns="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
@@ -27,6 +31,7 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <Button Content="Add new tour" Click="ShowAddTourWindow" Margin="27,383,575,0" VerticalAlignment="Top" Height="29" Grid.Row="1"/>
+        <Button Content="Add new tour" Click="ShowAddTourWindow"  VerticalAlignment="Center" Height="29" Grid.Row="1"/>
+        <Button Content="Cancel Tour" Click="CancelTour"  VerticalAlignment="Center" Height="29" Grid.Row="1" Grid.Column="2"/>
     </Grid>
 </Window>
