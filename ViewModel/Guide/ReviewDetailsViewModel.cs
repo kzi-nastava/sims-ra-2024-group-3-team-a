@@ -1,4 +1,5 @@
-﻿using BookingApp.DTO;
+﻿using BookingApp.Commands;
+using BookingApp.DTO;
 using BookingApp.Repository;
 using BookingApp.Service;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ namespace BookingApp.ViewModel.Guide
     {
         private readonly TouristDTO _touristDTO;
         private readonly TouristService _touristService;
-
+        private RelayCommand _markAsInvalidCommand;
         public ObservableCollection<TourReviewDTO> Reviews { get; set; }
 
         public ReviewDetailsViewModel(TouristDTO touristDTO)
@@ -19,6 +20,16 @@ namespace BookingApp.ViewModel.Guide
             _touristService = new TouristService();
             Reviews = new ObservableCollection<TourReviewDTO>();
             Update();
+            _markAsInvalidCommand = new RelayCommand(MarkAsInvalid);
+        }
+        public RelayCommand MarkAsInvalidCommand
+        {
+            get { return _markAsInvalidCommand; }
+            set
+            {
+                _markAsInvalidCommand = value;
+                OnPropertyChanged();
+            }
         }
 
         private void Update()

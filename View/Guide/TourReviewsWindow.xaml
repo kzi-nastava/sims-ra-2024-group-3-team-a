@@ -26,11 +26,11 @@
 
         </Grid>
         <Grid Grid.Row="1">
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tourists}"  AutoGenerateColumns="False"  >
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding TouristsDTO}"  AutoGenerateColumns="False"  >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}"/>
-                    <DataGridTextColumn Header="JOINING POINT" Width="*" Binding="{Binding JoiningKeyPoint}"/>
+                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Path=Name}"/>
+                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Path=Surname}"/>
+                    <DataGridTextColumn Header="JOINING POINT" Width="*" Binding="{Binding Path=JoiningKeyPoint}"/>
                     <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Review.GuideLanguageRating}"/>
                     <DataGridTextColumn Header="KNOWLEDGE" Width="*" Binding="{Binding  Path=Review.GuideKnowledgeRating}"/>
                     <DataGridTextColumn Header="ENTERTAINMENT" Width="*" Binding="{Binding  Path=Review.TourEntertainmentRating}"/>
@@ -38,11 +38,10 @@
                     <DataGridTemplateColumn Header="MORE" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="+" Click="ShowReviewDetails" />
+                                <Button Content="+" Command="{Binding Path=DataContext.ShowReviewDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

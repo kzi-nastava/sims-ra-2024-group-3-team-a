@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +24,15 @@ namespace BookingApp.View.Guide
     /// </summary>
     public partial class TouristStatisticsWindow : Window
     {
+      /*  public TourStatisticsWindow(TourDTO tourDTO)
+        {
+            InitializeComponent();
+            DataContext = new TourStatisticsViewModel(tourDTO);
+        }
+
+    */
+
+
         private TourDTO _tourDTO;
         private TourReservationRepository _tourReservationRepository;
         private TouristDTO _touristDTO;

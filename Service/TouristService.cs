@@ -12,7 +12,7 @@ namespace BookingApp.Service
     {
         private TouristRepository _touristRepository = new TouristRepository();
 
-        private TourReservationService _tourReservationService = new TourReservationService();
+        //private TourReservationService _tourReservationService = new TourReservationService();
 
         public List<Tourist> GetAll()
         {
@@ -33,6 +33,9 @@ namespace BookingApp.Service
         {
             return _touristRepository.Update(tourist);
         }
-
+        public Tourist GetById(int id)
+        {
+            return _touristRepository.GetById(id);
+        }
     }
 }
