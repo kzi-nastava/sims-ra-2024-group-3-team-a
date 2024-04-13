@@ -23,7 +23,11 @@ namespace BookingApp.Repository
             _vouchers = _serializer.FromCSV(FilePath);
             return _vouchers;
         }
-
+        public Voucher GetById(int id)
+        {
+            _vouchers = _serializer.FromCSV(FilePath);
+            return _vouchers.FirstOrDefault(u => u.Id == id);
+        }
         public Voucher Save(Voucher voucher)
         {
             voucher.Id = NextId();

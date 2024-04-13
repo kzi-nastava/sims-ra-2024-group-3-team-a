@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Service;
 using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
@@ -29,9 +30,13 @@ namespace BookingApp.View
 
         private TourDTO _tourDTO;
 
+        public VoucherDTO voucherDTO;
+
         private readonly TourReservationRepository _tourReservationRepository;
 
         private readonly TourRepository _tourRepository;
+
+        private VoucherService _voucherService;
 
         private TouristDTO _touristDTO;
 
@@ -47,7 +52,9 @@ namespace BookingApp.View
 
         public bool isListFilled;
 
+        public ObservableCollection<VoucherDTO> Vouchers { get; set; }
         public ObservableCollection<TouristDTO> Tourists { get; set; }
+
         public TourReservationWindow(TouristMainWindow tourMainWindow, TourReservationRepository tourReservationRepository,TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
@@ -58,13 +65,18 @@ namespace BookingApp.View
             _tourDTO = new TourDTO(tourDTO);
             _userDTO = userDTO;
             _tourReservationDTO = new TourReservationDTO(tourDTO, _userDTO);
-            _touristDTO=new TouristDTO();
+            _touristDTO= new TouristDTO();
+            voucherDTO = new VoucherDTO();
             _tourMainWindow = tourMainWindow;
+            _voucherService  = new VoucherService();
+            _voucherService.UpdateHeader();
             Tourists = new ObservableCollection<TouristDTO>();
-            DataContext = new { Tour = _tourDTO, User = _userDTO };
+            Vouchers = new ObservableCollection<VoucherDTO>();
+            DataContext = new { Tour = _tourDTO, User = _userDTO, Voucher = Vouchers };
             dataGridTourists.ItemsSource = Tourists;
             bool isListFilled = false;
             buttonSubmitInfo.IsEnabled = false;
+            Update();
         }
        
         private void ConfirmReservation_Click(object sender, RoutedEventArgs e)
@@ -75,7 +87,7 @@ namespace BookingApp.View
 
                 _tourReservationDTO.TouristsDTO = Tourists.ToList();
                 _tourReservationRepository.Save(_tourReservationDTO.ToTourReservation());
-
+                _voucherService.Delete(voucherDTO.ToVoucher());
 
                 MessageBox.Show("Successfully added reservation!");
                 Close();
@@ -84,6 +96,16 @@ namespace BookingApp.View
             {
                 MessageBox.Show("You didn't add number of tourists that you previousli selected!");
             } 
+        }
+        private void Update()
+        {
+            Vouchers.Clear();
+
+           foreach (Voucher voucher in _voucherService.GetAll())
+                   Vouchers.Add(new VoucherDTO(voucher));
+            
+
+
         }
         private void UpdateTour(int currentCapacity)
         {
@@ -185,7 +207,6 @@ namespace BookingApp.View
         {
             Close();
         }
-
         private void RemoveTourist_Click(object sender, RoutedEventArgs e)
         {
             _touristDTO = dataGridTourists.SelectedItem as TouristDTO;
@@ -206,7 +227,21 @@ namespace BookingApp.View
             else
                 buttonAdd.IsEnabled = false; 
         }
-        
+        private void UseVoucher_Click(object sender, RoutedEventArgs e)
+        {
+            if (listViewVouchers.SelectedItem == null)
+            {
+                MessageBox.Show("You didn't choose voucher to use!");
+            }
+
+            List<Voucher> vouchers = new List<Voucher>();
+              
+
+            voucherDTO = listViewVouchers.SelectedItem as VoucherDTO;
+            MessageBox.Show("Voucher used!");
+        }
+
+       
         private void textBox_TextChanged(object sender, EventArgs e)
         {
             if(CheckInput())

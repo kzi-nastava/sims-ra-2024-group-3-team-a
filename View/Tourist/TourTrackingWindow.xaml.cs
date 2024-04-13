@@ -65,7 +65,7 @@ namespace BookingApp.View.Tourist
                             SetInitialButtonProperties(button);
                             if (IsButtonLastKeyPoint(button))
                             {
-                                button.Background = new SolidColorBrush(Colors.IndianRed);
+                                button.Background = new SolidColorBrush(Colors.LightPink);
                             }
 
                         }
@@ -76,7 +76,7 @@ namespace BookingApp.View.Tourist
                                 button.Content = _keypointsDTO.Middle[count - 1];
                                 if (IsButtonLastKeyPoint(button))
                                 {
-                                    button.Background = new SolidColorBrush(Colors.IndianRed);
+                                    button.Background = new SolidColorBrush(Colors.LightPink);
                                 }
 
                             }
@@ -91,7 +91,7 @@ namespace BookingApp.View.Tourist
                             button.Content = _keypointsDTO.Ending;
                             if (IsButtonLastKeyPoint(button))
                             {
-                                button.Background = new SolidColorBrush(Colors.IndianRed);
+                                button.Background = new SolidColorBrush(Colors.LightPink);
                             }
                         }
 

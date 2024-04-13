@@ -77,6 +77,30 @@
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Grid  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"  Background="White">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <ListView x:Name="listViewVouchers" ItemsSource="{Binding Voucher}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightPink" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal" Width="390">
+                                    <Image Source="../../Resources/Images/Tourist/voucher.png" Height="100" Width="100" Stretch="Fill"></Image>
+                                    <Border Padding="50"  BorderBrush="Transparent">
+                                        <StackPanel Margin="50,0,0,0">
+                                            <TextBlock   FontWeight="Bold" Text="{Binding Header}"/>
+                                            <TextBlock   FontWeight="Bold" Text="{Binding ExpireDate}"/>
+                                            <Button Content="Use" Click="UseVoucher_Click"></Button>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+        </Grid>
         <Button x:Name="buttoCancel" Content="Cancel" Background="Violet"  Grid.Row="10" Grid.Column="0" HorizontalAlignment="Right" Width="50" Margin="0,0,200,0" Click="CancelReservation_Click"/>
 
     </Grid>

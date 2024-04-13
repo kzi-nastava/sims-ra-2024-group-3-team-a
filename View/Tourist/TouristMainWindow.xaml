@@ -47,8 +47,9 @@
             <MenuItem Header="Home"></MenuItem>
             <MenuItem Header="My Tours" Click="ShowMyToursWindow"></MenuItem>
             <MenuItem Header="Tour Requests"></MenuItem>
-            <MenuItem Header="Create Request" ></MenuItem>
+            <MenuItem Header="Create Request"></MenuItem>
             <MenuItem Header="Rate Tour" Click="ShowFinishedTours"></MenuItem>
+            <MenuItem Header="Vouchers" Click="ShowVoucherWindow"></MenuItem>
             <MenuItem Header="Inbox" Click="ShowInboxWindow"></MenuItem>
             <MenuItem Header="Logout" Click="LogOutClick"></MenuItem>
         </Menu>

@@ -185,5 +185,11 @@ namespace BookingApp.View
             signInForm.Show();
             Close();
         }
+
+        private void ShowVoucherWindow(object sender, RoutedEventArgs e)
+        {
+            VoucherWindow voucherWindow = new VoucherWindow();
+            voucherWindow.ShowDialog();
+        }
     }
 }
