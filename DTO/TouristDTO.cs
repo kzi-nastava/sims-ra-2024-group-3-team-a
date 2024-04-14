@@ -26,8 +26,11 @@ namespace BookingApp.DTO
             name = tourist.Name;
             surname = tourist.Surname;
             age = tourist.Age;
-            flag = tourist.Flag;
             joiningKeyPoint = tourist.JoiningKeyPoint;
+            if (tourist.Review != null)
+            {
+                review = new TourReviewDTO(tourist.Review);
+            }
         }
 
         public TouristDTO(TouristDTO touristDTO)
@@ -141,7 +144,16 @@ namespace BookingApp.DTO
 
         public Tourist ToTourist()
         {
-            return new Tourist(name,surname,age);
+            if (review != null)
+            {
+                Tourist tourist = new Tourist(id, name, surname, age, joiningKeyPoint, review.ToTourReview());
+                return tourist;
+            }
+            else
+            {
+                Tourist tourist =  new Tourist(id, name, surname, age, joiningKeyPoint);
+                return tourist;
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -50,7 +50,7 @@ namespace BookingApp.View
             foreach (Tour tour in _tourRepository.GetAll())
             {
                 TourDTO tourDTO = new TourDTO(tour);
-                if (tourDTO.BeginingTime.Date == DateTime.Today && tourDTO.GuideId == _loggedInGuide.Id)
+                if (tourDTO.BeginingTime.Date == DateTime.Today && tourDTO.GuideId == _loggedInGuide.Id )
                 {
                     Tours.Add(tourDTO);
                 }
@@ -101,6 +101,13 @@ namespace BookingApp.View
             TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
             tourStatistics.Show();
             
+        }
+        private void LogoutClick(object sender, RoutedEventArgs e)
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            this.Close();
+
         }
 
     }

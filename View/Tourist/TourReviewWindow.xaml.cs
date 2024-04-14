@@ -1,6 +1,8 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Service;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.View.Tourist
 {
@@ -24,7 +27,9 @@ namespace BookingApp.View.Tourist
     public partial class TourReviewWindow : Window
     {
         private TourReviewDTO _tourReviewDTO {  get; set; }
-        private TourReviewRepository _tourReviewRepository {  get; set; }
+        private TourReviewService _tourReviewService {  get; set; }
+
+        private List<string> _images;
         private TourDTO _tourDTO { get; set; }
         private UserDTO _userDTO { get; set; }
         public TourReviewWindow(TourDTO tourDTO, UserDTO userDTO)
@@ -33,7 +38,7 @@ namespace BookingApp.View.Tourist
 
             _tourDTO = tourDTO;
             _userDTO = userDTO;
-            _tourReviewRepository = new TourReviewRepository();
+            _tourReviewService = new TourReviewService();
             _tourReviewDTO = new TourReviewDTO();
 
             DataContext = new { Tour = _tourDTO, TourReview = _tourReviewDTO };
@@ -43,11 +48,39 @@ namespace BookingApp.View.Tourist
         {
             _tourReviewDTO.TourId = _tourDTO.Id;
             _tourReviewDTO.TouristId = _userDTO.Id;
-            _tourReviewDTO.Comment = "no comment";
-            _tourReviewRepository.Save(_tourReviewDTO.ToTourReview());
+            _tourReviewDTO.Images = _images;
+
+
+            _tourReviewService.Save(_tourReviewDTO.ToTourReview());
+            
+
+            Close();
+        }
+
+        private void AddImages(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if (response == true)
+            {
+                _images = openFileDialog.FileNames.ToList();
+
+                for (int i = 0; i < _images.Count; i++)
+                {
+                    _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
+                }
+            }
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
-
+    
     public class RadioBoolToIntConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

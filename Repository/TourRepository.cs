@@ -29,6 +29,14 @@ namespace BookingApp.Repository
             return _serializer.FromCSV(FilePath);
         }
 
+        public Tour GetById(int id) 
+        {
+
+            _tours = _serializer.FromCSV(FilePath);
+            return _tours.FirstOrDefault(u => u.Id == id);
+
+        }
+
         public Tour Save(Tour tour)
         {
             tour.Id = NextId();

@@ -1,9 +1,11 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +28,7 @@ namespace BookingApp.View.Tourist
         private TourDTO _tourDTO { get; set; }
         public static ObservableCollection<TourDTO> FinishedTours { get; set; }
 
-        private readonly TourRepository _tourRepository;
+        private readonly TourService _tourService;
 
         private UserDTO _userDTO { get; set; }
         public FinishedToursWindow(UserDTO userDTO)
@@ -34,16 +36,16 @@ namespace BookingApp.View.Tourist
             InitializeComponent();
             _tourDTO = new TourDTO();
             _userDTO = userDTO;
-            _tourRepository = new TourRepository(); 
+            _tourService = new TourService(); 
             FinishedTours = new ObservableCollection<TourDTO>();
 
             DataContext = this;
             Update();
         }
-        private void Update()
+        public void Update()
         {
             FinishedTours.Clear();
-            foreach (Tour tour in _tourRepository.GetFinishedTours())
+            foreach (Tour tour in _tourService.GetFinishedTours())
                 FinishedTours.Add(new TourDTO(tour));
         }
         private void RateTour_Click(object sender, RoutedEventArgs e)
