@@ -42,6 +42,11 @@ namespace BookingApp.Service
             return _accommodationReservationRepository.GetById(id);
         }
 
+        public List<AccommodationReservation> GetAllByGuestId(int id)
+        {
+            return _accommodationReservationRepository.GetAllByGuestId(id);
+        }
+
         public List<AccommodationReservation> GetFinishedAccommodationReservations(User loggedInOwner)
         {
             List<AccommodationReservation>  finishedAccommodationReservations = new List<AccommodationReservation>();
