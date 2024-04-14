@@ -21,6 +21,7 @@ namespace BookingApp.DTO
         public TourReviewDTO(TourReview tourReview)
         {
             id = tourReview.Id;
+            tourId = tourReview.TourId;
             touristId = tourReview.TouristId;
             guideKnowledgeRating = tourReview.GuideKnowledgeRating;
             guideLanguageRating = tourReview.GuideLanguageRating;
@@ -71,7 +72,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-        //int id, int touristId, int tourId, int guideKnowledgeRating, int guideLanguageRating, int tourEntertainmentRating, string comment, List<string> images)
 
         private int guideKnowledgeRating;
         public int GuideKnowledgeRating

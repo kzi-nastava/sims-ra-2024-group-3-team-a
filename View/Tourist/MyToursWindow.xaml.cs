@@ -2,6 +2,7 @@
 using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Service;
+using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,47 +25,15 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class MyToursWindow : Window
     {
-        public static ObservableCollection<TourDTO> ActiveTours { get; set; }
-
-        public static ObservableCollection<TourDTO> UnactiveTours { get; set; }
-
-        private TourDTO _tourDTO;
-
-        private readonly TourService _tourService;
+        private MyToursViewModel _myToursViewModel;
 
         public MyToursWindow()
         {
             InitializeComponent();
 
-            _tourDTO= new TourDTO();
-            _tourService = new TourService();
-            ActiveTours = new ObservableCollection<TourDTO>();
-            UnactiveTours = new ObservableCollection<TourDTO>();
-
-            DataContext = this;
-            UpdateActiveTours();
-            UpdateUnactiveTours();
-        }
-
-        private void UpdateActiveTours()
-        {
-            ActiveTours.Clear();
-            foreach (Tour tour in _tourService.GetActiveTours())
-                ActiveTours.Add(new TourDTO(tour));
-        }
-
-        private void UpdateUnactiveTours()
-        {
-            UnactiveTours.Clear();
-            foreach (Tour tour in _tourService.GetUnactiveTours())
-                UnactiveTours.Add(new TourDTO(tour));
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            _tourDTO = listBoxActiveTours.SelectedItem as TourDTO;
-            TrackTourWindow trackTourWinodw = new TrackTourWindow(_tourDTO);
-            trackTourWinodw.Show();
+           _myToursViewModel = new MyToursViewModel();
+            DataContext = _myToursViewModel;
+           
         }
     }
 }
