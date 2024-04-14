@@ -12,14 +12,14 @@ namespace BookingApp.ViewModel.Guide
         private readonly TouristDTO _touristDTO;
         private readonly TouristService _touristService;
         private RelayCommand _markAsInvalidCommand;
-        public ObservableCollection<TourReviewDTO> Reviews { get; set; }
+        private ObservableCollection<TourReviewDTO> _reviews { get; set; }
 
         public ReviewDetailsViewModel(TouristDTO touristDTO)
         {
             _touristDTO = touristDTO;
             _touristService = new TouristService();
             Reviews = new ObservableCollection<TourReviewDTO>();
-            Update();
+            Reviews.Add(_touristDTO.Review);
             _markAsInvalidCommand = new RelayCommand(MarkAsInvalid);
         }
         public RelayCommand MarkAsInvalidCommand
@@ -31,10 +31,14 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-
-        private void Update()
+        public ObservableCollection<TourReviewDTO> Reviews
         {
-            Reviews.Add(_touristDTO.Review);
+            get { return _reviews; }
+            set
+            {
+                _reviews = value;
+                OnPropertyChanged();
+            }
         }
 
         public void MarkAsInvalid()

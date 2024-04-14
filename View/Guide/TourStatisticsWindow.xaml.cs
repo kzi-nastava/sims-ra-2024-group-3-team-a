@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,64 +25,10 @@ namespace BookingApp.View.Guide
     /// </summary>
     public partial class TourStatisticsWindow : Window
     {
-
-        private TourDTO _tourDTO ;
-        public static ObservableCollection<TourDTO> Tours { get; set; }
-        public static ObservableCollection<TourDTO> ToursFinished { get; set; }
-        private TourRepository _tourRepository;
-        private int _maxTouristsCounter ;
         public TourStatisticsWindow()
         {
             InitializeComponent();
-            _tourDTO =new TourDTO();
-            Tours = new ObservableCollection<TourDTO>();
-            ToursFinished = new ObservableCollection<TourDTO>();
-            _tourRepository = new TourRepository();
-            Update();
-            DataContext = this;
-        }
-        private void Update()
-        {
-            _maxTouristsCounter = -1;
-            foreach( Tour tour in _tourRepository.GetAll())
-            {
-                if (tour.CurrentKeyPoint == "finished")
-                {
-                    TourDTO tourDTO = new TourDTO(tour);
-                    ToursFinished.Add(tourDTO);
-                }
-                if (tour.TouristsPresent > _maxTouristsCounter && tour.CurrentKeyPoint == "finished" ){
-
-                    _maxTouristsCounter=tour.TouristsPresent;
-                    _tourDTO = new TourDTO(tour);
-                }
-
-            }
-            Tours.Add(_tourDTO);
-        }
-        private void ShowMostVisitedByYear(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                if (button.Content is string dateYear)
-                {
-                    int year = Convert.ToInt32(dateYear);
-                    MostVisitedTourWindow mostVisitedTourWindow = new MostVisitedTourWindow(year);
-                    mostVisitedTourWindow.Show();
-                }
-
-            }
-        }
-        private void ShowTouristStatistics(object sender, RoutedEventArgs e)
-        {
-            if (dataGridTour.SelectedItem != null)
-            { 
-                TourDTO selectedItem = dataGridTour.SelectedItem as TourDTO;
-                TouristStatisticsWindow touristStatisticsWindow = new TouristStatisticsWindow(selectedItem);
-                touristStatisticsWindow.Show();
-
-            }
+            DataContext = new TourStatisticsViewModel();
         }
     }
-
 }
