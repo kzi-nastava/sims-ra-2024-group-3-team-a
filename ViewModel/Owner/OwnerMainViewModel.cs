@@ -1,5 +1,6 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Service;
+using BookingApp.View.Owner;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +25,7 @@ namespace BookingApp.ViewModel.Owner
             _userService = new UserService();
 
             _accommodationReservationService = new AccommodationReservationService();
+            OwnerMainWindow.LoggedInOwner = new UserDTO(_accommodationReservationService.SetSuperOwner(_loggedInOwner.ToUser()));
             UpdateFinishedReservations();
         }
 

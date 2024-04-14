@@ -9,21 +9,43 @@ namespace BookingApp.Commands
 {
     public class RelayCommand : ICommand
     {
+        private readonly Action<object> _execute;
+        private readonly Func<bool> _canExecute;
+        private readonly Action _executeWithoutParameter;
+
         public event EventHandler CanExecuteChanged;
-        private Action DoWork;
+
+        public RelayCommand(Action<object> execute, Func<bool> canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public RelayCommand(Action execute)
+        {
+            _executeWithoutParameter = execute ?? throw new ArgumentNullException(nameof(execute));
+        }
+
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _canExecute == null || _canExecute();
         }
 
         public void Execute(object parameter)
         {
-            DoWork();
+            if (_execute != null)
+            {
+                _execute(parameter);
+            }
+            else
+            {
+                _executeWithoutParameter?.Invoke();
+            }
         }
 
-        public RelayCommand(Action work)
+        public void RaiseCanExecuteChanged()
         {
-            DoWork = work;
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

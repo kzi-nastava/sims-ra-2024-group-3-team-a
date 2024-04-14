@@ -25,7 +25,7 @@
             <TextBlock FontSize="40">DETALJI RECENZIJE</TextBlock>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1">
-            <Button Content="Mark as invalid"  HorizontalAlignment="center" Click="MarkAsInvalid"/>
+            <Button Content="Mark as invalid"  HorizontalAlignment="center" Command="{Binding MarkAsInvalidCommand}"/>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0">
             <TextBlock FontSize="20" HorizontalAlignment="Center">Guide language:</TextBlock>
@@ -42,19 +42,19 @@
         <Grid Grid.Row="6" Grid.Column="0">
             <TextBlock FontSize="20" HorizontalAlignment="Center">Photos:</TextBlock>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="2" >
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path= GuideLanguageRating}"></TextBlock>
+        <Grid Grid.Row="2" Grid.Column="2">
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].GuideLanguageRating}"></TextBlock>
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="2" >
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path= GuideKnowledgeRating}"></TextBlock>
+        <Grid Grid.Row="3" Grid.Column="2">
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].GuideKnowledgeRating}"></TextBlock>
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="2" >
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path= TourEntertainmentRating}"></TextBlock>
+        <Grid Grid.Row="4" Grid.Column="2">
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].TourEntertainmentRating}"></TextBlock>
         </Grid>
-        <Grid Grid.Row="5" Grid.Column="2" >
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path= Comment}"></TextBlock>
+        <Grid Grid.Row="5" Grid.Column="2">
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].Comment}"></TextBlock>
         </Grid>
-        <ItemsControl Grid.Row="7" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Images}">
+        <ItemsControl Grid.Row="7" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Reviews[0].Images}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"/>

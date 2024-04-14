@@ -49,7 +49,7 @@ namespace BookingApp.Service
             {
                 Accommodation accommodation = _accommodationService.GetById(reservation.AccommodationId);
                     
-                if (IsLoggedOwner(accommodation, loggedInOwner) && (IsNotExpired(reservation) || IsOwnerReviewed(reservation)))
+                if (IsLoggedOwner(accommodation, loggedInOwner) && (IsNotExpiredOrCanceled(reservation) || IsOwnerReviewed(reservation)))
                     finishedAccommodationReservations.Add(reservation);
             }
 
@@ -75,7 +75,7 @@ namespace BookingApp.Service
 
             return averageRating;
         }
-        public void SetSuperOwner(User loggedInOwner)
+        public User SetSuperOwner(User loggedInOwner)
         {
             int reviewNumber = GetUserReviewedAccommodationReservations(loggedInOwner).Count();
             double averageRating = GetAverageRating(loggedInOwner);
@@ -89,6 +89,8 @@ namespace BookingApp.Service
                 loggedInOwner.IsSuper = false;
                 _userService.Update(loggedInOwner);
             }
+
+            return loggedInOwner;
         }
         private bool IsLoggedOwner(Accommodation accommodation, User loggedInOwner)
         {
@@ -98,9 +100,9 @@ namespace BookingApp.Service
             }
             return false;
         }
-        private bool IsNotExpired(AccommodationReservation reservation)
+        private bool IsNotExpiredOrCanceled(AccommodationReservation reservation)
         {
-            if (reservation.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservation.EndDate.AddDays(5))
+            if ((reservation.EndDate <= DateOnly.FromDateTime(DateTime.Now) && DateOnly.FromDateTime(DateTime.Now) <= reservation.EndDate.AddDays(5)) && !reservation.Canceled)
             {
                 return true;
             }
