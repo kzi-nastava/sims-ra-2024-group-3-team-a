@@ -7,38 +7,35 @@
         mc:Ignorable="d"
         Title="MostVisitedTourWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock Text="Most visited tour :" FontSize="20" HorizontalAlignment="Center"></TextBlock>
-        <ListBox ItemsSource="{Binding Tours}"  IsHitTestVisible="False" Margin="160,126,160,126">
-            <ListBox.ItemTemplate >
-                <DataTemplate>
-                    <TextBlock>
-                        <Run Text="Godina: "/>
-                        <Run Text="{Binding BeginingTime, StringFormat='yyyy'}" FontWeight="Bold"/>
-                        <LineBreak/>
-                        <Run Text="Naziv ture: "/>
-                        <Run Text="{Binding Name}" />
-                        <LineBreak/>
-                        <Run Text="Lokacija: "/>
-                        <Run Text="{Binding Path=LocationDTO.City}"/>
-                        <Run Text=", "/>
-                        <Run Text="{Binding Path=LocationDTO.Country}"/>
-                        <LineBreak/>
-                        <Run Text="Datum: "/>
-                        <Run Text="{Binding BeginingTime}"/>
-                        <LineBreak/>
-                        <Run Text="Broj turista: "/>
-                        <Run Text="{Binding TouristsPresent}"/>
-                    </TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <StackPanel>
+            <TextBlock Text="Most visited tour :" FontSize="40" HorizontalAlignment="Center"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Tour name: " FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Path=MostVisitedTourDTO.Name}" FontSize="30" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Location: " FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Path=MostVisitedTourDTO.LocationDTO.City}" FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text=", " FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Path=MostVisitedTourDTO.LocationDTO.Country}" FontSize="30" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Date: " FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Path=MostVisitedTourDTO.BeginingTime}" FontSize="30" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Tourist number: " FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Path=MostVisitedTourDTO.TouristsPresent}" FontSize="30" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </StackPanel>
+
         <TextBlock Text="No tours available" FontSize="16" HorizontalAlignment="Center"
-               Margin="160,126,160,126">
+                   Margin="160,126,160,126">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Tours.Count}" Value="0">
+                        <DataTrigger Binding="{Binding MostVisitedTourDTO}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>

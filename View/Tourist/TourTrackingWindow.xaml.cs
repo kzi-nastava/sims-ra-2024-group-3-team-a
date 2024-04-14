@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,12 +25,12 @@ namespace BookingApp.View.Tourist
     public partial class TrackTourWindow : Window
     {
         private TourDTO _tourDTO;
-        private TouristDTO _touristDTO;
+
         private KeyPointsDTO _keypointsDTO;
 
         private readonly KeyPointsRepository _keyPointsRepository;
-        private readonly TourReservationRepository _tourReservationRepository;
-        private readonly TourRepository _tourRepository;
+
+        private readonly TourReservationService _tourReservationService;
         public static ObservableCollection<TouristDTO> Tourists { get; set; }
         public TrackTourWindow(TourDTO tourDTO)
         {
@@ -37,8 +38,7 @@ namespace BookingApp.View.Tourist
             _tourDTO = tourDTO;
             
             _keyPointsRepository = new KeyPointsRepository();
-            _tourReservationRepository = new TourReservationRepository();
-            _tourRepository = new TourRepository();
+            _tourReservationService = new TourReservationService();
             Tourists = new ObservableCollection<TouristDTO>();
             DataContext = new { Tour = _tourDTO, Tourist = Tourists };
             AddKeyPointsButtons();
@@ -65,7 +65,7 @@ namespace BookingApp.View.Tourist
                             SetInitialButtonProperties(button);
                             if (IsButtonLastKeyPoint(button))
                             {
-                                button.Background = new SolidColorBrush(Colors.IndianRed);
+                                button.Background = new SolidColorBrush(Colors.LightPink);
                             }
 
                         }
@@ -76,7 +76,7 @@ namespace BookingApp.View.Tourist
                                 button.Content = _keypointsDTO.Middle[count - 1];
                                 if (IsButtonLastKeyPoint(button))
                                 {
-                                    button.Background = new SolidColorBrush(Colors.IndianRed);
+                                    button.Background = new SolidColorBrush(Colors.LightPink);
                                 }
 
                             }
@@ -91,7 +91,7 @@ namespace BookingApp.View.Tourist
                             button.Content = _keypointsDTO.Ending;
                             if (IsButtonLastKeyPoint(button))
                             {
-                                button.Background = new SolidColorBrush(Colors.IndianRed);
+                                button.Background = new SolidColorBrush(Colors.LightPink);
                             }
                         }
 
@@ -132,7 +132,7 @@ namespace BookingApp.View.Tourist
         {
             Tourists.Clear();
 
-            foreach (TourReservation reservation in _tourReservationRepository.GetAll())
+            foreach (TourReservation reservation in _tourReservationService.GetAll())
             {
                 if (reservation.TourId == _tourDTO.Id)
                 {

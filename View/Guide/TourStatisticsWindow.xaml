@@ -13,53 +13,56 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <TextBlock Text="Most visited  tour:" FontSize="20" HorizontalAlignment="Center"></TextBlock>
-            <ListBox ItemsSource="{Binding Tours}"  IsHitTestVisible="False" HorizontalAlignment="Center" Margin="150,33,150,1" Width="300" BorderThickness="0">
-                <ListBox.ItemTemplate >
-                    <DataTemplate>
-                        <TextBlock>
-                        <Run Text="Tour name: "/>
-                        <Run Text="{Binding Name}" />
-                        <LineBreak/>
-                        <Run Text="Location: "/>
-                        <Run Text="{Binding Path=LocationDTO.City}"/>
-                        <Run Text=", "/>
-                        <Run Text="{Binding Path=LocationDTO.Country}"/>
-                        <LineBreak/>
-                        <Run Text="Date: "/>
-                        <Run Text="{Binding BeginingTime}"/>
-                        <LineBreak/>
-                        <Run Text="Tourist number: "/>
-                        <Run Text="{Binding TouristsPresent}"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <StackPanel HorizontalAlignment="Center" Margin="150,33,150,1">
+                
+                <TextBlock Text="Most visited tour: " FontSize="20" HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tour name: " FontSize="12" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Path=MostVisitedTourDTO.Name}" FontSize="12" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Location: " FontSize="12" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Path=MostVisitedTourDTO.LocationDTO.City}" FontSize="12" HorizontalAlignment="Left"/>
+                    <TextBlock Text="," FontSize="12" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Path=MostVisitedTourDTO.LocationDTO.Country}" FontSize="12" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Date: " FontSize="12" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Path=MostVisitedTourDTO.BeginingTime}" FontSize="12" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tourist number: " FontSize="12" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Path=MostVisitedTourDTO.TouristsPresent}" FontSize="12" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" >
-            <StackPanel Orientation="Horizontal" Height="50" CanVerticallyScroll="True" CanHorizontallyScroll="True" Margin="15">
-                <Button Content="2024" Margin="5" Width="100" Click="ShowMostVisitedByYear" />
-                <Button Content="2023" Margin="5" Width="100" Click="ShowMostVisitedByYear"/>
-                <Button Content="2022 " Margin="5" Width="100" Click="ShowMostVisitedByYear"/>
-                <Button Content="2021" Margin="5" Width="100" Click="ShowMostVisitedByYear"/>
-                <Button Content="2020" Margin="5" Width="100" Click="ShowMostVisitedByYear"/>
-                <Button Content="2019" Margin="5" Width="100" Click="ShowMostVisitedByYear"/>
-                <Button Content="2018" Margin="5" Width="100" Click="ShowMostVisitedByYear"/>
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal" Height="50"  CanVerticallyScroll="True" CanHorizontallyScroll="True" Margin="15">
+                <Button Content="2024" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2024" />
+                <Button Content="2023" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2023" />
+                <Button Content="2022" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2022" />
+                <Button Content="2021" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2021" />
+                <Button Content="2020" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2020" />
+                <Button Content="2019" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2019" />
+                <Button Content="2018" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2018" />
+                <Button Content="2017" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2017" />
+                <Button Content="2016" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2016" />
+                <Button Content="2015" Width="76" Command="{Binding ShowMostVisitedByYearCommand}" CommandParameter="2015" />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2">
             <TextBlock Text="Finished tours:" FontSize="20" HorizontalAlignment="Center"></TextBlock>
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding ToursFinished}"  AutoGenerateColumns="False" Margin="0,30,127,36"   >
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding FinishedToursDTO}" SelectedItem="{Binding SelectedTourDTO}"   AutoGenerateColumns="False" Margin="0,30,127,36"   >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
-                    <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
-                    <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
-                    <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
-                    <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
-                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding KeyPointsDTO}"/>
+                    <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding Path=LocationDTO}"/>
+                    <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Path=Duration}"/>
+                    <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
+                    <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
+                    <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
+                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding Path=KeyPointsDTO}"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Tourist statistics" Width="100" Height="40" HorizontalAlignment="Right" Click="ShowTouristStatistics"/>
+            <Button Content="Tourist statistics" Width="100" Height="40" HorizontalAlignment="Right" Command="{Binding ShowTouristStatisticsCommand}" />
         </Grid>
 
     </Grid>

@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,38 +24,11 @@ namespace BookingApp.View.Guide
     /// </summary>
     public partial class MostVisitedTourWindow : Window
     {
-        private int _year;
-        private TourDTO _tourDTO;
-        public static ObservableCollection<TourDTO> Tours { get; set; }
-        private TourRepository _tourRepository;
-        private TourReservationRepository _tourReservationRepository;
-        private int _maxTouristsCounter;
         public MostVisitedTourWindow(int year)
         {
             InitializeComponent();
-            _tourDTO = new TourDTO();
-            Tours = new ObservableCollection<TourDTO>();
-            _tourRepository = new TourRepository();
-            _year= year;
-            Update();
-            DataContext = this;
+            DataContext = new MostVisitedTourViewModel(year);
         }
-        private void Update()
-        {
-            _maxTouristsCounter = -1;
-            foreach (Tour tour in _tourRepository.GetAll())
-            {
-                if (tour.TouristsPresent > _maxTouristsCounter && tour.BeginingTime.Year == _year && tour.CurrentKeyPoint=="finished")
-                {
-                    _maxTouristsCounter = tour.TouristsPresent;
-                    _tourDTO = new TourDTO(tour);
-
-                }
-            }
-            if (_maxTouristsCounter != -1)
-            {
-                Tours.Add(_tourDTO);
-            }
-        }
+       
     }
 }

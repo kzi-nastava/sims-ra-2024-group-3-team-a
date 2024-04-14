@@ -24,6 +24,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
+                
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -35,11 +36,11 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0">Name:</TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Tour.Name}" IsEnabled="False"  BorderBrush="Transparent" Width="100"></TextBox>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TourDTO.Name}" IsEnabled="False"  BorderBrush="Transparent" Width="100"></TextBox>
                     <TextBlock Grid.Row="1" Grid.Column="0">Location:</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Tour.LocationDTOString,Mode=OneWay}"  BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TourDTO.LocationDTOString,Mode=OneWay}"  BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
                     <TextBlock Grid.Row="2" Grid.Column="0">Date:</TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Tour.BeginingTime}" BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TourDTO.BeginingTime}" BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
                 </Grid>
                 <Grid Grid.Row="2">
                     <Border>
@@ -62,30 +63,63 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" FontStyle="Italic" Grid.ColumnSpan="3">Rate categories on scale from 1 to 5: </TextBlock>
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="3">Guide's knowledge:</TextBlock>
-                            <RadioButton Grid.Row="2" Grid.Column="0" IsChecked="{Binding Path=TourReview.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}" GroupName="GuideKnowledge"/>
-                            <RadioButton Grid.Row="2" Grid.Column="1" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReview.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="2" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReview.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
-                                <RadioButton Grid.Row="2" Grid.Column="3" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReview.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
-                                <RadioButton Grid.Row="2" Grid.Column="4" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReview.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="0" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}" GroupName="GuideKnowledge"/>
+                            <RadioButton Grid.Row="2" Grid.Column="1" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="2" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                                <RadioButton Grid.Row="2" Grid.Column="3" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                                <RadioButton Grid.Row="2" Grid.Column="4" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
                             <TextBlock Grid.Row="3" Grid.ColumnSpan="3">Guide's language:</TextBlock>
-                            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReview.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
-                                <RadioButton Grid.Row="4" Grid.Column="1" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReview.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
-                                <RadioButton Grid.Row="4" Grid.Column="2" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReview.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
-                                <RadioButton Grid.Row="4" Grid.Column="3" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReview.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
-                                <RadioButton Grid.Row="4" Grid.Column="4" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReview.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                                <RadioButton Grid.Row="4" Grid.Column="1" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                                <RadioButton Grid.Row="4" Grid.Column="2" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                                <RadioButton Grid.Row="4" Grid.Column="3" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                                <RadioButton Grid.Row="4" Grid.Column="4" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
                             <TextBlock Grid.Row="5" Grid.ColumnSpan="3">Tour's entertainment:</TextBlock>
-                            <RadioButton Grid.Row="6" Grid.Column="0" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReview.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
-                            <RadioButton Grid.Row="6" Grid.Column="1" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReview.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
-                            <RadioButton Grid.Row="6" Grid.Column="2" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReview.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
-                            <RadioButton Grid.Row="6" Grid.Column="3" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReview.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
-                            <RadioButton Grid.Row="6" Grid.Column="4" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReview.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                            <RadioButton Grid.Row="6" Grid.Column="0" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                            <RadioButton Grid.Row="6" Grid.Column="1" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                            <RadioButton Grid.Row="6" Grid.Column="2" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                            <RadioButton Grid.Row="6" Grid.Column="3" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                            <RadioButton Grid.Row="6" Grid.Column="4" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
 
                         </Grid>
                     </Border>
                   
                 </Grid>
-                <Button Grid.Row="3" Click="RateTour_Click"></Button>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="3" Grid.Column="0" Content="Rate" Background="GreenYellow" Width="100" Command="{Binding RateTourCommand}" ></Button>
+                </Grid>
             </Grid>
+               
         </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row ="1">Add a comment:</TextBlock>
+            <TextBox Grid.Row="2" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourReviewDTO.Comment}"  />
+            <TextBlock Grid.Row ="3">Add photos:</TextBlock>
+            <Button Grid.Row ="4" Width="200" Height="50" Background="DarkGray" Command="{Binding AddImagesCommand}"  >Upload button</Button>
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button  Width="100" Grid.Column="2" Background="LightPink" Height="50" Command="{Binding CancelCommand}">Cancel</Button>
+            </Grid>
+        </Grid>
+        
+
     </Grid>
 </Window>

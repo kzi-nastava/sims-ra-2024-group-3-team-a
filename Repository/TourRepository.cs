@@ -1,11 +1,16 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.DTO;
+using BookingApp.Model;
 using BookingApp.Serializer;
+using BookingApp.View.Guide;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows;
 
 namespace BookingApp.Repository
 {
@@ -27,6 +32,14 @@ namespace BookingApp.Repository
         public List<Tour> GetAll()
         {
             return _serializer.FromCSV(FilePath);
+        }
+
+        public Tour GetById(int id) 
+        {
+
+            _tours = _serializer.FromCSV(FilePath);
+            return _tours.FirstOrDefault(u => u.Id == id);
+
         }
 
         public Tour Save(Tour tour)
@@ -128,5 +141,6 @@ namespace BookingApp.Repository
             }
             return finishedTours;
         }
+
     }
 }

@@ -60,8 +60,8 @@ namespace BookingApp.View.Tourist
 
             if (_tourDTO != null)
             {
-                TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourMainWindow,_tourReservationRepository, _tourDTO, _userDTO);
-                tourReservationWindow.ShowDialog();
+              //  TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourMainWindow,_tourReservationRepository, _tourDTO, _userDTO);
+              //  tourReservationWindow.ShowDialog();
             }
             else
             {

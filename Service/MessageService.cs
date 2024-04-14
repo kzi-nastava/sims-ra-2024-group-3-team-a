@@ -44,6 +44,7 @@ namespace BookingApp.Service
             List<Message> messages = GetAll();
             SetAllUserReviewsMessages(messages);
             SetAllAccommodationChangeRequests(messages);
+            SetAllAccommodationReservationCanceledMessages(messages);
         }
 
         private void SetAllUserReviewsMessages(List<Message> messages)
@@ -78,6 +79,22 @@ namespace BookingApp.Service
                     int recieverId = _accommodationService.GetById(accommodationReservation.AccommodationId).OwnerId;
 
                     Message message = new Message(0, request.Id, _userService.GetById(accommodationReservation.GuestId).Username, recieverId, "Reservaton date change request", content, MessageType.AccommodationChangeRequest, false);
+                    Save(message);
+                }
+            }
+        }
+
+        private void SetAllAccommodationReservationCanceledMessages(List<Message> messages)
+        {
+            foreach (var reservation in _accommodationReservationService.GetAll())
+            {
+                if (!(messages.Any(message => message.RequestId == reservation.Id && message.Type == MessageType.AccommodationReservationCanceled)) && reservation.Canceled == true)
+                {
+                    string content = "Your reservation for accommodation " + _accommodationService.GetById(reservation.AccommodationId).Name
+                                   + " from " + reservation.BeginDate 
+                                   + " - " + reservation.EndDate + " has been canceled.";
+
+                    Message message = new Message(0, reservation.Id, _userService.GetById(reservation.GuestId).Username, _accommodationService.GetById(reservation.AccommodationId).OwnerId, "Reservation has been canceled", content, MessageType.AccommodationReservationCanceled, false);
                     Save(message);
                 }
             }
