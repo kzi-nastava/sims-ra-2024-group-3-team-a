@@ -20,11 +20,12 @@ namespace BookingApp.Model
             Password = password;
         }
 
-        public User(int id, string username, string password, bool isSuper)
+        public User(int id, string username, string password, UserRole role, bool isSuper)
         {
             Id = id;
             Username = username;
             Password = password;
+            Role = role;
             IsSuper = isSuper;
         }   
 
