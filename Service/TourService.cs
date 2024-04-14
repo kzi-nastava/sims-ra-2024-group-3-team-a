@@ -72,7 +72,7 @@ namespace BookingApp.Service
             return unactiveTours;
         }
 
-        public List<Tour> GetFinishedTours()
+        public List<Tour> GetAllFinishedTours()
         {
             List<Tour> finishedTours = new List<Tour>();
             foreach (Tour tour in GetAll())

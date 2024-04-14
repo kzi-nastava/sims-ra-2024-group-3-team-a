@@ -31,7 +31,7 @@ namespace BookingApp.ViewModel.Guide
         public TourStatisticsViewModel()
         {
             _tourService = new TourService();
-            List<TourDTO> toursDTO = _tourService.GetFinishedTours().Select(tour => new TourDTO(tour)).ToList();
+            List<TourDTO> toursDTO = _tourService.GetAllFinishedTours().Select(tour => new TourDTO(tour)).ToList();
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
             _tourReservationService = new TourReservationService();
