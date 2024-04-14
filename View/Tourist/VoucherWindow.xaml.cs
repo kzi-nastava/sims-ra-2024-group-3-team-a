@@ -1,11 +1,7 @@
-﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Model.Enums;
-using BookingApp.Repository;
+﻿using BookingApp.ViewModel.Owner;
 using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,19 +17,18 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Tourist
 {
     /// <summary>
-    /// Interaction logic for InboxWindow.xaml
+    /// Interaction logic for VoucherWindow.xaml
     /// </summary>
-    public partial class InboxWindow : Window
+    public partial class VoucherWindow : Window
     {
-        private InboxViewModel _inboxViewModel;
-        public InboxWindow(UserDTO loggedInUser)
+        private VoucherViewModel _voucherViewModel;
+        public VoucherWindow()
         {
             InitializeComponent();
 
-            _inboxViewModel = new InboxViewModel(loggedInUser);
+            _voucherViewModel = new VoucherViewModel();
 
-            DataContext = _inboxViewModel;
-            
+            DataContext = _voucherViewModel;
         }
     }
 }

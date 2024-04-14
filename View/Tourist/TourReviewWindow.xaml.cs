@@ -2,6 +2,8 @@
 using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Service;
+using BookingApp.View.Owner;
+using BookingApp.ViewModel.Tourist;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -26,58 +28,13 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class TourReviewWindow : Window
     {
-        private TourReviewDTO _tourReviewDTO {  get; set; }
-        private TourReviewService _tourReviewService {  get; set; }
-
-        private List<string> _images;
-        private TourDTO _tourDTO { get; set; }
-        private UserDTO _userDTO { get; set; }
+        private TourReviewViewModel _tourReviewViewModel { get; set; }
         public TourReviewWindow(TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
 
-            _tourDTO = tourDTO;
-            _userDTO = userDTO;
-            _tourReviewService = new TourReviewService();
-            _tourReviewDTO = new TourReviewDTO();
-
-            DataContext = new { Tour = _tourDTO, TourReview = _tourReviewDTO };
-        }
-
-        public void RateTour_Click(object sender, RoutedEventArgs e)
-        {
-            _tourReviewDTO.TourId = _tourDTO.Id;
-            _tourReviewDTO.TouristId = _userDTO.Id;
-            _tourReviewDTO.Images = _images;
-
-
-            _tourReviewService.Save(_tourReviewDTO.ToTourReview());
-            
-
-            Close();
-        }
-
-        private void AddImages(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = true;
-
-            bool? response = openFileDialog.ShowDialog();
-
-            if (response == true)
-            {
-                _images = openFileDialog.FileNames.ToList();
-
-                for (int i = 0; i < _images.Count; i++)
-                {
-                    _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
-                }
-            }
-        }
-
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            Close();
+            _tourReviewViewModel = new TourReviewViewModel(tourDTO, userDTO);
+            DataContext = _tourReviewViewModel; 
         }
     }
     
