@@ -71,8 +71,23 @@ namespace BookingApp.Service
             }
             return unactiveTours;
         }
-
-        public List<Tour> GetAllFinishedTours()
+        public List<Tour> GetFinishedTours()
+        {
+            List<Tour> finishedTours = new List<Tour>();
+            foreach (Tour t in GetAll())
+            {
+                foreach (TourReservation tr in _tourReservationService.GetAll())
+                {
+                    if (t.Id == tr.TourId && t.CurrentKeyPoint.Equals("finished"))
+                    {
+                        finishedTours.Add(t);
+                    }
+                }
+            }
+            return finishedTours.Distinct().ToList();
+        }
+    
+    public List<Tour> GetAllFinishedTours()
         {
             List<Tour> finishedTours = new List<Tour>();
             foreach (Tour tour in GetAll())
