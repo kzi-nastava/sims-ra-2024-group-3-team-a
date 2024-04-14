@@ -45,7 +45,7 @@ namespace BookingApp.View.Tourist
         public void Update()
         {
             FinishedTours.Clear();
-            foreach (Tour tour in _tourService.GetFinishedTours())
+            foreach (Tour tour in _tourService.GetAllFinishedTours())
                 FinishedTours.Add(new TourDTO(tour));
         }
         private void RateTour_Click(object sender, RoutedEventArgs e)

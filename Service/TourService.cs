@@ -72,22 +72,49 @@ namespace BookingApp.Service
             return unactiveTours;
         }
 
-        public List<Tour> GetFinishedTours()
+        public List<Tour> GetAllFinishedTours()
         {
             List<Tour> finishedTours = new List<Tour>();
-            foreach (Tour t in GetAll())
+            foreach (Tour tour in GetAll())
             {
-                foreach (TourReservation tr in _tourReservationService.GetAll())
-                {
-                    if (t.Id == tr.TourId && t.CurrentKeyPoint.Equals("finished"))
+                    if (tour.CurrentKeyPoint.Equals("finished"))
                     {
-                        finishedTours.Add(t);
+                        finishedTours.Add(tour);
                     }
-                }
+
             }
             return finishedTours;
         }
 
-      
+        public Tour GetMostVisitedTour()
+        {
+            int maxTourists = 0;
+            Tour mostVisited = null;
+            foreach (Tour tour in GetAll())
+            {
+                if (tour.TouristsPresent > maxTourists && tour.CurrentKeyPoint == "finished")
+                {
+                    maxTourists = tour.TouristsPresent;
+                    mostVisited = tour;
+                }
+
+            }
+            return mostVisited;
+        }
+        public Tour GetMostVisitedByYear(int year)
+        {
+            int maxTourists = 0;
+            Tour mostVisited = null;
+            foreach (Tour tour in GetAll())
+            {
+                if (tour.TouristsPresent > maxTourists && tour.CurrentKeyPoint == "finished" && tour.BeginingTime.Year==year)
+                {
+                    maxTourists = tour.TouristsPresent;
+                    mostVisited = tour;
+                }
+
+            }
+            return mostVisited;
+        }
     }
 }

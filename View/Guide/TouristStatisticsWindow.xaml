@@ -17,48 +17,33 @@
             <TextBlock Text="Tourists:" FontSize="20" HorizontalAlignment="Center" Margin="50"></TextBlock>
         </Grid>
         <Grid Grid.Row="1">
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tourists}"  AutoGenerateColumns="False"  >
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding TouristsDTO}"  AutoGenerateColumns="False"  >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}"/>
-                    <DataGridTextColumn Header="AGE" Width="*" Binding="{Binding Age}"/>
-                    <DataGridTextColumn Header="JOINING POINT" Width="*" Binding="{Binding JoiningKeyPoint}"/>
+                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Path=Name}"/>
+                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Path=Surname}"/>
+                    <DataGridTextColumn Header="AGE" Width="*" Binding="{Binding  Path=Age}"/>
+                    <DataGridTextColumn Header="JOINING POINT" Width="*" Binding="{Binding Path=JoiningKeyPoint}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
         <Grid Grid.Row="2">
             <StackPanel Margin="20">
                 <DockPanel>
-                <TextBlock Text="Number of tourists under the age of 18:" FontSize="15"/>
-                <ItemsControl ItemsSource="{Binding UnderageCollection}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" FontSize="15"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    <TextBlock Text="Number of tourists under the age of 18:" FontSize="15"/>
+                    <TextBlock Text="{Binding UnderageCounter}" FontSize="15"/>
                 </DockPanel>
             
                 <DockPanel>
-                    <TextBlock Text="Number of turists between 18 and 50 years old:" FontSize="15"/>
-                <ItemsControl ItemsSource="{Binding MiddleGroupCollection}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" FontSize="15"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    <TextBlock Text="Number of tourists between 18 and 50 years old:" FontSize="15"/>
+                    <TextBlock Text="{Binding MiddleGroupCounter}" FontSize="15"/>
                 </DockPanel>
+
                 <DockPanel>
-                <TextBlock Text="Number of tourists over 50:" FontSize="15"/>
-                <ItemsControl ItemsSource="{Binding OverFiftyCollection}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" FontSize="15"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    <TextBlock Text="Number of tourists over 50:" FontSize="15"/>
+                    <TextBlock Text="{Binding OverFiftyCounter}" FontSize="15"/>
                 </DockPanel>
+
+
             </StackPanel>
         </Grid>
     </Grid>
