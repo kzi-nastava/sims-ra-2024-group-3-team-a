@@ -112,7 +112,7 @@ namespace BookingApp.DTO
 
         public User ToUser()
         {
-            return new User(id,username,password,isSuper);
+            return new User(id,username,password,role,isSuper);
         }
 
 
