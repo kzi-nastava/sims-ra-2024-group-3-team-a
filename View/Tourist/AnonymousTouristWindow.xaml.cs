@@ -56,10 +56,10 @@ namespace BookingApp.View.Tourist
             number = number - 1;
             _tourReservationWindow.unlistedTouristsCounter = number;
 
-            if (_tourReservationWindow.AreAllListed(number))
+           /* if (_tourReservationWindow.AreAllListed(number))
             {
                 _tourReservationWindow.buttonAdd.IsEnabled = false;
-            }
+            }*/
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

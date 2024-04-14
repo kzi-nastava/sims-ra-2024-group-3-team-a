@@ -37,6 +37,7 @@ namespace BookingApp.View
 
         private readonly TourRepository _tourRepository;
         private static TourReservationRepository _tourReservationRepository { get; set; }
+        private static TourReservationService _tourReservationService { get; set; }
         public int CurrentCapacity { get; set; }
 
         public TouristMainWindow(User user)
@@ -45,6 +46,7 @@ namespace BookingApp.View
             DataContext = this;
             _tourRepository = new TourRepository();
             _tourReservationRepository = new TourReservationRepository();
+            _tourReservationService = new TourReservationService();
             _messageService = new MessageService();
             Tours = new ObservableCollection<TourDTO>();
             _tourDTO = new TourDTO();
@@ -107,7 +109,7 @@ namespace BookingApp.View
             {
                 if(_tourDTO.CurrentCapacity != 0)
                 {
-                    TourReservationWindow tourReservationWindow = new TourReservationWindow(this,_tourReservationRepository, _tourDTO, _userDTO);
+                    TourReservationWindow tourReservationWindow = new TourReservationWindow(this,_tourReservationService, _tourDTO, _userDTO);
                     tourReservationWindow.ShowDialog();
                 }
                 else if (_tourDTO.CurrentCapacity == 0)

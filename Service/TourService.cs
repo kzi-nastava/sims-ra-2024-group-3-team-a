@@ -85,9 +85,7 @@ namespace BookingApp.Service
                     }
                 }
             }
-            return finishedTours;
-        }
-
-      
+            return finishedTours.Distinct().ToList();
+        } 
     }
 }

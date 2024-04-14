@@ -3,6 +3,7 @@ using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Service;
 using BookingApp.View.Tourist;
+using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,8 +41,6 @@ namespace BookingApp.View
 
         private TouristDTO _touristDTO;
 
-        private TouristMainWindow _tourMainWindow;
-
         private UserDTO _userDTO;
 
         public int unlistedTouristsCounter;
@@ -55,31 +54,32 @@ namespace BookingApp.View
         public ObservableCollection<VoucherDTO> Vouchers { get; set; }
         public ObservableCollection<TouristDTO> Tourists { get; set; }
 
-        public TourReservationWindow(TouristMainWindow tourMainWindow, TourReservationRepository tourReservationRepository,TourDTO tourDTO, UserDTO userDTO)
+        private TourReservationViewModel _tourReservationViewModel;
+        public TourReservationWindow(TouristMainWindow tourMainWindow, TourReservationService tourReservationService,TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
-            _defaultBrushBorder=textBoxCurrentCapacity.BorderBrush.Clone();
-            textBoxNumber.Text = 0.ToString();
-            _tourReservationRepository = tourReservationRepository;
-            _tourRepository = new TourRepository();
-            _tourDTO = new TourDTO(tourDTO);
-            _userDTO = userDTO;
-            _tourReservationDTO = new TourReservationDTO(tourDTO, _userDTO);
-            _touristDTO= new TouristDTO();
-            voucherDTO = new VoucherDTO();
-            _tourMainWindow = tourMainWindow;
-            _voucherService  = new VoucherService();
-            _voucherService.UpdateHeader();
-            Tourists = new ObservableCollection<TouristDTO>();
-            Vouchers = new ObservableCollection<VoucherDTO>();
-            DataContext = new { Tour = _tourDTO, User = _userDTO, Voucher = Vouchers };
-            dataGridTourists.ItemsSource = Tourists;
-            bool isListFilled = false;
+            /* _defaultBrushBorder=textBoxCurrentCapacity.BorderBrush.Clone();
+             textBoxNumber.Text = 0.ToString();
+             _tourReservationRepository = tourReservationRepository;
+             _tourRepository = new TourRepository();
+             _tourDTO = new TourDTO(tourDTO);
+             _userDTO = userDTO;
+             _tourReservationDTO = new TourReservationDTO(tourDTO, _userDTO);
+             _touristDTO= new TouristDTO();
+             voucherDTO = new VoucherDTO();
+             _voucherService  = new VoucherService();
+             _voucherService.UpdateHeader();
+             Tourists = new ObservableCollection<TouristDTO>();
+             Vouchers = new ObservableCollection<VoucherDTO>();*/
+            // DataContext = new { Tour = _tourDTO, User = _userDTO, Voucher = Vouchers };
+            _tourReservationViewModel = new TourReservationViewModel(tourReservationService, tourDTO, userDTO);
+            DataContext = _tourReservationViewModel;
+           /* bool isListFilled = false;
             buttonSubmitInfo.IsEnabled = false;
-            Update();
+            Update();*/
         }
        
-        private void ConfirmReservation_Click(object sender, RoutedEventArgs e)
+      /*  private void ConfirmReservation_Click(object sender, RoutedEventArgs e)
         {
             if(AreAllListed(unlistedTouristsCounter) || IsListAllreadyFilled(unlistedTouristsCounter))
             {
@@ -239,7 +239,7 @@ namespace BookingApp.View
 
             voucherDTO = listViewVouchers.SelectedItem as VoucherDTO;
             MessageBox.Show("Voucher used!");
-        }
+        }*/
 
        
         private void textBox_TextChanged(object sender, EventArgs e)
