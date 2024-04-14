@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BookingApp.View.Guest"
+      xmlns:local="clr-namespace:BookingApp.View.Guest" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GuestReservationsPage">
@@ -23,31 +23,80 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Width="120" Grid.Row="0" HorizontalAlignment="Center" Click="CancelReservation_Click">Cancel Reservation</Button>
-        <Button Width="100" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Click="RateOwner_Click">Rate</Button>
-        <Button Width="100" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Click="RequestChange_Click">Request Change</Button>
+        <Button Width="120" Grid.Row="0" HorizontalAlignment="Center" Command="{Binding CancelReservationCommand}">Cancel Reservation</Button>
+        <Button Width="100" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Command="{Binding RateOwnerCommand}">Rate</Button>
+        <Button Width="100" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Command="{Binding RequestChangeCommand}">Request Change</Button>
         <Button Width="100" Grid.Row="0" Grid.Column="3" Click="Back_Click">Back</Button>
 
-        <Frame x:Name="frameRequestChange" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4" NavigationUIVisibility="Hidden" Visibility="Collapsed">
-        </Frame>
-        <DatePicker Width="105" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerNewBegin" SelectedDate = "{Binding _selectedNewBeginDate, Mode=TwoWay}" Visibility="{Binding ElementName=frameRequestChange, Path=Visibility}"/>
-        <DatePicker Width="105" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerNewEnd" SelectedDate = "{Binding _selectedNewEndDate, Mode=TwoWay}" Visibility="{Binding ElementName=frameRequestChange, Path=Visibility}"/>
-        <Button Width="100" Grid.Row="1" Grid.Column="4" Click="SubmitRequest_Click" Visibility="{Binding ElementName=frameRequestChange, Path=Visibility}">Submit Request</Button>
+        <Grid x:Name="frameRequestChange" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <Frame x:Name="frameRateOwner" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4" NavigationUIVisibility="Hidden" Visibility="Collapsed">
-        </Frame>
-        <Label Grid.Row="1" Grid.Column="0" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Cleanliness:</Label>
-        <TextBox Text="0" Width="105" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" x:Name="cleanlinessTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
-
-        <Label Grid.Row="1" Grid.Column="1" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Correctness:</Label>
-        <TextBox Text="0" Width="105" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" x:Name="ownerCorrectnessTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                
+            </Grid.RowDefinitions>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFrameMyRequestsVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFrameMyRequestsVisible}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <DatePicker Width="105" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" x:Name="datePickerNewBegin" SelectedDate="{Binding SelectedNewBeginDate}"/>
+            <DatePicker Width="105" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" x:Name="datePickerNewEnd" SelectedDate="{Binding SelectedNewEndDate, Mode=TwoWay}" />
+            <Button Width="100" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" Command="{Binding SubmitRequestCommand}">Submit Request</Button>
+        </Grid>
         
-        <Label Grid.Row="2"  Grid.Column="0" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Comment:</Label>
-        <TextBox Text="" Width="105" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" x:Name="CommentForOwnerTextBox" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}"/>
-        <Button Width="100" Grid.Row="1" Grid.Column="3" Click="SubmitRateOwner_Click" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Submit</Button>
-        <Button Width="100" Grid.Row="2" Grid.Column="2" Click="AddImages" Visibility="{Binding ElementName=frameRateOwner, Path=Visibility}">Add images</Button>
 
-        <DataGrid x:Name="dataGridMyReservations" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" >
+        <Grid x:Name="frameRateOwner" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFrameRateVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFrameRateVisible}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Label Grid.Row="1" Grid.Column="0" >Cleanliness:</Label>
+            <TextBox Width="105" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" x:Name="cleanlinessTextBox" Text="{Binding SelectedReservation.RatingDTO.GuestCleanlinessRating}"/>
+
+            <Label Grid.Row="1" Grid.Column="1" >Hospitality:</Label>
+            <TextBox Text="{Binding SelectedReservation.RatingDTO.GuestHospitalityRating}" Width="105" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" x:Name="ownerCorrectnessTextBox" />
+
+            <Label Grid.Row="2"  Grid.Column="0" >Comment:</Label>
+            <TextBox Text="{Binding SelectedReservation.RatingDTO.GuestComment}" Width="105" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" x:Name="CommentForOwnerTextBox" />
+            <Button Width="100" Grid.Row="1" Grid.Column="3" Command="{Binding SubmitRateOwnerCommand}">Submit</Button>
+            <Button Width="100" Grid.Row="2" Grid.Column="2" Command="{Binding AddImagesCommand}">Add images</Button>
+        </Grid>
+        
+        
+        <DataGrid x:Name="dataGridMyReservations" ItemsSource="{Binding MyReservationsDTO}" SelectedItem="{Binding SelectedReservation}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDate}"/>
                 <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}"/>
