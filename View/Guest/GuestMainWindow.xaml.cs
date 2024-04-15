@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BookingApp.View.Owner;
+using System.Timers;
 
 namespace BookingApp.View.Guest
 {
@@ -32,14 +33,16 @@ namespace BookingApp.View.Guest
         public static Frame MainFrame;
         public static Frame MyRequestsFrame;
         public static GuestMainWindow Instance;
-
+        private static Timer _notificationTimer;
+        private static GuestMainViewModel _guestMainViewModel;
 
         public GuestMainWindow(User user)
         {
             InitializeComponent();
             _userDTO = new UserDTO(user);
-            DataContext = new GuestMainViewModel(_userDTO);
-            
+            _guestMainViewModel = new GuestMainViewModel(_userDTO);
+            DataContext = _guestMainViewModel;
+            SetNotificationTimer();
             AccommodationsDTO = new ObservableCollection<AccommodationDTO>();
             MainFrame = frameMain;
             if (Instance == null)
@@ -52,9 +55,32 @@ namespace BookingApp.View.Guest
         {
             return Instance;
         }
-        private void MyInbox_Click(object sender, RoutedEventArgs e)
+        private void SetNotificationTimer()
         {
+            _notificationTimer = new Timer(5000);
 
+            _notificationTimer.Elapsed += (sender, e) => Notify(frameNotification);
+
+            _notificationTimer.AutoReset = true;
+            _notificationTimer.Enabled = true;
+        }
+        private static void Notify(Frame frameNotification)
+        {
+            _guestMainViewModel.UpdateReservations();
+            if (_guestMainViewModel.MyMessagesDTO.Any())
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    NotificationPage notificationPage = new NotificationPage();
+                    notificationPage.buttonNotification.Click += (sender, e) => frameNotification.Content = null;
+                    foreach (var message in _guestMainViewModel.MyMessagesDTO)
+                    {
+                        notificationPage.buttonNotification.ToolTip += "You have new unread messages!" + "\n"; 
+                    }
+
+                    frameNotification.Content = notificationPage;
+                });
+            }
         }
     }
 }
