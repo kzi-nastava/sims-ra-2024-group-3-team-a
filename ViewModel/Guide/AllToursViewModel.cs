@@ -1,0 +1,102 @@
+﻿using BookingApp.DTO;
+using BookingApp.Model.Enums;
+using BookingApp.Model;
+using BookingApp.Repository;
+using BookingApp.Service;
+using BookingApp.View;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using BookingApp.Commands;
+
+namespace BookingApp.ViewModel.Guide
+{
+    class AllToursViewModel : ViewModel
+    {
+        private static ObservableCollection<TourDTO> _allToursDTO { get; set; }
+        private readonly TourService _tourService;
+        private readonly TourReservationService _tourReservationService;
+        private TourDTO _selectedTourDTO = null;
+        private RelayCommand _showAddTourWindowCommand;
+        private RelayCommand _cancelTourCommand;
+        private UserDTO _loggedGuide;
+        public AllToursViewModel(UserDTO guide)
+        {
+            _loggedGuide = guide;
+            _tourReservationService = new TourReservationService();
+            _tourService = new TourService();
+            List<TourDTO> toursDTO = _tourService.GetNotCancelled().Select(tour => new TourDTO(tour)).ToList();
+            _allToursDTO = new ObservableCollection<TourDTO>(toursDTO);
+            _showAddTourWindowCommand = new RelayCommand(ShowAddTourWindow);
+            _cancelTourCommand = new RelayCommand(CancelTour);
+        }
+        public ObservableCollection<TourDTO> AllToursDTO
+        {
+            get { return _allToursDTO; }
+            set
+            {
+                _allToursDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public TourDTO SelectedTourDTO
+        {
+            get { return _selectedTourDTO; }
+            set
+            {
+                _selectedTourDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowAddTourWindowCommand
+        {
+            get { return _showAddTourWindowCommand; }
+            set
+            {
+                _showAddTourWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowAddTourWindow()
+        {
+            AddTourWindow addTourWindow = new AddTourWindow(_loggedGuide);
+            addTourWindow.Show();
+        }
+        public RelayCommand CancelTourCommand
+        {
+            get { return _cancelTourCommand; }
+            set
+            {
+                _cancelTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void CancelTour()
+        {
+            if (_selectedTourDTO == null)
+            {
+                return;
+            }
+            TourDTO selectedTour = _selectedTourDTO as TourDTO;
+
+            DateTime currentTimePlus48Hours = DateTime.Now.AddHours(48);
+            if (selectedTour.BeginingTime > currentTimePlus48Hours)
+            {
+                _tourReservationService.MakeTourReservationVoucher(selectedTour.ToTourAllParam());
+                selectedTour.CurrentKeyPoint = "canceled";
+                _tourService.Update(selectedTour.ToTourAllParam());
+                _allToursDTO.Remove(selectedTour);
+                MessageBox.Show("Tour has been successfully canceled", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Tour cannot be canceled as it is less than 48 hours away from its beginning time. ", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+            
+    }
+}

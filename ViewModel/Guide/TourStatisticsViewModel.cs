@@ -16,18 +16,14 @@ namespace BookingApp.ViewModel.Guide
 {
     class TourStatisticsViewModel : ViewModel
     {
-
         private TourDTO _mostVisitedTourDTO;
         private TourDTO _selectedTourDTO = null;
         private TourReservationService _tourReservationService;
         private TourService _tourService;
         private RelayCommand _showTouristsStatistcsCommand;
         private RelayCommand _showMostVisitedByYearCommand;
-        //public static ObservableCollection<TourDTO> _toursDTO { get; set; }
         public static ObservableCollection<TourDTO> _finishedToursDTO { get; set; }
-        
-        public ObservableCollection<TouristDTO> _touristsDTO { get; set; }
-
+        //private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
         public TourStatisticsViewModel()
         {
             _tourService = new TourService();
@@ -47,7 +43,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-
         public TourDTO MostVisitedTourDTO
         {
             get { return _mostVisitedTourDTO; }
@@ -57,8 +52,7 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-
-        public ObservableCollection<TouristDTO> TouristsDTO
+       /* public ObservableCollection<TouristDTO> TouristsDTO
         {
             get { return _touristsDTO; }
             set
@@ -66,7 +60,7 @@ namespace BookingApp.ViewModel.Guide
                 _touristsDTO = value;
                 OnPropertyChanged();
             }
-        }
+        }*/
         public ObservableCollection<TourDTO> FinishedToursDTO
         {
             get { return _finishedToursDTO; }
@@ -117,6 +111,4 @@ namespace BookingApp.ViewModel.Guide
             touristStatisticsWindow.Show();
         }
     }
-    
-
 }

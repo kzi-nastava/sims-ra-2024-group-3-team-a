@@ -19,19 +19,17 @@
 
 
 
-        <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  Grid.Row="0"  Margin="10,10,20,68" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+        <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding AllToursDTO}"  SelectedItem="{Binding SelectedTourDTO}" Grid.Row="0"  Margin="10,10,20,68" AutoGenerateColumns="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
-                <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
-                <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
-                <DataGridTextColumn Header="MAKS TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
-                <DataGridTextColumn Header="BEGINING TIME" Width="*" Binding="{Binding BeginingTime}"/>
-
+                <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding Path=LocationDTO}"/>
+                <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Path=Duration}"/>
+                <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
+                <DataGridTextColumn Header="MAKS TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
+                <DataGridTextColumn Header="BEGINING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
             </DataGrid.Columns>
-
         </DataGrid>
-        <Button Content="Add new tour" Click="ShowAddTourWindow"  VerticalAlignment="Center" Height="29" Grid.Row="1"/>
-        <Button Content="Cancel Tour" Click="CancelTour"  VerticalAlignment="Center" Height="29" Grid.Row="1" Grid.Column="2"/>
+        <Button Content="Add new tour" Command="{Binding ShowAddTourWindowCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="1"/>
+        <Button Content="Cancel Tour" Command="{Binding CancelTourCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="1" Grid.Column="2"/>
     </Grid>
 </Window>

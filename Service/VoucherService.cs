@@ -34,11 +34,11 @@ namespace BookingApp.Service
             vouchers = GetAll().ToList();
             if (vouchers.Count > 0)
             {
-                foreach (Voucher v in vouchers)
+                foreach (Voucher card in vouchers)
                 {
-                    if (voucher.Id == v.Id)
+                    if (voucher.Id == card.Id)
                     {
-                        vouchers.Remove(v);
+                        vouchers.Remove(card);
                         _serializer.ToCSV("../../../Resources/Data/vouchers.csv", vouchers);
                         break;
                     }

@@ -19,7 +19,7 @@ namespace BookingApp.Model
         public string Description { get; set; }
         public Languages Language { get; set; }
         public int MaxTouristNumber { get; set; }
-        public KeyPoints KeyPoint { get; set; }
+        public KeyPoints KeyPoints { get; set; }
         public DateTime BeginingTime { get; set; }
         public double Duration { get; set; }  
         public List<string> Images { get; set; }
@@ -31,7 +31,7 @@ namespace BookingApp.Model
         public Tour() 
         {
             Place = new Location();
-            KeyPoint = new KeyPoints();
+            KeyPoints = new KeyPoints();
             Images = new List<string>();
         }
 
@@ -44,7 +44,7 @@ namespace BookingApp.Model
             Description = description;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
-            KeyPoint = keyPoints;
+            KeyPoints = keyPoints;
             BeginingTime = beginingTime;
             Duration = duration; 
             Images = images;
@@ -63,7 +63,7 @@ namespace BookingApp.Model
             Description = description;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
-            KeyPoint = keyPoints;
+            KeyPoints = keyPoints;
             BeginingTime = beginingTime;
             Duration = duration;
             Images = images;
@@ -87,12 +87,12 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(),CurrentKeyPoint,IsActive.ToString(),TouristsPresent.ToString(), images };
+                string[] csvValues = { Id.ToString(),GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoints.Id.ToString(),CurrentKeyPoint,IsActive.ToString(),TouristsPresent.ToString(), images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoint.Id.ToString(), CurrentKeyPoint,IsActive.ToString(), TouristsPresent.ToString() };
+                string[] csvValues = { Id.ToString(), GuideId.ToString(), Name, Place.City, Place.Country, Description, Language.ToString(), MaxTouristNumber.ToString(), BeginingTime.ToString(), Duration.ToString(), CurrentCapacity.ToString(), KeyPoints.Id.ToString(), CurrentKeyPoint,IsActive.ToString(), TouristsPresent.ToString() };
                 return csvValues;
             }
         }
@@ -110,7 +110,7 @@ namespace BookingApp.Model
             BeginingTime = DateTime.Parse(values[8]);
             Duration = double.Parse(values[9]);
             CurrentCapacity = Convert.ToInt32(values[10]);
-            KeyPoint.Id = Convert.ToInt32(values[11]);
+            KeyPoints.Id = Convert.ToInt32(values[11]);
             CurrentKeyPoint = values[12];
             IsActive =Convert.ToBoolean( values[13]);
             TouristsPresent = Convert.ToInt32(values[14]);

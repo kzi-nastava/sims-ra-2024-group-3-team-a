@@ -23,7 +23,7 @@
         <TextBox x:Name="GuestNumberTextBox" Grid.Row="0" Grid.Column="1" Width="50" HorizontalAlignment="Center" />
 
         <!-- Adjusted button width and alignment -->
-        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Width="150" Click="NewReservation_Click" HorizontalAlignment="Left">
+        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Width="150" Command="{Binding NewReservationCommand}" HorizontalAlignment="Left">
             Make reservation
         </Button>
     </Grid>

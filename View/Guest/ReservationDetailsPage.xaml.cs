@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Guest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,42 +24,14 @@ namespace BookingApp.View.Guest
     /// </summary>
     public partial class ReservationDetailsPage : Page
     {
-        private DateOnly _selectedBeginDate;
-        private DateOnly _selectedEndDate;
-
-        private UserDTO _userDTO;
-        private AccommodationDTO _accommodationDTO;
-
-        private AccommodationReservationRepository _accommodationReservationRepository;
-
+        public static ReservationDetailsPage Instance;
         public ReservationDetailsPage(AccommodationDTO accommodationDTO, UserDTO userDTO, DateOnly begin, DateOnly end)
         {
             InitializeComponent();
-            _accommodationReservationRepository = new AccommodationReservationRepository();
-            _accommodationDTO = accommodationDTO;
-            _userDTO = userDTO;
-            _selectedBeginDate = begin;
-            _selectedEndDate = end; 
-        }
-
-        private void NewReservation_Click(object sender, RoutedEventArgs e)
-        {
-            int _guestNumber;
-            if(int.TryParse(GuestNumberTextBox.Text, out _guestNumber))
+            DataContext = new GuestReservationDetailsViewModel(accommodationDTO, userDTO, begin, end);
+            if(Instance == null)
             {
-                if (_guestNumber < 0 || _guestNumber > _accommodationDTO.Capacity)
-                {
-                    MessageBox.Show($"Error! Capacity is {_accommodationDTO.Capacity} guests!");
-                    return;
-                }
-                Review rating = new Review();
-                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, false, rating);
-                _accommodationReservationRepository.Save(acc);
-                MessageBox.Show("Reservation successful!");
-            }
-            else
-            {
-                MessageBox.Show("Please enter number of guests!");
+                Instance = this;
             }
         }
     }

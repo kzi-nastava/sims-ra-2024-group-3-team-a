@@ -36,5 +36,10 @@ namespace BookingApp.Service
         {
             return _accommodationReservationChangeRequestRepository.GetById(id);
         }
+
+        public List<AccommodationReservationChangeRequest> GetAllByGuestId(int guestId)
+        {
+            return _accommodationReservationChangeRequestRepository.GetAllByGuestId(guestId);
+        }
     }
 }

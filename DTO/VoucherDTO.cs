@@ -1,4 +1,4 @@
-﻿using BookingApp.Model;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,6 @@ namespace BookingApp.DTO
     public class VoucherDTO: INotifyPropertyChanged
     {
         public VoucherDTO() { }
-
         public  VoucherDTO(Voucher voucher)
         {
             id = voucher.Id;
@@ -28,18 +27,6 @@ namespace BookingApp.DTO
             header = voucher.Header;
             tourId = voucher.TourId;
         }
-
-        public VoucherDTO(int id, VoucherType type, int userId, bool isUsed, DateTime expireDate, string header, int tourId)
-        {
-            this.id = id;
-            this.type = type;
-            this.userId = userId;
-            this.isUsed = isUsed;
-            this.expireDate = expireDate; 
-            this.header = header;
-            this.tourId = tourId;   
-        }
-
         public VoucherDTO(VoucherDTO voucherDTO)
         {
             id = voucherDTO.Id;
@@ -50,7 +37,6 @@ namespace BookingApp.DTO
             header = voucherDTO.Header;
             tourId = voucherDTO.TourId;
         }
-
         private int id;
         public int Id
         {
@@ -64,7 +50,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-
         private VoucherType type;
         public VoucherType Type
         {
@@ -78,7 +63,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-
         private int userId;
         public int UserId
         {
@@ -92,7 +76,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-
         private Boolean isUsed;
         public Boolean IsUsed
         {
@@ -106,7 +89,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-
         private DateTime expireDate;
         public DateTime ExpireDate
         {
@@ -120,7 +102,6 @@ namespace BookingApp.DTO
                 }
             }
         }
-
         private string header;
         public string Header
         {
@@ -152,13 +133,10 @@ namespace BookingApp.DTO
         {
             return new Voucher(id, type, userId, isUsed, expireDate, header, tourId);
         }
-
         public event PropertyChangedEventHandler? PropertyChanged;
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

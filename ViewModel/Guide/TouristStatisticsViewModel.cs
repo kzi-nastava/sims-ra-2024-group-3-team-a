@@ -13,7 +13,6 @@ namespace BookingApp.ViewModel.Guide
 {
     class TouristStatisticsViewModel : ViewModel
     {
-
         private TourDTO _tourDTO;
         private TourReservationService _tourReservationService;
         private TouristDTO _touristDTO;
@@ -21,7 +20,6 @@ namespace BookingApp.ViewModel.Guide
         private int _middleGroupCounter = 0;
         private int _overFiftyCounter = 0;
         public ObservableCollection<TouristDTO> _touristsDTO { get; set; }
-
         public TouristStatisticsViewModel(TourDTO tour)
         {
             _tourDTO = tour;
@@ -66,7 +64,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-
         private void CountAgeGroups(List<TouristDTO> tourists)
         {
             foreach (TouristDTO tourist in tourists)
@@ -85,7 +82,6 @@ namespace BookingApp.ViewModel.Guide
                 }
             }
         }
-
     }
 }
 
