@@ -28,16 +28,31 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class TourReviewWindow : Window
     {
+        public static TourReviewWindow Instance;
         private TourReviewViewModel _tourReviewViewModel { get; set; }
+
+        
         public TourReviewWindow(TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
 
             _tourReviewViewModel = new TourReviewViewModel(tourDTO, userDTO);
-            DataContext = _tourReviewViewModel; 
+            DataContext = _tourReviewViewModel;
+
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+        }
+
+        public static TourReviewWindow GetInstance()
+        {
+            return Instance;
         }
     }
-    
+
+   
+
     public class RadioBoolToIntConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

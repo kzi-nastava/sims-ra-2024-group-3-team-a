@@ -42,6 +42,7 @@ namespace BookingApp.ViewModel.Tourist
             _tourReviewDTO = new TourReviewDTO();
             _rateTourCommand =  new RelayCommand(RateTour);
             _addImagesCommand = new RelayCommand(AddImages);
+            _cancelCommand = new RelayCommand(Cancel);
         }
 
         public TourDTO TourDTO
@@ -114,6 +115,7 @@ namespace BookingApp.ViewModel.Tourist
             _tourReviewDTO.Images = _images;
             _tourReviewService.Save(_tourReviewDTO.ToTourReview());
             MessageBox.Show("Tour is rated!");
+            TourReviewWindow.GetInstance().Close();
         }
 
         public void AddImages()
@@ -132,6 +134,10 @@ namespace BookingApp.ViewModel.Tourist
                     _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
                 }
             }
+        }
+        public void Cancel()
+        {
+            TourReviewWindow.GetInstance().Close();
         }
     }
 

@@ -48,7 +48,7 @@ namespace BookingApp.Service
                         }
                     }
                 }
-           return activeTours;
+           return activeTours.Distinct().ToList();
         }
         public List<Tour> GetAllActiveTours()
         {
@@ -75,7 +75,7 @@ namespace BookingApp.Service
                     }
                 }
             }
-            return unactiveTours;
+            return unactiveTours.Distinct().ToList();
         }
         public List<Tour> GetFinishedTours()
         {
@@ -128,6 +128,36 @@ namespace BookingApp.Service
                 }
             }
             return toursToday;
+        }
+        public List<Tour> GetToursWithSameLocation(Tour tour)
+        {
+            List<Tour> tours = new List<Tour>();
+            foreach (Tour t in GetAll())
+            {
+                if (t.Place.Country == tour.Place.Country && t.Place.City == tour.Place.City && t.CurrentCapacity != 0)
+                {
+                    tours.Add(t);
+                }
+            }
+            return tours;
+        }
+
+        public List<Tourist> GetTourists(Tour tour)
+        {
+            List<Tourist> tourists = new List<Tourist>();
+
+            foreach (TourReservation reservation in _tourReservationService.GetAll())
+            {
+                if (reservation.TourId == tour.Id)
+                {
+                    foreach (Tourist tourist in reservation.Tourists)
+                    {
+                        
+                        tourists.Add(tourist);
+                    }
+                }
+            }
+            return tourists;
         }
     }
 }

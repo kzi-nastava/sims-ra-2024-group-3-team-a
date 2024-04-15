@@ -31,5 +31,19 @@ namespace BookingApp.Service
         {
             return _tourReviewRepository.GetById(id);
         }
+        public bool IsTourRated(Tour tour, User user)
+        {
+            foreach (TourReview tourReview in GetAll())
+            {
+                if (tour.Id == tourReview.TourId)
+                {
+                    if (user.Id == tourReview.TouristId)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
