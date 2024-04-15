@@ -2,6 +2,8 @@
 using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.View.Guide;
+using BookingApp.View.Owner;
+using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,90 +26,19 @@ namespace BookingApp.View
 
     public partial class GuideMainWindow : Window
     {
-
-        public static ObservableCollection<TourDTO> Tours { get; set; }
-        private Boolean _doesActiveTourExist = false;
-        private readonly TourRepository _tourRepository;
-
-        private TourDTO _tourDTO;
-        private UserDTO _loggedInGuide;
-
-
+        public static GuideMainWindow Instance;
         public GuideMainWindow(User guide)
         {
             InitializeComponent();
-            DataContext = this;
-            _tourRepository = new TourRepository();
-            Tours = new ObservableCollection<TourDTO>();
-            _loggedInGuide = new UserDTO(guide);
-            Update();
-        }
-
-        public void Update()
-        {
-            Tours.Clear();
-           
-            foreach (Tour tour in _tourRepository.GetAll())
+            DataContext = new GuideMainViewModel(guide);
+            if (Instance == null)
             {
-                TourDTO tourDTO = new TourDTO(tour);
-                if (tourDTO.BeginingTime.Date == DateTime.Today && tourDTO.GuideId == _loggedInGuide.Id )
-                {
-                    Tours.Add(tourDTO);
-                }
+                Instance = this;
             }
         }
-
-        private void ShowActiveTourWindow(object sender, RoutedEventArgs e)
+        public static GuideMainWindow GetInstance()
         {
-            TourDTO selectedTour = ((Button)sender).DataContext as TourDTO;
-            foreach (Tour tour in _tourRepository.GetAll())
-            {
-                if (tour.IsActive == true)
-                {
-                    _doesActiveTourExist = true;
-                    break;
-                }
-                {
-                    _doesActiveTourExist = false;
-                }
-                
-
-            }
-            if (selectedTour.CurrentKeyPoint != "finished"   )
-            {
-                if(_doesActiveTourExist ==true && selectedTour.IsActive != true)
-                {
-                    MessageBox.Show("Another tour has already started", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
-                _tourDTO = selectedTour;
-                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_tourDTO, _doesActiveTourExist, this);
-                tourDetailsWindow.ShowDialog();
-                _tourRepository.Update(_tourDTO.ToTourAllParam());
-            }
-            else
-            {
-                MessageBox.Show("This tour has already finished", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        private void ShowAllToursWindow (object sender, RoutedEventArgs e)
-        {
-            AllToursWindow allToursView = new AllToursWindow(this, _loggedInGuide);
-            allToursView.Show();
-        }
-        private void ShowTourStatisticsWindow(object sender, RoutedEventArgs e)
-        {
-            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
-            tourStatistics.Show();
-            
-        }
-        private void LogoutClick(object sender, RoutedEventArgs e)
-        {
-            SignInForm signInForm = new SignInForm();
-            signInForm.Show();
-            this.Close();
-
+            return Instance;
         }
 
     }
