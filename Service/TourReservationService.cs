@@ -102,6 +102,7 @@ namespace BookingApp.Service
                     voucher.ExpireDate =DateTime.Now.AddYears(1);
                     voucher.Type = VoucherType.GuideCanceledTour;
                     voucher.Header = "Canceled tour";
+                    voucher.TourId = -1;
                     _voucherService.Save(voucher);
                 }
             }
