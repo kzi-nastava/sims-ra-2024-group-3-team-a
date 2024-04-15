@@ -56,14 +56,14 @@ namespace BookingApp.Service
         {
             List<Voucher> vouchers = GetAll();
 
-            foreach (Voucher voucher in vouchers) 
+            foreach (Voucher voucher in vouchers)
             {
-                if(voucher.Type.Equals(Model.Enums.VoucherType.Gift))
+                if (voucher.Type.Equals(Model.Enums.VoucherType.Gift))
                 {
                     voucher.Header = "You went to five tours this year!";
                     Update(voucher);
                 }
-                else if(voucher.Type.Equals(Model.Enums.VoucherType.GuideQuitJob))
+                else if (voucher.Type.Equals(Model.Enums.VoucherType.GuideQuitJob))
                 {
                     voucher.Header = "Guide quit his job";
                     Update(voucher);
@@ -73,6 +73,17 @@ namespace BookingApp.Service
                     voucher.Header = "Guide cancelled tour";
                     Update(voucher);
                 }
+            }
+        }
+        public void UpdateVouchers()
+        {
+            List<Voucher> vouchers = GetAll();
+
+            foreach (Voucher voucher in vouchers)
+            {
+                voucher.TourId = -1;
+                voucher.IsUsed = false;
+                Update(voucher);
             }
         }
     }

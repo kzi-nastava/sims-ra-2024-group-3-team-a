@@ -1,4 +1,4 @@
-﻿using BookingApp.DTO;
+using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
@@ -106,5 +106,19 @@ namespace BookingApp.Service
                 }
             }
         }
+
+        public bool IsVoucherUsed(Tour tour)
+        {
+            foreach(Voucher voucher in _voucherService.GetAll())
+            {
+                if(voucher.TourId == tour.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

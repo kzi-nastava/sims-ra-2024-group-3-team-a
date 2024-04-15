@@ -31,7 +31,7 @@ namespace BookingApp.View
         private Brush _defaultBrushBorder;
 
         private TourReservationViewModel _tourReservationViewModel;
-        public TourReservationWindow(TouristMainWindow tourMainWindow, TourReservationService tourReservationService,TourDTO tourDTO, UserDTO userDTO)
+        public TourReservationWindow(TourReservationService tourReservationService,TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
             _defaultBrushBorder=textBoxCurrentCapacity.BorderBrush.Clone();

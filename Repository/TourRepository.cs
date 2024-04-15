@@ -1,4 +1,4 @@
-﻿using BookingApp.DTO;
+using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Serializer;
 using BookingApp.View.Guide;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using BookingApp.Service;
 
 namespace BookingApp.Repository
 {
