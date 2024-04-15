@@ -19,12 +19,9 @@ namespace BookingApp.ViewModel.Guide
 {
     class TourReviewsViewModel : ViewModel
     {
-
         private TourDTO _tourDTO;
         private TourReservationService _tourReservationService;
-
         private RelayCommand _showReviewDetailsCommand;
-
         private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
         public TourReviewsViewModel(TourDTO tour)
         {
@@ -34,7 +31,6 @@ namespace BookingApp.ViewModel.Guide
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             _showReviewDetailsCommand = new RelayCommand(ShowReviewDetails);
         }
-
         public ObservableCollection<TouristDTO> TouristsDTO
         {
             get { return _touristsDTO; }
@@ -44,7 +40,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-
         public RelayCommand ShowReviewDetailsCommand
         {
             get { return _showReviewDetailsCommand; }
@@ -54,7 +49,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-
         private void ShowReviewDetails(object parameter)
         {
             TouristDTO selectedTourist = parameter as TouristDTO;
@@ -65,8 +59,6 @@ namespace BookingApp.ViewModel.Guide
             }
             ReviewDetailsWindow reviewDetails = new ReviewDetailsWindow(selectedTourist);
             reviewDetails.Show();
-
         }
-
     }
 }
