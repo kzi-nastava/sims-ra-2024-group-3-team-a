@@ -47,6 +47,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
 
@@ -58,36 +59,63 @@
             <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Type" x:Name="searchTypeTextBox" Width="100" Margin="5"/>
 
             <TextBox x:Name="searchCapacityTextBox" Grid.Column="0" Text="" HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="5"/>
-            <Button  Background="LightPink" Content="▲" Grid.Column="1" Width="30" Click="IncreaseButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button  Background="LightPink" Content="▼" Grid.Column="1" Width="30" Click="DecreaseButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button  Background="LightPink" Content="▲" Grid.Column="1" Width="30" Command="{Binding IncreaseButtonCapacityCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button  Background="LightPink" Content="▼" Grid.Column="1" Width="30" Command="{Binding DecreaseButtonCapacityCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <TextBox x:Name="searchMinDaysTextBox" Grid.Column="0" Text="" HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="5"/>
-            <Button  Background="LightPink" Content="▲" Grid.Column="1" Width="30" Click="IncreaseButtonMinDays_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button  Background="LightPink" Content="▼" Grid.Column="1" Width="30" Click="DecreaseButtonMinDays_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Content="Search" Click="Search_Click" Width="80"/>
-            <Button Content="Make reservation" Click="ShowAccommodationReservationPage" Width="80"/>
+            <Button  Background="LightPink" Content="▲" Grid.Column="1" Width="30" Command="{Binding IncreaseButtonMinDaysCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button  Background="LightPink" Content="▼" Grid.Column="1" Width="30" Command="{Binding DecreaseButtonMinDaysCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Content="Search" Command="{Binding SearchAccommodationsCommand}" Width="80"/>
+            <Button Content="Make reservation" Command="{Binding ShowAccommodationReservationsPageCommand}" Width="80"/>
         </StackPanel>
 
-        <Button Content="My Reservations" Grid.Row="1" Width="150" HorizontalAlignment="Left" Click="ShowGuestReservationsPage"></Button>
-        <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Click="ShowMyRequests_Click"></Button>
+        <Button Content="My Reservations" Grid.Row="1" Width="150" HorizontalAlignment="Left" Command="{Binding ShowGuestReservationsCommand}"></Button>
+        <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Command="{Binding ShowMyRequestsCommand}"></Button>
         <Button Content="My Inbox" Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Left" Click="MyInbox_Click"></Button>
-        <Button Content="Log out" Grid.Row="1" Grid.Column="3" Width="150" HorizontalAlignment="Left" Click="LogOut_Click"></Button>
+        <Button Content="Log out" Grid.Row="1" Grid.Column="3" Width="150" HorizontalAlignment="Left" Command="{Binding LogOutCommand}"></Button>
 
         <Frame Grid.Row="2" Grid.ColumnSpan="4" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
         
-        <Frame x:Name="frameMyRequests" Grid.Row="3" Grid.ColumnSpan="4" NavigationUIVisibility="Hidden" Visibility="Collapsed">
-        </Frame>
-        <DataGrid x:Name="dataGridMyRequests" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Visibility="{Binding ElementName=frameMyRequests, Path=Visibility}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDateNew}"/>
-                <DataGridTextColumn Header="End Date" Binding="{Binding EndDateNew}"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Owner comment" Binding="{Binding RejectedMessage}"/>
-            </DataGrid.Columns>
+        <Grid x:Name="frameMyRequests" Grid.Row="3" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        </DataGrid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFrameMyRequestsVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFrameMyRequestsVisible}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <DataGrid x:Name="dataGridMyChangeRequests" ItemsSource="{Binding MyChangeRequestsDTO}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Begin Date" Binding="{Binding BeginDateNew}"/>
+                    <DataGridTextColumn Header="End Date" Binding="{Binding EndDateNew}"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                    <DataGridTextColumn Header="Owner comment" Binding="{Binding RejectedMessage}"/>
+                </DataGrid.Columns>
 
-        <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" Grid.Row="4" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="4">
+            </DataGrid>
+        </Grid>
+        
+
+        <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" SelectedItem="{Binding SelectedAccommodationDTO}"  Grid.Row="4" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="4">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="City" Binding="{Binding PlaceDTO.City}" Width="*"/>
@@ -97,5 +125,6 @@
                 <DataGridTextColumn Header="Min Days" Binding="{Binding MinDaysReservation}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+        
     </Grid>
 </Window>
