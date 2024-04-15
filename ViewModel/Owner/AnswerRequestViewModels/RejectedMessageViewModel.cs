@@ -24,6 +24,7 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
 
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService;
         private MessageService _messageService;
+        private UserService _userService;
 
         private AccommodationReservationChangeRequestDTO _accommodationReservationChangeRequestDTO;
         private MessageDTO _messageDTO;
@@ -32,6 +33,7 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
         {
             _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
             _messageService = new MessageService();
+            _userService = new UserService();
             _accommodationReservationChangeRequestDTO = accommodationReservationChangeRequestDTO;
             _messageDTO = messageDTO;
 
@@ -107,6 +109,10 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
             _accommodationReservationChangeRequestDTO.Status = AccommodationChangeRequestStatus.Rejected;
             _accommodationReservationChangeRequestService.Update(_accommodationReservationChangeRequestDTO.ToAccommodationReservationChangeRequest());
             _messageService.Delete(_messageDTO.ToMessage());
+            string sender = _userService.GetById(_messageDTO.RecieverId).Username;
+            int receiverId = _userService.GetByUsername(_messageDTO.Sender).Id;
+            Message _newRejectedMessage = new Message(0, _accommodationReservationChangeRequestDTO.Id, sender, receiverId, "Rejected Date Change Request", "rejected", MessageType.RejectedChangeRequest, false);
+            _messageService.Save(_newRejectedMessage);
             OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner);
         }
 

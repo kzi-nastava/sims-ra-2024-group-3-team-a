@@ -71,7 +71,7 @@
 
         <Button Content="My Reservations" Grid.Row="1" Width="150" HorizontalAlignment="Left" Command="{Binding ShowGuestReservationsCommand}"></Button>
         <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Command="{Binding ShowMyRequestsCommand}"></Button>
-        <Button Content="My Inbox" Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Left" Click="MyInbox_Click"></Button>
+        <Button Content="My Inbox" Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Left" Command="{Binding ShowInboxCommand}"></Button>
         <Button Content="Log out" Grid.Row="1" Grid.Column="3" Width="150" HorizontalAlignment="Left" Command="{Binding LogOutCommand}"></Button>
 
         <Frame Grid.Row="2" Grid.ColumnSpan="4" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
@@ -113,7 +113,42 @@
 
             </DataGrid>
         </Grid>
-        
+        <Grid x:Name="frameMyInbox" Grid.Row="3" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFrameMyInboxVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFrameMyInboxVisible}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <DataGrid x:Name="dataGridMyInbox" ItemsSource="{Binding MyMessagesDTO}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Sender" Binding="{Binding Sender}"/>
+                    <DataGridTextColumn Header="Header" Binding="{Binding Header}"/>
+                    <DataGridTextColumn Header="Content" Binding="{Binding Content}"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Grid>
 
         <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" SelectedItem="{Binding SelectedAccommodationDTO}"  Grid.Row="4" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="4">
             <DataGrid.Columns>
@@ -125,6 +160,7 @@
                 <DataGridTextColumn Header="Min Days" Binding="{Binding MinDaysReservation}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-        
+        <Frame x:Name="frameNotification" Grid.Row="1" Grid.Column="1" NavigationUIVisibility="Hidden" Height="25" Width="25" HorizontalAlignment="Right"/>
+
     </Grid>
 </Window>

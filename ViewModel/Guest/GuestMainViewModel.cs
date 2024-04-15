@@ -22,13 +22,16 @@ namespace BookingApp.ViewModel.Guest
         private AccommodationReservationService _accommodationReservationService;
         private AccommodationService _accommodationService;
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService;
+        private MessageService _messageService;
 
         private UserService _userService;
         private UserDTO _loggedInGuest;
 
         private ObservableCollection<AccommodationReservationChangeRequestDTO> _myChangeRequestsDTO;
+        private ObservableCollection<MessageDTO> _myMessagesDTO;
         private AccommodationDTO _selectedAccommodationDTO;
         private bool _isFrameMyRequestsVisible;
+        private bool _isFrameMyInboxVisible;
 
         private RelayCommand _logOutCommand;
         private RelayCommand _showMyRequestsCommand;
@@ -39,6 +42,7 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _decreaseButtonMinDaysCommand;
         private RelayCommand _showAccommodationReservationsPageCommand;
         private RelayCommand _searchAccommodationsCommand;
+        private RelayCommand _showInboxCommand;
 
         public GuestMainViewModel(UserDTO loggedInGuest)
         {
@@ -48,6 +52,7 @@ namespace BookingApp.ViewModel.Guest
             _accommodationReservationService = new AccommodationReservationService();
             _accommodationService = new AccommodationService();
             _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
+            _messageService = new MessageService();
 
             _logOutCommand = new RelayCommand(LogOut);
             _showMyRequestsCommand = new RelayCommand(ShowMyRequests);
@@ -58,6 +63,7 @@ namespace BookingApp.ViewModel.Guest
             _decreaseButtonMinDaysCommand = new RelayCommand(DecreaseButtonMinDays);
             _showAccommodationReservationsPageCommand = new RelayCommand(ShowAccommodationReservationPage);
             _searchAccommodationsCommand = new RelayCommand(SearchAccommodations);
+            _showInboxCommand = new RelayCommand(MyInbox);
             UpdateReservations();
 
         }
@@ -71,6 +77,8 @@ namespace BookingApp.ViewModel.Guest
             List<AccommodationReservationChangeRequestDTO> MyRequestsList = _accommodationReservationChangeRequestService.GetAllByGuestId(_loggedInGuest.Id).Select(request => new AccommodationReservationChangeRequestDTO(request)).ToList();
             _myChangeRequestsDTO = new ObservableCollection<AccommodationReservationChangeRequestDTO>(MyRequestsList);
             MyChangeRequestsDTO = _myChangeRequestsDTO;
+            List<MessageDTO> MyMessagesList = _messageService.GetByOwner(_loggedInGuest.Id).Select(message => new MessageDTO(message)).ToList();
+            _myMessagesDTO = new ObservableCollection<MessageDTO>(MyMessagesList);
         }
         public UserDTO GetUserDTOById(int id)
         {
@@ -82,8 +90,15 @@ namespace BookingApp.ViewModel.Guest
 
             GuestMainWindow.MainFrame.Content = new GuestReservationsPage(_loggedInGuest);
             IsFrameMyRequestsVisible = false;
+            IsFrameMyInboxVisible = false;
             GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
 
+        }
+        private void MyInbox()
+        {
+            UpdateReservations();
+            IsFrameMyInboxVisible = true;
+            IsFrameMyRequestsVisible = false;
         }
 
         private void IncreaseButtonCapacity()
@@ -121,6 +136,7 @@ namespace BookingApp.ViewModel.Guest
             UpdateReservations();
             GuestMainWindow.MainFrame.Visibility = Visibility.Collapsed;
             IsFrameMyRequestsVisible = true;
+            IsFrameMyInboxVisible = false;
 
         }
         private void ShowAccommodationReservationPage()
@@ -192,7 +208,18 @@ namespace BookingApp.ViewModel.Guest
             GuestMainWindow.GetInstance().Close();
             signInForm.Show();
         }
-
+        public ObservableCollection<MessageDTO> MyMessagesDTO
+        {
+            get
+            {
+                return _myMessagesDTO;
+            }
+            set
+            {
+                _myMessagesDTO = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<AccommodationReservationDTO> AccommodationReservationsDTO
         {
             get
@@ -214,6 +241,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _isFrameMyRequestsVisible = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsFrameMyInboxVisible
+        {
+            get
+            {
+                return _isFrameMyInboxVisible;
+            }
+            set
+            {
+                _isFrameMyInboxVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -361,6 +400,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _showAccommodationReservationsPageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowInboxCommand
+        {
+            get
+            {
+                return _showInboxCommand;
+            }
+            set
+            {
+                _showInboxCommand = value;
                 OnPropertyChanged();
             }
         }
