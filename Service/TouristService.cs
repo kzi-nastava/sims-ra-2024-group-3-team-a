@@ -12,8 +12,6 @@ namespace BookingApp.Service
     {
         private TouristRepository _touristRepository = new TouristRepository();
 
-        //private TourReservationService _tourReservationService = new TourReservationService();
-
         public List<Tourist> GetAll()
         {
             return _touristRepository.GetAll();

@@ -26,9 +26,10 @@ namespace BookingApp.DTO
             isUsed = voucher.IsUsed;
             expireDate = voucher.ExpireDate;
             header = voucher.Header;
+            tourId = voucher.TourId;
         }
 
-        public VoucherDTO(int id, VoucherType type, int userId, bool isUsed, DateTime expireDate, string header )
+        public VoucherDTO(int id, VoucherType type, int userId, bool isUsed, DateTime expireDate, string header, int tourId)
         {
             this.id = id;
             this.type = type;
@@ -36,7 +37,7 @@ namespace BookingApp.DTO
             this.isUsed = isUsed;
             this.expireDate = expireDate; 
             this.header = header;
-            
+            this.tourId = tourId;   
         }
 
         public VoucherDTO(VoucherDTO voucherDTO)
@@ -47,6 +48,7 @@ namespace BookingApp.DTO
             isUsed = voucherDTO.IsUsed;
             expireDate = voucherDTO.ExpireDate;
             header = voucherDTO.Header;
+            tourId = voucherDTO.TourId;
         }
 
         private int id;
@@ -132,9 +134,23 @@ namespace BookingApp.DTO
                 }
             }
         }
+
+        private int tourId;
+        public int TourId
+        {
+            get { return tourId; }
+            set
+            {
+                if (value != tourId)
+                {
+                    userId = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Voucher ToVoucher()
         {
-            return new Voucher(id, type, userId, isUsed, expireDate, header);
+            return new Voucher(id, type, userId, isUsed, expireDate, header, tourId);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

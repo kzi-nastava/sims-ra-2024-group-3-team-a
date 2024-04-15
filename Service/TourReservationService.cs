@@ -16,6 +16,7 @@ namespace BookingApp.Service
         private TourReviewService _tourReviewService = new TourReviewService();
         private TouristService _touristService = new TouristService();
         private UserService _userService = new UserService();
+        private VoucherService _voucherService = new VoucherService();  
 
 
         public List<TourReservation> GetAll()
@@ -74,6 +75,19 @@ namespace BookingApp.Service
                     tourist.Review = tourReview;
                 }
             }
+        }
+
+        public bool IsVoucherUsed(Tour tour)
+        {
+            foreach(Voucher voucher in _voucherService.GetAll())
+            {
+                if(voucher.TourId == tour.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }

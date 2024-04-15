@@ -16,8 +16,9 @@ namespace BookingApp.Model
         public Boolean IsUsed { get; set; }
         public DateTime ExpireDate { get; set; }
         public string Header { get; set; }
+        public int TourId { get; set; }
         public Voucher() { }
-        public Voucher(int id, VoucherType type, int userId, bool isUsed, DateTime expireDate, string header)
+        public Voucher(int id, VoucherType type, int userId, bool isUsed, DateTime expireDate, string header, int tourId)
         {
             Id = id;
             Type = type;
@@ -25,10 +26,11 @@ namespace BookingApp.Model
             IsUsed = isUsed;
             ExpireDate = expireDate;
             Header = header;
+            TourId = tourId;
         }
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Type.ToString(), UserId.ToString(), IsUsed.ToString(), ExpireDate.ToString(), Header.ToString() };
+            string[] csvValues = { Id.ToString(), Type.ToString(), UserId.ToString(), IsUsed.ToString(), ExpireDate.ToString(), Header.ToString(), TourId.ToString() };
             return csvValues;
         }
         public void FromCSV(string[] values)
@@ -39,6 +41,7 @@ namespace BookingApp.Model
             IsUsed = Convert.ToBoolean(values[3]);
             ExpireDate = DateTime.Parse(values[4]);
             Header = values[5];
+            TourId = Convert.ToInt32(values[6]);
         }
     }
 }

@@ -15,17 +15,12 @@ namespace BookingApp.ViewModel.Tourist
     public class InboxViewModel: ViewModel
     {
         private MessageService _messageService;
-
         private TourService _tourService;
-
         private ObservableCollection<MessageDTO> _messageDTO;
-
         private MessageDTO _selectedMessageDTO = null;
-
-
         public InboxViewModel(UserDTO loggedInUser)
         {
-
+            
             _messageService = new MessageService();
             _tourService = new TourService();
             List<MessageDTO> messages = _messageService.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
@@ -78,8 +73,5 @@ namespace BookingApp.ViewModel.Tourist
                 trackTourWindow.ShowDialog();   
             }
         }
-
     }
-
-    
 }

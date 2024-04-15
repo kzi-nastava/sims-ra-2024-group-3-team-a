@@ -23,6 +23,7 @@ namespace BookingApp.ViewModel.Tourist
         private UserDTO _userDTO;
         private TouristDTO _touristDTO;
         private VoucherDTO _voucherDTO;
+        private Voucher voucher;
         private VoucherService _voucherService;
         private ObservableCollection<VoucherDTO> _vouchersDTO;
         public ObservableCollection<TouristDTO> _touristsDTO;
@@ -37,8 +38,11 @@ namespace BookingApp.ViewModel.Tourist
             _userDTO = loggedInUser;
             _touristDTO = new TouristDTO();
             _tourReservationDTO = new TourReservationDTO();
+            voucher = new Voucher();
             _tourReservationService = new TourReservationService();
             _voucherService = new VoucherService();
+            _voucherService.UpdateHeader();
+            _voucherService.UpdateVouchers();
             List<VoucherDTO> vouchers = _voucherService.GetAll().Select(vouchers => new VoucherDTO(vouchers)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>();
             _vouchersDTO = new ObservableCollection<VoucherDTO>(vouchers);
@@ -206,7 +210,27 @@ namespace BookingApp.ViewModel.Tourist
         public void UseVoucher()
         {
             _voucherDTO = _selectedVoucherDTO as VoucherDTO;
-            MessageBox.Show("Voucher used!");
+            _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
+
+            if (_voucherDTO == null)
+            {
+                return;
+            }
+
+            if(_tourReservationService.IsVoucherUsed(_tourDTO.ToTourAllParam()))
+            {
+                MessageBox.Show("Voucher allready used!");
+            }
+            else
+            {
+                _voucherDTO.IsUsed = true;
+                voucher = _voucherService.GetById(_voucherDTO.Id);
+                voucher.TourId = _tourDTO.Id;
+                _voucherService.Update(voucher);
+                MessageBox.Show("Voucher used!");
+
+            }
+           
         }
         public void ConfirmTourReservation()
         {
@@ -219,9 +243,8 @@ namespace BookingApp.ViewModel.Tourist
 
             if(_voucherDTO != null)
             {
-                _voucherService.Delete(_voucherDTO.ToVoucher());
+                _voucherService.Delete(voucher);
             }
-            
 
             MessageBox.Show("Successfully added reservation!");
         }
