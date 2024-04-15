@@ -52,17 +52,17 @@
                 <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,25">
                     <StackPanel Orientation="Horizontal" Margin="35,0,35,0">
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="Guest Username:"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=GuestId, Converter={StaticResource GuestIdToNameConverter}}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationReservationDTO.GuestId, Converter={StaticResource GuestIdToNameConverter}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="35,0,35,0">
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="Accommodation:"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=AccommodationReservationDTO.AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="35,0,35,0">
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="Date:"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=BeginDate}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path= AccommodationReservationDTO.BeginDate}"/>
                         <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="-"/>
-                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path=EndDate}"/>
+                        <Label Background="CadetBlue" Foreground="#d4ff00" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Content="{Binding Path= AccommodationReservationDTO.EndDate}"/>
                     </StackPanel>
                 </StackPanel>
 

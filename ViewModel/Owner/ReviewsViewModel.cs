@@ -18,7 +18,7 @@ namespace BookingApp.ViewModel.Owner
         private AccommodationReservationService _accommodationReservationService;
 
         private ObservableCollection<AccommodationReservationDTO> _finishedAccommodationReservationsDTO;
-        private ObservableCollection<AccommodationReservationDTO> _userReviewedAccommodationReservationsDTO;
+        private ObservableCollection<AccommodationReservationDTO> _userAndOwnerReviewedAccommodationReservationsDTO;
         private double _averageRating;
 
         private RelayCommand _showSideMenuCommand;
@@ -33,8 +33,8 @@ namespace BookingApp.ViewModel.Owner
             List<AccommodationReservationDTO> finishedAccommodationReservationsList = _accommodationReservationService.GetFinishedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
             _finishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(finishedAccommodationReservationsList);
 
-            List<AccommodationReservationDTO> _userReviewedAccommodationReservationsList = _accommodationReservationService.GetUserReviewedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
-            _userReviewedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(_userReviewedAccommodationReservationsList);
+            List<AccommodationReservationDTO> _userReviewedAccommodationReservationsList = _accommodationReservationService.GetUserAndOwnerReviewedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
+            _userAndOwnerReviewedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(_userReviewedAccommodationReservationsList);
 
             _averageRating = _accommodationReservationService.GetAverageRating(loggedInUser.ToUser());
 
@@ -53,12 +53,12 @@ namespace BookingApp.ViewModel.Owner
             }
         }
 
-        public ObservableCollection<AccommodationReservationDTO> UserReviewedAccommodationReservationsDTO
+        public ObservableCollection<AccommodationReservationDTO> UserAndOwnerReviewedAccommodationReservationsDTO
         {
-            get { return _userReviewedAccommodationReservationsDTO; }
+            get { return _userAndOwnerReviewedAccommodationReservationsDTO; }
             set
             {
-                _userReviewedAccommodationReservationsDTO = value;
+                _userAndOwnerReviewedAccommodationReservationsDTO = value;
                 OnPropertyChanged();
             }
         }

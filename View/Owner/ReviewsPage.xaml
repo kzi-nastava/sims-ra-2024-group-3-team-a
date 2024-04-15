@@ -82,7 +82,7 @@
 
                     <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Background="CadetBlue">Average Rating: </Label>
                     <Label Grid.Row="0" Grid.Column="1" Foreground="#d4ff00" Background="CadetBlue" Content="{Binding Path=AverageRating}"/>
-                    <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="listViewUserReviews" ItemsSource="{Binding UserReviewedAccommodationReservationsDTO}" SelectedItem="{Binding SelectedUserReviewDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                    <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="listViewUserReviews" ItemsSource="{Binding UserAndOwnerReviewedAccommodationReservationsDTO}" SelectedItem="{Binding SelectedUserReviewDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="Black" BorderThickness="5">
