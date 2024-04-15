@@ -21,7 +21,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Background="AntiqueWhite" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="200"/>
@@ -50,43 +50,42 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0">Name:</TextBlock>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Tour.Name}" IsEnabled="False"  BorderBrush="Transparent" Width="100"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TourDTO.Name}" IsEnabled="False"  BorderBrush="Transparent" Width="100"></TextBox>
                 <TextBlock Grid.Row="1" Grid.Column="0">Location:</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Tour.LocationDTOString,Mode=OneWay}"  BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TourDTO.LocationDTOString,Mode=OneWay}"  BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
                 <TextBlock Grid.Row="2" Grid.Column="0">Date:</TextBlock>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Tour.BeginingTime}" BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TourDTO.BeginingTime}" BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
 
             </Grid>
         </Grid>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-            <Grid  x:Name="gridMain"  Grid.Row="1" ShowGridLines="False"  Margin="10,0,10,150">
-          
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+            <Grid x:Name="gridMain" ShowGridLines="False"  Grid.Row="0" Margin="10,0,10,150" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    
                 </Grid.ColumnDefinitions>
-            </Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="2" FontSize="30" Grid.Column="0">Current Key Point:</TextBlock>
+                <Button Grid.Row="2" Grid.Column="1" Background="LightPink" Content="{Binding TourDTO.CurrentKeyPoint}"></Button>
+           </Grid>
         </Border>
+       
         <Grid x:Name="Grid2"  Grid.Row="2">
-            <DataGrid x:Name="dataGridTourists"  ItemsSource="{Binding Tourist}" Margin="0" AutoGenerateColumns="False" CanUserAddRows="False" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <DataGrid x:Name="dataGridTourists"  ItemsSource="{Binding TouristsDTO}" Margin="0" AutoGenerateColumns="False" CanUserAddRows="False" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}" IsReadOnly="True" />
                     <DataGridTextColumn Header="Joining key point " Width="*" Binding="{Binding JoiningKeyPoint}"/>
                 </DataGrid.Columns>
             </DataGrid>
-
+            </ScrollViewer>
         </Grid>
-
+          
     </Grid>
 </Window>

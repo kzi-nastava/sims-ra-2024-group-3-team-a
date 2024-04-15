@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BookingApp.ViewModel.Tourist
 {
@@ -14,6 +15,7 @@ namespace BookingApp.ViewModel.Tourist
     {
 
         private TourService _tourService { get; set; }
+        private TourReviewService _tourReviewService { get; set; }
 
         private ObservableCollection<TourDTO> _finishedTourDTO;
 
@@ -25,6 +27,7 @@ namespace BookingApp.ViewModel.Tourist
         {
 
             _tourService = new TourService();
+            _tourReviewService = new TourReviewService();
             _userDTO = loggedInUser;
             List<TourDTO> finishedTours = _tourService.GetFinishedTours().Select(finishedTours => new TourDTO(finishedTours)).ToList();
             _finishedTourDTO = new ObservableCollection<TourDTO>(finishedTours);
@@ -69,8 +72,17 @@ namespace BookingApp.ViewModel.Tourist
             }
 
             var selectedItem = _selectedTourDTO as TourDTO;
-            TourReviewWindow tourReviewWindow = new TourReviewWindow(new TourDTO(selectedItem), _userDTO);
-            tourReviewWindow.ShowDialog();
+
+            if(_tourReviewService.IsTourRated(selectedItem.ToTourAllParam(), _userDTO.ToUser()))
+            {
+                MessageBox.Show("This tour is allready rated!");
+            }
+            else
+            {
+                TourReviewWindow tourReviewWindow = new TourReviewWindow(new TourDTO(selectedItem), _userDTO);
+                tourReviewWindow.ShowDialog();
+            }
+            
         }
     }
 }

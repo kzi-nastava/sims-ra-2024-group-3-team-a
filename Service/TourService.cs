@@ -1,3 +1,4 @@
+using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
 using System;
@@ -5,15 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace BookingApp.Service
 {
     public class TourService
     {
         private TourRepository _tourRepository = new TourRepository();
-
         private TourReservationService _tourReservationService = new TourReservationService();
-
         public List<Tour> GetAll() 
         {
             return _tourRepository.GetAll();
@@ -23,71 +23,76 @@ namespace BookingApp.Service
         {
             return _tourRepository.GetById(id);
         }
-
         public Tour Save(Tour tour) 
         {
             return _tourRepository.Save(tour);
         }
-
         public void Delete(Tour tour)
         {
              _tourRepository.Delete(tour);
         }
-
         public Tour Update(Tour tour)
         {
             return _tourRepository.Update(tour);
         }
-
-     
         public List<Tour> GetActiveTours()
         {
             List<Tour> activeTours = new List<Tour>();
-                foreach (Tour t in GetAll())
+                foreach (Tour tour in GetAll())
                 {
-                    foreach (TourReservation tr in _tourReservationService.GetAll())
+                    foreach (TourReservation tourReservation in _tourReservationService.GetAll())
                     {
-                        if (t.Id == tr.TourId && t.IsActive)
+                        if (tour.Id == tourReservation.TourId && tour.IsActive)
                         {
-                            activeTours.Add(t);
+                            activeTours.Add(tour);
                         }
                     }
                 }
-           return activeTours;
+           return activeTours.Distinct().ToList();
         }
-
+        public List<Tour> GetAllActiveTours()
+        {
+            List<Tour> activeTours = new List<Tour>();
+            foreach (Tour tour in GetAll())
+            {
+                if (tour.IsActive)
+                {
+                    activeTours.Add(tour);
+                }
+            }
+            return activeTours;
+        }
         public List<Tour> GetUnactiveTours()
         {
             List<Tour> unactiveTours = new List<Tour>();
-            foreach (Tour t in GetAll())
+            foreach (Tour tour in GetAll())
             {
-                foreach (TourReservation tr in _tourReservationService.GetAll())
+                foreach (TourReservation tourReservation in _tourReservationService.GetAll())
                 {
-                    if (t.Id == tr.TourId && !t.IsActive && !t.CurrentKeyPoint.Equals("finished"))
+                    if (tour.Id == tourReservation.TourId && !tour.IsActive && !tour.CurrentKeyPoint.Equals("finished"))
                     {
-                        unactiveTours.Add(t);
+                        unactiveTours.Add(tour);
                     }
                 }
             }
-            return unactiveTours;
+            return unactiveTours.Distinct().ToList();
         }
         public List<Tour> GetFinishedTours()
         {
             List<Tour> finishedTours = new List<Tour>();
-            foreach (Tour t in GetAll())
+            foreach (Tour tour in GetAll())
             {
-                foreach (TourReservation tr in _tourReservationService.GetAll())
+                foreach (TourReservation tourReservation in _tourReservationService.GetAll())
                 {
-                    if (t.Id == tr.TourId && t.CurrentKeyPoint.Equals("finished"))
+                    if (tour.Id == tourReservation.TourId && tour.CurrentKeyPoint.Equals("finished"))
                     {
-                        finishedTours.Add(t);
+                        finishedTours.Add(tour);
                     }
                 }
             }
             return finishedTours.Distinct().ToList();
         }
-    
-    public List<Tour> GetAllFinishedTours()
+        public List<Tour> GetAllFinishedTours()
         {
             List<Tour> finishedTours = new List<Tour>();
             foreach (Tour tour in GetAll())
@@ -100,36 +105,59 @@ namespace BookingApp.Service
             }
             return finishedTours;
         }
-
         public Tour GetMostVisitedTour()
         {
-            int maxTourists = 0;
-            Tour mostVisited = null;
-            foreach (Tour tour in GetAll())
-            {
-                if (tour.TouristsPresent > maxTourists && tour.CurrentKeyPoint == "finished")
-                {
-                    maxTourists = tour.TouristsPresent;
-                    mostVisited = tour;
-                }
-
-            }
-            return mostVisited;
+            return _tourRepository.GetMostVisitedTour();
         }
         public Tour GetMostVisitedByYear(int year)
         {
-            int maxTourists = 0;
-            Tour mostVisited = null;
+            return _tourRepository.GetMostVisitedByYear(year);
+        }
+        public List<Tour> GetNotCancelled()
+        {
+            return _tourRepository.GetNotCancelled();
+        }
+        public List<Tour> GetTodayTours(User user)
+        {
+            List<Tour> toursToday = new List<Tour>();
             foreach (Tour tour in GetAll())
             {
-                if (tour.TouristsPresent > maxTourists && tour.CurrentKeyPoint == "finished" && tour.BeginingTime.Year==year)
+                if (tour.BeginingTime.Date == DateTime.Today && tour.GuideId == user.Id)
                 {
-                    maxTourists = tour.TouristsPresent;
-                    mostVisited = tour;
+                    toursToday.Add(tour);
                 }
-
             }
-            return mostVisited;
+            return toursToday;
+        }
+        public List<Tour> GetToursWithSameLocation(Tour tour)
+        {
+            List<Tour> tours = new List<Tour>();
+            foreach (Tour t in GetAll())
+            {
+                if (t.Place.Country == tour.Place.Country && t.Place.City == tour.Place.City && t.CurrentCapacity != 0)
+                {
+                    tours.Add(t);
+                }
+            }
+            return tours;
+        }
+
+        public List<Tourist> GetTourists(Tour tour)
+        {
+            List<Tourist> tourists = new List<Tourist>();
+
+            foreach (TourReservation reservation in _tourReservationService.GetAll())
+            {
+                if (reservation.TourId == tour.Id)
+                {
+                    foreach (Tourist tourist in reservation.Tourists)
+                    {
+                        
+                        tourists.Add(tourist);
+                    }
+                }
+            }
+            return tourists;
         }
     }
 }

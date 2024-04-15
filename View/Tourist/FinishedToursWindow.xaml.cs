@@ -26,34 +26,13 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class FinishedToursWindow : Window
     {
-        private TourDTO _tourDTO { get; set; }
-        public static ObservableCollection<TourDTO> FinishedTours { get; set; }
-
-        private readonly TourService _tourService;
         private FinishedToursViewModel _finishedToursViewModel { get; set; }
-        private UserDTO _userDTO { get; set; }
         public FinishedToursWindow(UserDTO userDTO)
         {
             InitializeComponent();
-            /*_tourDTO = new TourDTO();
-            _userDTO = userDTO;
-            _tourService = new TourService(); */
-            //FinishedTours = new ObservableCollection<TourDTO>();
             _finishedToursViewModel = new FinishedToursViewModel(userDTO);
+
             DataContext = _finishedToursViewModel;
-           // Update();
         }
-      /*  public void Update()
-        {
-            FinishedTours.Clear();
-            foreach (Tour tour in _tourService.GetAllFinishedTours())
-                FinishedTours.Add(new TourDTO(tour));
-        }
-        private void RateTour_Click(object sender, RoutedEventArgs e)
-        {
-            _tourDTO = listBoxFinishedTours.SelectedItem as TourDTO;
-            TourReviewWindow tourReviewWindow = new TourReviewWindow(_tourDTO, _userDTO);
-            tourReviewWindow.ShowDialog();
-        }*/
     }
 }

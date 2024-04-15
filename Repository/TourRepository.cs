@@ -1,4 +1,4 @@
-﻿using BookingApp.DTO;
+using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Serializer;
 using BookingApp.View.Guide;
@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using BookingApp.Service;
 
 namespace BookingApp.Repository
 {
     public class TourRepository
     {
         private const string FilePath = "../../../Resources/Data/tours.csv";
-        private TourReservationRepository _tourReservationRepository {get; set;}
 
         private readonly Serializer<Tour> _serializer;
 
@@ -82,65 +82,52 @@ namespace BookingApp.Repository
         public List<Tour> GetToursWithSameLocation(Tour tour)
         {
             List<Tour> tours = new List<Tour>();
-            foreach(Tour t in GetAll())
+            foreach (Tour oneTour in GetAll())
             {
-                if(t.Place.Country==tour.Place.Country && t.Place.City==tour.Place.City && t.CurrentCapacity!=0)
+                if (oneTour.Place.Country == tour.Place.Country && oneTour.Place.City == tour.Place.City && oneTour.CurrentCapacity != 0)
                 {
-                    tours.Add(t);
+                    tours.Add(oneTour);
                 }
             }
             return tours;
         }
-        public List<Tour> GetActiveTours()
+        public Tour GetMostVisitedTour()
         {
-        _tourReservationRepository = new TourReservationRepository();
-        List<Tour> activeTours = new List<Tour>();
-            foreach (Tour t in GetAll())
+            int maxTourists = 0;
+            Tour mostVisited = null;
+            foreach (Tour tour in GetAll())
             {
-                foreach (TourReservation tr in _tourReservationRepository.GetAll())
+                if (tour.TouristsPresent > maxTourists && tour.CurrentKeyPoint == "finished")
                 {
-                    if (t.Id == tr.TourId && t.IsActive)
-                    {
-                        activeTours.Add(t);
-                    }
+                    maxTourists = tour.TouristsPresent;
+                    mostVisited = tour;
                 }
             }
-            return activeTours;
+            return mostVisited;
         }
-
-        public List<Tour> GetUnactiveTours()
+        public List<Tour> GetNotCancelled()
         {
-            _tourReservationRepository = new TourReservationRepository();
-            List<Tour> unactiveTours = new List<Tour>();
-            foreach (Tour t in GetAll())
+            List<Tour> tours = new List<Tour>();
+            foreach(Tour tour in GetAll())
             {
-                foreach (TourReservation tr in _tourReservationRepository.GetAll())
+                if (tour.CurrentKeyPoint != "canceled")
+                    tours.Add(tour);
+            }
+            return tours;
+        }
+        public Tour GetMostVisitedByYear(int year)
+        {
+            int maxTourists = 0;
+            Tour mostVisited = null;
+            foreach (Tour tour in GetAll())
+            {
+                if (tour.TouristsPresent > maxTourists && tour.CurrentKeyPoint == "finished" && tour.BeginingTime.Year == year)
                 {
-                    if (t.Id == tr.TourId && !t.IsActive)
-                    {
-                        unactiveTours.Add(t);
-                    }
+                    maxTourists = tour.TouristsPresent;
+                    mostVisited = tour;
                 }
             }
-            return unactiveTours;
+            return mostVisited;
         }
-
-        public List<Tour> GetFinishedTours()
-        {
-            _tourReservationRepository = new TourReservationRepository();
-            List<Tour> finishedTours = new List<Tour>();
-            foreach (Tour t in GetAll())
-            {
-                foreach (TourReservation tr in _tourReservationRepository.GetAll())
-                {
-                    if (t.Id == tr.TourId && t.CurrentKeyPoint.Equals("finished"))
-                    {
-                        finishedTours.Add(t);
-                    }
-                }
-            }
-            return finishedTours;
-        }
-
     }
 }

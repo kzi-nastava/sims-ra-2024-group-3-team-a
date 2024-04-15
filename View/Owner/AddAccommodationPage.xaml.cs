@@ -108,7 +108,6 @@ namespace BookingApp.View.Owner
                     BorderBrushToDefault(textBoxMinDaysReservation);
                 }
             }
-
             if (!int.TryParse(textBoxCancellationPeriod.Text, out int cancellationPeriod))
             {
                 BorderBrushToRed(textBoxCancellationPeriod);
@@ -126,7 +125,6 @@ namespace BookingApp.View.Owner
                     BorderBrushToDefault(textBoxCancellationPeriod);
                 }
             }
-
             return validInput;
         }
         private void BorderBrushToRed(TextBox textBox)

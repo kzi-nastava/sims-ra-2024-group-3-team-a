@@ -18,7 +18,7 @@ namespace BookingApp.Service
         private UserService _userService = new UserService();
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
         private AccommodationService _accommodationService = new AccommodationService();
-
+        private TourService _tourService = new TourService();
         public List<Message> GetAll()
         {
             return _messageRepository.GetAll();
@@ -113,6 +113,28 @@ namespace BookingApp.Service
             }
 
             return messages;
+        }
+        public void CreateMessage(Message message, User user)
+        {
+            foreach (Tour tour in _tourService.GetActiveTours())
+            {
+                 
+                    if(!DoesMessageExists(tour,user))
+                    {
+                        message.RequestId = tour.Id;
+                        message.Sender = "Mile";
+                        message.RecieverId = user.Id;
+                        message.Header = "Active Tour Info";
+                        message.Content = "Your tour is now active. Click for more info.";
+                        message.Type = MessageType.TourAttendance;
+                        message.IsRead = false;
+                        Save(message);
+                    }
+            }
+        }
+        public bool DoesMessageExists(Tour tour, User user)
+        {
+            return GetByOwner(user.Id).Any(oldMessage => oldMessage.RequestId == tour.Id);
         }
     }
 }

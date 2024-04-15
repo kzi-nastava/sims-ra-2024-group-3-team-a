@@ -60,18 +60,31 @@ namespace BookingApp.Service
 
             return finishedAccommodationReservations;
         }
+        public List<AccommodationReservation> GetUserAndOwnerReviewedAccommodationReservations(User loggedInOwner)
+        {
+            List<AccommodationReservation> userAndOwnerReviewedAccommodationReservations = new List<AccommodationReservation>();
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                Accommodation accommodation = _accommodationService.GetById(reservation.AccommodationId);
+
+                if (IsLoggedOwner(accommodation, loggedInOwner) && IsUserReviewed(reservation) && IsOwnerReviewed(reservation))
+                    userAndOwnerReviewedAccommodationReservations.Add(reservation);
+            }
+
+            return userAndOwnerReviewedAccommodationReservations;
+        }
         public List<AccommodationReservation> GetUserReviewedAccommodationReservations(User loggedInOwner)
         {
-            List<AccommodationReservation> userReviewedAccommodationReservations = new List<AccommodationReservation>();
+            List<AccommodationReservation> userAndOwnerReviewedAccommodationReservations = new List<AccommodationReservation>();
             foreach (var reservation in _accommodationReservationRepository.GetAll())
             {
                 Accommodation accommodation = _accommodationService.GetById(reservation.AccommodationId);
 
                 if (IsLoggedOwner(accommodation, loggedInOwner) && IsUserReviewed(reservation))
-                    userReviewedAccommodationReservations.Add(reservation);
+                    userAndOwnerReviewedAccommodationReservations.Add(reservation);
             }
 
-            return userReviewedAccommodationReservations;
+            return userAndOwnerReviewedAccommodationReservations;
         }
         public double GetAverageRating(User loggedInOwner)
         {
@@ -82,7 +95,7 @@ namespace BookingApp.Service
         }
         public User SetSuperOwner(User loggedInOwner)
         {
-            int reviewNumber = GetUserReviewedAccommodationReservations(loggedInOwner).Count();
+            int reviewNumber = GetUserAndOwnerReviewedAccommodationReservations(loggedInOwner).Count();
             double averageRating = GetAverageRating(loggedInOwner);
             if (averageRating >= 4.5 && reviewNumber > 50)
             {
@@ -123,7 +136,7 @@ namespace BookingApp.Service
         }
         private bool IsUserReviewed(AccommodationReservation reservation)
         {
-            if (reservation.Rating.GuestCleannessRating != 0 && reservation.Rating.OwnerCleannessRating != 0)
+            if (reservation.Rating.GuestCleannessRating != 0)
             {
                 return true;
             }

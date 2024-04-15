@@ -14,20 +14,20 @@
 
 
         </Grid.RowDefinitions>
-       
+        
         <Grid Grid.Row="1">
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding Tours}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
+            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding ToursTodayDTO}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
-                    <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Duration}"/>
-                    <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Language}"/>
-                    <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding MaxTouristNumber}"/>
-                    <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
-                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding KeyPointsDTO}"/>
+                    <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding Path=LocationDTO}"/>
+                    <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Path=Duration}"/>
+                    <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
+                    <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
+                    <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
+                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding Path=KeyPointsDTO}"/>
                     <DataGridTemplateColumn Header="" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Begin tour" Click="ShowActiveTourWindow" />
+                                <Button Content="Begin tour"  Command="{Binding Path=DataContext.ShowActiveTourCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -37,16 +37,11 @@
 
         </Grid>
         <Grid Grid.Row="2" Height="264" VerticalAlignment="Center">
-            <Button Content="Show all tours" Click="ShowAllToursWindow"  VerticalAlignment="Top" Height="61" Margin="52,71,499,0"/>
-            <Button Content="Statistics" Click="ShowTourStatisticsWindow"  VerticalAlignment="Top" Height="61" Margin="423,71,127,0"  />
+            <Button Content="Show all tours" Command="{Binding ShowAllToursCommand}"  VerticalAlignment="Top" Height="61" Margin="52,71,499,0"/>
+            <Button Content="Statistics" Command="{Binding ShowTourStatisticsCommand}"   VerticalAlignment="Top" Height="61" Margin="423,71,127,0"  />
 
-            <Button Content="Logout" Click="LogoutClick"  VerticalAlignment="Top" Height="61" Margin="685,71,12,15"  />
-           
+            <Button Content="Logout" Command="{Binding LogoutCommand}"  VerticalAlignment="Top" Height="61" Margin="685,71,12,15"  />
 
         </Grid>
-
-
-
-
     </Grid>
 </Window>

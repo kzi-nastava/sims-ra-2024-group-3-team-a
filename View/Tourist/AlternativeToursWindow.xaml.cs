@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,50 +24,14 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class AlternativeToursWindow : Window
     {
-        private  TourDTO _tourDTO { get; set; }
-        private UserDTO _userDTO;
-
-        private TourRepository _tourRepository;
-        private TourReservationRepository _tourReservationRepository { get; set; }
-
-        private TouristMainWindow _tourMainWindow; 
-        public ObservableCollection<TourDTO> AlternativeTours { get; set; }
-        
-        public AlternativeToursWindow(TouristMainWindow tourMainWindow, TourDTO tourDTO, UserDTO userDTO)
+        private AlternativeToursViewModel _alternativeToursViewModel;
+        public AlternativeToursWindow(TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
-            DataContext = this;
-            _tourRepository = new TourRepository();
-            _tourReservationRepository= new TourReservationRepository();
 
-            _tourMainWindow = tourMainWindow;
-
-            _tourDTO = tourDTO;
-            _userDTO= userDTO;
-
-            AlternativeTours = new ObservableCollection<TourDTO>();
-
-            Update();
+            _alternativeToursViewModel = new AlternativeToursViewModel(tourDTO, userDTO);   
+            DataContext = _alternativeToursViewModel;
         }
-        private void Update()
-        {
-            AlternativeTours.Clear();
-            foreach (Tour tour in _tourRepository.GetToursWithSameLocation(_tourDTO.ToTour()))
-                AlternativeTours.Add(new TourDTO(tour));
-        }
-        private void ShowTourReservationWindow(object sender, RoutedEventArgs e)
-        {
-            _tourDTO = dataGridAlternativeTour.SelectedItem as TourDTO;
-
-            if (_tourDTO != null)
-            {
-              //  TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourMainWindow,_tourReservationRepository, _tourDTO, _userDTO);
-              //  tourReservationWindow.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("You didn't choose any tour!");
-            }
-        }
+      
     }
 }
