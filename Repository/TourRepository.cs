@@ -12,10 +12,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
 using BookingApp.Service;
+using BookingApp.Repository.Interfaces;
 
 namespace BookingApp.Repository
 {
-    public class TourRepository
+    public class TourRepository : ITourRepository
     {
         private const string FilePath = "../../../Resources/Data/tours.csv";
 

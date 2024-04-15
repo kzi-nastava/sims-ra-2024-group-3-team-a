@@ -1,5 +1,7 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,12 @@ namespace BookingApp.Service
 {
     public class KeyPointsService
     {
-        private KeyPointsRepository _keypointsRepository = new KeyPointsRepository();
+        private IKeyPointsRepository _keypointsRepository;
+
+        public KeyPointsService() 
+        {
+            _keypointsRepository = Injector.CreateInstance<IKeyPointsRepository>();
+        }
 
         public List<KeyPoints> GetAll()
         {

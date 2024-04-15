@@ -1,6 +1,8 @@
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,14 @@ namespace BookingApp.Service
 {
     public class TourService
     {
-        private TourRepository _tourRepository = new TourRepository();
+        private ITourRepository _tourRepository;
         private TourReservationService _tourReservationService = new TourReservationService();
+
+        public TourService() 
+        {
+            _tourRepository = Injector.CreateInstance<ITourRepository>();
+        }
+
         public List<Tour> GetAll() 
         {
             return _tourRepository.GetAll();

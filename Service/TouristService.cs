@@ -1,5 +1,7 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,12 @@ namespace BookingApp.Service
 {
     public class TouristService
     {
-        private TouristRepository _touristRepository = new TouristRepository();
+        private ITouristRepository _touristRepository;
+
+        public TouristService()
+        {
+            _touristRepository = Injector.CreateInstance<ITouristRepository>();
+        }
 
         public List<Tourist> GetAll()
         {

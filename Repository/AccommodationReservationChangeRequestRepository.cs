@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookingApp.Repository.Interfaces;
 
-namespace BookingApp.Repository
+namespace BookingApp.Repository 
 {
-    public class AccommodationReservationChangeRequestRepository
+    public class AccommodationReservationChangeRequestRepository : IAccommodationReservationChangeRequestRepository
     {
         private const string FilePath = "../../../Resources/Data/accommodationReservationChangeRequests.csv";
 
@@ -18,13 +19,10 @@ namespace BookingApp.Repository
 
         private List<AccommodationReservationChangeRequest> _accomodationReservationChangeRequests;
 
-        private AccommodationReservationService _accommodationReservationService;
-
         public AccommodationReservationChangeRequestRepository()
         {
             _serializer = new Serializer<AccommodationReservationChangeRequest>();
             _accomodationReservationChangeRequests = _serializer.FromCSV(FilePath);
-            _accommodationReservationService = new AccommodationReservationService();  
         }
 
         public List<AccommodationReservationChangeRequest> GetAll()
@@ -83,22 +81,6 @@ namespace BookingApp.Repository
         {
             _accomodationReservationChangeRequests = _serializer.FromCSV(FilePath);
             return _accomodationReservationChangeRequests.FirstOrDefault(c => c.Id == id);
-        }
-
-        public List<AccommodationReservationChangeRequest> GetAllByGuestId(int guestId)
-        {
-            List<AccommodationReservationChangeRequest> _myRequests = new List<AccommodationReservationChangeRequest>();
-            foreach (var request in GetAll())
-            {
-                foreach (var reservation in _accommodationReservationService.GetAllByGuestId(guestId))
-                {
-                    if (request.AccommodationReservationId == reservation.Id)
-                    {
-                        _myRequests.Add(request);
-                    }
-                }
-            }
-            return _myRequests;
         }
     }
 }

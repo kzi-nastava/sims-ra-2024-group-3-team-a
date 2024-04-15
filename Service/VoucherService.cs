@@ -1,5 +1,7 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,12 @@ namespace BookingApp.Service
 {
     public class VoucherService
     {
-        private VoucherRepository _voucherRepository = new VoucherRepository();
+        private IVoucherRepository _voucherRepository;
+
+        public VoucherService()
+        {
+            _voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+        }
 
         private readonly Serializer<Voucher> _serializer = new Serializer<Voucher>();
         public List<Voucher> GetAll()

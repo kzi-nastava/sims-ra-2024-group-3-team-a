@@ -1,11 +1,12 @@
 ﻿using BookingApp.Model;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Serializer;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BookingApp.Repository
 {
-    public class VoucherRepository
+    public class VoucherRepository : IVoucherRepository
     {
         private const string FilePath = "../../../Resources/Data/vouchers.csv";
 
@@ -63,14 +64,5 @@ namespace BookingApp.Repository
             _serializer.ToCSV(FilePath, _vouchers);
             return voucher;
         }
-
-
-
-
-       /*public User GetById(int id)
-        {
-            _vouchers = _serializer.FromCSV(FilePath);
-            return  _vouchers.FirstOrDefault(u => u.Id == id);
-        }*/
     }
 }

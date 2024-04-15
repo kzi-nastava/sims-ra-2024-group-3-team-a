@@ -1,6 +1,8 @@
 ﻿using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,15 @@ namespace BookingApp.Service
 {
     public class AccommodationReservationService
     {
-        private AccommodationReservationRepository _accommodationReservationRepository = new AccommodationReservationRepository();
+        private IAccommodationReservationRepository _accommodationReservationRepository;
 
         private AccommodationService _accommodationService = new AccommodationService();
         private UserService _userService = new UserService();
+
+        public AccommodationReservationService()
+        {
+            _accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+        }
 
         public List<AccommodationReservation> GetAll()
         {

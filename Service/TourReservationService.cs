@@ -1,7 +1,9 @@
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +14,18 @@ namespace BookingApp.Service
 {
     public class TourReservationService
     {
-        private TourReservationRepository _tourReservationRepository = new TourReservationRepository();
+        private ITourReservationRepository _tourReservationRepository;
 
         private TourReviewService _tourReviewService = new TourReviewService();
         private TouristService _touristService = new TouristService();
         private UserService _userService = new UserService();
         private VoucherService _voucherService = new VoucherService();
+
+        public TourReservationService()
+        {
+            _tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+        }
+
         public List<TourReservation> GetAll()
         {
             return _tourReservationRepository.GetAll();

@@ -1,4 +1,5 @@
 ﻿using BookingApp.Model;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookingApp.Repository
 {
-    public class TourReviewRepository
+    public class TourReviewRepository : ITourReviewRepository
     {
         private const string FilePath = "../../../Resources/Data/tourReviews.csv";
 

@@ -1,5 +1,7 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,14 @@ namespace BookingApp.Service
 {
     public class AccommodationReservationChangeRequestService
     {
-        private AccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository = new AccommodationReservationChangeRequestRepository();
+        private IAccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
+
+        private AccommodationReservationService _accommodationReservationService = new AccommodationReservationService();
+
+        public AccommodationReservationChangeRequestService()
+        {
+            _accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+        }
 
         public List<AccommodationReservationChangeRequest> GetAll()
         {
@@ -39,7 +48,20 @@ namespace BookingApp.Service
 
         public List<AccommodationReservationChangeRequest> GetAllByGuestId(int guestId)
         {
-            return _accommodationReservationChangeRequestRepository.GetAllByGuestId(guestId);
+            
+                List<AccommodationReservationChangeRequest> _myRequests = new List<AccommodationReservationChangeRequest>();
+                foreach (var request in GetAll())
+                {
+                    foreach (var reservation in _accommodationReservationService.GetAllByGuestId(guestId))
+                    {
+                        if (request.AccommodationReservationId == reservation.Id)
+                        {
+                            _myRequests.Add(request);
+                        }
+                    }
+                }
+                return _myRequests;
+            
         }
     }
 }

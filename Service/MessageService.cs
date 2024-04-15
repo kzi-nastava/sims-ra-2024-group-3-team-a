@@ -1,6 +1,8 @@
-﻿using BookingApp.Model;
+﻿using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,19 @@ namespace BookingApp.Service
 {
     public class MessageService
     {
-        private MessageRepository _messageRepository = new MessageRepository();
+        private IMessageRepository _messageRepository;
 
         private AccommodationReservationService _accommodationReservationService = new AccommodationReservationService();
         private UserService _userService = new UserService();
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
         private AccommodationService _accommodationService = new AccommodationService();
         private TourService _tourService = new TourService();
+
+        public MessageService()
+        {
+            _messageRepository = Injector.CreateInstance<IMessageRepository>();
+        }
+
         public List<Message> GetAll()
         {
             return _messageRepository.GetAll();
