@@ -6,30 +6,112 @@
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
         Title="TourReservation" Height="450" Width="800">
-    <Grid Background="AntiqueWhite" x:Name="gridMain">
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid Background="AntiqueWhite">
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-     
-        <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="5"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+
+
+
+        </Grid.RowDefinitions>
+        <Menu DockPanel.Dock="Top" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Home"></MenuItem>
+            <MenuItem Header="My Tours" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem Header="Tour Requests"></MenuItem>
+            <MenuItem Header="Create Request"></MenuItem>
+            <MenuItem Header="Rate Tour" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem Header="Vouchers" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem Header="Inbox" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
+            <MenuItem Header="Logout" Command="{Binding LogOutCommand}" ></MenuItem>
+        </Menu>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <DockPanel Margin="10">
+                <TextBlock FontWeight="Bold" FontSize="25" Text="Making reservation for: "></TextBlock>
+                <TextBlock  FontSize="25" Text="{Binding TourDTO.Name}"></TextBlock>
+            </DockPanel>
+        </Grid>
+        <Grid Grid.Row="2" x:Name="gridMain" Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+
+
+
+
+
+            <Border Grid.Row="1"  Padding="5" Grid.Column="0" BorderThickness="1" BorderBrush="Black" Margin="10,10,10,10" Grid.ColumnSpan="2">
+                <Grid Grid.Row="1" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Location: " Grid.Row="0" Grid.Column="0"/>
+                    <TextBlock x:Name="textBoxLocation" Grid.Row="0" Text="{Binding TourDTO.LocationDTOString}"  Width="100" Grid.Column="1"/>
+                    <TextBlock Text="Date: " Grid.Row="1" Grid.Column="0" />
+                    <TextBlock x:Name="textBoxBeginningTime" Text="{Binding TourDTO.BeginingTime, Mode=OneWay}"  Width="100" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="Max Tourists: "  Grid.Row="2" Grid.Column="0" />
+                    <TextBlock x:Name="textBoxMaxTourists" Text="{Binding TourDTO.MaxTouristNumber}"  Grid.Row="2" Width="100" Grid.Column="1"/>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,96" Grid.RowSpan="2">
+
+                <TextBlock FontWeight="Bold" Text="Add tourist information: " Grid.ColumnSpan="2" Margin="10"/>
+
+            </Grid>
+            <Border Grid.Row="3"  Grid.Column="0" BorderThickness="1"   BorderBrush="Black" Padding="10" Margin="10,10,10,10" Grid.ColumnSpan="2">
+                <Grid Grid.Row="3" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <TextBlock Text="Name: " Grid.Row="1" Grid.Column="0"/>
+                    <TextBox x:Name="textBoxName" Grid.Row="1" Text="{Binding TouristDTO.Name}"  Width="100" Grid.Column="1"/>
+                    <TextBlock Text="Surname: " Grid.Row="2" Grid.Column="0"/>
+                    <TextBox x:Name="textBoxSurname" Grid.Row="2" Text="{Binding TouristDTO.Surname}"  Width="100" Grid.Column="1"/>
+                    <TextBlock Text="Age: " Grid.Row="3" Grid.Column="0"/>
+                    <TextBox x:Name="textBoxAge" Grid.Row="3" Text="{Binding TouristDTO.Age}"  Width="100" Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <!--<TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="5"/>
         <TextBox x:Name="textBoxName" Grid.Row="0" Text="{Binding TourDTO.Name}" IsEnabled="False" Width="100" Grid.Column="0" Margin="50,0,0,0"/>
 
         <TextBlock Text="Location:" Grid.Row="1" Grid.Column="0" Margin="5"/>
@@ -60,15 +142,14 @@
 
         <TextBox  x:Name="textBoxFirstName"   Background="AntiqueWhite" Grid.Row="8"  Height="20" Grid.Column="0" VerticalAlignment="Top" Margin="50,0,300,0" Grid.ColumnSpan="2" TextChanged="textBox_TextChanged" Text="{Binding TouristDTO.Name}" />
         <TextBox  x:Name="textBoxSurname"  Background="AntiqueWhite"  Grid.Row="8" Grid.Column="1"  Height="20" VerticalAlignment="Top" Margin="150,0,50,10" TextChanged="textBox_TextChanged"  Text="{Binding TouristDTO.Surname}"/>
-        <TextBox  x:Name="textBoxAge"  Background="AntiqueWhite"  Grid.Row="8" Grid.Column="2"  Height="20" VerticalAlignment="Top" Margin="41,1,0,0" HorizontalAlignment="Left" Width="118" TextChanged="textBox_TextChanged" Text="{Binding TouristDTO.Age}"/>
-        <Button x:Name="buttonSubmitInfo" Background="LightGreen" Grid.Row="8" Margin="200,0,10,30" Height="50" Content="Submit"  Grid.Column="2" Grid.RowSpan="2" Command="{Binding AddTouristCommand}"/>
+        <TextBox  x:Name="textBoxAge"  Background="AntiqueWhite"  Grid.Row="8" Grid.Column="2"  Height="20" VerticalAlignment="Top" Margin="41,1,0,0" HorizontalAlignment="Left" Width="118" TextChanged="textBox_TextChanged" Text="{Binding TouristDTO.Age}"/>-->
 
-        <Button x:Name= "buttonConfirm" Background="Gold" Content="Confirm Tour Reservation"  Grid.Row="10" Grid.Column="2" HorizontalAlignment="Right" Margin="5"  Command="{Binding ComfirmTourReservationCommand}"  />
-        <Button x:Name="buttonOK"  Content="OK" Background="LightPink" Grid.Row="7" Grid.Column="0" Width="40" HorizontalAlignment="Right" Margin="200,0,0,0" />
-        <Button x:Name="buttonAdd" Background="LightBlue" Content="+"  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" Command="{Binding AddTouristCommand}" />
-        <Button x:Name="buttonRemove" Background="LightBlue" Content="-"  Width="12" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,5,0" Command="{Binding RemoveTouristCommand}" />
 
-        <DataGrid Background="lightGreen" x:Name="dataGridTourists" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding TouristsDTO}" SelectedItem="{Binding SelectedTouristDTO}">
+
+            <Button x:Name="buttonAdd" Background="LightBlue" Content="+"  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="196,5,0,5" Command="{Binding AddTouristCommand}" />
+            <Button x:Name="buttonRemove" Background="LightBlue" Content="-"  Width="12" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="191,0,0,36" Command="{Binding RemoveTouristCommand}" Grid.RowSpan="2" />
+
+            <!--<DataGrid Background="lightGreen" x:Name="dataGridTourists" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding TouristsDTO}" SelectedItem="{Binding SelectedTouristDTO}">
 
             <DataGrid.Columns>
 
@@ -76,8 +157,8 @@
                 <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="*" />
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*"/>
             </DataGrid.Columns>
-        </DataGrid>
-        <Grid  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"  Background="White">
+        </DataGrid>-->
+            <!--<Grid  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"  Background="White">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                     <ListView x:Name="listViewVouchers" ItemsSource="{Binding VouchersDTO}" SelectedItem="{Binding SelectedVoucherDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
@@ -100,9 +181,84 @@
                 </ListView>
             </StackPanel>
         </ScrollViewer>
+        </Grid>-->
+
         </Grid>
-        <Button x:Name="buttoCancel" Content="Cancel" Background="Violet"  Grid.Row="10" Grid.Column="0" HorizontalAlignment="Right" Width="50" Margin="0,0,200,0" />
+        <Grid Grid.Row="2" Grid.Column="1" Margin="50,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text=" " ></TextBlock>
+            <TextBlock Grid.Row="1" FontWeight="Bold" Grid.Column="0" Text="List of tourists: " Margin="10"></TextBlock>
+            <DockPanel  Grid.Row="1" Grid.Column="1" Margin="10">
+                <TextBlock FontWeight="Bold" Text="Current Capacity: " ></TextBlock>
+                <TextBox Text="{Binding TourDTO.CurrentCapacity}" Width="30"></TextBox>
+            </DockPanel>
 
+
+            <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"  x:Name="dataGridTourists"   AutoGenerateColumns="False" Margin="2" ItemsSource="{Binding TouristsDTO}" SelectedItem="{Binding SelectedTouristDTO}">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />
+                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="auto" />
+                    <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <!--<Grid  Grid.Row="4" Grid.Column="0"   Grid.RowSpan="1"  Margin="2"  Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>-->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="4">
+                <Border BorderBrush="LightPink" BorderThickness="1">
+                    <ListView  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  x:Name="listViewVouchers" ItemsSource="{Binding VouchersDTO}"   SelectedItem="{Binding SelectedVoucherDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                
+                                    <StackPanel Orientation="Horizontal" Width="400">
+                                        <Image Source="../../Resources/Images/Tourist/voucher.png" Height="100" Width="100" Stretch="Fill"></Image>
+                                        <Border Padding="50"  BorderBrush="Transparent">
+                                            <StackPanel Margin="50,0,0,0">
+                                                <TextBlock   FontWeight="Bold" Text="{Binding Header}"/>
+                                                <TextBlock   FontWeight="Bold" Text="{Binding ExpireDate}"/>
+                                                <Button Content="Use" ></Button>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                               
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+            </ScrollViewer>
+            <!--</Grid>-->
+
+
+
+
+
+
+
+        </Grid>
+        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="buttoCancel" Content="Cancel" Background="Violet"  FontWeight="Bold" FontSize="10"  Margin="10"  Grid.Column="0" HorizontalAlignment="Left" Width="120" Height="30"  Grid.ColumnSpan="2" />
+
+            <Button x:Name= "buttonConfirm" Background="Gold" Content="Confirm Reservation" FontWeight="Bold" FontSize="10"  Grid.Column="1" HorizontalAlignment="Right"  Width="120" Height="30" Margin="10" Command="{Binding ComfirmTourReservationCommand}"  />
+
+
+        </Grid>
     </Grid>
-
 </Window>

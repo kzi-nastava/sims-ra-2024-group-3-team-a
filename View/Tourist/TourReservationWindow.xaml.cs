@@ -34,8 +34,8 @@ namespace BookingApp.View
         public TourReservationWindow(TourReservationService tourReservationService,TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
-            _defaultBrushBorder=textBoxCurrentCapacity.BorderBrush.Clone();
-            textBoxNumber.Text = 0.ToString();
+          //  _defaultBrushBorder=textBoxCurrentCapacity.BorderBrush.Clone();
+         //   textBoxNumber.Text = 0.ToString();
              
             _tourReservationViewModel = new TourReservationViewModel(tourReservationService, tourDTO, userDTO);
             DataContext = _tourReservationViewModel;
@@ -43,7 +43,7 @@ namespace BookingApp.View
        
      
        
-        private void textBox_TextChanged(object sender, EventArgs e)
+        /*private void textBox_TextChanged(object sender, EventArgs e)
         {
             if(CheckInput())
                 buttonConfirm.IsEnabled = true;
@@ -72,8 +72,8 @@ namespace BookingApp.View
             }
 
             return validInput;
-        }
-        private bool CheckInput()
+        }*/
+       /* private bool CheckInput()
         {
             bool validInput = EmptyTextBoxCheck();
             
@@ -130,6 +130,6 @@ namespace BookingApp.View
         {
             textBox.BorderBrush = _defaultBrushBorder;
             textBox.BorderThickness = new Thickness(2);
-        }
+        }*/
     }
 }
