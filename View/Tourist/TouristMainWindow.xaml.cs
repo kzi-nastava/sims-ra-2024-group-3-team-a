@@ -63,4 +63,17 @@ namespace BookingApp.View
 
         }
     }
+    public class JumpyTextBox : TextBox
+    {
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (e.Key == Key.Up || e.Key == Key.Down)
+                MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+
+            if (e.Key == Key.Down || e.Key == Key.Right)
+                MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+        }
+    }
 }
