@@ -57,5 +57,10 @@ namespace BookingApp.View
             signInForm.Show();
             Close();
         }
+
+        private void ItemsControl_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
