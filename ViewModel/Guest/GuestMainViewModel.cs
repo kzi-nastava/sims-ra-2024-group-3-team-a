@@ -85,7 +85,7 @@ namespace BookingApp.ViewModel.Guest
         {
             List<AccommodationReservationDTO> AccommodationReservationsList = _accommodationReservationService.GetAll().Select(accommodationReservation => new AccommodationReservationDTO(accommodationReservation)).ToList();
             _accommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(AccommodationReservationsList);
-            List<AccommodationDTO> AcomodationsList = _accommodationService.GetAll().Select(accommodation => new AccommodationDTO(accommodation)).ToList(); 
+            List<AccommodationDTO> AcomodationsList = _accommodationService.GetAll().Select(accommodation => new AccommodationDTO(accommodation)).OrderByDescending(a => _userService.GetById(a.OwnerId).IsSuper).ToList(); 
             _accommodationsDTO = new ObservableCollection<AccommodationDTO>(AcomodationsList);
             List<AccommodationReservationChangeRequestDTO> MyRequestsList = _accommodationReservationChangeRequestService.GetAllByGuestId(_loggedInGuest.Id).Select(request => new AccommodationReservationChangeRequestDTO(request)).ToList();
             _myChangeRequestsDTO = new ObservableCollection<AccommodationReservationChangeRequestDTO>(MyRequestsList);

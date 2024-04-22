@@ -11,24 +11,7 @@ namespace BookingApp.InjectorNameSpace
 {
     public class Injector
     {
-        /*private static Dictionary<Type, object> _implementations = new Dictionary<Type, object>
-        {
-            { typeof(IAccommodationRepository), new AccommodationRepository() },
-            { typeof(IUserRepository), new UserRepository() },
-            { typeof(IAccommodationReservationChangeRequestRepository), new AccommodationReservationChangeRequestRepository() },
-            { typeof(IAccommodationReservationRepository), new AccommodationReservationRepository() },
-            { typeof(IKeyPointsRepository), new KeyPointsRepository() },
-            { typeof(IMessageRepository), new MessageRepository() },
-            { typeof(ITouristRepository), new TouristRepository() },
-            { typeof(ITourRepository), new TourRepository() },
-            { typeof(ITourReservationRepository), new TourReservationRepository() },
-            { typeof(ITourReviewRepository), new TourReviewRepository() },
-            { typeof(IVoucherRepository), new VoucherRepository() }
-         };*/
-
-        public static T CreateInstance<T>()
-        {
-            Dictionary<Type, object> _implementations = new Dictionary<Type, object>
+        private static Dictionary<Type, object> _implementations = new Dictionary<Type, object>
         {
             { typeof(IAccommodationRepository), new AccommodationRepository() },
             { typeof(IUserRepository), new UserRepository() },
@@ -43,6 +26,8 @@ namespace BookingApp.InjectorNameSpace
             { typeof(IVoucherRepository), new VoucherRepository() }
          };
 
+        public static T CreateInstance<T>()
+        {
             Type type = typeof(T);
 
             if (_implementations.ContainsKey(type))

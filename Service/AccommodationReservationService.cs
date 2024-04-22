@@ -106,7 +106,7 @@ namespace BookingApp.Service
         {
             int reviewNumber = GetUserAndOwnerReviewedAccommodationReservations(loggedInOwner).Count();
             double averageRating = GetAverageRating(loggedInOwner);
-            if (averageRating >= 4.5 && reviewNumber > 50)
+            if (averageRating >= 2.5 && reviewNumber > 1)
             {
                 loggedInOwner.IsSuper = true;
                 _userService.Update(loggedInOwner);
