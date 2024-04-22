@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Guide;
 using BookingApp.View.Owner;
@@ -26,11 +28,19 @@ namespace BookingApp.ViewModel.Guide
         //private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
         public TourStatisticsViewModel()
         {
-            _tourService = new TourService();
+
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<TourDTO> toursDTO = _tourService.GetAllFinishedTours().Select(tour => new TourDTO(tour)).ToList();
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
-            _tourReservationService = new TourReservationService();
             _showTouristsStatistcsCommand = new RelayCommand(ShowTouristStatistics);
             _showMostVisitedByYearCommand = new RelayCommand(ShowMostVisitedByYear);
         }

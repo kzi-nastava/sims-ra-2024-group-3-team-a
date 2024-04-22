@@ -1,7 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using System;
@@ -39,8 +41,15 @@ namespace BookingApp.ViewModel.Tourist
             _touristDTO = new TouristDTO();
             _tourReservationDTO = new TourReservationDTO();
             voucher = new Voucher();
-            _tourReservationService = new TourReservationService();
-            _voucherService = new VoucherService();
+
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _voucherService = new VoucherService(voucherRepository);
+
             _voucherService.UpdateHeader();
             _voucherService.UpdateVouchers();
             List<VoucherDTO> vouchers = _voucherService.GetAll().Select(vouchers => new VoucherDTO(vouchers)).ToList();

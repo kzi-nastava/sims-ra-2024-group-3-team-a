@@ -16,12 +16,14 @@ namespace BookingApp.Service
     {
         private IAccommodationReservationRepository _accommodationReservationRepository;
 
-        private AccommodationService _accommodationService = new AccommodationService();
-        private UserService _userService = new UserService();
+        private AccommodationService _accommodationService;
+        private UserService _userService;
 
-        public AccommodationReservationService()
+        public AccommodationReservationService(IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IUserRepository userRepository)
         {
-            _accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            _accommodationReservationRepository = accommodationReservationRepository;
+            _accommodationService = new AccommodationService(accommodationRepository);
+            _userService = new UserService(userRepository);
         }
 
         public List<AccommodationReservation> GetAll()
@@ -104,7 +106,7 @@ namespace BookingApp.Service
         {
             int reviewNumber = GetUserAndOwnerReviewedAccommodationReservations(loggedInOwner).Count();
             double averageRating = GetAverageRating(loggedInOwner);
-            if (averageRating >= 4.5 && reviewNumber > 50)
+            if (averageRating >= 2.5 && reviewNumber > 1)
             {
                 loggedInOwner.IsSuper = true;
                 _userService.Update(loggedInOwner);

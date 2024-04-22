@@ -1,7 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using BookingApp.View.Guide;
@@ -36,9 +38,18 @@ namespace BookingApp.ViewModel.Guide
         public ActiveTourViewModel(TourDTO tour, Boolean activeTourExists)
         {
             _tourDTO = tour;
-            _keyPointsService = new KeyPointsService();
-            _tourService = new TourService();
-            _tourReservationService = new TourReservationService();
+
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IKeyPointsRepository keyPointsRepository = Injector.CreateInstance<IKeyPointsRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _keyPointsService = new KeyPointsService(keyPointsRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<TouristDTO> touristsDTO = _tourReservationService.GetReservationTourists(tour.ToTourAllParam()).Select(t => new TouristDTO(t)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             _keyPointsString = new List<string>();

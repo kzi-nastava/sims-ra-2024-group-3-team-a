@@ -16,14 +16,18 @@ namespace BookingApp.Service
     {
         private ITourReservationRepository _tourReservationRepository;
 
-        private TourReviewService _tourReviewService = new TourReviewService();
-        private TouristService _touristService = new TouristService();
-        private UserService _userService = new UserService();
-        private VoucherService _voucherService = new VoucherService();
+        private TourReviewService _tourReviewService;
+        private TouristService _touristService;
+        private UserService _userService;
+        private VoucherService _voucherService;
 
-        public TourReservationService()
+        public TourReservationService(ITourReservationRepository tourReservationRepository, IUserRepository userRepository, ITouristRepository touristRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
-            _tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            _tourReservationRepository = tourReservationRepository;
+            _userService = new UserService(userRepository);
+            _touristService = new TouristService(touristRepository);
+            _tourReviewService = new TourReviewService(tourReviewRepository);
+            _voucherService = new VoucherService(voucherRepository);
         }
 
         public List<TourReservation> GetAll()

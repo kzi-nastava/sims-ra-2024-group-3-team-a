@@ -1,7 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using Microsoft.Win32;
@@ -36,8 +38,16 @@ namespace BookingApp.ViewModel.Guide
         public AddTourViewModel(UserDTO guide)
         {
             _loggedGuide = guide;
-            _keyPointService = new KeyPointsService();
-            _tourService = new TourService();
+            
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            IKeyPointsRepository keyPointsRepository = Injector.CreateInstance<IKeyPointsRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _keyPointService = new KeyPointsService(keyPointsRepository);
             _tourDTO = new TourDTO();
             _submitCommand = new RelayCommand(Submit);
             _dates = new ObservableCollection<DateTime> ();
