@@ -1,5 +1,7 @@
 ﻿using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Tourist;
 using System;
@@ -20,9 +22,20 @@ namespace BookingApp.ViewModel.Tourist
         private MessageDTO _selectedMessageDTO = null;
         public InboxViewModel(UserDTO loggedInUser)
         {
-            
-            _messageService = new MessageService();
-            _tourService = new TourService();
+
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<MessageDTO> messages = _messageService.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
             _messageDTO = new ObservableCollection<MessageDTO>(messages);
 

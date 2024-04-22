@@ -1,7 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using BookingApp.View.Guide;
@@ -30,7 +32,13 @@ namespace BookingApp.ViewModel.Guide
         public GuideMainViewModel(User guide)
         {
             _loggedInGuide = new UserDTO(guide);
-            _tourService = new TourService();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             List<TourDTO> toursDTO = _tourService.GetTodayTours(guide).Select(tour => new TourDTO(tour)).ToList();
             _toursTodayDTO = new ObservableCollection<TourDTO>(toursDTO);
             _showActiveTourCommand = new RelayCommand(ShowActiveTour);

@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using Microsoft.Win32;
@@ -28,7 +30,10 @@ namespace BookingApp.ViewModel.Owner
         public AddAccommodationViewModel(UserDTO loggedInOwner)
         {
             _loggedInOwner = loggedInOwner;
-            _accommodationService = new AccommodationService();
+
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>(); 
+            _accommodationService = new AccommodationService(accommodationRepository);
+
             _images = new List<string>();
 
             _accommodationDTO = new AccommodationDTO();

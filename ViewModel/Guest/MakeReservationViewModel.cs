@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Guest;
 using System;
@@ -29,7 +31,12 @@ namespace BookingApp.ViewModel.Guest
         public MakeReservationViewModel(AccommodationDTO selectedAccommodationDTO, UserDTO loggedInGuest)
         {
             _userDTO = loggedInGuest;
-            _accommodationReservationService = new AccommodationReservationService();
+
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+
             _freeDates = new ObservableCollection<AccommodationReservationDTO>();
             _accommodationDTO = selectedAccommodationDTO;
             _searchDatesCommand = new RelayCommand(SearchAvailableDates);

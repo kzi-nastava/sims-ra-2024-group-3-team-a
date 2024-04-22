@@ -1,4 +1,6 @@
 ﻿using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using System;
 using System.Collections.Generic;
@@ -17,8 +19,8 @@ namespace BookingApp.ViewModel.Tourist
 
         public VoucherViewModel()
         {
-
-            _voucherService = new VoucherService();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _voucherService = new VoucherService(voucherRepository);
             _voucherService.UpdateHeader();
             List<VoucherDTO> vouchers = _voucherService.GetAll().Select(vouchers => new VoucherDTO(vouchers)).ToList();
             _voucherDTO = new ObservableCollection<VoucherDTO>(vouchers);
