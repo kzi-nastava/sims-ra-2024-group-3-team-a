@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:BookingApp.View"
+        xmlns:navigation ="clr-namespace:BookingApp.View.Navigation"
         mc:Ignorable="d"
+        PreviewKeyDown="Menu_PreviewKeyDown"
         Title="TourView" Height="450" Width="800">
     <Window.Resources>
         <Style x:Key="WaterMarkStyle" TargetType="{x:Type TextBox}">
@@ -34,6 +36,7 @@
             </Setter>
         </Style>
     </Window.Resources>
+   
     <Grid Background="AntiqueWhite">
 
 
@@ -86,12 +89,12 @@
 
 
 
-                <local:TextBoxNavigation Margin="5" Grid.Row="1" Grid.Column="0"  x:Name="searchCountryTextBox" Width="100"  Text="{Binding SearchCountryInput, Mode=TwoWay}" />
-                <local:TextBoxNavigation Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="100"   Text="{Binding SearchCityInput, Mode=TwoWay}"/>
-                <local:TextBoxNavigation Margin="5" Grid.Row="1" Grid.Column="2"  x:Name="searchDurationTextBox" Width="150"  Text="{Binding SearchDurationInput, Mode=TwoWay}"/>
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="0"  x:Name="searchCountryTextBox" Width="100"  Text="{Binding SearchCountryInput, Mode=TwoWay}" />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="100"   Text="{Binding SearchCityInput, Mode=TwoWay}" />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"  x:Name="searchDurationTextBox" Width="150"  Text="{Binding SearchDurationInput, Mode=TwoWay}" />
                 <ComboBox Margin="5" Grid.Row="1" Grid.Column="3" x:Name="languageComboBox" Width="100"  ItemsSource="{Binding Languages}" SelectedItem="{Binding SearchLanguageInput}"/>
-                <xctk:IntegerUpDown  Margin="5" Grid.Row="1" Grid.Column="4"  Name="searcmaxTouristNumberTextBox" Width="150"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay}" />
-                <Button Margin="5" Grid.Row="1" Grid.Column="5"  Background="LightBlue"  x:Name="buttonSearch" Content="Search" Command="{Binding SearchCommand}" />
+                <xctk:IntegerUpDown  Margin="5" Grid.Row="1" Grid.Column="4"  x:Name="searcmaxTouristNumberTextBox" Width="150"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay}"   />
+                <!--<Button Margin="5" Grid.Row="1" Grid.Column="5"  Background="LightBlue"  x:Name="buttonSearch" Content="Search" Command="{Binding SearchCommand}" />-->
 
 
             </Grid>
@@ -157,7 +160,7 @@
         </DataGrid>-->
         <Border Margin="10,10,10,0" Grid.Row="2" Padding="10">
 
-            <ListBox ItemsSource="{Binding FilteredToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Height="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" local:ArrowKeyNavigationBehavior.EnableArrowKeyNavigation="True" >
+            <ListView  x:Name="listViewTours"  ItemsSource="{Binding FilteredToursDTO}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Height="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" />
@@ -188,11 +191,12 @@
                                         <TextBlock Text="Number of people: " />
                                         <TextBlock FontWeight="Bold" Text="{Binding MaxTouristNumber}" />
                                     </DockPanel>
+                                <Button BorderBrush="Black" Command="{Binding ShowAppropriateWindowCommand}"  BorderThickness="0" navigation:EnterKeyBehavior.EnterKeyCommand="{Binding ShowAppropriateWindowCommand}"></Button>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                </ListBox>
+                </ListView>
        
         </Border>
 

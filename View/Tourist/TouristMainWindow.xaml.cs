@@ -3,6 +3,7 @@ using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using BookingApp.Service;
+using BookingApp.View.Navigation;
 using BookingApp.View.Owner;
 using BookingApp.View.Tourist;
 using BookingApp.ViewModel.Tourist;
@@ -33,6 +34,7 @@ namespace BookingApp.View
     {
         public static TouristMainWindow Instance;
         private TouristMainViewModel _tourMainViewModel { get; set; }
+        private IInputElement[] FocusChain;
         public TouristMainWindow(User user)
         {
             InitializeComponent();
@@ -44,36 +46,53 @@ namespace BookingApp.View
             {
                 Instance = this;
             }
+
+             FocusChain = new IInputElement[]
+             {
+                searchCountryTextBox,
+                searchCityTextBox, 
+                searchDurationTextBox,
+                languageComboBox,
+                searcmaxTouristNumberTextBox,
+                listViewTours
+
+
+             };
         }
 
         public static TouristMainWindow GetInstance()
         {
             return Instance;
         }
-
-        private void LogOutClick(object sender, RoutedEventArgs e)
+        private void Menu_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            SignInForm signInForm = new SignInForm();
-            signInForm.Show();
-            Close();
+            if (e.Key != Key.Right)
+                return;
+
+            var next = FocusChain[0];
+            for (var i = 0; i < FocusChain.Length; i++)
+            {
+                if (FocusChain[i].IsKeyboardFocusWithin)
+                {
+                    next = FocusChain[(i + 1) % FocusChain.Length];
+                    break;
+                }
+            }
+            if(next == listViewTours)
+            {
+
+                listViewTours.Focus();
+                
+               
+                return;
+               // listViewNavigation.OnP
+            }
+            
+
+            next.Focus();
+            Keyboard.Focus(next);
         }
 
-        private void ItemsControl_Selected(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
-    public class JumpyTextBox : TextBox
-    {
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
-        {
-            base.OnPreviewKeyDown(e);
-
-            if (e.Key == Key.Up || e.Key == Key.Down)
-                MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
-
-            if (e.Key == Key.Down || e.Key == Key.Right)
-                MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-        }
-    }
+   
 }
