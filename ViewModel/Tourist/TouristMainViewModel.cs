@@ -127,7 +127,7 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
-                ShowAppropriateWindow();
+               // ShowAppropriateWindow();
             }
         }
         public IEnumerable<Languages> Languages

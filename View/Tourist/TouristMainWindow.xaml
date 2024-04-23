@@ -160,44 +160,53 @@
         </DataGrid>-->
         <Border Margin="10,10,10,0" Grid.Row="2" Padding="10">
 
-            <ListView  x:Name="listViewTours"  ItemsSource="{Binding FilteredToursDTO}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Height="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Width="300" Margin="5">
-                                <Image Source="{Binding Path=Images[0]}" Height="100" Width="100" Stretch="Fill" />
-                                <StackPanel Margin="10,0,0,0">
-                                    <DockPanel>
-                                        <TextBlock Text="Location: " />
-                                        <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
-                                    </DockPanel>
-                                    <DockPanel>
-                                        <TextBlock Text="Duration: " />
-                                        <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
-                                    </DockPanel>
-                                    <DockPanel>
-                                        <TextBlock Text="Language: " />
-                                        <TextBlock FontWeight="Bold" Text="{Binding Language}" />
-                                    </DockPanel>
-                                    <DockPanel>
-                                        <TextBlock Text="Date: " />
-                                        <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
-                                    </DockPanel>
-                                    <DockPanel>
-                                        <TextBlock Text="Number of people: " />
-                                        <TextBlock FontWeight="Bold" Text="{Binding MaxTouristNumber}" />
-                                    </DockPanel>
-                                <Button BorderBrush="Black" Command="{Binding ShowAppropriateWindowCommand}"  BorderThickness="0" navigation:EnterKeyBehavior.EnterKeyCommand="{Binding ShowAppropriateWindowCommand}"></Button>
-                                </StackPanel>
+            <ListView x:Name="listViewTours" 
+          ItemsSource="{Binding FilteredToursDTO}" 
+          SelectedItem="{Binding SelectedTourDTO}" 
+          Background="Transparent" 
+          BorderBrush="Transparent" 
+          BorderThickness="0" 
+          Height="300" 
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding DataContext.ShowAppropriateWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding SelectedItem, ElementName=listViewTours}" />
+                </ListView.InputBindings>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="300" Margin="5">
+                            <Image Source="{Binding Path=Images[0]}" Height="100" Width="100" Stretch="Fill" />
+                            <StackPanel Margin="10,0,0,0">
+                                <DockPanel>
+                                    <TextBlock Text="Location: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Duration: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Language: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Language}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Date: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Number of people: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding MaxTouristNumber}" />
+                                </DockPanel>
                             </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListView>
-       
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
         </Border>
 
 

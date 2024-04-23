@@ -12,6 +12,13 @@ namespace BookingApp.View.Navigation
     public class EnterKeyBehavior
     {
 
+        public static readonly DependencyProperty EnterKeyCommandProperty =
+        DependencyProperty.RegisterAttached(
+            "EnterKeyCommand",
+            typeof(ICommand),
+            typeof(EnterKeyBehavior),
+            new PropertyMetadata(null, OnEnterKeyCommandChanged));
+
         public static ICommand GetEnterKeyCommand(DependencyObject obj)
         {
             return (ICommand)obj.GetValue(EnterKeyCommandProperty);
@@ -21,9 +28,6 @@ namespace BookingApp.View.Navigation
         {
             obj.SetValue(EnterKeyCommandProperty, value);
         }
-
-        public static readonly DependencyProperty EnterKeyCommandProperty =
-            DependencyProperty.RegisterAttached("EnterKeyCommand", typeof(ICommand), typeof(EnterKeyBehavior), new PropertyMetadata(null, OnEnterKeyCommandChanged));
 
         private static void OnEnterKeyCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

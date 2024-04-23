@@ -38,8 +38,8 @@ namespace BookingApp.View
         public TouristMainWindow(User user)
         {
             InitializeComponent();
-         
-            _tourMainViewModel = new TouristMainViewModel( new UserDTO(user));
+
+            _tourMainViewModel = new TouristMainViewModel(new UserDTO(user));
             DataContext = _tourMainViewModel;
 
             if (Instance == null)
@@ -47,17 +47,17 @@ namespace BookingApp.View
                 Instance = this;
             }
 
-             FocusChain = new IInputElement[]
-             {
+            FocusChain = new IInputElement[]
+            {
                 searchCountryTextBox,
-                searchCityTextBox, 
+                searchCityTextBox,
                 searchDurationTextBox,
                 languageComboBox,
                 searcmaxTouristNumberTextBox,
                 listViewTours
 
 
-             };
+            };
         }
 
         public static TouristMainWindow GetInstance()
@@ -66,33 +66,34 @@ namespace BookingApp.View
         }
         private void Menu_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Right)
-                return;
-
-            var next = FocusChain[0];
-            for (var i = 0; i < FocusChain.Length; i++)
+            if (e.Key == Key.Enter && listViewTours.SelectedItem != null)
             {
-                if (FocusChain[i].IsKeyboardFocusWithin)
+                var viewModel = DataContext as TouristMainViewModel; // Replace YourViewModelType with your actual ViewModel type
+                if (viewModel != null)
                 {
-                    next = FocusChain[(i + 1) % FocusChain.Length];
-                    break;
+                    viewModel.ShowAppropriateWindowCommand.Execute(listViewTours.SelectedItem);
                 }
             }
-            if(next == listViewTours)
+            else if (e.Key == Key.Right)
             {
+                var next = FocusChain[0];
+                for (var i = 0; i < FocusChain.Length; i++)
+                {
+                    if (FocusChain[i].IsKeyboardFocusWithin)
+                    {
+                        next = FocusChain[(i + 1) % FocusChain.Length];
+                        break;
+                    }
+                }
 
-                listViewTours.Focus();
-                
-               
-                return;
-               // listViewNavigation.OnP
+                if (next == listViewTours)
+                {
+                    listViewTours.Focus();
+                    return;
+                }
+
+                next.Focus();
+                Keyboard.Focus(next);
             }
-            
-
-            next.Focus();
-            Keyboard.Focus(next);
-        }
-
-    }
-   
+        }   }
 }
