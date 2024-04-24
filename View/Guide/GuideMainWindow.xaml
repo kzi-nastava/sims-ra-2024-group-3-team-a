@@ -23,7 +23,6 @@
                     <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
                     <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
                     <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
-                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding Path=KeyPointsDTO}"/>
                     <DataGridTemplateColumn Header="" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

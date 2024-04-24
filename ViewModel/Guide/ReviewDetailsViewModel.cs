@@ -20,7 +20,7 @@ namespace BookingApp.ViewModel.Guide
         {
             _touristDTO = touristDTO;
 
-            ITouristRepository touristRepository = Injector.CreateInstance<TouristRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             _touristService = new TouristService(touristRepository);
 
             Reviews = new ObservableCollection<TourReviewDTO>();

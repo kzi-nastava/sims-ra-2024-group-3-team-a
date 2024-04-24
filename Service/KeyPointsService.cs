@@ -1,4 +1,4 @@
-﻿using BookingApp.InjectorNameSpace;
+﻿/*using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
@@ -43,4 +43,4 @@ namespace BookingApp.Service
             return _keypointsRepository.GetAll().FirstOrDefault(k => k.Id == tour.KeyPoints.Id);
         }
     }
-}
+}*/
