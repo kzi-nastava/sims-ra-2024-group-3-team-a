@@ -21,7 +21,7 @@ namespace BookingApp.ViewModel.Guide
 {
     public class AddTourViewModel : ViewModel
     {
-        private KeyPointsService _keyPointService;
+        private KeyPointService _keyPointService;
         private TourService _tourService;
         private Languages _selectedLanguage;
         private DateTime _selectedDate;
@@ -36,7 +36,7 @@ namespace BookingApp.ViewModel.Guide
         public AddTourViewModel(UserDTO guide)
         {
             _loggedGuide = guide;
-            _keyPointService = new KeyPointsService();
+            _keyPointService = new KeyPointService();
             _tourService = new TourService();
             _tourDTO = new TourDTO();
             _submitCommand = new RelayCommand(Submit);
@@ -136,9 +136,7 @@ namespace BookingApp.ViewModel.Guide
                 return;
             }
 
-            SetKeyPoints(tourKeyPoints);
-            int id = (_keyPointService.Save(_tourDTO.KeyPointsDTO.ToKeyPoint())).Id;
-            _tourDTO.KeyPointsDTO.Id = id;
+           
             _tourDTO.Images = _images;
             _tourDTO.GuideId = _loggedGuide.Id;
 
@@ -147,7 +145,8 @@ namespace BookingApp.ViewModel.Guide
                 TourDTO tourDTO = new TourDTO(_tourDTO);
                 tourDTO.BeginingTime = date;
                 tourDTO.Images = _images;
-                _tourService.Save(tourDTO.ToTourAllParam());
+                _tourDTO=new TourDTO(_tourService.Save(tourDTO.ToTourAllParam()));
+                SetKeyPoints(tourKeyPoints);
             }
             AddTourWindow.GetInstance().Close();
         }
@@ -170,15 +169,15 @@ namespace BookingApp.ViewModel.Guide
         }
         private void SetKeyPoints(string[] keyPoints)
         {
-            _tourDTO.KeyPointsDTO.Begining = keyPoints[0];
-            if (keyPoints.Length != 1)
+            foreach (var keyPoint in keyPoints)
             {
-                for (int i = 1; i < keyPoints.Length - 1; i++)
-                {
-                    _tourDTO.KeyPointsDTO.Middle.Add(keyPoints[i]);
-                }
+                KeyPointDTO newPoint = new KeyPointDTO();
+                newPoint.Name = keyPoint;
+                newPoint.TourId = _tourDTO.Id;
+                newPoint.IsCurrent = false;
+                newPoint.HasPassed = false;
+                _keyPointService.Save(newPoint.ToKeyPoint());
             }
-            _tourDTO.KeyPointsDTO.Ending = keyPoints[keyPoints.Length - 1];
         }
     }
 }

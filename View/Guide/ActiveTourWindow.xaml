@@ -16,7 +16,7 @@
     <Border BorderThickness="8" BorderBrush="Black">
     <Grid Background="AntiqueWhite" >
         <Grid x:Name="gridMain" ShowGridLines="False"  Grid.Row="0" Margin="10,0,10,150" >
-                <ItemsControl ItemsSource="{Binding KeyPointsString}">
+                <ItemsControl ItemsSource="{Binding KeyPoints}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
@@ -24,12 +24,18 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Command="{Binding DataContext.MarkPointCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Width="100" Height="60">
+                            <Button Content="{Binding Path=Name}" Command="{Binding DataContext.MarkPointCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Width="100" Height="60">
                                 <Button.Style>
                                     <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="IsEnabled" Value="True"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <DataTrigger Binding="{Binding HasPassed}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
                                                 <Setter Property="Background" Value="IndianRed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                                <Setter Property="Background" Value="LightGreen"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

@@ -21,11 +21,11 @@ namespace BookingApp.ViewModel.Guide
     public class ActiveTourViewModel : ViewModel
     {
         
-        private KeyPointsDTO _keyPoints;
-        private KeyPointsService _keyPointsService;
+        
+        private KeyPointService _keyPointsService;
         private TourService _tourService;
         private TourReservationService _tourReservationService;
-        private List<string> _keyPointsString;
+        //private List<string> _keyPointsString;
         private RelayCommand _markPointCommand;
         private RelayCommand _showTourReviewsWindowCommand;
         private RelayCommand _touristJoiningPointCommand;
@@ -33,26 +33,28 @@ namespace BookingApp.ViewModel.Guide
         private TourDTO _tourDTO;
         private int _counter = 0;
         private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
+        private ObservableCollection<KeyPointDTO> _keyPoints { get; set; }
         public ActiveTourViewModel(TourDTO tour, Boolean activeTourExists)
         {
             _tourDTO = tour;
-            _keyPointsService = new KeyPointsService();
             _tourService = new TourService();
             _tourReservationService = new TourReservationService();
             List<TouristDTO> touristsDTO = _tourReservationService.GetReservationTourists(tour.ToTourAllParam()).Select(t => new TouristDTO(t)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
-            _keyPointsString = new List<string>();
+            //_keyPointsString = new List<string>();
             _markPointCommand = new RelayCommand(MarkPoint);
             _showTourReviewsWindowCommand = new RelayCommand(ShowTourReviewsWindow);
             _cancelTourCommand = new RelayCommand(CancelTour);
             _touristJoiningPointCommand = new RelayCommand(TouristJoiningPoint);
-            _keyPoints = new KeyPointsDTO(_keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()));
-            _keyPointsString.Add(_keyPoints.Begining);
+            _keyPointsService = new KeyPointService();
+            List<KeyPointDTO> keypointsDTO = _keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()).Select(k=> new KeyPointDTO(k)).ToList();
+            _keyPoints = new ObservableCollection<KeyPointDTO>(keypointsDTO);
+          /*  _keyPointsString.Add(_keyPoints.Begining);
             foreach(string str in _keyPoints.Middle)
             {
                 _keyPointsString.Add(str);
             }
-            _keyPointsString.Add(_keyPoints.Ending);
+            _keyPointsString.Add(_keyPoints.Ending);*/
         }
         public RelayCommand MarkPointCommand
         {
@@ -65,10 +67,18 @@ namespace BookingApp.ViewModel.Guide
         }
         private void MarkPoint(object parameter)
         {
-            string point=parameter as string;
-            _tourDTO.CurrentKeyPoint = point;
+            KeyPointDTO point=parameter as KeyPointDTO;
+            _tourDTO.CurrentKeyPoint = point.Name;
             _tourService.Update(_tourDTO.ToTourAllParam());
-            if (point == _keyPoints.Ending)
+            foreach(var keypoint in _keyPoints)
+            {
+                keypoint.IsCurrent = false;
+                _keyPointsService.Update(keypoint.ToKeyPoint());
+            }
+            point.IsCurrent = true;
+            point.HasPassed = true;
+            _keyPointsService.Update(point.ToKeyPoint());
+            if (point.Type == Model.Enums.KeyPointsType.Ending)
             {
                 _tourDTO.CurrentKeyPoint = "finished";
                 _tourDTO.IsActive = false;
@@ -81,7 +91,7 @@ namespace BookingApp.ViewModel.Guide
             }
             else
             {
-                _tourDTO.CurrentKeyPoint = point;
+                _tourDTO.CurrentKeyPoint = point.Name;
                 _tourDTO.IsActive = true;
                 _tourService.Update(_tourDTO.ToTourAllParam());
             }
@@ -163,12 +173,12 @@ namespace BookingApp.ViewModel.Guide
                 }
             }
         }
-        public List<string> KeyPointsString
+        public ObservableCollection<KeyPointDTO> KeyPoints
         {
-            get { return _keyPointsString; }
+            get { return _keyPoints; }
             set
             {
-                _keyPointsString = value;
+                _keyPoints = value;
                 OnPropertyChanged();
             }
         }
@@ -185,6 +195,11 @@ namespace BookingApp.ViewModel.Guide
         {
             _tourDTO.CurrentKeyPoint = "finished";
             _tourDTO.IsActive = false;
+            foreach (var keypoint in _keyPoints)
+            {
+                keypoint.IsCurrent = false;
+                _keyPointsService.Update(keypoint.ToKeyPoint());
+            }
             _tourService.Update(_tourDTO.ToTourAllParam());
             ActiveTourWindow.GetInstance().Close();
             if (_tourDTO.TouristsPresent != 0)
