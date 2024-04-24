@@ -1,7 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Guest;
 using Microsoft.Win32;
@@ -44,9 +46,15 @@ namespace BookingApp.ViewModel.Guest
         public GuestReservationsViewModel(UserDTO loggedInGuest)
         {
             _loggedInGuest = loggedInGuest;
-            _accommodationReservationService = new AccommodationReservationService();
-            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
-            _accommodationService = new AccommodationService();
+
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository);
+            _accommodationService = new AccommodationService(accommodationRepository);
+
             _images = new List<string>();
 
             _myChangeRequests = new ObservableCollection<AccommodationReservationChangeRequestDTO>();

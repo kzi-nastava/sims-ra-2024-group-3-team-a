@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using BookingApp.Commands;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
 
 namespace BookingApp.ViewModel.Guide
 {
@@ -27,8 +29,15 @@ namespace BookingApp.ViewModel.Guide
         public AllToursViewModel(UserDTO guide)
         {
             _loggedGuide = guide;
-            _tourReservationService = new TourReservationService();
-            _tourService = new TourService();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<TourDTO> toursDTO = _tourService.GetNotCancelled().Select(tour => new TourDTO(tour)).ToList();
             _allToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             _showAddTourWindowCommand = new RelayCommand(ShowAddTourWindow);

@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using System;
 using System.Collections.Generic;
@@ -23,7 +25,12 @@ namespace BookingApp.ViewModel.Guide
         public TouristStatisticsViewModel(TourDTO tour)
         {
             _tourDTO = tour;
-            _tourReservationService = new TourReservationService();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             List<TouristDTO> touristsDTO = _tourReservationService.GetJoinedTourists(_tourDTO.ToTourAllParam()).Select(tourist => new TouristDTO(tourist)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             CountAgeGroups(touristsDTO);

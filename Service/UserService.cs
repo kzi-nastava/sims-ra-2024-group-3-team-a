@@ -12,11 +12,11 @@ namespace BookingApp.Service
 {
     public class UserService
     {
-        private IUserRepository _userRepository = new UserRepository();
+        private IUserRepository _userRepository;
 
-        public UserService() 
+        public UserService(IUserRepository userRepository) 
         {
-            _userRepository = Injector.CreateInstance<IUserRepository>();
+            _userRepository = userRepository;
         }
 
         public User GetByUsername(string username)

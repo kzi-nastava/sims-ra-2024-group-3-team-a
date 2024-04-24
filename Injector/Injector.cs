@@ -29,7 +29,6 @@ namespace BookingApp.InjectorNameSpace
 
         public static T CreateInstance<T>()
         {
-            
             Type type = typeof(T);
 
             if (_implementations.ContainsKey(type))

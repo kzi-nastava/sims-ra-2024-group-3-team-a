@@ -15,9 +15,9 @@ namespace BookingApp.Service
     {
         private IVoucherRepository _voucherRepository;
 
-        public VoucherService()
+        public VoucherService(IVoucherRepository voucherRepository)
         {
-            _voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _voucherRepository = voucherRepository;
         }
 
         private readonly Serializer<Voucher> _serializer = new Serializer<Voucher>();

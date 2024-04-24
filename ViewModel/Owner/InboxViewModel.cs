@@ -1,7 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using BookingApp.View.Owner.AnswerRequestPages;
@@ -16,7 +18,7 @@ namespace BookingApp.ViewModel.Owner
 {
     public class InboxViewModel : ViewModel
     {
-        private MessageService _messageSerivce;
+        private MessageService _messageService;
         private ObservableCollection<MessageDTO> _messagesDTO;
 
         private RelayCommand _showSideMenuCommand;
@@ -25,9 +27,20 @@ namespace BookingApp.ViewModel.Owner
 
         public InboxViewModel(UserDTO loggedInUser)
         {
-            _messageSerivce = new MessageService();
-            _messageSerivce.UpdateAndCreateMessages();
-            List<MessageDTO> messagesList = _messageSerivce.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
+
+            _messageService.UpdateAndCreateMessages();
+            List<MessageDTO> messagesList = _messageService.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
             _messagesDTO = new ObservableCollection<MessageDTO>(messagesList);
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);

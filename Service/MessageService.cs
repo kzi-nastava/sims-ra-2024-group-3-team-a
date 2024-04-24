@@ -16,15 +16,20 @@ namespace BookingApp.Service
     {
         private IMessageRepository _messageRepository;
 
-        private AccommodationReservationService _accommodationReservationService = new AccommodationReservationService();
-        private UserService _userService = new UserService();
-        private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
-        private AccommodationService _accommodationService = new AccommodationService();
-        private TourService _tourService = new TourService();
+        private AccommodationReservationService _accommodationReservationService;
+        private UserService _userService;
+        private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService;
+        private AccommodationService _accommodationService;
+        private TourService _tourService;
 
-        public MessageService()
+        public MessageService(IMessageRepository messageRepository, IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository, IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IUserRepository userRepository, ITourRepository tourRepository, ITourReservationRepository tourReservationRepository, ITouristRepository touristRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
-            _messageRepository = Injector.CreateInstance<IMessageRepository>();
+            _messageRepository = messageRepository;
+            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository);
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+            _accommodationService = new AccommodationService(accommodationRepository);
+            _userService = new UserService(userRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
         }
 
         public List<Message> GetAll()

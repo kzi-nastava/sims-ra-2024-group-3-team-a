@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using System;
 using System.Collections.Generic;
@@ -22,8 +24,16 @@ namespace BookingApp.ViewModel.Tourist
         public TourTrackingViewModel(TourDTO tourDTO)
         { 
             _tourDTO = tourDTO;
-            _tourReservationService = new TourReservationService();
-            _tourService = new TourService();
+
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<TouristDTO> tourists = _tourService.GetTourists(tourDTO.ToTourAllParam()).Select(tourists => new TouristDTO(tourists)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(tourists);
 

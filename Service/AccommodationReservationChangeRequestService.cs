@@ -14,11 +14,12 @@ namespace BookingApp.Service
     {
         private IAccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
 
-        private AccommodationReservationService _accommodationReservationService = new AccommodationReservationService();
+        private AccommodationReservationService _accommodationReservationService;
 
-        public AccommodationReservationChangeRequestService()
+        public AccommodationReservationChangeRequestService(IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository, IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IUserRepository userRepository)
         {
-            _accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            _accommodationReservationChangeRequestRepository = accommodationReservationChangeRequestRepository;
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
         }
 
         public List<AccommodationReservationChangeRequest> GetAll()
