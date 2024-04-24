@@ -41,13 +41,13 @@ namespace BookingApp.ViewModel.Guide
             
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
-            IKeyPointsRepository keyPointsRepository = Injector.CreateInstance<IKeyPointsRepository>();
+            IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-            _keyPointService = new KeyPointsService(keyPointsRepository);
+            _keyPointService = new KeyPointService(keyPointsRepository);
             _tourDTO = new TourDTO();
             _submitCommand = new RelayCommand(Submit);
             _dates = new ObservableCollection<DateTime> ();

@@ -42,15 +42,13 @@ namespace BookingApp.ViewModel.Guide
 
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
-            IKeyPointsRepository keyPointsRepository = Injector.CreateInstance<IKeyPointsRepository>();
+            IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
-            _keyPointsService = new KeyPointsService(keyPointsRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-
             List<TouristDTO> touristsDTO = _tourReservationService.GetReservationTourists(tour.ToTourAllParam()).Select(t => new TouristDTO(t)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             //_keyPointsString = new List<string>();
@@ -58,7 +56,7 @@ namespace BookingApp.ViewModel.Guide
             _showTourReviewsWindowCommand = new RelayCommand(ShowTourReviewsWindow);
             _cancelTourCommand = new RelayCommand(CancelTour);
             _touristJoiningPointCommand = new RelayCommand(TouristJoiningPoint);
-            _keyPointsService = new KeyPointService();
+            _keyPointsService = new KeyPointService(keyPointsRepository);
             List<KeyPointDTO> keypointsDTO = _keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()).Select(k=> new KeyPointDTO(k)).ToList();
             _keyPoints = new ObservableCollection<KeyPointDTO>(keypointsDTO);
           /*  _keyPointsString.Add(_keyPoints.Begining);

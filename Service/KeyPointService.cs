@@ -14,11 +14,10 @@ namespace BookingApp.Service
     {
         private IKeyPointRepository _keypointsRepository;
 
-        public KeyPointService()
+        public KeyPointService(IKeyPointRepository keyPointRepository)
         {
-            _keypointsRepository = Injector.CreateInstance<IKeyPointRepository>();
+            _keypointsRepository = keyPointRepository;
         }
-
         public List<KeyPoint> GetAll()
         {
             return _keypointsRepository.GetAll();
