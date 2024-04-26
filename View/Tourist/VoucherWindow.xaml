@@ -8,14 +8,27 @@
         Title="VoucherWindow" Height="450" Width="800">
     <Grid Background="AntiqueWhite">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <Menu DockPanel.Dock="Top"  BorderThickness="1" >
+                <MenuItem Header="Home" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
+                <MenuItem Header="My Tours"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+                <MenuItem Header="Tour Requests" Foreground="#fa8ec4"></MenuItem>
+                <MenuItem Header="Create Request" Foreground="#fa8ec4"></MenuItem>
+                <MenuItem Header="Rate Tour" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+                <MenuItem Header="Vouchers" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+                <MenuItem Header="Inbox" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
+                <MenuItem Header="Logout" Foreground="#fa8ec4" Command="{Binding LogOutCommand}" ></MenuItem>
+            </Menu>
+        </Grid>
+        <Grid Grid.Row="1">
             <TextBlock Margin="30,10,0,0" FontSize="50">Vouchers</TextBlock>
         </Grid>
-        <Border Padding="100" BorderThickness="1" BorderBrush="Gray">
-            <Grid Background="White" Grid.Row="2">
+        <Border Padding="100" Grid.Row="1"  BorderThickness="1" BorderBrush="Gray">
+            <Grid Background="White" Grid.Row="1">
                 
             <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.Row="2">

@@ -24,6 +24,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Xps;
+using Xceed.Wpf.Toolkit.Primitives;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.View
 {
@@ -54,46 +57,92 @@ namespace BookingApp.View
                 searchDurationTextBox,
                 languageComboBox,
                 searcmaxTouristNumberTextBox,
+              // buttonSearch,
                 listViewTours
 
 
             };
+            searchCountryTextBox.Focus();
         }
 
         public static TouristMainWindow GetInstance()
         {
             return Instance;
         }
+
         private void Menu_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && listViewTours.SelectedItem != null)
+
+           
+            if (!FocusChain[5].IsKeyboardFocusWithin && e.Key == Key.Right)
             {
-                var viewModel = DataContext as TouristMainViewModel; // Replace YourViewModelType with your actual ViewModel type
-                if (viewModel != null)
-                {
-                    viewModel.ShowAppropriateWindowCommand.Execute(listViewTours.SelectedItem);
-                }
-            }
-            else if (e.Key == Key.Right)
-            {
-                var next = FocusChain[0];
-                for (var i = 0; i < FocusChain.Length; i++)
-                {
-                    if (FocusChain[i].IsKeyboardFocusWithin)
+                    var next = FocusChain[0];
+                    for (var i = 0; i < FocusChain.Length; i++)
                     {
-                        next = FocusChain[(i + 1) % FocusChain.Length];
-                        break;
+                        if (FocusChain[i].IsKeyboardFocusWithin)
+                        {
+                            next = FocusChain[(i + 1) % FocusChain.Length];
+                            break;
+                        }
+                    }
+
+                    next.Focus();
+                    Keyboard.Focus(next);
+            }
+            else if ((!FocusChain[5].IsKeyboardFocusWithin && e.Key == Key.Left ) || (FocusChain[5].IsKeyboardFocusWithin && e.Key == Key.Left && listViewTours.Items.IndexOf(listViewTours.SelectedItem)==0))
+            {
+                    var next = FocusChain[0];
+                    for (var i = 0; i < FocusChain.Length; i++)
+                    {
+                        if (FocusChain[i].IsKeyboardFocusWithin && i != 0)
+                        {
+                            next = FocusChain[(i - 1) % FocusChain.Length];
+                            break;
+                        }
+                    }
+              
+
+                    next.Focus();
+                    
+                    Keyboard.Focus(next);
+            }
+            
+            else if (FocusChain[5].IsKeyboardFocusWithin)
+            {
+                base.OnPreviewKeyDown(e);
+
+                if (e.Key == Key.Left)
+                {
+                    if (listViewTours.SelectedItem != null)
+                    {
+                        int index = listViewTours.Items.IndexOf(listViewTours.SelectedItem);
+                        if (index > 0)
+                        {
+                            listViewTours.SelectedItem = listViewTours.Items[index - 1];
+                            listViewTours.ScrollIntoView(listViewTours.SelectedItem);
+                            e.Handled = true;
+                        }
                     }
                 }
-
-                if (next == listViewTours)
+                else if (e.Key == Key.Right)
                 {
-                    listViewTours.Focus();
-                    return;
+                    if (listViewTours.SelectedItem != null)
+                    {
+                        int index = listViewTours.Items.IndexOf(listViewTours.SelectedItem);
+                        if (index < listViewTours.Items.Count - 1)
+                        {
+                            listViewTours.SelectedItem = listViewTours.Items[index + 1];
+                            listViewTours.ScrollIntoView(listViewTours.SelectedItem);
+                            e.Handled = true; 
+                        }
+                    }
                 }
-
-                next.Focus();
-                Keyboard.Focus(next);
             }
-        }   }
+          
+
+             
+        }
+      
+
+    }
 }

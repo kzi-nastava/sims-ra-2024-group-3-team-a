@@ -40,7 +40,8 @@ namespace BookingApp.View
             _tourReservationViewModel = new TourReservationViewModel(tourReservationService, tourDTO, userDTO);
             DataContext = _tourReservationViewModel;
         }
-       
+          
+              
      
        
         /*private void textBox_TextChanged(object sender, EventArgs e)
