@@ -39,6 +39,7 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _popUpCommand;
         private RelayCommand _closePopUpCommand;
         private RelayCommand _logOutCommand;
+        private RelayCommand _showCommand;
 
         public TouristMainViewModel(UserDTO loggedInUser)
         {
@@ -62,6 +63,7 @@ namespace BookingApp.ViewModel.Tourist
             _popUpCommand = new RelayCommand(OpenPopUp);
             _closePopUpCommand = new RelayCommand(ClosePopUp);
             _logOutCommand = new RelayCommand(LogOut);
+            _showCommand = new RelayCommand(ShowWindow);
 
         }
 
@@ -271,6 +273,19 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
+        public RelayCommand ShowCommand
+        {
+            get
+            {
+                return _showCommand;
+            }
+            set
+            {
+                _showCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _searchCountryInput = String.Empty;
         public string SearchCountryInput
         {
@@ -366,10 +381,15 @@ namespace BookingApp.ViewModel.Tourist
 
             
             var selectedItem = _selectedTourDTO as TourDTO;
-            if(selectedItem.CurrentCapacity > 0)
+           /* if(selectedItem.CurrentCapacity > 0)
             {
                 TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationService, new TourDTO(selectedItem), _userDTO);
                 tourReservationWindow.ShowDialog();
+            }*/
+           if(selectedItem.CurrentCapacity >0)
+            {
+                TourInformationWindow tourInformationWindow = new TourInformationWindow(new TourDTO(selectedItem), _userDTO);
+                tourInformationWindow.ShowDialog();
             }
             else
             {
@@ -401,6 +421,11 @@ namespace BookingApp.ViewModel.Tourist
         {
             InboxWindow inboxWindow = new InboxWindow(_userDTO);
             inboxWindow.ShowDialog();
+        }
+        public void ShowWindow()
+        {
+          TourInformationWindow tourInformationWindow = new TourInformationWindow(_tourDTO, _userDTO);
+            tourInformationWindow.ShowDialog();
         }
 
         public void CheckOpenPopUp()

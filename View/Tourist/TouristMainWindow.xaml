@@ -54,7 +54,7 @@
             <MenuItem Header="Home" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
             <MenuItem Header="My Tours"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
             <MenuItem Header="Tour Requests" Foreground="#fa8ec4"></MenuItem>
-            <MenuItem Header="Create Request" Foreground="#fa8ec4"></MenuItem>
+            <MenuItem Header="Create Request" Foreground="#fa8ec4" Command="{Binding ShowCommand}"></MenuItem>
             <MenuItem Header="Rate Tour" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
             <MenuItem Header="Vouchers" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
             <MenuItem Header="Inbox" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}"></MenuItem>

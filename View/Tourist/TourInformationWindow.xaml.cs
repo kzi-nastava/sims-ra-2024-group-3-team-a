@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BookingApp.DTO;
+using BookingApp.ViewModel.Tourist;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,18 @@ namespace BookingApp.View.Tourist
     /// </summary>
     public partial class TourInformationWindow : Window
     {
+        public static TourInformationView _tourInformationView;
+
         public TourInformationWindow()
         {
             InitializeComponent();
+        }
+
+        public TourInformationWindow(TourDTO tourDTO, UserDTO userDTO)
+        {
+            InitializeComponent();
+            _tourInformationView = new TourInformationView(tourDTO, userDTO);
+            DataContext = _tourInformationView;
         }
     }
 }

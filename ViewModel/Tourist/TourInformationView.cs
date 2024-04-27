@@ -19,6 +19,8 @@ namespace BookingApp.ViewModel.Tourist
         private static UserDTO _userDTO;
         private static TourReservationService _tourReservationService;
         private static RelayCommand _showTourReservationWindow;
+        private static List<string> images;
+        public ObservableCollection<string> imagesCollection;
 
         public TourInformationView(TourDTO tourDTO, UserDTO loggedInUser)
         {
@@ -26,6 +28,10 @@ namespace BookingApp.ViewModel.Tourist
            _userDTO = loggedInUser;
            _tourReservationService = new TourReservationService();
            _showTourReservationWindow = new RelayCommand(ShowTourReservationWindow);
+           images = _tourDTO.Images;
+           imagesCollection = new ObservableCollection<string>(images);
+            
+
    
         }
         public TourDTO TourDTO
@@ -39,6 +45,20 @@ namespace BookingApp.ViewModel.Tourist
                 _tourDTO = value;
                 OnPropertyChanged();
             }
+        }
+
+        public ObservableCollection<string> ImagesCollection
+        {
+            get
+            {
+                return imagesCollection;
+            }
+            set
+            {
+                imagesCollection = value;
+                OnPropertyChanged();
+            }
+
         }
 
         public RelayCommand ShowTourReservationWindowCommand
