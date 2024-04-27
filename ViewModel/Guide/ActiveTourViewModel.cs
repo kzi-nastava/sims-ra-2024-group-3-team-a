@@ -27,7 +27,7 @@ namespace BookingApp.ViewModel.Guide
         private KeyPointService _keyPointsService;
         private TourService _tourService;
         private TourReservationService _tourReservationService;
-        //private List<string> _keyPointsString;
+        private UserDTO _userDTO;
         private RelayCommand _markPointCommand;
         private RelayCommand _showTourReviewsWindowCommand;
         private RelayCommand _touristJoiningPointCommand;
@@ -49,9 +49,10 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            UserService userService = new UserService(userRepository);
+            _userDTO = new UserDTO(userService.GetById(_tourDTO.GuideId));
             List<TouristDTO> touristsDTO = _tourReservationService.GetReservationTourists(tour.ToTourAllParam()).Select(t => new TouristDTO(t)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
-            //_keyPointsString = new List<string>();
             _markPointCommand = new RelayCommand(MarkPoint);
             _showTourReviewsWindowCommand = new RelayCommand(ShowTourReviewsWindow);
             _cancelTourCommand = new RelayCommand(CancelTour);
@@ -59,12 +60,24 @@ namespace BookingApp.ViewModel.Guide
             _keyPointsService = new KeyPointService(keyPointsRepository);
             List<KeyPointDTO> keypointsDTO = _keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()).Select(k=> new KeyPointDTO(k)).ToList();
             _keyPoints = new ObservableCollection<KeyPointDTO>(keypointsDTO);
-          /*  _keyPointsString.Add(_keyPoints.Begining);
-            foreach(string str in _keyPoints.Middle)
+        }
+        public TourDTO Tour
+        {
+            get { return _tourDTO; }
+            set
             {
-                _keyPointsString.Add(str);
+                _tourDTO = value;
+                OnPropertyChanged();
             }
-            _keyPointsString.Add(_keyPoints.Ending);*/
+        }
+        public UserDTO User
+        {
+            get { return _userDTO; }
+            set
+            {
+                _userDTO = value;
+                OnPropertyChanged();
+            }
         }
         public RelayCommand MarkPointCommand
         {
