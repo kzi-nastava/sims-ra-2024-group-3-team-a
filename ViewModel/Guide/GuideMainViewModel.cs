@@ -23,12 +23,13 @@ namespace BookingApp.ViewModel.Guide
         private static ObservableCollection<TourDTO> _toursTodayDTO { get; set; }
         private Boolean _doesActiveTourExist = false;
         private readonly TourService _tourService;
-       // private TourDTO _selectedTourDTO = null;
+        private TourDTO _selectedTourDTO = null;
         private UserDTO _loggedInGuide;
         private RelayCommand _showActiveTourCommand;
         private RelayCommand _showAllToursCommand;
         private RelayCommand _showTourStatisticsCommand;
         private RelayCommand _logoutCommand;
+       // public int RowCount => (ToursTodayDTO.Count + 1) / 2;
         public GuideMainViewModel(User guide)
         {
             _loggedInGuide = new UserDTO(guide);
@@ -68,6 +69,15 @@ namespace BookingApp.ViewModel.Guide
                 {
                     _doesActiveTourExist = false;
                 }
+            }
+        }
+        public TourDTO SelectedTourDTO
+        {
+            get { return _selectedTourDTO; }
+            set
+            {
+                _selectedTourDTO = value;
+                OnPropertyChanged();
             }
         }
         public RelayCommand ShowActiveTourCommand

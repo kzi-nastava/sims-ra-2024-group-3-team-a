@@ -11,31 +11,83 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-
-
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="1">
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding ToursTodayDTO}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
+       <!-- <Grid Grid.Row="1">-->
+        <ListView x:Name="listViewTours" 
+ Background="Transparent"
+ ItemsSource="{Binding ToursTodayDTO}" 
+ SelectedItem="{Binding SelectedTourDTO}"  
+ BorderBrush="Transparent" 
+ BorderThickness="0" 
+ Margin =" 10,10,10,0"
+ Height="300" 
+ ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="1"
+ VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <Border BorderThickness="2" BorderBrush="LightGray"  Background="White" Margin="0,10,5,10">
+                        <StackPanel Background="White" Width="300"  Orientation="Horizontal"  Margin ="25,15,25,15">
+                            <StackPanel Margin="10,0,10,0">
+                                <TextBlock FontWeight="Bold" FontSize="20"   Margin="10,0,0,0" Text="{Binding Name}" />
+                                <Border BorderBrush="LightSlateGray" BorderThickness="1">
+                                    <StackPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Location: " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Duration: " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Language: " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding Language}" />
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Date: " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
+                                        </DockPanel>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <Border BorderThickness="1" BorderBrush="Gray" Margin="10,0,0,0">
+                                <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
+                            </Border>
+                        </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+     <!--   </Grid>-->
+
+
+
+                <!-- <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding ToursTodayDTO}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding Path=LocationDTO}"/>
                     <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Path=Duration}"/>
                     <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
-                    <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
-                    <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
-                    <DataGridTemplateColumn Header="" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Begin tour"  Command="{Binding Path=DataContext.ShowActiveTourCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+              <      <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
+               <     <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
+                <    <DataGridTemplateColumn Header="" Width="*">
+                 <       <DataGridTemplateColumn.CellTemplate
+                  <          <DataTemplate>
+                   <             <Button Content="Begin tour"  Command="{Binding Path=DataContext.ShowActiveTourCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" />
+                    <        </DataTemplate>
+                     <   </DataGridTemplateColumn.CellTemplate>
+                   < </DataGridTemplateColumn>
 
-                </DataGrid.Columns>
-            </DataGrid>
+            <   </DataGrid.Columns>
+          <  </DataGrid> -->
 
-        </Grid>
-        <Grid Grid.Row="2" Height="264" VerticalAlignment="Center">
+        <!--// </Grid>-->
+        <Grid Grid.Row="3" Height="264" VerticalAlignment="Center">
             <Button Content="Show all tours" Command="{Binding ShowAllToursCommand}"  VerticalAlignment="Top" Height="61" Margin="52,71,499,0"/>
             <Button Content="Statistics" Command="{Binding ShowTourStatisticsCommand}"   VerticalAlignment="Top" Height="61" Margin="423,71,127,0"  />
 
