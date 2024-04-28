@@ -98,8 +98,8 @@ HorizontalContentAlignment="Center"/>
             
             <TextBox x:Name="textBoxDuration" Grid.Column="1" Grid.Row="8" Margin="10"
          Text="{Binding TourDTO.Duration,UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
-            <Button Grid.Column="1" Grid.Row="9" Background="LightGray" Content="Add Images" ></Button>
-            <Button x:Name="LeaveButton" Content="Cancel"  Grid.Column="1"
+            <Button Grid.Column="1" Grid.Row="9" Background="LightGray" Content="Add Images" Command="{Binding AddImagesCommand}" ></Button>
+            <Button x:Name="LeaveButton"  Content="Cancel"  Grid.Column="1"
         Grid.Row="10" Margin="100,10,100,10" />
         </Grid>
         

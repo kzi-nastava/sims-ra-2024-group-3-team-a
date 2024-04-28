@@ -1,0 +1,76 @@
+﻿<Window x:Class="BookingApp.View.Tourist.TourInformationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        mc:Ignorable="d"
+        Title="TourInformationWindow" Height="450" Width="800">
+
+
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+
+
+        <Menu DockPanel.Dock="Top" BorderThickness="1" >
+            <MenuItem Header="Home" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
+            <MenuItem Header="My Tours"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem Header="Tour Requests" Foreground="#fa8ec4" Command="{Binding ShowCommand}"  ></MenuItem>
+            <MenuItem Header="Create Request" Foreground="#fa8ec4"></MenuItem>
+            <MenuItem Header="Rate Tour" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem Header="Vouchers" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem Header="Inbox" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
+            <MenuItem Header="Logout" Foreground="#fa8ec4" Command="{Binding LogOutCommand}" ></MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1" Margin="20,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+              
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" FontSize="25" FontWeight="Heavy" Text="Tour:"  ></TextBlock>
+            <TextBlock Grid.Column="1"  FontSize="25" Text="{Binding TourDTO.Name}"  ></TextBlock>
+
+        </Grid>
+            <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30">-->
+        <Grid Margin="20,5,20,0" Grid.Row="2">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <ScrollViewer
+            VerticalScrollBarVisibility="Disabled"
+            HorizontalScrollBarVisibility="Auto">
+                   
+                    <ItemsControl ItemsSource="{Binding ImagesCollection}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                                <Border BorderBrush="Black" Margin="10" BorderThickness="1">
+                        <Image Width="130" Height="130" Source="{Binding}"/>
+                                </Border>
+                            </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+                  
+                </ScrollViewer>
+            </Border>
+        </Grid>
+           
+
+     
+
+
+    </Grid>
+</Window>

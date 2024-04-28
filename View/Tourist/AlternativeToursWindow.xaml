@@ -13,13 +13,22 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
-        <TextBlock FontStyle="Oblique" Margin="10">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Home"></MenuItem>
+            <MenuItem Header="My Tours" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem Header="Tour Requests"></MenuItem>
+            <MenuItem Header="Create Request"></MenuItem>
+            <MenuItem Header="Rate Tour" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem Header="Vouchers" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem Header="Inbox" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
+            <MenuItem Header="Logout" Command="{Binding LogOutCommand}" ></MenuItem>
+        </Menu>
+        <TextBlock Grid.Row="1" FontWeight="Black" Margin="10">
             Previously selected tour is full. Here is a list of alternarive tours with the same location:
         </TextBlock>
-        <Button x:Name="buttoneReservation" Content="Reservation" Grid.Row="2"  Width="80" Margin="500,0,0,0" Command="{Binding ShowTourReservationWindowCommand}"/>
+       
 
-        <DataGrid x:Name="dataGridAlternativeTour" IsReadOnly="True" ItemsSource="{Binding ToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Grid.Row="3" Margin="10" AutoGenerateColumns="False">
+        <!--<DataGrid x:Name="dataGridAlternativeTour" IsReadOnly="True" ItemsSource="{Binding ToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Grid.Row="3" Margin="10" AutoGenerateColumns="False">
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
@@ -29,7 +38,46 @@
                 <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding BeginingTime}"/>
             </DataGrid.Columns>
 
-        </DataGrid>
+        </DataGrid>-->
+        <Border Margin="10,10,10,0" Grid.Row="2"  Padding="10">
+            <Grid Grid.Row="2">
+                <ListView  ItemsSource="{Binding ToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightPink" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal" Width="390">
+                                    <Image Source="{Binding Path=Images[0]}" Height="100" Width="100" Stretch="Fill"></Image>
+                                    <Border Padding="50"  BorderBrush="Transparent">
+                                        <StackPanel Margin="50,0,0,0">
+                                            <DockPanel>
+                                                <TextBlock Text="Location: "></TextBlock>
+                                                <TextBlock  FontWeight="Bold" Text="{Binding LocationDTO}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Duration: "></TextBlock>
+                                                <TextBlock  FontWeight="Bold" Text="{Binding Duration}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Language: "></TextBlock>
+                                                <TextBlock  FontWeight="Bold" Text="{Binding Language}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Date: "></TextBlock>
+                                                <TextBlock  FontWeight="Bold" Text="{Binding BeginingTime}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Number of people: "></TextBlock>
+                                                <TextBlock  FontWeight="Bold" Text="{Binding MaxTouristNumber}"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
 
 
     </Grid>

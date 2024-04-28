@@ -1,4 +1,5 @@
-﻿using BookingApp.DTO;
+using BookingApp.Commands;
+using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
@@ -25,6 +26,8 @@ namespace BookingApp.ViewModel.Tourist
 
         private UserDTO _userDTO;
 
+        private RelayCommand _showTourReviewWindowCommand;
+
         public FinishedToursViewModel(UserDTO loggedInUser)
         {
 
@@ -39,7 +42,7 @@ namespace BookingApp.ViewModel.Tourist
             _userDTO = loggedInUser;
             List<TourDTO> finishedTours = _tourService.GetFinishedTours().Select(finishedTours => new TourDTO(finishedTours)).ToList();
             _finishedTourDTO = new ObservableCollection<TourDTO>(finishedTours);
-          
+            _showTourReviewWindowCommand = new RelayCommand(ShowTourReviewWindow);
         }
 
         public ObservableCollection<TourDTO> FinishedToursDTO
@@ -67,7 +70,20 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
-                ShowTourReviewWindow();
+              
+            }
+        }
+
+        public RelayCommand ShowTourReviewWindowCommand
+        {
+            get
+            {
+                return _showTourReviewWindowCommand;
+            }
+            set
+            {
+                _showTourReviewWindowCommand = value;
+                OnPropertyChanged();
             }
         }
 

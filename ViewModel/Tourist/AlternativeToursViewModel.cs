@@ -4,6 +4,7 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
+using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,7 +29,10 @@ namespace BookingApp.ViewModel.Tourist
         private ObservableCollection<TourDTO> _toursDTO;
 
         private RelayCommand _showTourReservationWindowCommand;
-
+        private RelayCommand _showMyToursWindowCommand;
+        private RelayCommand _showInboxWindowCommand;
+        private RelayCommand _showFinishedToursWindowCommand;
+        private RelayCommand _showVoucherWindowCommand;
         private TourDTO _selectedTourDTO { get; set; }
         public AlternativeToursViewModel(TourDTO tourDTO, UserDTO loggedInUser)
         {
@@ -47,7 +51,10 @@ namespace BookingApp.ViewModel.Tourist
 
             List<TourDTO> tours = _tourService.GetToursWithSameLocation(_tourDTO.ToTourAllParam()).Select(tours => new TourDTO(tours)).ToList();
             _toursDTO = new ObservableCollection<TourDTO>(tours);
-            
+            _showFinishedToursWindowCommand = new RelayCommand(ShowFinishedToursWindow);
+            _showMyToursWindowCommand = new RelayCommand(ShowMyToursWindow);
+            _showVoucherWindowCommand = new RelayCommand(ShowVoucherWindow);
+            _showInboxWindowCommand = new RelayCommand(ShowinboxWindow);
             _showTourReservationWindowCommand = new RelayCommand(ShowTourReservationWindow);
         }
 
@@ -99,6 +106,7 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
+                ShowTourReservationWindow();
             }
         }
         public RelayCommand ShowTourReservationWindowCommand
@@ -113,7 +121,80 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowMyToursWindowCommand
+        {
+            get
+            {
+                return _showMyToursWindowCommand;
+            }
+            set
+            {
+                _showMyToursWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
+        public RelayCommand ShowInboxWindowCommand
+        {
+            get
+            {
+                return _showInboxWindowCommand;
+            }
+            set
+            {
+                _showInboxWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowFinishedToursWindowCommand
+        {
+            get
+            {
+                return _showFinishedToursWindowCommand;
+            }
+            set
+            {
+                _showFinishedToursWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowVoucherWindowCommand
+        {
+            get
+            {
+                return _showVoucherWindowCommand;
+            }
+            set
+            {
+                _showVoucherWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public void ShowFinishedToursWindow()
+        {
+            FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
+            finishedToursWindow.ShowDialog();
+        }
+
+        public void ShowMyToursWindow()
+        {
+            MyToursWindow myToursWindow = new MyToursWindow();
+            myToursWindow.ShowDialog();
+        }
+
+        public void ShowVoucherWindow()
+        {
+            VoucherWindow voucherWindow = new VoucherWindow();
+            voucherWindow.ShowDialog();
+        }
+
+        public void ShowinboxWindow()
+        {
+            InboxWindow inboxWindow = new InboxWindow(_userDTO);
+            inboxWindow.ShowDialog();
+        }
         public void ShowTourReservationWindow()
         {
 
