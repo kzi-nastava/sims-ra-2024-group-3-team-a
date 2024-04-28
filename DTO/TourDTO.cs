@@ -19,7 +19,6 @@ namespace BookingApp.DTO
         public TourDTO() 
         {
             locationDTO = new LocationDTO();
-           // keyPointsDTO = new KeyPointsDTO();
             images = new List<string>();
         }
         public TourDTO(Tour tour)
@@ -31,7 +30,6 @@ namespace BookingApp.DTO
             locationDTO = new LocationDTO(tour.Place);
             language = tour.Language;
             maxTouristNumber = tour.MaxTouristNumber;
-          //  keyPointsDTO = new KeyPointsDTO(tour.KeyPoints);
             beginingTime = tour.BeginingTime;
             duration = tour.Duration;
             currentKeyPoint = tour.CurrentKeyPoint;

@@ -13,8 +13,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-       <!-- <Grid Grid.Row="1">-->
-        <ListView x:Name="listViewTours" 
+        <Grid Grid.Row="0">
+            <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center" FontSize="30" TextWrapping="Wrap" Text="DANAŠNJE TURE"  FontStretch="Medium"/>
+        </Grid>
+                <ListView x:Name="listViewTours" 
  Background="Transparent"
  ItemsSource="{Binding ToursTodayDTO}" 
  SelectedItem="{Binding SelectedTourDTO}"  
@@ -31,33 +33,33 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate >
                     <DataTemplate >
-                        <Border BorderThickness="2" BorderBrush="LightGray"  Background="White" Margin="0,10,5,10">
-                        <StackPanel Background="White" Width="300"  Orientation="Horizontal"  Margin ="25,15,25,15">
-                            <StackPanel Margin="10,0,10,0">
-                                <TextBlock FontWeight="Bold" FontSize="20"   Margin="10,0,0,0" Text="{Binding Name}" />
-                                <Border BorderBrush="LightSlateGray" BorderThickness="1">
-                                    <StackPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="Location: " />
+                    <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan" Margin="0,10,5,10" Height="150">
+                        <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="15,15,25,10">
+                            <StackPanel Margin="10,0,10,10">
+                                <StackPanel Height="26">
+                                <Viewbox Width="150" >
+                                    <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Name}"  FontStretch="Medium"/>
+                                </Viewbox>
+                                </StackPanel>
+                                <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
+                                    <StackPanel Margin="5,20,10,10">
+                                        <DockPanel >
+                                            <TextBlock Text="LOKACIJA: " />
                                             <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
                                         </DockPanel>
                                         <DockPanel>
-                                            <TextBlock Text="Duration: " />
+                                            <TextBlock Text="BROJ TURISTA: " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="TRAJANJE: " />
                                             <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="Language: " />
-                                            <TextBlock FontWeight="Bold" Text="{Binding Language}" />
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="Date: " />
-                                            <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
                                         </DockPanel>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
-                            <Border BorderThickness="1" BorderBrush="Gray" Margin="10,0,0,0">
-                                <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
+                            <Border BorderThickness="1" BorderBrush="SaddleBrown" Margin="15,10,3,10">
+                                <Image Source="{Binding Path=Images[0]}" Height="80" Width="112" Stretch="Fill" />
                             </Border>
                         </StackPanel>
                         </Border>

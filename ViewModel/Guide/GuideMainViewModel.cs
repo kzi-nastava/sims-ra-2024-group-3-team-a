@@ -78,6 +78,7 @@ namespace BookingApp.ViewModel.Guide
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
+                ShowActiveTour();
             }
         }
         public RelayCommand ShowActiveTourCommand
@@ -89,19 +90,19 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        private void ShowActiveTour(object parameter)
+        private void ShowActiveTour(/*object parameter*/)
         {
-            TourDTO selectedTour = parameter as TourDTO;
-            if (selectedTour.CurrentKeyPoint != "finished")
+            //TourDTO selectedTour = parameter as TourDTO;
+            if (_selectedTourDTO.CurrentKeyPoint != "finished")
             {
-                if (_doesActiveTourExist == true && selectedTour.IsActive != true)
+                if (_doesActiveTourExist == true && _selectedTourDTO.IsActive != true)
                 {
                     MessageBox.Show("Another tour has already started", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
-                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(selectedTour, _doesActiveTourExist);
+                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist);
                 tourDetailsWindow.ShowDialog();
-                _tourService.Update(selectedTour.ToTourAllParam());
+                _tourService.Update(_selectedTourDTO.ToTourAllParam());
             }
             else
             {
