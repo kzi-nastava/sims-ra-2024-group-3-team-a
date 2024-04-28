@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -17,7 +19,10 @@ namespace BookingApp.ViewModel.Guide
         public ReviewDetailsViewModel(TouristDTO touristDTO)
         {
             _touristDTO = touristDTO;
-            _touristService = new TouristService();
+
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            _touristService = new TouristService(touristRepository);
+
             Reviews = new ObservableCollection<TourReviewDTO>();
             Reviews.Add(_touristDTO.Review);
             _markAsInvalidCommand = new RelayCommand(MarkAsInvalid);

@@ -1,4 +1,6 @@
 ﻿using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using System;
@@ -22,9 +24,13 @@ namespace BookingApp.ViewModel.Owner
         public OwnerMainViewModel(UserDTO loggedInOwner)
         {
             _loggedInOwner = loggedInOwner;
-            _userService = new UserService();
+            
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+            _userService = new UserService(userRepository);
 
-            _accommodationReservationService = new AccommodationReservationService();
             OwnerMainWindow.LoggedInOwner = new UserDTO(_accommodationReservationService.SetSuperOwner(_loggedInOwner.ToUser()));
             UpdateFinishedReservations();
         }

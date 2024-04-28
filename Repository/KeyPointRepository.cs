@@ -11,32 +11,32 @@ using System.Xml.Linq;
 namespace BookingApp.Repository
 {
 
-    public class KeyPointsRepository : IKeyPointsRepository
+    public class KeyPointRepository : IKeyPointRepository
     {
-        private const string FilePath = "../../../Resources/Data/keypoints.csv";
+        private const string FilePath = "../../../Resources/Data/keypoint.csv";
 
-        private readonly Serializer<KeyPoints> _serializer;
+        private readonly Serializer<KeyPoint> _serializer;
 
-        private List<KeyPoints> _keypoints;
+        private List<KeyPoint> _keypoints;
 
-        public KeyPointsRepository()
+        public KeyPointRepository()
         {
-            _serializer = new Serializer<KeyPoints>();
+            _serializer = new Serializer<KeyPoint>();
             _keypoints = _serializer.FromCSV(FilePath);
         }
 
-        public List<KeyPoints> GetAll()
+        public List<KeyPoint> GetAll()
         {
             return _serializer.FromCSV(FilePath);
         }
 
-        public KeyPoints Save(KeyPoints keyPoints)
+        public KeyPoint Save(KeyPoint keyPoint)
         {
-            keyPoints.Id = NextId();
+            keyPoint.Id = NextId();
             _keypoints = _serializer.FromCSV(FilePath);
-            _keypoints.Add(keyPoints);
+            _keypoints.Add(keyPoint);
             _serializer.ToCSV(FilePath, _keypoints);
-            return keyPoints;
+            return keyPoint;
         }
 
         public int NextId()
@@ -49,29 +49,34 @@ namespace BookingApp.Repository
             return _keypoints.Max(c => c.Id) + 1;
         }
 
-        public void Delete(KeyPoints keyPoints)
+        public void Delete(KeyPoint keyPoint)
         {
             _keypoints = _serializer.FromCSV(FilePath);
-            KeyPoints founded =  _keypoints.Find(c => c.Id == keyPoints.Id);
+            KeyPoint founded = _keypoints.Find(c => c.Id == keyPoint.Id);
             _keypoints.Remove(founded);
             _serializer.ToCSV(FilePath, _keypoints);
         }
 
-        public KeyPoints Update(KeyPoints keyPoints)
+        public KeyPoint Update(KeyPoint keyPoint)
         {
             _keypoints = _serializer.FromCSV(FilePath);
-            KeyPoints current = _keypoints.Find(c => c.Id == keyPoints.Id);
+            KeyPoint current = _keypoints.Find(c => c.Id == keyPoint.Id);
             int index = _keypoints.IndexOf(current);
             _keypoints.Remove(current);
-            _keypoints.Insert(index, keyPoints);
+            _keypoints.Insert(index, keyPoint);
             _serializer.ToCSV(FilePath, _keypoints);
-            return keyPoints;
+            return keyPoint;
         }
 
-        public KeyPoints GetById(int id)
+        public KeyPoint GetById(int id)
         {
             _keypoints = _serializer.FromCSV(FilePath);
             return _keypoints.FirstOrDefault(c => c.Id == id);
+        }
+        public KeyPoint GetByName(string name)
+        {
+            _keypoints = _serializer.FromCSV(FilePath);
+            return _keypoints.FirstOrDefault(c => c.Name == name);
         }
     }
 }

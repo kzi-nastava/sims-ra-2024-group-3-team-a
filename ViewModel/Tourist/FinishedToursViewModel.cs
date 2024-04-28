@@ -1,5 +1,7 @@
-﻿using BookingApp.Commands;
+using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Tourist;
 using System;
@@ -29,8 +31,14 @@ namespace BookingApp.ViewModel.Tourist
         public FinishedToursViewModel(UserDTO loggedInUser)
         {
 
-            _tourService = new TourService();
-            _tourReviewService = new TourReviewService();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _tourReviewService = new TourReviewService(tourReviewRepository);
             _userDTO = loggedInUser;
             List<TourDTO> finishedTours = _tourService.GetFinishedTours().Select(finishedTours => new TourDTO(finishedTours)).ToList();
             _finishedTourDTO = new ObservableCollection<TourDTO>(finishedTours);

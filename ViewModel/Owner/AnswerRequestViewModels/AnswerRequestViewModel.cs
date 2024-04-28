@@ -1,8 +1,10 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using BookingApp.View.Owner.AnswerRequestPages;
@@ -37,10 +39,20 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
         public AnswerRequestViewModel(MessageDTO messageDTO)
         {
             _messageDTO = messageDTO;
-            _accommodationReservationService = new AccommodationReservationService();
-            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
-            _messageService = new MessageService();
-            _userService = new UserService();
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository );
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository);
+            _userService = new UserService(userRepository);
 
             _accommodationReservationChangeRequestDTO = new AccommodationReservationChangeRequestDTO(_accommodationReservationChangeRequestService.GetById(messageDTO.RequestId));
             _accommodationReservationDTO = new AccommodationReservationDTO(_accommodationReservationService.GetById(_accommodationReservationChangeRequestDTO.AccommodationReservationId));

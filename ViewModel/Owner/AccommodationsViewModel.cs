@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using System;
@@ -24,7 +26,9 @@ namespace BookingApp.ViewModel.Owner
 
         public AccommodationsViewModel(UserDTO loggedInUser)
         {
-            _accommodationService = new AccommodationService();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            _accommodationService = new AccommodationService(accommodationRepository);
+
             List<AccommodationDTO> accommodationsDTO = _accommodationService.GetAccommodationsForOwner(loggedInUser.ToUser()).Select(accommodation => new AccommodationDTO(accommodation)).ToList(); ;
             _accommodationsDTO = new ObservableCollection<AccommodationDTO>(accommodationsDTO);
 

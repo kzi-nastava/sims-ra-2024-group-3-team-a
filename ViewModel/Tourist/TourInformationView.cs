@@ -1,6 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using System;
@@ -10,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xceed.Wpf.Toolkit.Primitives;
+using System.Windows;
 
 namespace BookingApp.ViewModel.Tourist
 {
@@ -26,8 +30,14 @@ namespace BookingApp.ViewModel.Tourist
         {
            _tourDTO = tourDTO;
            _userDTO = loggedInUser;
-           _tourReservationService = new TourReservationService();
-           _showTourReservationWindow = new RelayCommand(ShowTourReservationWindow);
+
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _showTourReservationWindow = new RelayCommand(ShowTourReservationWindow);
            images = _tourDTO.Images;
            imagesCollection = new ObservableCollection<string>(images);
             

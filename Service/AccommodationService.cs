@@ -13,11 +13,10 @@ namespace BookingApp.Service
     public class AccommodationService
     {
         private IAccommodationRepository _accommodationRepository;
-        //AccommodationRepository _accommodationRepository = new AccommodationRepository();
 
-        public AccommodationService()
+        public AccommodationService(IAccommodationRepository accommodationRepository)
         {
-            _accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            _accommodationRepository = accommodationRepository;
         }
 
         public List<Accommodation> GetAll()

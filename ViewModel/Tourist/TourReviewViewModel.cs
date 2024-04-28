@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using BookingApp.Repository;
 using BookingApp.View.Tourist;
 using System.Windows;
+using BookingApp.Repository.Interfaces;
+using BookingApp.InjectorNameSpace;
 
 namespace BookingApp.ViewModel.Tourist
 {
@@ -36,7 +38,8 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _addImagesCommand;
         public TourReviewViewModel(TourDTO tourDTO, UserDTO loggedInUser)
         {
-            _tourReviewService = new TourReviewService();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            _tourReviewService = new TourReviewService(tourReviewRepository);
             _tourDTO = tourDTO;
             _userDTO = loggedInUser;
             _tourReviewDTO = new TourReviewDTO();

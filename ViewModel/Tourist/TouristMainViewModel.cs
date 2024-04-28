@@ -1,8 +1,10 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using BookingApp.View.Owner;
@@ -44,14 +46,26 @@ namespace BookingApp.ViewModel.Tourist
         public TouristMainViewModel(UserDTO loggedInUser)
         {
             _message = new Message();
-            _tourService = new TourService();
             _tourDTO = new TourDTO();
             _userDTO = loggedInUser;
-            _tourReservationService = new TourReservationService();
+            
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();   
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<TourDTO> tours = _tourService.GetAll().Select(tours => new TourDTO(tours)).ToList();
             _toursDTO = new ObservableCollection<TourDTO>(tours);
             _filteredToursDTO = _toursDTO;
-            _messageService = new MessageService();
             _searchCommand = new RelayCommand(Search);
             _showAppropriateWindowCommand = new RelayCommand(ShowAppropriateWindow);
             _showFinishedToursWindowCommand = new RelayCommand(ShowFinishedToursWindow);

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using BookingApp.Repository;
 using BookingApp.Commands;
+using BookingApp.Repository.Interfaces;
+using BookingApp.InjectorNameSpace;
 
 namespace BookingApp.ViewModel.Guest
 {
@@ -47,12 +49,23 @@ namespace BookingApp.ViewModel.Guest
         public GuestMainViewModel(UserDTO loggedInGuest)
         {
             _loggedInGuest = loggedInGuest;
-            _userService = new UserService();
+            
 
-            _accommodationReservationService = new AccommodationReservationService();
-            _accommodationService = new AccommodationService();
-            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService();
-            _messageService = new MessageService();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _userService = new UserService(userRepository);
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+            _accommodationService = new AccommodationService(accommodationRepository);
+            _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository);
+            _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
 
             _logOutCommand = new RelayCommand(LogOut);
             _showMyRequestsCommand = new RelayCommand(ShowMyRequests);
@@ -72,7 +85,7 @@ namespace BookingApp.ViewModel.Guest
         {
             List<AccommodationReservationDTO> AccommodationReservationsList = _accommodationReservationService.GetAll().Select(accommodationReservation => new AccommodationReservationDTO(accommodationReservation)).ToList();
             _accommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(AccommodationReservationsList);
-            List<AccommodationDTO> AcomodationsList = _accommodationService.GetAll().Select(accommodation => new AccommodationDTO(accommodation)).ToList(); 
+            List<AccommodationDTO> AcomodationsList = _accommodationService.GetAll().Select(accommodation => new AccommodationDTO(accommodation)).OrderByDescending(a => _userService.GetById(a.OwnerId).IsSuper).ToList(); 
             _accommodationsDTO = new ObservableCollection<AccommodationDTO>(AcomodationsList);
             List<AccommodationReservationChangeRequestDTO> MyRequestsList = _accommodationReservationChangeRequestService.GetAllByGuestId(_loggedInGuest.Id).Select(request => new AccommodationReservationChangeRequestDTO(request)).ToList();
             _myChangeRequestsDTO = new ObservableCollection<AccommodationReservationChangeRequestDTO>(MyRequestsList);

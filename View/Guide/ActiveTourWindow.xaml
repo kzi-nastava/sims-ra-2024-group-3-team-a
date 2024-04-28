@@ -14,22 +14,58 @@
         </Style>
     </Window.Resources>
     <Border BorderThickness="8" BorderBrush="Black">
-    <Grid Background="AntiqueWhite" >
-        <Grid x:Name="gridMain" ShowGridLines="False"  Grid.Row="0" Margin="10,0,10,150" >
-                <ItemsControl ItemsSource="{Binding KeyPointsString}">
+        <Grid Background="AntiqueWhite" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="5" >
+                <MenuItem Header="Početna"/>
+                <MenuItem Header="Pomoć"/>
+                <MenuItem Header="Statistike"/>
+                <MenuItem Header="Sve ture"/>
+                <MenuItem Header="Otkaz"/>
+            </Menu>
+            <Grid Grid.Row="1" Grid.Column="2">
+                <TextBlock Text="{Binding Path= Tour.Name}" HorizontalAlignment="Center" FontSize="40"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="0">
+                <TextBlock Text="Ključne tačke:" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+            </Grid>
+            <ScrollViewer Grid.Row="3" Grid.ColumnSpan="5" Margin="15,10,15,10">
+
+                <ItemsControl ItemsSource="{Binding KeyPoints}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Command="{Binding DataContext.MarkPointCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Width="100" Height="60">
+                            <Button Content="{Binding Path=Name}" Command="{Binding DataContext.MarkPointCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Width="100" Height="60">
                                 <Button.Style>
                                     <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="IsEnabled" Value="True"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <DataTrigger Binding="{Binding HasPassed}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
                                                 <Setter Property="Background" Value="IndianRed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                                <Setter Property="Background" Value="LightGreen"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -38,27 +74,36 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </Grid>
-        <Grid x:Name="Grid2" Margin="15,300,200,20" Grid.Row="1">
-            <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False" >
+            </ScrollViewer>
+
+            <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False"  Grid.Row="4"  Grid.ColumnSpan="4" Visibility="Visible">
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Path=Surname}" IsReadOnly="True" />
-                        <DataGridTemplateColumn Header="PRESENT" Width="Auto">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="JOIN" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
+                    <DataGridTemplateColumn Header="PRESENT" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="JOIN" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
 
             </DataGrid>
-
+            <Button  Command="{Binding CancelTourCommand}" VerticalAlignment="Top" Height="40" Grid.Row="4" Margin="10,0,10,0" Grid.Column="5">
+            <TextBlock TextAlignment="Center">
+        Dodatne informacije
+        <LineBreak/>
+              o turi
+            </TextBlock>
+            </Button>
+            <Button Content="Završi turu" Command="{Binding CancelTourCommand}" VerticalAlignment="Top" Height="40" Margin="10,50,10,0" Grid.Row="4" Grid.Column="5"/>
+            <Grid Grid.Row="5" Grid.Column="3">
+                <TextBlock>Vodič:</TextBlock>
+                <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
+            </Grid>
         </Grid>
-        <Button Content="Finish tour" Command="{Binding CancelTourCommand}" Margin="623,317,24,0" VerticalAlignment="Top" Height="40"/>
-    </Grid>
     </Border>
 
 </Window>

@@ -15,9 +15,9 @@ namespace BookingApp.Service
     {
         private ITourReviewRepository _tourReviewRepository;
 
-        public TourReviewService()
+        public TourReviewService(ITourReviewRepository tourReviewRepository)
         {
-            _tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            _tourReviewRepository = tourReviewRepository;
         }
 
         public List<TourReview> GetAll()

@@ -1,6 +1,8 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using System;
@@ -23,7 +25,11 @@ namespace BookingApp.ViewModel.Owner
 
         public MyReviewNotRatedViewModel(AccommodationReservationDTO reservation)
         {
-            _accommodationReservationService = new AccommodationReservationService();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+
             _accommodationReservationDTO = reservation;
 
             _goBackCommand = new RelayCommand(GoBack);

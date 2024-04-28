@@ -1,5 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
 using BookingApp.View.Tourist;
@@ -34,10 +36,19 @@ namespace BookingApp.ViewModel.Tourist
         private TourDTO _selectedTourDTO { get; set; }
         public AlternativeToursViewModel(TourDTO tourDTO, UserDTO loggedInUser)
         {
-            _tourService = new TourService();
+            
             _tourDTO = tourDTO;
             _userDTO = loggedInUser;
-            _tourReservationService = new TourReservationService();
+            
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+
             List<TourDTO> tours = _tourService.GetToursWithSameLocation(_tourDTO.ToTourAllParam()).Select(tours => new TourDTO(tours)).ToList();
             _toursDTO = new ObservableCollection<TourDTO>(tours);
             _showFinishedToursWindowCommand = new RelayCommand(ShowFinishedToursWindow);

@@ -14,6 +14,8 @@ using System.Windows;
 using BookingApp.View.Owner;
 using BookingApp.Commands;
 using System.Windows.Input;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
 
 namespace BookingApp.ViewModel.Guide
 {
@@ -26,7 +28,12 @@ namespace BookingApp.ViewModel.Guide
         public TourReviewsViewModel(TourDTO tour)
         {
             _tourDTO = tour;
-            _tourReservationService = new TourReservationService();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             List<TouristDTO> touristsDTO = _tourReservationService.GetJoinedTourists(_tourDTO.ToTourAllParam()).Select(tourist => new TouristDTO(tourist)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             _showReviewDetailsCommand = new RelayCommand(ShowReviewDetails);
