@@ -32,7 +32,7 @@
 
         <!--Lista acoomodationsa-->
         <StackPanel Grid.Row="2">
-            <ListView ItemsSource="{Binding AccommodationsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+            <ListView ItemsSource="{Binding AccommodationsDTO}" SelectedItem="{Binding SelectedAccommodationDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Black" BorderThickness="5">
