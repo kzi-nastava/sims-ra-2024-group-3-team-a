@@ -24,6 +24,8 @@ namespace BookingApp.ViewModel.Owner
 
         private UserDTO _loggedInUser;
 
+        private AccommodationDTO _selectedAccommodationDTO = null;
+
         public AccommodationsViewModel(UserDTO loggedInUser)
         {
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
@@ -48,6 +50,20 @@ namespace BookingApp.ViewModel.Owner
             {
                 _accommodationsDTO = value;
                 OnPropertyChanged();
+            }
+        }
+        public AccommodationDTO SelectedAccommodationDTO
+        {
+            get
+            {
+                return _selectedAccommodationDTO;
+            }
+            set
+            {
+                _selectedAccommodationDTO = value;
+                OnPropertyChanged();
+                ShowAccommodationStatisticsYear();
+                _selectedAccommodationDTO = null;
             }
         }
 
@@ -75,6 +91,11 @@ namespace BookingApp.ViewModel.Owner
                 _showSideMenuCommand = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void ShowAccommodationStatisticsYear()
+        {
+            OwnerMainWindow.MainFrame.Content = new AccommodationsStatisticsYearsPage(_selectedAccommodationDTO);
         }
 
         public void ShowAddAccommodationPage()
