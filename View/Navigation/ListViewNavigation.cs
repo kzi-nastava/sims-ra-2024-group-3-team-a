@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -10,35 +11,39 @@ namespace BookingApp.View.Navigation
 {
     public class ListViewNavigation : ListView
     {
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        public static bool GetSelectOnFocus(DependencyObject obj)
         {
-            base.OnPreviewKeyDown(e);
+            return (bool)obj.GetValue(SelectOnFocusProperty);
+        }
 
-            if (e.Key == Key.Up)
+        public static void SetSelectOnFocus(DependencyObject obj, bool value)
+        {
+            obj.SetValue(SelectOnFocusProperty, value);
+        }
+
+        public static readonly DependencyProperty SelectOnFocusProperty =
+            DependencyProperty.RegisterAttached("SelectOnFocus", typeof(bool), typeof(ListViewNavigation), new PropertyMetadata(false, OnSelectOnFocusChanged));
+
+        private static void OnSelectOnFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ListViewItem listViewItem)
             {
-                if (SelectedItem != null)
+                if ((bool)e.NewValue)
                 {
-                    int index = Items.IndexOf(SelectedItem);
-                    if (index > 0)
-                    {
-                        SelectedItem = Items[index - 1];
-                        ScrollIntoView(SelectedItem);
-                        e.Handled = true; // Handle the event to prevent default navigation
-                    }
+                    listViewItem.GotFocus += ListViewItem_GotFocus;
+                }
+                else
+                {
+                    listViewItem.GotFocus -= ListViewItem_GotFocus;
                 }
             }
-            else if (e.Key == Key.Down)
+        }
+
+        private static void ListViewItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is ListViewItem listViewItem)
             {
-                if (SelectedItem != null)
-                {
-                    int index = Items.IndexOf(SelectedItem);
-                    if (index < Items.Count - 1)
-                    {
-                        SelectedItem = Items[index + 1];
-                        ScrollIntoView(SelectedItem);
-                        e.Handled = true; // Handle the event to prevent default navigation
-                    }
-                }
+                listViewItem.IsSelected = true;
             }
         }
     }

@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace BookingApp.ViewModel.Tourist
 {
-    public class TourInformationView : ViewModel
+    public class TourInformationViewModel : ViewModel
     {
         private static TourDTO _tourDTO;
         private static UserDTO _userDTO;
@@ -26,7 +26,7 @@ namespace BookingApp.ViewModel.Tourist
         private static List<string> images;
         public ObservableCollection<string> imagesCollection;
 
-        public TourInformationView(TourDTO tourDTO, UserDTO loggedInUser)
+        public TourInformationViewModel(TourDTO tourDTO, UserDTO loggedInUser)
         {
            _tourDTO = tourDTO;
            _userDTO = loggedInUser;
@@ -90,6 +90,8 @@ namespace BookingApp.ViewModel.Tourist
             TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationService, _tourDTO, _userDTO);
             tourReservationWindow.ShowDialog();
         }
+
+
 
     }
 }

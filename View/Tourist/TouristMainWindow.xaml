@@ -39,6 +39,12 @@
 
     <Window.InputBindings>
     <KeyBinding Key="S" Modifiers="Control" Command="{Binding SearchCommand}" />
+        <KeyBinding Key="F1"  />
+        <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
+        <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
+        <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
+        <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
     </Window.InputBindings>
 
     <Grid Background="#fae8f1">
@@ -51,14 +57,30 @@
         </Grid.RowDefinitions>
 
         <Menu DockPanel.Dock="Top" BorderThickness="1" >
-            <MenuItem Header="Home" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
-            <MenuItem Header="My Tours"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
-            <MenuItem Header="Tour Requests" Foreground="#fa8ec4"></MenuItem>
-            <MenuItem Header="Create Request" Foreground="#fa8ec4" Command="{Binding ShowCommand}"></MenuItem>
-            <MenuItem Header="Rate Tour" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
-            <MenuItem Header="Vouchers" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
-            <MenuItem Header="Inbox" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
-            <MenuItem Header="Logout" Foreground="#fa8ec4" Command="{Binding LogOutCommand}" ></MenuItem>
+            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
+            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="#fa8ec4"></MenuItem>
+            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="#fa8ec4" Command="{Binding ShowCommand}"></MenuItem>
+            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="50,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
+            <MenuItem x:Name="Profile" Focusable="True" Header="Profile(F8)" Margin="5,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
+
+
+            <MenuItem x:Name="More" Header="More" Margin="5,0,0,0" >
+
+                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="#fa8ec4" >
+
+                </MenuItem>
+                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="#fa8ec4" Command="{Binding LogOutCommand}">
+                    
+                </MenuItem>
+              
+                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="#fa8ec4">
+
+                </MenuItem>
+            </MenuItem>
+           
         </Menu>
         <Popup Name="popupWindow" IsOpen="{Binding IsOpen}" Placement="Center" StaysOpen="False">
             <Border Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
@@ -93,10 +115,10 @@
 
 
                 <TextBox Margin="5" Grid.Row="1" Grid.Column="0"  x:Name="searchCountryTextBox" Width="100"  Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="100"   Text="{Binding SearchCityInput, Mode=TwoWay}" />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"  x:Name="searchDurationTextBox" Width="150"  Text="{Binding SearchDurationInput, Mode=TwoWay}" />
-                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3" Foreground="Gold" x:Name="languageComboBox" Width="100"  ItemsSource="{Binding Languages}" SelectedItem="{Binding SearchLanguageInput}"/>
-                <xctk:IntegerUpDown  Margin="5" Grid.Row="1" Grid.Column="4"  x:Name="searcmaxTouristNumberTextBox" Width="150"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay}"   />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="100"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"  x:Name="searchDurationTextBox" Width="150"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3" Foreground="Gold" x:Name="languageComboBox" Width="100"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchLanguageInput}"/>
+                <xctk:IntegerUpDown  Margin="5" Grid.Row="1" Grid.Column="4"  x:Name="searcmaxTouristNumberTextBox" Width="150"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
                 <Button Margin="5" Grid.Row="1" Grid.Column="5" BorderBrush="LightGray"  Background="#f7459e"  x:Name="buttonSearch" Content="Search" Foreground="LightGray" Width="70" Command="{Binding SearchCommand}" Focusable="True" TabIndex="1" IsEnabled="True"/>
 
 
