@@ -5,6 +5,7 @@ using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
+using BookingApp.View.Owner.AccommodationRenovationPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
 
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _showAddAccommodationRenovationPageCommand;
 
         private int[] _years = { 2022, 2023, 2024, 2025 };
         private int _selectedYear;
@@ -37,6 +39,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
 
             _goBackCommand = new RelayCommand(GoBack);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showAddAccommodationRenovationPageCommand = new RelayCommand(ShowAddAccommodationRenovationPage);
 
             _mostOccupiedYear = _accommodationStatisticsService.GetMostOccupiedYear(_accommodationDTO.Id, _years);
             SetStatistics();
@@ -115,7 +118,19 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 OnPropertyChanged();
             }
         }
-        
+        public RelayCommand ShowAddAccommodationRenovationPageCommand
+        {
+            get
+            {
+                return _showAddAccommodationRenovationPageCommand;
+            }
+            set
+            {
+                _showAddAccommodationRenovationPageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void SetStatistics()
         {
             foreach (int year in _years)
@@ -141,6 +156,10 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private void ShowSideMenu()
         {
             OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
+        }
+        private void ShowAddAccommodationRenovationPage()
+        {
+            OwnerMainWindow.MainFrame.Content = new AddAccommodationRenovationPage(_accommodationDTO);
         }
         private void GoBack()
         {

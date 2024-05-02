@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using BookingApp.Commands;
+using BookingApp.View.Owner.AccommodationRenovationPages;
 
 namespace BookingApp.ViewModel.Owner
 {
@@ -18,6 +19,7 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showInboxPageCommand;
         private RelayCommand _logOutCommand;
         private RelayCommand _showProfileMenuPageCommand;
+        private RelayCommand _showRenovationsPageCommand;
 
         public SideMenuViewModel()
         {
@@ -27,6 +29,7 @@ namespace BookingApp.ViewModel.Owner
             _showInboxPageCommand = new RelayCommand(ShowInboxPage);
             _logOutCommand = new RelayCommand(LogOut);
             _showProfileMenuPageCommand = new RelayCommand(ShowProfileMenuPage);
+            _showRenovationsPageCommand = new RelayCommand(ShowRenovationsPage);
         }
 
         public RelayCommand CloseSideMenuCommand
@@ -101,6 +104,18 @@ namespace BookingApp.ViewModel.Owner
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowRenovationsPageCommand
+        {
+            get
+            {
+                return _showRenovationsPageCommand;
+            }
+            set
+            {
+                _showRenovationsPageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void CloseSideMenu()
         {
@@ -123,6 +138,10 @@ namespace BookingApp.ViewModel.Owner
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             OwnerMainWindow.GetInstance().Close();
+        }
+        public void ShowRenovationsPage()
+        {
+            OwnerMainWindow.MainFrame.Content = new RenovationsPage(OwnerMainWindow.LoggedInOwner);
         }
         public void ShowProfileMenuPage()
         {

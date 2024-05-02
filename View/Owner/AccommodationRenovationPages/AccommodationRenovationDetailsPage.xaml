@@ -1,0 +1,58 @@
+﻿<Page x:Class="BookingApp.View.Owner.AccommodationRenovationPages.AccommodationRenovationDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:BookingApp.View.Owner.AccommodationRenovationPages"
+      mc:Ignorable="d"
+      d:DesignHeight="750" d:DesignWidth="430"
+      Title="AccommodationRenovationDetailsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--Renovations Toolbar-->
+        <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+            <Grid Background="Transparent" Margin="3,3,3,3">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00">RENOVATIONS</Label>
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
+                    <Image Name="imageSideMenu" Source="../../../Resources/Images/Owner/menu.png" />
+                </Button>
+            </Grid>
+        </Border>
+        <Button Command="{Binding GoBackCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40">
+            <Image Name="imageBack" Source="../../../Resources/Images/back.png" />
+        </Button>
+
+        <Button Grid.Row="1" Command="{Binding CancelRenovationCommand}" Height="50" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Background="CadetBlue" Foreground="#d4ff00" Content="Cancel">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCancellable}" Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Label Grid.Row="2" Content="Renovation" Foreground="#d4ff00" HorizontalAlignment="Center" FontSize="25"></Label>
+        <Label Grid.Row="3" Content="{Binding Path=AccommodationRenovationDTO.AccommodationDTO.Name}" Foreground="#d4ff00" HorizontalAlignment="Center" FontSize="25"></Label>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="{Binding Path=AccommodationRenovationDTO.BeginDate}" Foreground="#d4ff00" HorizontalAlignment="Center" FontSize="25"></Label>
+            <Label Content=" - " Foreground="#d4ff00" HorizontalAlignment="Center" FontSize="25"></Label>
+            <Label Content="{Binding Path=AccommodationRenovationDTO.EndDate}" Foreground="#d4ff00" HorizontalAlignment="Center" FontSize="25"></Label>
+        </StackPanel>
+        <Label Grid.Row="5" Content="Description" Foreground="#d4ff00" HorizontalAlignment="Center" FontSize="19"></Label>
+        <TextBlock Grid.Row="6" TextWrapping="Wrap" Background="White" Height="250" Margin="12" Text="{Binding Path=AccommodationRenovationDTO.Description}"></TextBlock>
+    </Grid>
+</Page>

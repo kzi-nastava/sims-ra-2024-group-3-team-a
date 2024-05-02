@@ -28,6 +28,7 @@
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
     <None Remove="Resources\Images\Tourist\daenerys.jpg" />
@@ -64,6 +65,7 @@
     <Resource Include="Resources\Images\Owner\menu.png" />
     <Resource Include="Resources\Images\Owner\notification.png" />
     <Resource Include="Resources\Images\Owner\OwnerBackground.jpg" />
+    <Resource Include="Resources\Images\Owner\renovation.png" />
     <Resource Include="Resources\Images\profile.png" />
     <Resource Include="Resources\Images\star_icon.png" />
     <Resource Include="Resources\Images\Tourist\daenerys.jpg" />

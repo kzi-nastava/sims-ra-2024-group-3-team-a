@@ -4,6 +4,7 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
+using BookingApp.View.Owner.AccommodationRenovationPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
     {
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _showAddAccommodationRenovationPageCommand;
 
         private AccommodationDTO _accommodationDTO;
         private int _year;
@@ -36,6 +38,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             _year = year;
             _goBackCommand = new RelayCommand(GoBack);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showAddAccommodationRenovationPageCommand = new RelayCommand(ShowAddAccommodationRenovationPage);
 
             _accommodationStatisticsDTO = new Dictionary<string, AccommodationStatisticsDTO>();
 
@@ -102,6 +105,18 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowAddAccommodationRenovationPageCommand
+        {
+            get
+            {
+                return _showAddAccommodationRenovationPageCommand;
+            }
+            set
+            {
+                _showAddAccommodationRenovationPageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void SetStatistics()
         {
@@ -158,6 +173,10 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private void ShowSideMenu()
         {
             OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
+        }
+        private void ShowAddAccommodationRenovationPage()
+        {
+            OwnerMainWindow.MainFrame.Content = new AddAccommodationRenovationPage(_accommodationDTO);
         }
         private void GoBack()
         {
