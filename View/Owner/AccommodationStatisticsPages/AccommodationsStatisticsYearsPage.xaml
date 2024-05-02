@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="75"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -41,6 +42,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -91,9 +93,15 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <Label Margin="0,25,0,0" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Content="YEARLY STATISTICS" FontSize="20"/>
+        <Button Grid.Row="4" Command="{Binding ShowAddAccommodationRenovationPageCommand}" Margin="125,7,125,7" Background="CadetBlue" Foreground="#d4ff00">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="..\..\..\Resources\Images\Owner\renovation.png"></Image>
+                <Label VerticalAlignment="Center" Content="RENOVATE" FontSize="15" Foreground="#d4ff00"/>
+            </StackPanel>
+        </Button>
+        <Label Margin="0,25,0,0" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Content="YEARLY STATISTICS" FontSize="20"/>
 
-        <StackPanel Grid.Row="5">
+        <StackPanel Grid.Row="6">
             <ListView ItemsSource="{Binding AccommodationStatisticsDTO}" SelectedValue="{Binding SelectedYear}" SelectedValuePath="Key" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
