@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        xmlns:nav="clr-namespace:BookingApp.View.Navigation"
         mc:Ignorable="d"
         Title="FinishedToursWindow" Height="450" Width="800">
     <Grid Background="#f6f1ea">
@@ -27,14 +28,21 @@
         <Grid Grid.Row="1">
             <TextBlock Margin="30,10,0,0" FontWeight="Heavy" FontSize="40">Finished tours: </TextBlock>
         </Grid>
+        
         <Border Grid.Row="1" BorderThickness="3" BorderBrush="#d470a2" Margin="30,80">
             <Grid Background="White" Grid.Row="1">
+                
 
 
                 <Grid Grid.Column="0">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Grid.Row="1">
-                            <ListView ItemsSource="{Binding FinishedToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                            <ListView x:Name="finishedToursListView" ItemsSource="{Binding FinishedToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="nav:ListViewNavigation.SelectOnFocus" Value="True" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
                                 <ListView.ItemTemplate>
                                     <DataTemplate >
                                         <Border BorderThickness="2" BorderBrush="Black"  Background="#f6f1ea" Margin="10,10,5,10">
@@ -60,9 +68,10 @@
                                                             <TextBlock FontWeight="Bold"  Text="{Binding BeginingTime}" />
                                                         </DockPanel>
                                                     </StackPanel>
-                                                   
+
                                                 </StackPanel>
                                                 <Button Grid.Column="1" BorderThickness="2" Background="#fae8f1" FontWeight="Bold" Foreground="Black" Command="{Binding DataContext.ShowTourReviewWindowCommand, RelativeSource={RelativeSource AncestorType=ListView}}" Content="Rate tour" Margin="0,10,60,10" Width="100" Height="60"/>
+                                                <TextBlock Grid.Column="1" Text="Press Enter to rate" Margin="0,95,40,10"></TextBlock>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -72,12 +81,9 @@
                     </ScrollViewer>
                 </Grid>
             </Grid>
-
-
-
-
         </Border>
-        
+        <TextBlock Margin="30,10" Text="help: use up and down arrows to go throw finished tours and tab to select rate button " Grid.Row="2"/>
+
     </Grid>
 
     <!--<ListBox x:Name="listBoxFinishedTours"

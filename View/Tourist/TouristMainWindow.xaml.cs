@@ -62,7 +62,8 @@ namespace BookingApp.View
 
 
             };
-            searchCountryTextBox.Focus();
+           searchCountryTextBox.Focus();
+           this.PreviewKeyDown += TouristMainWindow_PreviewKeyDown;
         }
 
         public static TouristMainWindow GetInstance()
@@ -72,8 +73,9 @@ namespace BookingApp.View
 
         private void Menu_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            
 
-           
+
             if (!FocusChain[5].IsKeyboardFocusWithin && e.Key == Key.Right)
             {
                     var next = FocusChain[0];
@@ -138,11 +140,22 @@ namespace BookingApp.View
                     }
                 }
             }
-          
+            
 
-             
+
+
         }
-      
+        private void TouristMainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F9 && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+            {
+               
+                More.IsSubmenuOpen = true;
+                Settings.Focus();
+                e.Handled = true; 
+            }
+        }
+
 
     }
 }

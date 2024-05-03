@@ -33,6 +33,7 @@ namespace BookingApp.View.Tourist
             _finishedToursViewModel = new FinishedToursViewModel(userDTO);
 
             DataContext = _finishedToursViewModel;
+            finishedToursListView.Focus();
         }
     }
 }

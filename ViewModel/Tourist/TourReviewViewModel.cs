@@ -16,6 +16,8 @@ using BookingApp.View.Tourist;
 using System.Windows;
 using BookingApp.Repository.Interfaces;
 using BookingApp.InjectorNameSpace;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace BookingApp.ViewModel.Tourist
 {
@@ -31,14 +33,26 @@ namespace BookingApp.ViewModel.Tourist
 
         private TourReviewDTO _tourReviewDTO;
 
+        private BitmapImage _selectedImage;
+
         private RelayCommand _rateTourCommand;
 
         private RelayCommand _cancelCommand;
 
         private RelayCommand _addImagesCommand;
+        private RelayCommand _showMyToursWindowCommand;
+        private RelayCommand _showInboxWindowCommand;
+        private RelayCommand _showFinishedToursWindowCommand;
+        private RelayCommand _showVoucherWindowCommand;
+        private RelayCommand _removeImageCommand;
+
+        private List<BitmapImage> _imagePreviews;
+        public ObservableCollection<BitmapImage> imagesCollection;
         public TourReviewViewModel(TourDTO tourDTO, UserDTO loggedInUser)
         {
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            _imagePreviews = new List<BitmapImage>();
+            imagesCollection = new ObservableCollection<BitmapImage>(_imagePreviews);
             _tourReviewService = new TourReviewService(tourReviewRepository);
             _tourDTO = tourDTO;
             _userDTO = loggedInUser;
@@ -46,6 +60,11 @@ namespace BookingApp.ViewModel.Tourist
             _rateTourCommand =  new RelayCommand(RateTour);
             _addImagesCommand = new RelayCommand(AddImages);
             _cancelCommand = new RelayCommand(Cancel);
+            _showFinishedToursWindowCommand = new RelayCommand(ShowFinishedToursWindow);
+            _showMyToursWindowCommand = new RelayCommand(ShowMyToursWindow);
+            _showVoucherWindowCommand = new RelayCommand(ShowVoucherWindow);
+            _showInboxWindowCommand = new RelayCommand(ShowinboxWindow);
+            _removeImageCommand = new RelayCommand(RemoveImage);
         }
 
         public TourDTO TourDTO
@@ -73,6 +92,32 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        public ObservableCollection<BitmapImage> ImagePreviews
+        {
+            get
+            {
+                return imagesCollection;
+            }
+            set
+            {
+                imagesCollection = value;
+                OnPropertyChanged();
+            }
+        }
+        public BitmapImage SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
+
+        }
+
 
         public RelayCommand RateTourCommand
         {
@@ -111,6 +156,70 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+
+        public RelayCommand ShowMyToursWindowCommand
+        {
+            get
+            {
+                return _showMyToursWindowCommand;
+            }
+            set
+            {
+                _showMyToursWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowInboxWindowCommand
+        {
+            get
+            {
+                return _showInboxWindowCommand;
+            }
+            set
+            {
+                _showInboxWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowFinishedToursWindowCommand
+        {
+            get
+            {
+                return _showFinishedToursWindowCommand;
+            }
+            set
+            {
+                _showFinishedToursWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowVoucherWindowCommand
+        {
+            get
+            {
+                return _showVoucherWindowCommand;
+            }
+            set
+            {
+                _showVoucherWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand RemoveImageCommand
+        {
+            get
+            {
+                return _removeImageCommand;
+            }
+            set
+            {
+                _removeImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public void RateTour()
         {
             _tourReviewDTO.TourId = _tourDTO.Id;
@@ -130,14 +239,52 @@ namespace BookingApp.ViewModel.Tourist
 
             if (response == true)
             {
-                _images = openFileDialog.FileNames.ToList();
+                var strings = openFileDialog.FileNames;
+                _images = strings.ToList();
 
                 for (int i = 0; i < _images.Count; i++)
                 {
                     _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
+                    strings[i] = Path.GetFullPath(_images[i]);
+                    BitmapImage imageSource = new BitmapImage(new Uri(strings[i]));
+                    ImagePreviews.Add(imageSource);
                 }
             }
         }
+        public void RemoveImage()
+        {
+            if (_selectedImage == null)
+            {
+                return;
+            }
+            var selectedItem = _selectedImage as BitmapImage;
+            ImagePreviews?.Remove(selectedItem);
+
+        }
+        public void ShowFinishedToursWindow()
+        {
+            FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
+            finishedToursWindow.ShowDialog();
+        }
+
+        public void ShowMyToursWindow()
+        {
+            MyToursWindow myToursWindow = new MyToursWindow();
+            myToursWindow.ShowDialog();
+        }
+
+        public void ShowVoucherWindow()
+        {
+            VoucherWindow voucherWindow = new VoucherWindow();
+            voucherWindow.ShowDialog();
+        }
+
+        public void ShowinboxWindow()
+        {
+            InboxWindow inboxWindow = new InboxWindow(_userDTO);
+            inboxWindow.ShowDialog();
+        }
+        
         public void Cancel()
         {
             TourReviewWindow.GetInstance().Close();

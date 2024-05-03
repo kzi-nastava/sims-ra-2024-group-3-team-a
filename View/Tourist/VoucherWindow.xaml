@@ -25,34 +25,46 @@
             </Menu>
         </Grid>
         <Grid Grid.Row="1">
-            <TextBlock Margin="30,10,0,0" FontSize="50">Vouchers</TextBlock>
+            <TextBlock Margin="30,30,0,0" FontSize="40" Text="Vouchers🎁"></TextBlock>
         </Grid>
-        <Border Padding="100" Grid.Row="1"  BorderThickness="1" BorderBrush="Gray">
-            <Grid Background="White" Grid.Row="1">
-                
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="30,90,30,50" Grid.Row="1">
+        <Border  Grid.Row="2"  BorderThickness="1" BorderBrush="Gray">
+            <Grid Background="White" Grid.Row="2">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2">
             <StackPanel Grid.Row="2">
-            <ListView ItemsSource="{Binding VouchersDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                          
+                                <ListView x:Name="voucherListView"  ItemsSource="{Binding VouchersDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="LightPink" BorderThickness="1">
-                            <StackPanel Orientation="Horizontal" Width="390">
-                                <Image Source="../../Resources/Images/Tourist/voucher.png" Height="100" Width="100" Stretch="Fill"></Image>
-                                    <Border Padding="50"  BorderBrush="Transparent">
-                                        <StackPanel Margin="50,0,0,0">
-                                            <TextBlock   FontWeight="Bold" Text="{Binding Header}"/>
-                                            <TextBlock   FontWeight="Bold" Text="{Binding ExpireDate}"/>
-                                        </StackPanel>
-                                    </Border>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                                   
+                                        <DataTemplate>
+                                        <Border BorderThickness="1" BorderBrush="Black" Width="695" Margin="0,0,0,5">
+
+                                            <StackPanel Orientation="Horizontal" Width="695">
+                                                <Image Source="../../Resources/Images/Tourist/voucher.png" Height="100" Width="100" Stretch="Fill"></Image>
+                                                <Border Padding="10"  BorderBrush="Transparent">
+                                                    <StackPanel Margin="30,20,0,0">
+                                                        <TextBlock   FontWeight="Bold" Text="{Binding Header}"/>
+                                                        <DockPanel>
+                                                            <TextBlock  Margin="0,5"  FontWeight="Bold" Text="Expiry date: "/>
+                                                            <TextBlock  Margin="0,5"  FontWeight="Bold" Text="{Binding ExpireDate}"/>
+                                                        </DockPanel>
+                                                       
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+
+                                        </Border>
+                                    </DataTemplate>
+                                 
+                                </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+                           
+                        </StackPanel>
         </ScrollViewer>
                 
           </Grid>
         </Border>
+        </Grid>
     </Grid>
 </Window>
