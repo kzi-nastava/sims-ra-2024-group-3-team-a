@@ -37,7 +37,7 @@
                 <Grid Grid.Column="0">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Grid.Row="1">
-                            <ListView ItemsSource="{Binding FinishedToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                            <ListView x:Name="finishedToursListView" ItemsSource="{Binding FinishedToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="nav:ListViewNavigation.SelectOnFocus" Value="True" />

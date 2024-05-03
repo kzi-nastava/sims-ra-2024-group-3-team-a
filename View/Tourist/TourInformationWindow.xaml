@@ -86,7 +86,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Information:" FontWeight="Bold" FontSize="15" Margin="20,10,10,0"/>
-                <Border Grid.Row="1" BorderBrush="Black" Margin="20,0,0,0" BorderThickness="1">
+                <Border Grid.Row="1" BorderBrush="Black" Height="150" Width="409" Margin="20,0,0,0" BorderThickness="1">
                     <Grid Grid.Row="1">
 
                         <Grid.ColumnDefinitions>
@@ -94,6 +94,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -112,7 +113,7 @@
                         <TextBlock Grid.Row="2" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.BeginingTime}" />
                         <TextBlock Grid.Row="3" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.Duration}" />
                         <TextBlock Grid.Row="4" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.MaxTouristNumber}" />
-                        <TextBlock Grid.Row="5" Grid.Column="1" Margin="5,5,0,5" Text="Key points: "/>
+                        <TextBlock Grid.Row="5" Grid.RowSpan="2" Grid.Column="1" Margin="5,5,0,0" Text="Key points: "/>
 
 
                     </Grid>
@@ -128,7 +129,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Description:" FontWeight="Bold" FontSize="15" Margin="0,10,10,0"/>
-                <TextBox Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Width="300"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}"  />
+                <TextBox Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Width="285"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}"  />
 
 
 
@@ -136,7 +137,7 @@
 
         </Grid>
 
-        <Button Grid.Row="4" Margin="20,8,680,5" Width="100" Command="{Binding ShowTourReservationWindowCommand}" Content="Make reservation" ></Button>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20,5" HorizontalAlignment="Left" Width="100" Command="{Binding ShowTourReservationWindowCommand}" Content="Make reservation" ></Button>
 
 
     </Grid>
