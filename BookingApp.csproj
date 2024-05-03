@@ -5,14 +5,17 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Images\Icons\AppLogo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\Images\accommodations.png" />
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\AppLogo.png" />
     <None Remove="Resources\Images\back.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\Icons\AppLogo.ico" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
     <None Remove="Resources\Images\logout.png" />
@@ -28,6 +31,7 @@
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
     <None Remove="Resources\Images\Tourist\daenerys.jpg" />
@@ -43,10 +47,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Images\Icons\AppLogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Images\accommodations.png" />
     <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\AppLogo.png" />
     <Resource Include="Resources\Images\back.png" />
     <Resource Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -54,6 +63,7 @@
     <Resource Include="Resources\Images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\Icons\AppLogo.ico" />
     <Resource Include="Resources\Images\inbox.png" />
     <Resource Include="Resources\Images\inbox_alert.png" />
     <Resource Include="Resources\Images\logout.png" />
@@ -64,6 +74,7 @@
     <Resource Include="Resources\Images\Owner\menu.png" />
     <Resource Include="Resources\Images\Owner\notification.png" />
     <Resource Include="Resources\Images\Owner\OwnerBackground.jpg" />
+    <Resource Include="Resources\Images\Owner\renovation.png" />
     <Resource Include="Resources\Images\profile.png" />
     <Resource Include="Resources\Images\star_icon.png" />
     <Resource Include="Resources\Images\Tourist\daenerys.jpg" />

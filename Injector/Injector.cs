@@ -17,7 +17,7 @@ namespace BookingApp.InjectorNameSpace
             { typeof(IUserRepository), new UserRepository() },
             { typeof(IAccommodationReservationChangeRequestRepository), new AccommodationReservationChangeRequestRepository() },
             { typeof(IAccommodationReservationRepository), new AccommodationReservationRepository() },
-           // { typeof(IKeyPointsRepository), new KeyPointsRepository() },
+            { typeof(IAccommodationRenovationRepository), new AccommodationRenovationRepository() },
             { typeof(IKeyPointRepository), new KeyPointRepository() },
             { typeof(IMessageRepository), new MessageRepository() },
             { typeof(ITouristRepository), new TouristRepository() },
