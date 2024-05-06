@@ -37,7 +37,7 @@
                 <MenuItem Header="Sve ture"/>
                 <MenuItem Header="Otkaz"/>
             </Menu>
-            <Grid Grid.Row="1" Grid.Column="2">
+            <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" >
                 <TextBlock Text="{Binding Path= Tour.Name}" HorizontalAlignment="Center" FontSize="40"></TextBlock>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="0">
@@ -79,19 +79,20 @@
             <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False"  Grid.Row="4"  Grid.ColumnSpan="4" Visibility="Visible">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Path=Surname}" IsReadOnly="True" />
-                    <DataGridTemplateColumn Header="PRESENT" Width="Auto">
+                    <DataGridTextColumn Header="Ime" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Prezime" Width="*" Binding="{Binding Path=Surname}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Godine" Width="*" Binding="{Binding Path=Age}" IsReadOnly="True" />
+                    <DataGridTemplateColumn Header="Pridruži turi" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="JOIN" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
+                                <Button Content="PRIDRUŽI" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
 
             </DataGrid>
-            <Button  Command="{Binding CancelTourCommand}" VerticalAlignment="Top" Height="40" Grid.Row="4" Margin="10,0,10,0" Grid.Column="5">
+            <Button  Command="{Binding ShowTourDetailsCommand}" VerticalAlignment="Top" Height="40" Grid.Row="4" Margin="10,0,10,0" Grid.Column="5">
             <TextBlock TextAlignment="Center">
         Dodatne informacije
         <LineBreak/>

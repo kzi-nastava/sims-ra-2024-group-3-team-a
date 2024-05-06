@@ -32,6 +32,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourReviewsWindowCommand;
         private RelayCommand _touristJoiningPointCommand;
         private RelayCommand _cancelTourCommand;
+        private RelayCommand _showTourDetailsCommand;
         private TourDTO _tourDTO;
         private int _counter = 0;
         private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
@@ -56,6 +57,7 @@ namespace BookingApp.ViewModel.Guide
             _markPointCommand = new RelayCommand(MarkPoint);
             _showTourReviewsWindowCommand = new RelayCommand(ShowTourReviewsWindow);
             _cancelTourCommand = new RelayCommand(CancelTour);
+            _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
             _touristJoiningPointCommand = new RelayCommand(TouristJoiningPoint);
             _keyPointsService = new KeyPointService(keyPointsRepository);
             List<KeyPointDTO> keypointsDTO = _keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()).Select(k=> new KeyPointDTO(k)).ToList();
@@ -118,6 +120,20 @@ namespace BookingApp.ViewModel.Guide
                 _tourDTO.IsActive = true;
                 _tourService.Update(_tourDTO.ToTourAllParam());
             }
+        }
+        public RelayCommand ShowTourDetailsCommand
+        {
+            get { return _showTourDetailsCommand; }
+            set
+            {
+                _showTourDetailsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourDetails()
+        {
+            TourDetailsWindow tourDetails = new TourDetailsWindow(_tourDTO);
+            tourDetails.Show();
         }
         public RelayCommand ShowTourReviewsWindowCommand
         {

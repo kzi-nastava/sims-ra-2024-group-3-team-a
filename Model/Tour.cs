@@ -19,7 +19,6 @@ namespace BookingApp.Model
         public string Description { get; set; }
         public Languages Language { get; set; }
         public int MaxTouristNumber { get; set; }
-       // public List<KeyPoint> KeyPoints { get; set; }
         public DateTime BeginingTime { get; set; }
         public double Duration { get; set; }  
         public List<string> Images { get; set; }
@@ -31,11 +30,10 @@ namespace BookingApp.Model
         public Tour() 
         {
             Place = new Location();
-            //KeyPoints = new List<KeyPoint>();
             Images = new List<string>();
         }
 
-        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber,/* List<KeyPoint> keyPoints*/DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive, int presentTourists)
+        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber,DateTime beginingTime ,double duration, List<string> images, string currentKeyPoint, bool isActive, int presentTourists)
         {
             Id = id;
             GuideId = guideId;
@@ -44,7 +42,6 @@ namespace BookingApp.Model
             Description = description;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
-          //  KeyPoints = keyPoints;
             BeginingTime = beginingTime;
             Duration = duration; 
             Images = images;
@@ -54,7 +51,7 @@ namespace BookingApp.Model
             TouristsPresent = presentTourists;
         }
 
-        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber,/* List<KeyPoint> keyPoints*/ DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity, int presentTourists)
+        public Tour(int id,int guideId, string name, Location place, string description, Languages language, int maxTouristNumber, DateTime beginingTime, double duration, List<string> images, string currentKeyPoint, bool isActive,  int currentCapacity, int presentTourists)
         {
             Id = id;
             GuideId = guideId;
@@ -63,7 +60,6 @@ namespace BookingApp.Model
             Description = description;
             Language = language;
             MaxTouristNumber = maxTouristNumber;
-           // KeyPoints = keyPoints;
             BeginingTime = beginingTime;
             Duration = duration;
             Images = images;
@@ -110,7 +106,6 @@ namespace BookingApp.Model
             BeginingTime = DateTime.Parse(values[8]);
             Duration = double.Parse(values[9]);
             CurrentCapacity = Convert.ToInt32(values[10]);
-            //KeyPoints.Id = Convert.ToInt32(values[11]);
             CurrentKeyPoint = values[11];
             IsActive =Convert.ToBoolean( values[12]);
             TouristsPresent = Convert.ToInt32(values[13]);

@@ -1,0 +1,192 @@
+﻿<Window x:Class="BookingApp.View.Guide.TourDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Guide"
+        mc:Ignorable="d"
+        Title="TourDetails" Height="570" Width="800">
+    <Grid Background="Tan">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="150"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="150"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="2" >
+            <MenuItem Header="Početna"/>
+            <MenuItem Header="Pomoć"/>
+            <MenuItem Header="Statistike"/>
+            <MenuItem Header="Sve ture"/>
+            <MenuItem Header="Otkaz"/>
+        </Menu>
+        <Grid Grid.Row="2" Grid.ColumnSpan="3" Height="45">
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="{Binding Tour.Name}"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
+        </Grid>
+        <Grid Grid.Row="3" Grid.RowSpan="3" >
+            <Grid  Margin="10,10,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="19*"/>
+                    <ColumnDefinition Width="101*"/>
+                </Grid.ColumnDefinitions>
+                <Grid VerticalAlignment="Top" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="BorderThickness" Value="0,5,0,0" />
+                            <Setter Property="BorderBrush" Value="black" />
+                            <Setter Property="Margin" Value="0,-2,0,0" />
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="10,-15,10,0" />
+                            <Setter Property="FontSize" Value="30" />
+
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" />
+                    <TextBlock Grid.Column="1" Text="Informacije" />
+                    <Border Grid.Column="2" />
+                </Grid>
+                <Border BorderBrush="Black" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
+                    <StackPanel Margin="18">
+                        <DockPanel Margin="5">
+                            <TextBlock Text="LOKACIJA: "  FontSize="16"/>
+                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Tour.LocationDTO}" TextWrapping="Wrap"  MaxWidth="80"/>
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="DATUM POCETKA: " FontSize="16" />
+                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Tour.BeginingTime.Date}" />
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="VRIJEME POCETKA: " FontSize="16" />
+                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Tour.BeginingTime, StringFormat='{}{0:HH:mm:ss}'}" />
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="JEZIK: " FontSize="16"/>
+                            <TextBlock FontWeight="Bold" Text="{Binding Path=Tour.Language}" FontSize="16" />
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="MAKSIMALAN BROJ TURISTA: " FontSize="16"/>
+                            <TextBlock FontWeight="Bold" Text="{Binding Path=Tour.MaxTouristNumber}" FontSize="16" />
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="BROJ PRIJAVLJENIH TURISTA: " FontSize="16" />
+                            <TextBlock FontWeight="Bold" Text="{Binding Path=Tour.TouristsPresent}" FontSize="16" />
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="TRAJANJE: " FontSize="16" />
+                            <TextBlock FontWeight="Bold" Text="{Binding Path=Tour.Duration}" FontSize="16" />
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="KLJUČNE TAČKE: " FontSize="16" />
+                            <TextBlock FontWeight="Bold" Text="{Binding Points}" FontSize="16" TextWrapping="Wrap"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Margin="10">
+            <Grid  >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="19*"/>
+                    <ColumnDefinition Width="101*"/>
+                </Grid.ColumnDefinitions>
+                <Grid VerticalAlignment="Top" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="BorderThickness" Value="0,5,0,0" />
+                            <Setter Property="BorderBrush" Value="black" />
+                            <Setter Property="Margin" Value="0,-2,0,0" />
+                            <Setter Property="Grid.RowSpan" Value="2"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="10,-15,10,0" />
+                            <Setter Property="FontSize" Value="30" />
+
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" />
+                    <TextBlock Grid.Column="1" Text="Fotografije" />
+                    <Border Grid.Column="2" />
+                </Grid>
+                <Border BorderBrush="Black" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
+                    <ListView  x:Name="imageListView" Height="100"  ItemsSource="{Binding Path=Tour.Images}" Margin="20" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Image  Source="{Binding}" Width="90" Height="81" Margin="5,5,5,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </Border>
+
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="1" Grid.RowSpan="2"  >
+            <Grid  VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="19*"/>
+                    <ColumnDefinition Width="101*"/>
+                </Grid.ColumnDefinitions>
+                <Grid VerticalAlignment="Top" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="BorderThickness" Value="0,5,0,0" />
+                            <Setter Property="BorderBrush" Value="black" />
+                            <Setter Property="Margin" Value="0,-2,0,0" />
+                            <Setter Property="Grid.RowSpan" Value="2"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="10,-15,10,0" />
+                            <Setter Property="FontSize" Value="30" />
+
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" />
+                    <TextBlock Grid.Column="1" Text="Opis" />
+                    <Border Grid.Column="2" />
+                </Grid>
+                <Border BorderBrush="Black" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
+                    <StackPanel Margin="20">
+                    <TextBlock FontSize="17" TextWrapping="Wrap" Text="{Binding Path=Tour.Description}"></TextBlock>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

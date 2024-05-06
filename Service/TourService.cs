@@ -126,6 +126,10 @@ namespace BookingApp.Service
         {
             return _tourRepository.GetNotCancelled();
         }
+        public List<Tour> GetUpcoming()
+        {
+            return _tourRepository.GetUpcoming();
+        }
         public List<Tour> GetTodayTours(User user)
         {
             List<Tour> toursToday = new List<Tour>();

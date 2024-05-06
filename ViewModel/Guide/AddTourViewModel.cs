@@ -6,10 +6,13 @@ using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
+using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -17,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.ViewModel.Guide
@@ -26,6 +30,11 @@ namespace BookingApp.ViewModel.Guide
         private KeyPointService _keyPointService;
         private TourService _tourService;
         private Languages _selectedLanguage;
+       private RelayCommand _addImagesCommand;
+        private RelayCommand _removeImageCommand;
+        private List<BitmapImage> _imagePreviews;
+        public ObservableCollection<BitmapImage> imagesCollection;
+        private BitmapImage _selectedImage;
         private DateTime _selectedDate;
         private RelayCommand _addDateCommand;
         private RelayCommand _submitCommand;
@@ -48,11 +57,16 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _keyPointService = new KeyPointService(keyPointsRepository);
+            _imagePreviews = new List<BitmapImage>();
+            imagesCollection = new ObservableCollection<BitmapImage>(_imagePreviews);
             _tourDTO = new TourDTO();
             _submitCommand = new RelayCommand(Submit);
             _dates = new ObservableCollection<DateTime> ();
             _addDateCommand = new RelayCommand(AddDate);
             _submitCommand = new RelayCommand(Submit);
+            _addImagesCommand = new RelayCommand(AddImages);
+            _removeImageCommand = new RelayCommand(RemoveImage);
+            countries = new List<string> { "Austrija","BiH", "Crna Gora","Francuska","Hrvatska","Italija", "Makedonija","Madjarska","Njemacka", "Srbija", "Slovenija", "Spanija" };
         }
         public TourDTO TourDTO
         {
@@ -65,6 +79,71 @@ namespace BookingApp.ViewModel.Guide
                 _tourDTO = value;
                 OnPropertyChanged();
             }
+        }
+        private List<string> countries;
+        public List<string> Countries
+        {
+            get { return countries; }
+            set
+            {
+                countries = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public void RemoveImage()
+        {
+            if (SelectedImage == null)
+            {
+                return;
+            }
+
+            int index = ImagePreviews.IndexOf(SelectedImage);
+            if (index >= 0)
+            {
+                ImagePreviews.RemoveAt(index);
+            }
+            if (_images != null && _images.Count > index)
+            {
+                _images.RemoveAt(index);
+            }
+        }
+        public RelayCommand RemoveImageCommand
+         {
+             get
+             {
+                 return _removeImageCommand;
+             }
+             set
+             {
+                 _removeImageCommand = value;
+                 OnPropertyChanged();
+             }
+         }
+        public ObservableCollection<BitmapImage> ImagePreviews
+        {
+            get
+            {
+                return imagesCollection;
+            }
+            set
+            {
+                imagesCollection = value;
+                OnPropertyChanged();
+            }
+        }
+        public BitmapImage SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
+
         }
         public string KeyPointsString
         {
@@ -110,6 +189,15 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public RelayCommand AddImagesCommand
+        {
+            get { return _addImagesCommand; }
+            set
+            {
+                _addImagesCommand = value;
+                OnPropertyChanged();
+            }
+        }
         private void AddImages()
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -120,11 +208,17 @@ namespace BookingApp.ViewModel.Guide
             if (response == true)
             {
                 _images = openFileDialog.FileNames.ToList();
+                var strings = openFileDialog.FileNames;
+                _images = strings.ToList();
 
                 for (int i = 0; i < _images.Count; i++)
                 {
                     _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
+                    strings[i] = Path.GetFullPath(_images[i]);
+                    BitmapImage imageSource = new BitmapImage(new Uri(strings[i]));
+                    ImagePreviews.Add(imageSource);
                 }
+
             }
         }
         public RelayCommand SubmitCommand
@@ -145,8 +239,6 @@ namespace BookingApp.ViewModel.Guide
                 MessageBox.Show("At least two key points needed (beginning and ending)");
                 return;
             }
-
-           
             _tourDTO.Images = _images;
             _tourDTO.GuideId = _loggedGuide.Id;
 

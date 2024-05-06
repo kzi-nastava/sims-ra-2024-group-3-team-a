@@ -21,15 +21,18 @@ namespace BookingApp.ViewModel.Guide
     class GuideMainViewModel : ViewModel
     {
         private static ObservableCollection<TourDTO> _toursTodayDTO { get; set; }
+       
         private Boolean _doesActiveTourExist = false;
         private readonly TourService _tourService;
         private TourDTO _selectedTourDTO = null;
         private UserDTO _loggedInGuide;
+        private TourDTO _mostVisitedTourDTO;
         private RelayCommand _showActiveTourCommand;
         private RelayCommand _showAllToursCommand;
         private RelayCommand _showTourStatisticsCommand;
+        private RelayCommand _borderClickedCommand;
+        private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
-       // public int RowCount => (ToursTodayDTO.Count + 1) / 2;
         public GuideMainViewModel(User guide)
         {
             _loggedInGuide = new UserDTO(guide);
@@ -45,7 +48,17 @@ namespace BookingApp.ViewModel.Guide
             _showActiveTourCommand = new RelayCommand(ShowActiveTour);
             _showAllToursCommand = new RelayCommand(ShowAllTours);
             _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
+            _borderClickedCommand = new RelayCommand(ShowAllTours);
+            _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
+            if (_tourService.GetMostVisitedTour() != null)
+            {
+                _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
+            }
+            else
+            {
+                _mostVisitedTourDTO = null;
+            }
             ActiveTourExists();
         }
         public ObservableCollection<TourDTO> ToursTodayDTO
@@ -57,6 +70,7 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+       
         private void ActiveTourExists()
         {
             foreach ( TourDTO tour in _toursTodayDTO )
@@ -81,12 +95,45 @@ namespace BookingApp.ViewModel.Guide
                 ShowActiveTour();
             }
         }
+        public TourDTO MostVisitedTour
+        {
+            get { return _mostVisitedTourDTO; }
+            set
+            {
+                _mostVisitedTourDTO = value;
+                OnPropertyChanged();
+                ShowActiveTour();
+            }
+        }
         public RelayCommand ShowActiveTourCommand
         {
             get { return _showActiveTourCommand; }
             set
             {
                 _showActiveTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand AddNewTourCommand
+        {
+            get { return _addNewTourCommand; }
+            set
+            {
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_loggedInGuide);
+            addTour.Show();
+        }
+        public RelayCommand BorderClickedCommand
+        {
+            get { return _borderClickedCommand; }
+            set
+            {
+                _borderClickedCommand = value;
                 OnPropertyChanged();
             }
         }

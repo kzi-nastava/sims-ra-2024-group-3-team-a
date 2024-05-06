@@ -20,9 +20,11 @@ namespace BookingApp.ViewModel.Guide
     class AllToursViewModel : ViewModel
     {
         private static ObservableCollection<TourDTO> _allToursDTO { get; set; }
+        private static ObservableCollection<TourDTO> _finishedToursDTO { get; set; }
         private readonly TourService _tourService;
         private readonly TourReservationService _tourReservationService;
         private TourDTO _selectedTourDTO = null;
+        private TourDTO _mostVisitedTourDTO;
         private RelayCommand _showAddTourWindowCommand;
         private RelayCommand _cancelTourCommand;
         private UserDTO _loggedGuide;
@@ -37,11 +39,20 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-
-            List<TourDTO> toursDTO = _tourService.GetNotCancelled().Select(tour => new TourDTO(tour)).ToList();
+            List<TourDTO> toursFinishedDTO = _tourService.GetAllFinishedTours().Select(tour => new TourDTO(tour)).ToList();
+            List<TourDTO> toursDTO = _tourService.GetUpcoming().Select(tour => new TourDTO(tour)).ToList();
             _allToursDTO = new ObservableCollection<TourDTO>(toursDTO);
+            _finishedToursDTO = new ObservableCollection<TourDTO>(toursFinishedDTO);
             _showAddTourWindowCommand = new RelayCommand(ShowAddTourWindow);
             _cancelTourCommand = new RelayCommand(CancelTour);
+            if (_tourService.GetMostVisitedTour() != null)
+            {
+                _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
+            }
+            else
+            {
+                _mostVisitedTourDTO = null;
+            }
         }
         public ObservableCollection<TourDTO> AllToursDTO
         {
@@ -49,6 +60,24 @@ namespace BookingApp.ViewModel.Guide
             set
             {
                 _allToursDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<TourDTO> FinishedToursDTO
+        {
+            get { return _finishedToursDTO; }
+            set
+            {
+                _finishedToursDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public TourDTO MostVisitedTour
+        {
+            get { return _mostVisitedTourDTO; }
+            set
+            {
+                _mostVisitedTourDTO = value;
                 OnPropertyChanged();
             }
         }
