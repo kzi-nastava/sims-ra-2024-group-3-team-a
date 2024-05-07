@@ -14,6 +14,8 @@ using System.Windows;
 using BookingApp.Commands;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
+using System.Diagnostics.Metrics;
+using BookingApp.View.Guide;
 
 namespace BookingApp.ViewModel.Guide
 {
@@ -25,7 +27,11 @@ namespace BookingApp.ViewModel.Guide
         private readonly TourReservationService _tourReservationService;
         private TourDTO _selectedTourDTO = null;
         private TourDTO _mostVisitedTourDTO;
-        private RelayCommand _showAddTourWindowCommand;
+        private RelayCommand _showAddTourWindowCommand; 
+        private RelayCommand _showTourDetailsCommand; 
+        private RelayCommand _showTourStatisticsCommand; 
+        private RelayCommand _logoutCommand; 
+        private RelayCommand _showMainWindowCommand; 
         private RelayCommand _cancelTourCommand;
         private UserDTO _loggedGuide;
         public AllToursViewModel(UserDTO guide)
@@ -44,7 +50,11 @@ namespace BookingApp.ViewModel.Guide
             _allToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursFinishedDTO);
             _showAddTourWindowCommand = new RelayCommand(ShowAddTourWindow);
+            _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
+            _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
             _cancelTourCommand = new RelayCommand(CancelTour);
+            _showMainWindowCommand = new RelayCommand(ShowMainWindow);
+            _logoutCommand = new RelayCommand(Logout);
             if (_tourService.GetMostVisitedTour() != null)
             {
                 _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
@@ -53,6 +63,36 @@ namespace BookingApp.ViewModel.Guide
             {
                 _mostVisitedTourDTO = null;
             }
+        }
+        public RelayCommand ShowTourDetailsCommand
+        {
+            get { return _showTourDetailsCommand; }
+            set
+            {
+                _showTourDetailsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourDetails(object parameter)
+        {
+            TourDTO selectedTourDTO = parameter as TourDTO;
+            TourDetailsWindow details = new TourDetailsWindow(selectedTourDTO, _loggedGuide);
+            details.Show();
+
+        }
+        public RelayCommand ShowTourStatisticsCommand
+        {
+            get { return _showTourStatisticsCommand; }
+            set
+            {
+                _showTourStatisticsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourStatistics()
+        {
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
+            tourStatistics.Show();
         }
         public ObservableCollection<TourDTO> AllToursDTO
         {
@@ -104,6 +144,21 @@ namespace BookingApp.ViewModel.Guide
             AddTourWindow addTourWindow = new AddTourWindow(_loggedGuide);
             addTourWindow.Show();
         }
+        public RelayCommand ShowMainWindowCommand
+        {
+            get { return _showMainWindowCommand; }
+            set
+            {
+                _showMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowMainWindow()
+        {
+            GuideMainWindow mainWindow = new GuideMainWindow(_loggedGuide.ToUser());
+            mainWindow.Show();
+            AllToursWindow.GetInstance().Close();
+        }
         public RelayCommand CancelTourCommand
         {
             get { return _cancelTourCommand; }
@@ -135,6 +190,21 @@ namespace BookingApp.ViewModel.Guide
                 MessageBox.Show("Tour cannot be canceled as it is less than 48 hours away from its beginning time. ", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-            
+        public RelayCommand LogoutCommand
+        {
+            get { return _logoutCommand; }
+            set
+            {
+                _logoutCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Logout()
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            AllToursWindow.GetInstance().Close();
+        }
+
     }
 }

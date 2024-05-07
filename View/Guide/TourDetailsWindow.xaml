@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Guide"
         mc:Ignorable="d"
-        Title="TourDetails" Height="570" Width="800">
+        Title="Tura" Height="611" Width="980">
     <Grid Background="Tan">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -23,12 +23,26 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="2" >
-            <MenuItem Header="Početna"/>
+            <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
             <MenuItem Header="Pomoć"/>
-            <MenuItem Header="Statistike"/>
-            <MenuItem Header="Sve ture"/>
+            <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}"/>
+            <MenuItem Header="Sve ture" Command="{Binding ShowAllToursCommand}"/>
             <MenuItem Header="Otkaz"/>
+            <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
         </Menu>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="37*"/>
+                <ColumnDefinition Width="229*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
+                    <Hyperlink Command="{Binding ShowMainWindowCommand}">
+                        <Run Text="Početna "/>
+                    </Hyperlink> > <Hyperlink Command="{Binding ShowAllToursCommand}">
+                        <Run Text="Sve ture "/>
+                    </Hyperlink> > Tura
+            </TextBlock>
+        </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Height="45">
             <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="{Binding Tour.Name}"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
         </Grid>
@@ -189,4 +203,8 @@
         </Grid>
 
     </Grid>
+    <Window.InputBindings>
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
+    </Window.InputBindings>
 </Window>

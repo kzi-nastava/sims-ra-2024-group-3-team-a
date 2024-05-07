@@ -31,6 +31,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showAllToursCommand;
         private RelayCommand _showTourStatisticsCommand;
         private RelayCommand _borderClickedCommand;
+        private RelayCommand _showTourDetailsCommand;
         private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
         public GuideMainViewModel(User guide)
@@ -48,6 +49,7 @@ namespace BookingApp.ViewModel.Guide
             _showActiveTourCommand = new RelayCommand(ShowActiveTour);
             _showAllToursCommand = new RelayCommand(ShowAllTours);
             _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
+            _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
             _borderClickedCommand = new RelayCommand(ShowAllTours);
             _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
@@ -137,9 +139,8 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        private void ShowActiveTour(/*object parameter*/)
+        private void ShowActiveTour()
         {
-            //TourDTO selectedTour = parameter as TourDTO;
             if (_selectedTourDTO.CurrentKeyPoint != "finished")
             {
                 if (_doesActiveTourExist == true && _selectedTourDTO.IsActive != true)
@@ -147,9 +148,12 @@ namespace BookingApp.ViewModel.Guide
                     MessageBox.Show("Another tour has already started", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
-                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist);
-                tourDetailsWindow.ShowDialog();
+
+                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist, _loggedInGuide);
+                tourDetailsWindow.Show();
                 _tourService.Update(_selectedTourDTO.ToTourAllParam());
+                GuideMainWindow.GetInstance().Close();
+
             }
             else
             {
@@ -169,6 +173,7 @@ namespace BookingApp.ViewModel.Guide
         {
             AllToursWindow allToursView = new AllToursWindow(_loggedInGuide);
             allToursView.Show();
+            GuideMainWindow.GetInstance().Close();
         }
         public RelayCommand ShowTourStatisticsCommand
         {
@@ -183,6 +188,22 @@ namespace BookingApp.ViewModel.Guide
         {
             TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
             tourStatistics.Show();
+        }
+        public RelayCommand ShowTourDetailsCommand
+        {
+            get { return _showTourDetailsCommand; }
+            set
+            {
+                _showTourDetailsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourDetails(object parameter)
+        {
+            TourDTO selectedTourDTO = parameter as TourDTO;
+            TourDetailsWindow details = new TourDetailsWindow(selectedTourDTO, _loggedInGuide);
+            details.Show();
+
         }
         public RelayCommand LogoutCommand
         {

@@ -69,15 +69,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-       /* public ObservableCollection<TouristDTO> TouristsDTO
-        {
-            get { return _touristsDTO; }
-            set
-            {
-                _touristsDTO = value;
-                OnPropertyChanged();
-            }
-        }*/
         public ObservableCollection<TourDTO> FinishedToursDTO
         {
             get { return _finishedToursDTO; }

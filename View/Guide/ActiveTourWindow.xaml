@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
-        Title="KeyPointsWindow" Height="450" Width="800" ResizeMode="NoResize" >
+        Title="Aktivna tura" Height="611" Width="980" ResizeMode="NoResize" >
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -13,9 +13,14 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
-    <Border BorderThickness="8" BorderBrush="Black">
+    <Window.InputBindings>
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
+    </Window.InputBindings>
+    <Border BorderThickness="0" >
         <Grid Background="AntiqueWhite" >
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -31,19 +36,31 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="5" >
-                <MenuItem Header="Početna"/>
+                <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
                 <MenuItem Header="Pomoć"/>
-                <MenuItem Header="Statistike"/>
-                <MenuItem Header="Sve ture"/>
+                <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}"/>
+                <MenuItem Header="Sve ture" Command="{Binding ShowAllToursCommand}"/>
                 <MenuItem Header="Otkaz"/>
+                <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
             </Menu>
-            <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" >
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="37*"/>
+                    <ColumnDefinition Width="229*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
+                    <Hyperlink Command="{Binding ShowMainWindowCommand}">
+                        <Run Text="Početna "/>
+                    </Hyperlink> > Aktivna tura
+                </TextBlock>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" >
                 <TextBlock Text="{Binding Path= Tour.Name}" HorizontalAlignment="Center" FontSize="40"></TextBlock>
             </Grid>
-            <Grid Grid.Row="2" Grid.Column="0">
+            <Grid Grid.Row="3" Grid.Column="0">
                 <TextBlock Text="Ključne tačke:" HorizontalAlignment="Center" FontSize="20"></TextBlock>
             </Grid>
-            <ScrollViewer Grid.Row="3" Grid.ColumnSpan="5" Margin="15,10,15,10">
+            <ScrollViewer Grid.Row="4" Grid.ColumnSpan="5" Margin="15,10,15,10">
 
                 <ItemsControl ItemsSource="{Binding KeyPoints}">
                     <ItemsControl.ItemsPanel>
@@ -76,34 +93,35 @@
                 </ItemsControl>
             </ScrollViewer>
 
-            <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False"  Grid.Row="4"  Grid.ColumnSpan="4" Visibility="Visible">
+            <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False"  Grid.Row="5"  Grid.ColumnSpan="4" Visibility="Visible" >
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Ime" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True"/>
+                <DataGrid.Columns >
+                    <DataGridTextColumn Header="Ime" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True" />
                     <DataGridTextColumn Header="Prezime" Width="*" Binding="{Binding Path=Surname}" IsReadOnly="True" />
                     <DataGridTextColumn Header="Godine" Width="*" Binding="{Binding Path=Age}" IsReadOnly="True" />
                     <DataGridTemplateColumn Header="Pridruži turi" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="PRIDRUŽI" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
+                                <Button Content="PRIDRUŽI" Background="Tan" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
 
             </DataGrid>
-            <Button  Command="{Binding ShowTourDetailsCommand}" VerticalAlignment="Top" Height="40" Grid.Row="4" Margin="10,0,10,0" Grid.Column="5">
+            <Button  Command="{Binding ShowTourDetailsCommand}" VerticalAlignment="Top" Height="40" Grid.Row="5" Margin="10,0,10,0" Grid.Column="5">
             <TextBlock TextAlignment="Center">
         Dodatne informacije
         <LineBreak/>
               o turi
             </TextBlock>
             </Button>
-            <Button Content="Završi turu" Command="{Binding CancelTourCommand}" VerticalAlignment="Top" Height="40" Margin="10,50,10,0" Grid.Row="4" Grid.Column="5"/>
-            <Grid Grid.Row="5" Grid.Column="3">
+            <Button Content="Završi turu"  Command="{Binding CancelTourCommand}" VerticalAlignment="Top" Height="40" Margin="10,50,10,0" Grid.Row="5" Grid.Column="5"/>
+            <Grid Grid.Row="6" Grid.Column="3">
                 <TextBlock>Vodič:</TextBlock>
                 <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
             </Grid>
+            
         </Grid>
     </Border>
 

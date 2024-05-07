@@ -32,15 +32,20 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourReviewsWindowCommand;
         private RelayCommand _touristJoiningPointCommand;
         private RelayCommand _cancelTourCommand;
+        private RelayCommand _showMainWindowCommand;
+        private RelayCommand _showTourStatisticsCommand;
+        private RelayCommand _logoutCommand;
         private RelayCommand _showTourDetailsCommand;
+        private RelayCommand _showAllToursCommand;
         private TourDTO _tourDTO;
+        private UserDTO _loggedGuide;
         private int _counter = 0;
         private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
         private ObservableCollection<KeyPointDTO> _keyPoints { get; set; }
-        public ActiveTourViewModel(TourDTO tour, Boolean activeTourExists)
+        public ActiveTourViewModel(TourDTO tour, Boolean activeTourExists, UserDTO guide)
         {
             _tourDTO = tour;
-
+            _loggedGuide= guide;
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -59,6 +64,10 @@ namespace BookingApp.ViewModel.Guide
             _cancelTourCommand = new RelayCommand(CancelTour);
             _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
             _touristJoiningPointCommand = new RelayCommand(TouristJoiningPoint);
+            _showAllToursCommand = new RelayCommand(ShowAllTours);
+            _logoutCommand = new RelayCommand(Logout);
+            _showTourStatisticsCommand = new RelayCommand(ShowTourDetails);
+            _showMainWindowCommand = new RelayCommand(ShowMainWindow);
             _keyPointsService = new KeyPointService(keyPointsRepository);
             List<KeyPointDTO> keypointsDTO = _keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()).Select(k=> new KeyPointDTO(k)).ToList();
             _keyPoints = new ObservableCollection<KeyPointDTO>(keypointsDTO);
@@ -132,8 +141,54 @@ namespace BookingApp.ViewModel.Guide
         }
         private void ShowTourDetails()
         {
-            TourDetailsWindow tourDetails = new TourDetailsWindow(_tourDTO);
+            TourDetailsWindow tourDetails = new TourDetailsWindow(_tourDTO, _loggedGuide);
             tourDetails.Show();
+        }
+        public RelayCommand ShowTourStatisticsCommand
+        {
+            get { return _showTourStatisticsCommand; }
+            set
+            {
+                _showTourStatisticsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+       
+        private void ShowTourStatistics()
+        {
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
+            tourStatistics.Show();
+        }
+        public RelayCommand ShowMainWindowCommand
+        {
+            get { return _showMainWindowCommand; }
+            set
+            {
+                _showMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowMainWindow()
+        {
+            GuideMainWindow mainWindow = new GuideMainWindow(_loggedGuide.ToUser());
+            mainWindow.Show();
+            ActiveTourWindow.GetInstance().Close();
+        }
+        public RelayCommand ShowAllToursCommand
+        {
+            get { return _showAllToursCommand; }
+            set
+            {
+                _showAllToursCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowAllTours()
+        {
+            AllToursWindow allToursView = new AllToursWindow(_loggedGuide);
+
+            allToursView.Show();
+            ActiveTourWindow.GetInstance().Close();
         }
         public RelayCommand ShowTourReviewsWindowCommand
         {
@@ -240,11 +295,35 @@ namespace BookingApp.ViewModel.Guide
                 _keyPointsService.Update(keypoint.ToKeyPoint());
             }
             _tourService.Update(_tourDTO.ToTourAllParam());
-            ActiveTourWindow.GetInstance().Close();
+           
             if (_tourDTO.TouristsPresent != 0)
             {
+                
+                ShowMainWindow();
                 ShowTourReviewsWindow();
+                ActiveTourWindow.GetInstance().Close();
+            }
+            else
+            {
+                ShowMainWindow();
+                ActiveTourWindow.GetInstance().Close();
             }
         }
+        public RelayCommand LogoutCommand
+        {
+            get { return _logoutCommand; }
+            set
+            {
+                _logoutCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Logout()
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            ActiveTourWindow.GetInstance().Close();
+        }
+
     }
 }

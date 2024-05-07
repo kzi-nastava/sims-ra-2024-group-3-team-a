@@ -19,10 +19,22 @@ namespace BookingApp.View.Guide
 
     public partial class TourDetailsWindow : Window
     {
-        public TourDetailsWindow(TourDTO tour)
+        public static TourDetailsWindow Instance;
+        public TourDetailsWindow(TourDTO tour, UserDTO guide)
         {
             InitializeComponent();
-            DataContext = new TourDetailsViewModel(tour);
+            DataContext = new TourDetailsViewModel(tour, guide);
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+
         }
+        public static TourDetailsWindow GetInstance()
+        {
+            return Instance;
+        }
+
+
     }
 }

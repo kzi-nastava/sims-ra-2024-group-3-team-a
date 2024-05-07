@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
-        Title="AllToursView" Height="450" Width="800"  ResizeMode="CanResize">
+        Title="AllToursView" Height="611" Width="980"  ResizeMode="CanResize">
+
     <Grid Background="AntiqueWhite">
 
         <Grid.RowDefinitions>
@@ -26,15 +27,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="6" >
-            <MenuItem Header="Početna"/>
+            <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
             <MenuItem Header="Pomoć"/>
-            <MenuItem Header="Statistike"/>
-            <MenuItem Header="Sve ture"/>
-            <MenuItem Header="Otkaz"/>
+            <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}" />
+            <MenuItem Header="Otkaz" />
+            <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8" >
-                    <Hyperlink Command="{Binding OpenMainWindowCommand}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="37*"/>
+                <ColumnDefinition Width="229*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
+                    <Hyperlink Command="{Binding ShowMainWindowCommand}">
                         <Run Text="Početna "/>
                     </Hyperlink> > Sve ture
             </TextBlock>
@@ -71,19 +76,24 @@
                                             </Viewbox>
                                         </StackPanel>
                                         <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
-                                            <StackPanel Margin="5,20,10,10">
-                                                <DockPanel >
-                                                    <TextBlock Text="LOKACIJA: " />
-                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" TextWrapping="Wrap"  MaxWidth="80"/>
-                                                </DockPanel>
-                                                <DockPanel>
-                                                    <TextBlock Text="BROJ TURISTA: " />
-                                                    <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
-                                                </DockPanel>
-                                                <DockPanel>
-                                                    <TextBlock Text="TRAJANJE: " />
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
-                                                </DockPanel>
+                                            <StackPanel Orientation="Vertical">
+                                                <StackPanel Margin="5,20,10,10">
+                                                    <DockPanel >
+                                                        <TextBlock Text="LOKACIJA: " />
+                                                        <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" TextWrapping="Wrap"  MaxWidth="80"/>
+                                                    </DockPanel>
+                                                    <DockPanel>
+                                                        <TextBlock Text="BROJ TURISTA: " />
+                                                        <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
+                                                    </DockPanel>
+                                                    <DockPanel>
+                                                        <TextBlock Text="TRAJANJE: " />
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                                    </DockPanel>
+                                                </StackPanel>
+                                                <Button DockPanel.Dock="Bottom" Height="20" Width="30" Background="White" HorizontalAlignment="Center" Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
+                                                    <Image  Source="/BookingApp;component/Resources/Images/Guide/eye.png" Width="25" Height="15" />
+                                                </Button>
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
@@ -124,21 +134,26 @@
                                             </Viewbox>
                                         </StackPanel>
                                         <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
-                                            <StackPanel Margin="5,20,10,10">
-                                                <DockPanel >
-                                                    <TextBlock Text="LOKACIJA: " />
-                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" TextWrapping="Wrap"  />
-                                                </DockPanel>
-                                                <DockPanel>
-                                                    <TextBlock Text="BROJ TURISTA: " />
-                                   
-                                                    <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
-                                            
-                                                </DockPanel>
-                                                <DockPanel>
-                                                    <TextBlock Text="TRAJANJE: " />
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
-                                                </DockPanel>
+                                            <StackPanel Orientation="Vertical">
+                                                <StackPanel Margin="5,20,10,10">
+                                                    <DockPanel >
+                                                        <TextBlock Text="LOKACIJA: " />
+                                                        <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" TextWrapping="Wrap"  />
+                                                    </DockPanel>
+                                                    <DockPanel>
+                                                        <TextBlock Text="BROJ TURISTA: " />
+
+                                                        <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
+
+                                                    </DockPanel>
+                                                    <DockPanel>
+                                                        <TextBlock Text="TRAJANJE: " />
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                                    </DockPanel>
+                                                </StackPanel>
+                                                <Button DockPanel.Dock="Bottom" Height="20" Width="30" Background="White" HorizontalAlignment="Center" Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
+                                                    <Image  Source="/BookingApp;component/Resources/Images/Guide/eye.png" Width="25" Height="15" />
+                                                </Button>
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
@@ -152,31 +167,26 @@
                 </ListView>
             </TabItem>
         </TabControl>
-       <!-- <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding AllToursDTO}"  SelectedItem="{Binding SelectedTourDTO}" Grid.Row="0"  Margin="10,10,20,68" AutoGenerateColumns="False" Grid.ColumnSpan="2">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Path=Name}"/>
-                <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding Path=LocationDTO}"/>
-                <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Path=Duration}"/>
-                <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
-                <DataGridTextColumn Header="MAKS TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
-                <DataGridTextColumn Header="BEGINING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
-            </DataGrid.Columns>
-        </DataGrid>-->
         <Button Content="Napravi novu turu" Command="{Binding ShowAddTourWindowCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="3"/>
         <Button Content="Otkaži turu" Command="{Binding CancelTourCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="4"/>
-        <Button Content="Statistike tura" Command="{Binding CancelTourCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="5"/>
+        <Button Content="Statistike tura" Command="{Binding ShowTourStatisticsCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="5"/>
         <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" >
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" >
-                    <Hyperlink Command="{Binding OpenNewWindowCommand}">
+                    <Hyperlink Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding MostVisitedTour}">
                         <Run Text="NAJPOSJEĆENIJA TURA "/>
                     </Hyperlink>
                 </TextBlock>
-            <Border BorderThickness="1" >
-                <Image Source="{Binding Path=MostVisitedTour.Images[0]}" Width="100" Height="100"  Stretch="Fill" />
-            </Border>
+                <Border BorderThickness="1" >
+                    <Image Source="{Binding Path=MostVisitedTour.Images[0]}" Width="100" Height="100"  Stretch="Fill" />
+                </Border>
             </StackPanel>
         </Grid>
 
     </Grid>
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding ShowAddTourWindowCommand}" />
+        <KeyBinding Key="X" Modifiers="Control" Command="{Binding CancelTourCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
+    </Window.InputBindings>
 </Window>

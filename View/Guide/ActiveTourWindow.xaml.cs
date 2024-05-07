@@ -25,10 +25,10 @@ namespace BookingApp.View
     public partial class ActiveTourWindow : Window
     {
         public static ActiveTourWindow Instance;
-        public ActiveTourWindow(TourDTO tour, Boolean activeTourExists)
+        public ActiveTourWindow(TourDTO tour, Boolean activeTourExists, UserDTO loggedGuide)
         {
             InitializeComponent();
-            DataContext = new ActiveTourViewModel(tour, activeTourExists);
+            DataContext = new ActiveTourViewModel(tour, activeTourExists, loggedGuide);
             if (Instance == null)
             {
                 Instance = this;
