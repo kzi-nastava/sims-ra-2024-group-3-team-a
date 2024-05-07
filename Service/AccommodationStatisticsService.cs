@@ -21,7 +21,7 @@ namespace BookingApp.Service
             _accommodationReservationChangeRequestRepository = accommodationReservationChangeRequestRepository;
         }
 
-        public int GetReservationsNumberByYear(int accommodationId, int year, int month = 0)
+        public int GetReservationsNumber(int accommodationId, int year, int month = 0)
         {
             int reservations = 0;
             foreach(var reservation in _accommodationReservationRepository.GetAll())
@@ -34,7 +34,7 @@ namespace BookingApp.Service
             return reservations;
         }  
         
-        public int GetCancellationsNumberByYear(int accommodationId, int year, int month = 0)
+        public int GetCancellationsNumber(int accommodationId, int year, int month = 0)
         {
             int cancellations = 0;
             foreach (var reservation in _accommodationReservationRepository.GetAll())
@@ -59,13 +59,13 @@ namespace BookingApp.Service
             }
             return changeRequests;
         }
-
+        
         public int GetMostOccupiedYear(int accommodationId, int[] years)
         {
             int mostOccupiedYear = years[0];
             foreach(int year in years)
             {
-                if(GetReservationsNumberByYear(accommodationId, year) > GetReservationsNumberByYear(accommodationId, mostOccupiedYear))
+                if(GetReservationsPrecentageByYear(accommodationId, year) > GetReservationsPrecentageByYear(accommodationId, mostOccupiedYear))
                 {
                     mostOccupiedYear = year;
                 }
@@ -77,12 +77,46 @@ namespace BookingApp.Service
             int mostOccupiedMonth = months[0];
             foreach (int month in months)
             {
-                if (GetReservationsNumberByYear(accommodationId, year, month) > GetReservationsNumberByYear(accommodationId, year, mostOccupiedMonth))
+                if (GetReservationsPrecentageByMonth(accommodationId, year, month) > GetReservationsPrecentageByMonth(accommodationId, year, mostOccupiedMonth))
                 {
                     mostOccupiedMonth = month;
                 }
             }
             return mostOccupiedMonth;
+        }
+        private double GetReservationsPrecentageByYear(int accommodationId, int year)
+        {
+            int reservationsDays = 0;
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                if (reservation.BeginDate.Year == year && accommodationId == reservation.AccommodationId)
+                { 
+                    DateOnly i = reservation.BeginDate;
+                    for (; i <= reservation.EndDate; i = i.AddDays(1))
+                    {
+                        reservationsDays++;
+                    }
+                }
+            }
+            double reservationPrecentage = (double)reservationsDays / (DateTime.IsLeapYear(year) ? 366 : 365);
+            return reservationPrecentage;
+        }
+        private double GetReservationsPrecentageByMonth(int accommodationId, int year, int month)
+        {
+            int reservationsDays = 0;
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                if (reservation.BeginDate.Year == year && accommodationId == reservation.AccommodationId && reservation.BeginDate.Month == month)
+                {
+                    DateOnly i = reservation.BeginDate;
+                    for (; i <= reservation.EndDate; i = i.AddDays(1))
+                    {
+                        reservationsDays++;
+                    }
+                }
+            }
+            double reservationPrecentage = (double)reservationsDays / DateTime.DaysInMonth(year, month); 
+            return reservationPrecentage;
         }
     }
 }
