@@ -136,8 +136,8 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             foreach (int year in _years)
             {
                 AccommodationStatisticsDTO accommodationStatisticsDTO = new AccommodationStatisticsDTO();
-                accommodationStatisticsDTO.Reservations = _accommodationStatisticsService.GetReservationsNumberByYear(_accommodationDTO.Id, year);
-                accommodationStatisticsDTO.Cancellations = _accommodationStatisticsService.GetCancellationsNumberByYear(_accommodationDTO.Id, year);
+                accommodationStatisticsDTO.Reservations = _accommodationStatisticsService.GetReservationsNumber(_accommodationDTO.Id, year);
+                accommodationStatisticsDTO.Cancellations = _accommodationStatisticsService.GetCancellationsNumber(_accommodationDTO.Id, year);
                 accommodationStatisticsDTO.AccommodationReservationChanges = _accommodationStatisticsService.GetAccommodationReservationChangeRequestsByYear(_accommodationDTO.Id, year);
 
                 if (year == _mostOccupiedYear)
