@@ -1,21 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Images\Icons\AppLogo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\Images\accommodations.png" />
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\AppLogo.png" />
     <None Remove="Resources\Images\back.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\Guide\eye.png" />
     <None Remove="Resources\Images\Guide\question.jpg" />
     <None Remove="Resources\Images\Guide\star.png" />
+    <None Remove="Resources\Images\Icons\AppLogo.ico" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
     <None Remove="Resources\Images\logout.png" />
@@ -31,12 +34,23 @@
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
+    <None Remove="Resources\Images\Tourist\daenerys.jpg" />
+    <None Remove="Resources\Images\Tourist\denijon.png" />
+    <None Remove="Resources\Images\Tourist\dragonstone.jpg" />
+    <None Remove="Resources\Images\Tourist\hawaii.jpg" />
+    <None Remove="Resources\Images\Tourist\jonsnow.png" />
     <None Remove="Resources\Images\Tourist\message.png" />
+    <None Remove="Resources\Images\Tourist\trebinje.jpg" />
     <None Remove="Resources\Images\Tourist\voucher.png" />
     <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Images\Icons\AppLogo.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +58,7 @@
     <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\AppLogo.png" />
     <Resource Include="Resources\Images\back.png" />
     <Resource Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -54,6 +69,7 @@
     <Resource Include="Resources\Images\Guide\eye.png" />
     <Resource Include="Resources\Images\Guide\question.jpg" />
     <Resource Include="Resources\Images\Guide\star.png" />
+    <Resource Include="Resources\Images\Icons\AppLogo.ico" />
     <Resource Include="Resources\Images\inbox.png" />
     <Resource Include="Resources\Images\inbox_alert.png" />
     <Resource Include="Resources\Images\logout.png" />
@@ -64,9 +80,16 @@
     <Resource Include="Resources\Images\Owner\menu.png" />
     <Resource Include="Resources\Images\Owner\notification.png" />
     <Resource Include="Resources\Images\Owner\OwnerBackground.jpg" />
+    <Resource Include="Resources\Images\Owner\renovation.png" />
     <Resource Include="Resources\Images\profile.png" />
     <Resource Include="Resources\Images\star_icon.png" />
+    <Resource Include="Resources\Images\Tourist\daenerys.jpg" />
+    <Resource Include="Resources\Images\Tourist\denijon.png" />
+    <Resource Include="Resources\Images\Tourist\dragonstone.jpg" />
+    <Resource Include="Resources\Images\Tourist\hawaii.jpg" />
+    <Resource Include="Resources\Images\Tourist\jonsnow.png" />
     <Resource Include="Resources\Images\Tourist\message.png" />
+    <Resource Include="Resources\Images\Tourist\trebinje.jpg" />
     <Resource Include="Resources\Images\Tourist\voucher.png" />
     <Resource Include="Resources\Images\users.png" />
     <Resource Include="Resources\Images\view.png">
@@ -77,6 +100,8 @@
   <ItemGroup>
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
+    <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
   </ItemGroup>
 

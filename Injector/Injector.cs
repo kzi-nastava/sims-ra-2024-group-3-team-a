@@ -1,4 +1,4 @@
-﻿using BookingApp.Repository;
+using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using System;
@@ -17,6 +17,7 @@ namespace BookingApp.InjectorNameSpace
             { typeof(IUserRepository), new UserRepository() },
             { typeof(IAccommodationReservationChangeRequestRepository), new AccommodationReservationChangeRequestRepository() },
             { typeof(IAccommodationReservationRepository), new AccommodationReservationRepository() },
+            { typeof(IAccommodationRenovationRepository), new AccommodationRenovationRepository() },
             { typeof(IKeyPointRepository), new KeyPointRepository() },
             { typeof(IMessageRepository), new MessageRepository() },
             { typeof(ITouristRepository), new TouristRepository() },

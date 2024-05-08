@@ -1,0 +1,144 @@
+﻿<Window x:Class="BookingApp.View.Tourist.TourInformationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        mc:Ignorable="d"
+        PreviewKeyDown="Scroll_PreviewKeyDown"
+        Title="TourInformationWindow" Height="450" Width="800">
+
+    <Window.InputBindings>
+
+        <KeyBinding Key="R"  Modifiers="Ctrl"  Command="{Binding ShowTourReservationWindowCommand}"   />
+    </Window.InputBindings>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+
+
+        <Menu DockPanel.Dock="Top" BorderThickness="1" >
+            <MenuItem x:Name="Home" Header="Home" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
+            <MenuItem x:Name="MyTours" Header="My Tours"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem x:Name="TourRequests" Header="Tour Requests" Foreground="#fa8ec4" Command="{Binding ShowCommand}"  ></MenuItem>
+            <MenuItem x:Name="CreateRequest" Header="Create Request" Foreground="#fa8ec4"></MenuItem>
+            <MenuItem x:Name="RateTour" Header="Rate Tour" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Vouchers" Header="Vouchers" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Inbox" Header="Inbox" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Logout" Header="Logout" Foreground="#fa8ec4" Command="{Binding LogOutCommand}" ></MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1" Margin="20,0,0,0" KeyboardNavigation.TabNavigation="Cycle" Focusable="True"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" FontSize="25" FontWeight="Heavy" Text="Tour:"  ></TextBlock>
+            <TextBlock Grid.Column="1"  FontSize="25" Text="{Binding TourDTO.Name}"  ></TextBlock>
+
+        </Grid>
+        <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30">-->
+        <Grid Margin="20,5,20,0" Grid.Row="2" KeyboardNavigation.TabNavigation="Cycle" Focusable="True" >
+            <Border BorderBrush="Black" BorderThickness="1" Focusable="True" KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.TabIndex="1" >
+                <ScrollViewer x:Name="scrollViewer"
+                             Focusable="True" KeyboardNavigation.TabNavigation="Cycle" TabIndex="2"
+            VerticalScrollBarVisibility="Disabled"
+            HorizontalScrollBarVisibility="Auto">
+
+                    <ItemsControl x:Name="itemsControl"  ItemsSource="{Binding ImagesCollection}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="Black" Margin="10" BorderThickness="1">
+                                    <Image Width="100" Height="100" Source="{Binding}"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </ScrollViewer>
+            </Border>
+
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Information:" FontWeight="Bold" FontSize="15" Margin="20,10,10,0"/>
+                <Border Grid.Row="1" BorderBrush="Black" Height="150" Width="409" Margin="20,0,0,0" BorderThickness="1">
+                    <Grid Grid.Row="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontWeight="Bold" Grid.Column="0" Margin="5,5,0,0" Text="Location: "/>
+                        <TextBlock Grid.Row="1" FontWeight="Bold"  Grid.Column="0" Margin="5,5,0,0" Text="Language: "/>
+                        <TextBlock Grid.Row="2" FontWeight="Bold"  Grid.Column="0" Margin="5,5,0,0" Text="Date: "/>
+                        <TextBlock Grid.Row="3" FontWeight="Bold"  Grid.Column="0" Margin="5,5,0,0" Text="Duration: "/>
+                        <TextBlock Grid.Row="4" FontWeight="Bold"  Grid.Column="0" Margin="5,5,0,0" Text="Maximum tourist number: "/>
+                        <TextBlock Grid.Row="5" FontWeight="Bold"  Grid.Column="0" Margin="5,5,0,0" Text="Key potins "/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.LocationDTO}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.Language}" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.BeginingTime}" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.Duration}" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Margin="5,5,0,0" Text="{Binding TourDTO.MaxTouristNumber}" />
+                        <TextBlock Grid.Row="5" Grid.RowSpan="2" Grid.Column="1" Margin="5,5,0,0" Text="Key points: "/>
+
+
+                    </Grid>
+                </Border>
+
+
+                <!--<TextBlock Grid.Row="0" />-->
+
+            </Grid>
+            <Grid Grid.Column="1" Margin="50,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Description:" FontWeight="Bold" FontSize="15" Margin="0,10,10,0"/>
+                <TextBox Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Width="285"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}"  />
+
+
+
+            </Grid>
+
+        </Grid>
+
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20,5" HorizontalAlignment="Left" Width="100" Command="{Binding ShowTourReservationWindowCommand}" Content="Make reservation" ></Button>
+
+
+    </Grid>
+</Window>

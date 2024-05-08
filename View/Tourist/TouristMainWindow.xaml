@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:BookingApp.View"
+        xmlns:navigation ="clr-namespace:BookingApp.View.Navigation"
         mc:Ignorable="d"
+        PreviewKeyDown="Menu_PreviewKeyDown"
         Title="TourView" Height="450" Width="800">
     <Window.Resources>
         <Style x:Key="WaterMarkStyle" TargetType="{x:Type TextBox}">
@@ -33,25 +36,51 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid Background="AntiqueWhite">
-        
+
+    <Window.InputBindings>
+    <KeyBinding Key="S" Modifiers="Control" Command="{Binding SearchCommand}" />
+        <KeyBinding Key="F1"  />
+        <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
+        <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
+        <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
+        <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
+    </Window.InputBindings>
+
+    <Grid Background="#fae8f1">
+
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Home"></MenuItem>
-            <MenuItem Header="My Tours" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
-            <MenuItem Header="Tour Requests"></MenuItem>
-            <MenuItem Header="Create Request"></MenuItem>
-            <MenuItem Header="Rate Tour" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
-            <MenuItem Header="Vouchers" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
-            <MenuItem Header="Inbox" Command="{Binding ShowInboxWindowCommand}"></MenuItem>
-            <MenuItem Header="Logout" Command="{Binding LogOutCommand}" ></MenuItem>
+        <Menu DockPanel.Dock="Top" BorderThickness="1" >
+            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
+            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="#fa8ec4"></MenuItem>
+            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="#fa8ec4" Command="{Binding ShowCommand}"></MenuItem>
+            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="50,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
+            <MenuItem x:Name="Profile" Focusable="True" Header="Profile(F8)" Margin="5,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
+
+
+            <MenuItem x:Name="More" Header="More" Margin="5,0,0,0" >
+
+                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="#fa8ec4" >
+
+                </MenuItem>
+                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="#fa8ec4" Command="{Binding LogOutCommand}">
+                    
+                </MenuItem>
+              
+                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="#fa8ec4">
+
+                </MenuItem>
+            </MenuItem>
+           
         </Menu>
         <Popup Name="popupWindow" IsOpen="{Binding IsOpen}" Placement="Center" StaysOpen="False">
             <Border Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
@@ -62,19 +91,86 @@
                 </StackPanel>
             </Border>
         </Popup>
-      
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Country" x:Name="searchCountryTextBox" Width="100" Margin="5" Text="{Binding SearchCountryInput, Mode=TwoWay}"/>
-            <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="City" x:Name="searchCityTextBox" Width="100" Margin="5"  Text="{Binding SearchCityInput, Mode=TwoWay}"/>
-            <TextBox  Cursor="IBeam" Style="{StaticResource WaterMarkStyle}" Tag="Duration (in hours)" x:Name="searchDurationTextBox" Width="150" Margin="5" Text="{Binding SearchDurationInput, Mode=TwoWay}"/>
-            <ComboBox x:Name="languageComboBox" Width="100" Margin="5" ItemsSource="{Binding Languages}" SelectedItem="{Binding SearchLanguageInput}"/>
-            
-            <Button  Background="LightBlue"  x:Name="buttonSearch" Content="Search" Command="{Binding SearchCommand}" Margin="5"/>
-           
-        </StackPanel>
+        <Border Margin="10,10,10,0" Grid.Row="1" BorderBrush="#fa8ec4" BorderThickness="3" Padding="10" >
+            <Grid Grid.Row="0" Background="White" KeyboardNavigation.TabNavigation="Cycle" x:Name="myGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="AUTO"/>
+                    <ColumnDefinition Width="AUTO"/>
+                    <ColumnDefinition Width="AUTO"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Text="Country:" Foreground="Gray" Grid.Column="0"></TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Gray" Grid.Column="1">City:</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Gray"  Grid.Column="2">Duration:</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Gray" Grid.Column="3">Language:</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Gray"  Grid.Column="4">Number of people:</TextBlock>
 
 
-        <DataGrid  x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding FilteredToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Grid.Row="2" Margin="10" AutoGenerateColumns="False">
+
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="0"  x:Name="searchCountryTextBox" Width="100"  Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="100"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"  x:Name="searchDurationTextBox" Width="150"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3" Foreground="Gold" x:Name="languageComboBox" Width="100"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchLanguageInput}"/>
+                <xctk:IntegerUpDown  Margin="5" Grid.Row="1" Grid.Column="4"  x:Name="searcmaxTouristNumberTextBox" Width="150"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
+                <Button Margin="5" Grid.Row="1" Grid.Column="5" BorderBrush="LightGray"  Background="#f7459e"  x:Name="buttonSearch" Content="Search" Foreground="LightGray" Width="70" Command="{Binding SearchCommand}" Focusable="True" TabIndex="1" IsEnabled="True"/>
+
+
+            </Grid>
+        </Border>
+
+        
+
+        <!--<Border Margin="10,10,10,0" Grid.Row="2">
+
+            <ListView ItemsSource="{Binding FilteredToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Height="300" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="10,0,10,-14">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+
+                        <StackPanel Width="300">
+                            <Image Source="{Binding Path=Images[0]}" Height="100" Width="100" Stretch="Fill" />
+                            <StackPanel Margin="10,0,0,0">
+                                <DockPanel>
+                                    <TextBlock Text="Location: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Duration: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Language: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Language}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Date: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Number of people: " />
+                                    <TextBlock FontWeight="Bold" Text="{Binding MaxTouristNumber}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Border>-->
+
+        <!--<DataGrid  x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding FilteredToursDTO}" SelectedItem="{Binding SelectedTourDTO}" Grid.Row="2" Margin="10" AutoGenerateColumns="False">
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding LocationDTO}"/>
@@ -86,7 +182,59 @@
 
             </DataGrid.Columns>
             
-        </DataGrid>
-        <Button Background="LightPink" x:Name="buttoneReservation" Grid.Row="3" Content="Reservation"  Width="80" Margin="0,0,700,0" Command="{Binding ShowAppropriateWindowCommand}"/>
+        </DataGrid>-->
+
+        
+            <ListView x:Name="listViewTours" 
+          Background="Transparent"
+          ItemsSource="{Binding FilteredToursDTO}" 
+          SelectedItem="{Binding SelectedTourDTO}"  
+          BorderBrush="Transparent" 
+          BorderThickness="0" 
+          Margin =" 10,10,10,0"
+          Height="300" 
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="2"
+          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <ListView.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding DataContext.ShowAppropriateWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding SelectedItem, ElementName=listViewTours}" />
+                </ListView.InputBindings>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <Border BorderThickness="2" BorderBrush="LightGray"  Background="White" Margin="0,10,5,10">
+                        <StackPanel Background="White" Width="300"  Orientation="Horizontal"  Margin =" 30,10,30,10">
+                                <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
+                                <StackPanel Margin="30,0,0,0">
+                                    <DockPanel>
+                                        <TextBlock Text="Location: " />
+                                        <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Duration: " />
+                                        <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Language: " />
+                                        <TextBlock FontWeight="Bold" Text="{Binding Language}" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Date: " />
+                                        <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Number of people: " />
+                                        <TextBlock FontWeight="Bold" Text="{Binding MaxTouristNumber}" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        
     </Grid>
 </Window>
