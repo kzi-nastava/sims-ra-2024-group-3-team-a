@@ -44,7 +44,6 @@ namespace BookingApp.ViewModel.Guide
         private ObservableCollection<DateTime> _dates;
         private UserDTO _loggedGuide;
         public event EventHandler TourAdded;
-        private RelayCommand _addImagesCommand;
         public AddTourViewModel(UserDTO guide)
         {
             _loggedGuide = guide;
@@ -173,18 +172,6 @@ namespace BookingApp.ViewModel.Guide
             set
             {
                 _addDateCommand = value;
-                OnPropertyChanged();
-            }
-        }
-        public RelayCommand AddImagesCommand
-        {
-            get
-            {
-                return _addImagesCommand;
-            }
-            set
-            {
-                _addImagesCommand = value;
                 OnPropertyChanged();
             }
         }
