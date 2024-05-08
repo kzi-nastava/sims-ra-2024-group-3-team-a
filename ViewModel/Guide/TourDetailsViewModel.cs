@@ -33,6 +33,7 @@ namespace BookingApp.ViewModel.Guide
         public TourDetailsViewModel(TourDTO tourDTO, UserDTO guide)
         {
             _tourDTO = tourDTO;
+            _loggedGuide = guide;
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -52,6 +53,15 @@ namespace BookingApp.ViewModel.Guide
             _logoutCommand = new RelayCommand(Logout);
             _showMainWindowCommand = new RelayCommand(ShowMainWindow);
             _points = _points.Remove(_points.Length - 2);
+        }
+        public UserDTO User
+        {
+            get { return _loggedGuide; }
+            set
+            {
+                _loggedGuide = value;
+                OnPropertyChanged();
+            }
         }
         public string Points
         {

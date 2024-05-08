@@ -205,6 +205,15 @@ namespace BookingApp.ViewModel.Guide
             details.Show();
 
         }
+        public UserDTO User
+        {
+            get { return _loggedInGuide; }
+            set
+            {
+                _loggedInGuide = value;
+                OnPropertyChanged();
+            }
+        }
         public RelayCommand LogoutCommand
         {
             get { return _logoutCommand; }

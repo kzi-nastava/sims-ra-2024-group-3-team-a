@@ -58,7 +58,21 @@
                 <TextBlock Text="{Binding Path= Tour.Name}" HorizontalAlignment="Center" FontSize="40"></TextBlock>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="0">
+                <DockPanel>
+                
                 <TextBlock Text="Ključne tačke:" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+                    <Button Width="20" Height="20" Command="{Binding Helps}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <Ellipse Fill="White"/>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
+                    </Button>
+                </DockPanel>
             </Grid>
             <ScrollViewer Grid.Row="4" Grid.ColumnSpan="5" Margin="15,10,15,10">
 

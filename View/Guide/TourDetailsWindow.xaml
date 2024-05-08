@@ -201,7 +201,12 @@
 
             </Grid>
         </Grid>
-
+        <Grid Grid.Row="8" Grid.Column="2">
+            <DockPanel HorizontalAlignment="Right">
+            <TextBlock>Vodič:</TextBlock>
+            <TextBlock Text="{Binding Path= User.Username}" ></TextBlock>
+            </DockPanel>
+        </Grid>
     </Grid>
     <Window.InputBindings>
         <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />

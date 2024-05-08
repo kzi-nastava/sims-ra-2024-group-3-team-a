@@ -112,6 +112,15 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public UserDTO User
+        {
+            get { return _loggedGuide; }
+            set
+            {
+                _loggedGuide = value;
+                OnPropertyChanged();
+            }
+        }
         public TourDTO MostVisitedTour
         {
             get { return _mostVisitedTourDTO; }

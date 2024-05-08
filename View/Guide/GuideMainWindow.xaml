@@ -24,6 +24,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -47,6 +48,18 @@
         </Grid>
         <Grid Grid.Row="1" Grid.Column="6" Height="45" >
             <StackPanel Orientation="Horizontal">
+                <Button Width="20" Height="20" Command="{Binding Helps}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="White"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
+                </Button>
+
                 <Image Height="30"  Margin="0,0,0,0" Source="/BookingApp;component/Resources/Images/Guide/star.png" RenderTransformOrigin="0.772,0.5"/>
                 <TextBlock FontSize="16" Margin="0,20,0,0"> SUPERVODIČ</TextBlock>
             </StackPanel>
@@ -85,8 +98,10 @@
                                     <StackPanel Margin="5,20,10,10">
                                         <DockPanel >
                                             <TextBlock Text="LOKACIJA: " />
-                                            <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
-                                        </DockPanel>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.City}" />
+                                                    <TextBlock FontWeight="Bold" Text=", "/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
+                                                </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="BROJ TURISTA: " />
                                             <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
@@ -178,6 +193,10 @@
             <Grid Grid.Row="7">
                 <Button Content="OTKAZ" Command="{Binding LogoutCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
             </Grid>
+        </Grid>
+        <Grid Grid.Row="8" Grid.Column="5">
+            <TextBlock>Vodič:</TextBlock>
+            <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
         </Grid>
     </Grid>
     <Window.InputBindings>

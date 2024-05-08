@@ -31,6 +31,17 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0"  Grid.ColumnSpan="2" Height="45">
                 <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="NAPRAVI NOVU TURU"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
+                <Button Width="20" Height="20" Command="{Binding Helps}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="White"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
+                </Button>
             </Grid>
 
             <Label Grid.Column="0" Grid.Row="1" Content="Naziv:" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"

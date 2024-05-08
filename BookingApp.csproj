@@ -14,6 +14,7 @@
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\Guide\eye.png" />
+    <None Remove="Resources\Images\Guide\question.jpg" />
     <None Remove="Resources\Images\Guide\star.png" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
@@ -51,6 +52,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\Guide\eye.png" />
+    <Resource Include="Resources\Images\Guide\question.jpg" />
     <Resource Include="Resources\Images\Guide\star.png" />
     <Resource Include="Resources\Images\inbox.png" />
     <Resource Include="Resources\Images\inbox_alert.png" />
