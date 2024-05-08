@@ -33,6 +33,11 @@
 
 
         <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabPanel}">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                </Style>
+            </TabControl.Resources>
             <!--My Reviews list-->
             <TabItem Header="From Me" Foreground="#d4ff00" Background="CadetBlue">
                 <StackPanel>

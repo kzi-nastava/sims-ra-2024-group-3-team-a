@@ -60,23 +60,27 @@ namespace BookingApp.Service
 
             List<DateTime> availableDates = new List<DateTime>();
             int len = 0;
-            for(DateTime date = fromDate; date <= toDate.AddDays(-length); date = date.AddDays(1))
-            {
-                if(!notAvailableDates.Contains(date))
+            for(DateTime i = fromDate; i <= toDate.AddDays(-length); i = i.AddDays(1))
+            { 
+                for(DateTime j = i; j <= i.AddDays(5); j = j.AddDays(1))
                 {
-                    len++;
-                    if(len == length)
+                    if(!notAvailableDates.Contains(j))
                     {
-                        availableDates.Add(date);
+                        len++;
+                        if(len == length)
+                        {
+                            availableDates.Add(i);
+                            len = 0;
+                        }
+                    }
+                    else
+                    {
                         len = 0;
+                        continue;       
                     }
                 }
-                else
-                {
-                    len = 0;
-                }
             }
-            
+
             return availableDates;
         }
         public List<AccommodationRenovation> GetRenovationsForOwner(User loggedInUser)

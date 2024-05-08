@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:c="clr-namespace:BookingApp.View.Tourist"
       xmlns:local="clr-namespace:BookingApp.View.Owner"
       mc:Ignorable="d"
       d:DesignHeight="750" d:DesignWidth="430"
@@ -11,6 +12,7 @@
     <Page.Resources>
         <local:GuestIdToNameConverter x:Key="GuestIdToNameConverter"/>
         <local:AccommodationIdToAccommodationConverter x:Key="AccommodationIdToAccommodationConverter"/>
+        <c:RadioBoolToIntConverter x:Key="radioBoolToIntConverter"/>
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -67,16 +69,58 @@
                 </StackPanel>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Cleanness "/>
-                <TextBox x:Name="textBoxCleannessRating" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="3" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Margin="10" Grid.Column="0" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">1</Label>
+
+                    <RadioButton Margin="10" Grid.Column="1" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">2</Label>
+
+                    <RadioButton Margin="10" Grid.Column="2" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">3</Label>
+
+                    <RadioButton Margin="10" Grid.Column="3" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">4</Label>
+
+                    <RadioButton Margin="10" Grid.Column="4" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center">5</Label>
+                </Grid>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Content="Rules"/>
-                <TextBox x:Name="textBoxRulesRespectRating" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="4" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Margin="10" Grid.Column="0" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">1</Label>
+
+                    <RadioButton Margin="10" Grid.Column="1" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">2</Label>
+
+                    <RadioButton Margin="10" Grid.Column="2" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">3</Label>
+
+                    <RadioButton Margin="10" Grid.Column="3" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">4</Label>
+
+                    <RadioButton Margin="10" Grid.Column="4" GroupName="CleannessRating" IsChecked="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                    <Label Foreground="#d4ff00" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center">5</Label>
+                </Grid>
 
                 <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Comment</Label>
                 <TextBox x:Name="textBoxComment" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                         Text="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Grid Height="50" Margin="0,20,0,0">

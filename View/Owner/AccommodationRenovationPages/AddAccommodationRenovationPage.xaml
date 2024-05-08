@@ -14,8 +14,8 @@
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Grid Background="AntiqueWhite">
                             <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
-                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,3,0,0" VerticalAlignment="Top" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Top"
                                    Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -93,7 +93,7 @@
             <ComboBox SelectedItem="{Binding Path=AccommodationRenovationDTO.BeginDate}" Grid.Row="1" Margin="120,0,120,0" ItemsSource="{Binding AvailableDates}"></ComboBox>
         </Grid>
 
-        <TextBox HorizontalScrollBarVisibility="Auto" Style="{StaticResource WaterMarkStyle}" Tag="Description" TextWrapping="Wrap"  Margin="25" Grid.Row="5" Background="White" Text="{Binding Path=AccommodationRenovationDTO.Description}"></TextBox>
+        <TextBox HorizontalScrollBarVisibility="Auto" Style="{StaticResource WaterMarkStyle}" Tag="Description" TextWrapping="Wrap"  Margin="25" Grid.Row="5" Background="White" Text="{Binding Path=AccommodationRenovationDTO.Description}" Cursor="IBeam"></TextBox>
 
         <Button Grid.Row="6" Command="{Binding ConfirmAccommodationRenovationCommand}" Margin="125,7,125,7" Background="CadetBlue" Foreground="#d4ff00">
             <StackPanel Orientation="Horizontal">
