@@ -38,7 +38,19 @@
         <Grid Grid.ColumnSpan="7" Grid.Row="0">
             <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7">
                 <MenuItem Header="Pomoć" />
-                <MenuItem Header="Prečice" />
+                <MenuItem Header="Prečice" >
+                    <MenuItem    Header="Napravi novu turu (CTRL+N)" Command="{Binding AddNewTourCommand}"  >
+
+                    </MenuItem>
+                    <MenuItem  Header="Prikazi  sve ture(CTRL + T)" Command="{Binding ShowAllToursCommand}" >
+
+                    </MenuItem>
+
+                    <MenuItem    Header="Statistika tura(CTRL+S)" Command="{Binding ShowTourStatisticsCommand}" >
+
+                    </MenuItem>
+                </MenuItem>
+
                 <MenuItem Header="Otkaz"  />
                 <MenuItem Header="Odjava" Command="{Binding LogoutCommand}" />
             </Menu>
