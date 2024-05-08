@@ -40,7 +40,14 @@ namespace BookingApp.ViewModel.Guide
 
             List<TourDTO> toursDTO = _tourService.GetAllFinishedTours().Select(tour => new TourDTO(tour)).ToList();
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursDTO);
-            _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
+            if (_tourService.GetMostVisitedTour() != null)
+            {
+                _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
+            }
+            else
+            {
+                _mostVisitedTourDTO = null;
+            }
             _showTouristsStatistcsCommand = new RelayCommand(ShowTouristStatistics);
             _showMostVisitedByYearCommand = new RelayCommand(ShowMostVisitedByYear);
         }
@@ -62,15 +69,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-       /* public ObservableCollection<TouristDTO> TouristsDTO
-        {
-            get { return _touristsDTO; }
-            set
-            {
-                _touristsDTO = value;
-                OnPropertyChanged();
-            }
-        }*/
         public ObservableCollection<TourDTO> FinishedToursDTO
         {
             get { return _finishedToursDTO; }

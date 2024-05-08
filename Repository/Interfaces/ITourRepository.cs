@@ -27,6 +27,7 @@ namespace BookingApp.Repository.Interfaces
         public Tour GetMostVisitedTour();
         
         public List<Tour> GetNotCancelled();
+        public List<Tour> GetUpcoming();
 
         public Tour GetMostVisitedByYear(int year);
     }

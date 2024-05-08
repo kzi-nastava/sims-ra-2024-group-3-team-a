@@ -21,15 +21,19 @@ namespace BookingApp.ViewModel.Guide
     class GuideMainViewModel : ViewModel
     {
         private static ObservableCollection<TourDTO> _toursTodayDTO { get; set; }
+       
         private Boolean _doesActiveTourExist = false;
         private readonly TourService _tourService;
         private TourDTO _selectedTourDTO = null;
         private UserDTO _loggedInGuide;
+        private TourDTO _mostVisitedTourDTO;
         private RelayCommand _showActiveTourCommand;
         private RelayCommand _showAllToursCommand;
         private RelayCommand _showTourStatisticsCommand;
+        private RelayCommand _borderClickedCommand;
+        private RelayCommand _showTourDetailsCommand;
+        private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
-       // public int RowCount => (ToursTodayDTO.Count + 1) / 2;
         public GuideMainViewModel(User guide)
         {
             _loggedInGuide = new UserDTO(guide);
@@ -45,7 +49,18 @@ namespace BookingApp.ViewModel.Guide
             _showActiveTourCommand = new RelayCommand(ShowActiveTour);
             _showAllToursCommand = new RelayCommand(ShowAllTours);
             _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
+            _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
+            _borderClickedCommand = new RelayCommand(ShowAllTours);
+            _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
+            if (_tourService.GetMostVisitedTour() != null)
+            {
+                _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
+            }
+            else
+            {
+                _mostVisitedTourDTO = null;
+            }
             ActiveTourExists();
         }
         public ObservableCollection<TourDTO> ToursTodayDTO
@@ -57,6 +72,7 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+       
         private void ActiveTourExists()
         {
             foreach ( TourDTO tour in _toursTodayDTO )
@@ -78,6 +94,17 @@ namespace BookingApp.ViewModel.Guide
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
+                ShowActiveTour();
+            }
+        }
+        public TourDTO MostVisitedTour
+        {
+            get { return _mostVisitedTourDTO; }
+            set
+            {
+                _mostVisitedTourDTO = value;
+                OnPropertyChanged();
+                ShowActiveTour();
             }
         }
         public RelayCommand ShowActiveTourCommand
@@ -89,19 +116,44 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        private void ShowActiveTour(object parameter)
+        public RelayCommand AddNewTourCommand
         {
-            TourDTO selectedTour = parameter as TourDTO;
-            if (selectedTour.CurrentKeyPoint != "finished")
+            get { return _addNewTourCommand; }
+            set
             {
-                if (_doesActiveTourExist == true && selectedTour.IsActive != true)
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_loggedInGuide);
+            addTour.Show();
+        }
+        public RelayCommand BorderClickedCommand
+        {
+            get { return _borderClickedCommand; }
+            set
+            {
+                _borderClickedCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowActiveTour()
+        {
+            if (_selectedTourDTO.CurrentKeyPoint != "finished")
+            {
+                if (_doesActiveTourExist == true && _selectedTourDTO.IsActive != true)
                 {
                     MessageBox.Show("Another tour has already started", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
-                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(selectedTour, _doesActiveTourExist);
-                tourDetailsWindow.ShowDialog();
-                _tourService.Update(selectedTour.ToTourAllParam());
+
+                ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist, _loggedInGuide);
+                tourDetailsWindow.Show();
+                _tourService.Update(_selectedTourDTO.ToTourAllParam());
+                GuideMainWindow.GetInstance().Close();
+
             }
             else
             {
@@ -121,6 +173,7 @@ namespace BookingApp.ViewModel.Guide
         {
             AllToursWindow allToursView = new AllToursWindow(_loggedInGuide);
             allToursView.Show();
+            GuideMainWindow.GetInstance().Close();
         }
         public RelayCommand ShowTourStatisticsCommand
         {
@@ -135,6 +188,31 @@ namespace BookingApp.ViewModel.Guide
         {
             TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
             tourStatistics.Show();
+        }
+        public RelayCommand ShowTourDetailsCommand
+        {
+            get { return _showTourDetailsCommand; }
+            set
+            {
+                _showTourDetailsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourDetails(object parameter)
+        {
+            TourDTO selectedTourDTO = parameter as TourDTO;
+            TourDetailsWindow details = new TourDetailsWindow(selectedTourDTO, _loggedInGuide);
+            details.Show();
+
+        }
+        public UserDTO User
+        {
+            get { return _loggedInGuide; }
+            set
+            {
+                _loggedInGuide = value;
+                OnPropertyChanged();
+            }
         }
         public RelayCommand LogoutCommand
         {

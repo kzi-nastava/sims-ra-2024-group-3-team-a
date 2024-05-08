@@ -1,14 +1,8 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Model.Enums;
-using BookingApp.Repository;
-using BookingApp.View.Guide;
 using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,24 +14,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BookingApp.View
+namespace BookingApp.View.Guide
 {
-    public partial class ActiveTourWindow : Window
+
+    public partial class TourDetailsWindow : Window
     {
-        public static ActiveTourWindow Instance;
-        public ActiveTourWindow(TourDTO tour, Boolean activeTourExists, UserDTO loggedGuide)
+        public static TourDetailsWindow Instance;
+        public TourDetailsWindow(TourDTO tour, UserDTO guide)
         {
             InitializeComponent();
-            DataContext = new ActiveTourViewModel(tour, activeTourExists, loggedGuide);
+            DataContext = new TourDetailsViewModel(tour, guide);
             if (Instance == null)
             {
                 Instance = this;
             }
+
         }
-        public static ActiveTourWindow GetInstance()
+        public static TourDetailsWindow GetInstance()
         {
             return Instance;
         }
+
 
     }
 }
