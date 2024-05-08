@@ -35,6 +35,19 @@
                     <TextBlock Text="{Binding Path=MostVisitedTourDTO.TouristsPresent}" FontSize="12" HorizontalAlignment="Left"/>
                 </StackPanel>
             </StackPanel>
+            <TextBlock Text="No tours available" FontSize="16" HorizontalAlignment="Center"
+                   Margin="80,80,0,16" Grid.Row="1">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MostVisitedTourDTO}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
         <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal" Height="50"  CanVerticallyScroll="True" CanHorizontallyScroll="True" Margin="15">
@@ -59,7 +72,6 @@
                     <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
                     <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
                     <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
-                    <DataGridTextColumn Header="KEY POINT ID" Width="*" Binding="{Binding Path=KeyPointsDTO}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Content="Tourist statistics" Width="100" Height="40" HorizontalAlignment="Right" Command="{Binding ShowTouristStatisticsCommand}" />

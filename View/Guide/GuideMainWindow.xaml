@@ -2,18 +2,80 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"   
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
-        Title="GuideMainWindow" Height="600" Width="800"  ResizeMode="NoResize">
-    <Grid Background="AntiqueWhite">
+        Title="Početna stranica" Height="611" Width="980"  ResizeMode="CanResize">
+    
+
+    <Grid Background="AntiqueWhite" RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="-0.08"/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
         <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-       <!-- <Grid Grid.Row="1">-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="180"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.ColumnSpan="7" Grid.Row="0">
+            <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7">
+                <MenuItem Header="Pomoć" />
+                <MenuItem Header="Prečice" >
+                    <MenuItem    Header="Napravi novu turu (CTRL+N)" Command="{Binding AddNewTourCommand}"  >
+
+                    </MenuItem>
+                    <MenuItem  Header="Prikazi  sve ture(CTRL + T)" Command="{Binding ShowAllToursCommand}" >
+
+                    </MenuItem>
+
+                    <MenuItem    Header="Statistika tura(CTRL+S)" Command="{Binding ShowTourStatisticsCommand}" >
+
+                    </MenuItem>
+                </MenuItem>
+
+                <MenuItem Header="Otkaz"  />
+                <MenuItem Header="Odjava" Command="{Binding LogoutCommand}" />
+            </Menu>
+    </Grid>
+    <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Height="45">
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="DANAŠNJE TURE"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="6" Height="45" >
+            <StackPanel Orientation="Horizontal">
+                <Button Width="20" Height="20" Command="{Binding Helps}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="White"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
+                </Button>
+
+                <Image Height="30"  Margin="0,0,0,0" Source="/BookingApp;component/Resources/Images/Guide/star.png" RenderTransformOrigin="0.772,0.5"/>
+                <TextBlock FontSize="16" Margin="0,20,0,0"> SUPERVODIČ</TextBlock>
+            </StackPanel>
+        </Grid>
         <ListView x:Name="listViewTours" 
  Background="Transparent"
  ItemsSource="{Binding ToursTodayDTO}" 
@@ -21,78 +83,138 @@
  BorderBrush="Transparent" 
  BorderThickness="0" 
  Margin =" 10,10,10,0"
- Height="300" 
- ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="1"
+
+ Grid.ColumnSpan="6"    
+ Grid.RowSpan="3"
+ ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="2"
  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate >
-                    <DataTemplate >
-                        <Border BorderThickness="2" BorderBrush="LightGray"  Background="White" Margin="0,10,5,10">
-                        <StackPanel Background="White" Width="300"  Orientation="Horizontal"  Margin ="25,15,25,15">
-                            <StackPanel Margin="10,0,10,0">
-                                <TextBlock FontWeight="Bold" FontSize="20"   Margin="10,0,0,0" Text="{Binding Name}" />
-                                <Border BorderBrush="LightSlateGray" BorderThickness="1">
-                                    <StackPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate >
+                <DataTemplate >
+                    
+                    <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan" Margin="0,10,5,10" >
+                        <DockPanel>
+                        <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="15,15,25,10">
+                            <StackPanel Margin="10,0,10,10">
+                                <StackPanel Height="26">
+                                    <Viewbox Width="150" >
+                                        <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Name}"  FontStretch="Medium"/>
+                                    </Viewbox>
+                                </StackPanel>
+                                <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
+                                        <StackPanel Orientation="Vertical">
+                                    <StackPanel Margin="5,20,10,10">
+                                        <DockPanel >
+                                            <TextBlock Text="LOKACIJA: " />
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.City}" />
+                                                    <TextBlock FontWeight="Bold" Text=", "/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
+                                                </DockPanel>
                                         <DockPanel>
-                                            <TextBlock Text="Location: " />
-                                            <TextBlock FontWeight="Bold" Text="{Binding LocationDTO}" />
+                                            <TextBlock Text="BROJ TURISTA: " />
+                                            <TextBlock FontWeight="Bold" Text="{Binding TouristsPresent}" />
                                         </DockPanel>
                                         <DockPanel>
-                                            <TextBlock Text="Duration: " />
+                                            <TextBlock Text="TRAJANJE: " />
                                             <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
                                         </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="Language: " />
-                                            <TextBlock FontWeight="Bold" Text="{Binding Language}" />
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="Date: " />
-                                            <TextBlock FontWeight="Bold" Text="{Binding BeginingTime}" />
-                                        </DockPanel>
                                     </StackPanel>
-                                </Border>
+                                            <Button DockPanel.Dock="Bottom" Height="20" Width="30" Background="White" HorizontalAlignment="Center"  Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
+                                                <Image  Source="/BookingApp;component/Resources/Images/Guide/eye.png" Width="25" Height="15" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
                             </StackPanel>
-                            <Border BorderThickness="1" BorderBrush="Gray" Margin="10,0,0,0">
-                                <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
+                            <Border BorderThickness="1" BorderBrush="SaddleBrown" Margin="15,10,3,10">
+                                <Image Source="{Binding Path=Images[0]}" Height="80" Width="112" Stretch="Fill" />
                             </Border>
                         </StackPanel>
+                           
+                    </DockPanel>
+                    </Border>
+                       
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Grid Grid.Row="2"  VerticalAlignment="Center" Grid.RowSpan="3" Grid.Column="6" Margin="0,0,6,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1" >
+                <Button Content="NAPRAVI NOVU TURU" Command="{Binding AddNewTourCommand}"  VerticalAlignment="Top" Height="50" Margin="5"   />
+            </Grid>
+            <Grid Grid.Row="2" >
+                <Button Content="ZAHTJEVI ZA TURE" Command="{Binding ShowAllToursCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
+            </Grid>
+            <Grid Grid.Row="3" >
+                <Button Content="PRIKAŽI SVE TURE" Command="{Binding ShowAllToursCommand}"   VerticalAlignment="Top" Height="50" Margin="5"/>
+            </Grid>
+            <Grid Grid.Row="4" >
+                <Button Content="STATISTIKA TURA" Command="{Binding ShowTourStatisticsCommand}"   VerticalAlignment="Top" Height="50" Width="100" Margin="5" />
+            </Grid>
+            <Grid Grid.Row="5" >
+                <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan"  Height="130">
+                    <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="0,0,0,0">
+                        <StackPanel >
+                            <StackPanel Height="26">
+                                <Viewbox Width="150" >
+                                    <TextBlock  HorizontalAlignment="Center"  TextWrapping="Wrap" Text="NAJPOSJEĆENIJA TURA"  FontStretch="Medium"/>
+                                </Viewbox>
+                            </StackPanel>
+                            <Border  BorderThickness="1"  Margin="0,12,50,0">
+                                <StackPanel Margin="2,20,3,10">
+                                    <DockPanel >
+                                        <Viewbox Width="80">
+                                            <TextBlock FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path= MostVisitedTour.Name}" />
+                                        </Viewbox>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <Viewbox Width="80">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Path= MostVisitedTour.BeginingTime}" />
+                                        </Viewbox>
+                                    </DockPanel>
+                                </StackPanel>
+
+                            </Border>
+                        </StackPanel>
+                        <Border BorderThickness="1"  Margin="-50,0,0,0">
+                            <Image Source="{Binding Path=MostVisitedTour.Images[0]}" Height="70" Width="60" Stretch="Fill" />
                         </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-     <!--   </Grid>-->
-
-
-
-                <!-- <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding ToursTodayDTO}"  AutoGenerateColumns="False" Height="400" Margin="0,33,0,-33" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="LOCATION" Width="*" Binding="{Binding Path=LocationDTO}"/>
-                    <DataGridTextColumn Header="DURATION" Width="*" Binding="{Binding Path=Duration}"/>
-                    <DataGridTextColumn Header="LANGUAGE" Width="*" Binding="{Binding Path=Language}"/>
-              <      <DataGridTextColumn Header="MAX TOURISTS" Width="*" Binding="{Binding Path=MaxTouristNumber}"/>
-               <     <DataGridTextColumn Header="BEGINNING TIME" Width="*" Binding="{Binding Path=BeginingTime}"/>
-                <    <DataGridTemplateColumn Header="" Width="*">
-                 <       <DataGridTemplateColumn.CellTemplate
-                  <          <DataTemplate>
-                   <             <Button Content="Begin tour"  Command="{Binding Path=DataContext.ShowActiveTourCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" />
-                    <        </DataTemplate>
-                     <   </DataGridTemplateColumn.CellTemplate>
-                   < </DataGridTemplateColumn>
-
-            <   </DataGrid.Columns>
-          <  </DataGrid> -->
-
-        <!--// </Grid>-->
-        <Grid Grid.Row="3" Height="264" VerticalAlignment="Center">
-            <Button Content="Show all tours" Command="{Binding ShowAllToursCommand}"  VerticalAlignment="Top" Height="61" Margin="52,71,499,0"/>
-            <Button Content="Statistics" Command="{Binding ShowTourStatisticsCommand}"   VerticalAlignment="Top" Height="61" Margin="423,71,127,0"  />
-
-            <Button Content="Logout" Command="{Binding LogoutCommand}"  VerticalAlignment="Top" Height="61" Margin="685,71,12,15"  />
-
+                    </StackPanel>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding MostVisitedTour}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="7">
+                <Button Content="OTKAZ" Command="{Binding LogoutCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="8" Grid.Column="5">
+            <TextBlock>Vodič:</TextBlock>
+            <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
         </Grid>
     </Grid>
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
+    </Window.InputBindings>
 </Window>
