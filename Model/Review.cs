@@ -17,6 +17,8 @@ namespace BookingApp.Model
         public int GuestCleannessRating { get; set; }
         public int GuestHospitalityRating { get; set; }
         public string GuestComment { get; set; }
+        public int GuestRenovationRating { get; set; }
+        public string GuestRenovationComment { get; set; }
         public List<string> GuestImages { get; set; }
 
         public Review() 
@@ -24,7 +26,7 @@ namespace BookingApp.Model
             GuestImages = new List<string>();
         }
 
-        public Review(int cleannessRating, int rulesRespectRating, string comment, int guestCleannessRating, int guestHospitalityRating, string guestComment, List<string> guestImages)
+        public Review(int cleannessRating, int rulesRespectRating, string comment, int guestCleannessRating, int guestHospitalityRating, string guestComment, int guestRenovationRating, string guestRenovationComment, List<string> guestImages)
         {
             OwnerCleannessRating = cleannessRating;
             OwnerRulesRespectRating = rulesRespectRating;
@@ -32,6 +34,8 @@ namespace BookingApp.Model
             GuestCleannessRating = guestCleannessRating;
             GuestHospitalityRating = guestHospitalityRating;
             GuestComment = guestComment;
+            GuestRenovationRating = guestRenovationRating;
+            GuestRenovationComment = guestRenovationComment; 
             GuestImages = guestImages;
         }
     }

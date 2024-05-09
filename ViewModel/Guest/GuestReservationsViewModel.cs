@@ -10,10 +10,12 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BookingApp.ViewModel.Guest
 {
@@ -42,8 +44,12 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _requestChangeCommand;
         private RelayCommand _submitRequestCommand;
         private RelayCommand _cancelReservationCommand;
+        private RelayCommand _renovationRatingCommand;
+        
+        private int _selectedRating;
 
-        public GuestReservationsViewModel(UserDTO loggedInGuest)
+
+        public GuestReservationsViewModel(UserDTO loggedInGuest) 
         {
             _loggedInGuest = loggedInGuest;
 
@@ -65,6 +71,7 @@ namespace BookingApp.ViewModel.Guest
             _requestChangeCommand = new RelayCommand(RequestChange);
             _submitRequestCommand = new RelayCommand(SubmitRequest);
             _cancelReservationCommand = new RelayCommand(CancelReservation);
+            _renovationRatingCommand = new RelayCommand(ChangeRating);
             UpdateMyReservations();
         }
 
@@ -162,6 +169,7 @@ namespace BookingApp.ViewModel.Guest
         private void SubmitRateOwner()
         {
             _selectedReservation.RatingDTO.GuestImages = _images;
+            _selectedReservation.RatingDTO.GuestRenovationRating = SelectedRating;
             _accommodationReservationService.Update(_selectedReservation.ToAccommodationReservation());
             MessageBox.Show("Rated Owner successfully!");
 
@@ -182,6 +190,34 @@ namespace BookingApp.ViewModel.Guest
                 {
                     _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
                 }
+            }
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb == null) return;
+
+            switch (rb.Content.ToString())
+            {
+                case "1":
+                    GuestReservationsPage.Instance.lblRecommendation.Content = "All is ok, some minor improvements needed only.";
+                    break;
+                case "2":
+                    GuestReservationsPage.Instance.lblRecommendation.Content = "Minor wear and tear observed.";
+                    break;
+                case "3":
+                    GuestReservationsPage.Instance.lblRecommendation.Content = "Moderate renovation may be required.";
+                    break;
+                case "4":
+                    GuestReservationsPage.Instance.lblRecommendation.Content = "Major improvements needed soon.";
+                    break;
+                case "5":
+                    GuestReservationsPage.Instance.lblRecommendation.Content = "Accommodation needs to be renovated ASAP.";
+                    break;
+                default:
+                    GuestReservationsPage.Instance.lblRecommendation.Content = "Unknown rating.";
+                    break;
             }
         }
 
@@ -338,5 +374,96 @@ namespace BookingApp.ViewModel.Guest
                 OnPropertyChanged();
             }
         }
+
+        public RelayCommand RenovationRatingCommand
+        {
+            get
+            {
+                return _renovationRatingCommand;
+            }
+            set
+            {
+                _renovationRatingCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedRating
+        {
+            get => _selectedRating;
+            set
+            {
+                if (_selectedRating != value)
+                {
+                    _selectedRating = value;
+                    OnPropertyChanged(nameof(SelectedRating));
+                    UpdateRecommendation();
+                }
+            }
+        }
+
+        private string _recommendationText;
+        public string RecommendationText
+        {
+            get => _recommendationText;
+            set
+            {
+                if (_recommendationText != value)
+                {
+                    _recommendationText = value;
+                    OnPropertyChanged(nameof(RecommendationText));
+                }
+            }
+        }
+
+        private void ChangeRating(object parameter)
+        {
+            if (parameter is string ratingString && int.TryParse(ratingString, out int rating))
+            {
+                SelectedRating = rating;
+            }
+        }
+
+        private void UpdateRecommendation()
+        {
+            // Update your recommendation logic here based on `SelectedRating`
+            switch (SelectedRating)
+            {
+                case 1:
+                    RecommendationText = "All is ok, some minor improvements needed only.";
+                    GuestReservationsPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    //GuestReservationsPage.Instance.lblRecommendation.Content = "All is ok, some minor improvements needed only.";
+                    break;
+                case 2:
+                    RecommendationText = "Minor wear and tear observed.";
+                    GuestReservationsPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    //GuestReservationsPage.Instance.lblRecommendation.Content = "All is ok, some minor improvements needed only.";
+                    break;
+                case 3:
+                    RecommendationText = "Moderate renovation may be required.";
+                    GuestReservationsPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+                case 4:
+                    RecommendationText = "Major improvements needed soon.";
+                    GuestReservationsPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+                case 5:
+                    RecommendationText = "Accommodation needs to be renovated ASAP.";
+                    GuestReservationsPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+                default:
+                    RecommendationText = "Unknown rating.";
+                    GuestReservationsPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
+

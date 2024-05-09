@@ -41,12 +41,12 @@ namespace BookingApp.Model
             if (Rating.GuestImages != null)
             {
                 string images = string.Join("|", Rating.GuestImages);
-                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, images };
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, Rating.GuestRenovationRating.ToString(), Rating.GuestRenovationComment,images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment };
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, Rating.GuestRenovationRating.ToString(), Rating.GuestRenovationComment };
                 return csvValues;
             }
         }
@@ -65,7 +65,9 @@ namespace BookingApp.Model
             Rating.GuestCleannessRating = Convert.ToInt32(values[9]);
             Rating.GuestHospitalityRating = Convert.ToInt32(values[10]);
             Rating.GuestComment = values[11];
-            for (int i = 12; i < values.Length; i++)
+            Rating.GuestRenovationRating = Convert.ToInt32(values[12]);
+            Rating.GuestRenovationComment = values[13];
+            for (int i = 14; i < values.Length; i++)
             {
                 Rating.GuestImages.Add(values[i]);
             }
