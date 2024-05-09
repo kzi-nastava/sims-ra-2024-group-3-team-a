@@ -7,7 +7,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GuestReservationsPage">
-
+    <Page.Resources>
+        <local:IntToBoolConverter x:Key="IntToBoolConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -70,6 +72,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -93,6 +96,48 @@
             <TextBox Text="{Binding SelectedReservation.RatingDTO.GuestComment}" Width="105" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" x:Name="CommentForOwnerTextBox" />
             <Button Width="100" Grid.Row="1" Grid.Column="3" Command="{Binding SubmitRateOwnerCommand}">Submit</Button>
             <Button Width="100" Grid.Row="2" Grid.Column="2" Command="{Binding AddImagesCommand}">Add images</Button>
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
+                <Grid.ColumnDefinitions>
+                    
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Content="Renovation Recommendation" FontSize="16" FontWeight="Bold" Margin="10" Grid.Row="0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="40, 0, 0, 0" Grid.Row="1">
+                    <RadioButton Content="1" GroupName="Rating"
+             Command="{Binding RenovationRatingCommand}"
+             CommandParameter="1" 
+             IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='1'}"/>
+                    <RadioButton Content="2" GroupName="Rating"
+             Command="{Binding RenovationRatingCommand}"
+             CommandParameter="2" 
+             IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='2'}"/>
+                    <RadioButton Content="3" GroupName="Rating"
+             Command="{Binding RenovationRatingCommand}"
+             CommandParameter="3"
+             IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='3'}"/>
+                    <RadioButton Content="4" GroupName="Rating"
+             Command="{Binding RenovationRatingCommand}"
+             CommandParameter="4" 
+             IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='4'}"/>
+                    <RadioButton Content="5" GroupName="Rating"
+             Command="{Binding RenovationRatingCommand}"
+             CommandParameter="5"
+             IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='5'}"/>
+                </StackPanel>
+                <Label x:Name="lblRecommendation" Margin="10" Grid.Row="2" HorizontalAlignment="Center" Content="{Binding RecommendationText}"/>
+                <Label Content="Additional comment: " Margin="30" Grid.Row="3"></Label>
+                <TextBox TextWrapping="Wrap" Grid.Row="3" Width="140" Height="60"
+                 AcceptsReturn="True"
+                 Text="{Binding SelectedReservation.RatingDTO.GuestRenovationComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 Margin="10"/>
+            </Grid>
         </Grid>
         
         
