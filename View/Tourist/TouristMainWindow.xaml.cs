@@ -62,8 +62,12 @@ namespace BookingApp.View
 
 
             };
-           searchCountryTextBox.Focus();
+          // searchCountryTextBox.Focus();
            this.PreviewKeyDown += TouristMainWindow_PreviewKeyDown;
+           this.PreviewKeyDown += ListView_PreviewKeyDown;
+      
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
         }
 
         public static TouristMainWindow GetInstance()
@@ -71,7 +75,7 @@ namespace BookingApp.View
             return Instance;
         }
 
-        private void Menu_PreviewKeyDown(object sender, KeyEventArgs e)
+      /*  private void Menu_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             
 
@@ -144,7 +148,8 @@ namespace BookingApp.View
 
 
 
-        }
+        }*/
+
         private void TouristMainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.F9 && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
@@ -155,7 +160,37 @@ namespace BookingApp.View
                 e.Handled = true; 
             }
         }
+        private void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+            {
+                // Check if the currently focused element is the Search button
+                if (buttonSearch.IsFocused)
+                {
+                    // Focus the ListView
+                    listViewTours.Focus();
+                    e.Handled = true;
+                }
+              
 
+            }
+        }
+       
+        private void ListViewTours_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Execute the command associated with the ListView's MouseDoubleClick event
+           var viewModel = DataContext as TouristMainViewModel;
+            if (viewModel != null)
+            {
+                // Call the command and pass the selected item as parameter
+                viewModel.ShowAppropriateWindow();
+                return;
+            }
+        }
 
+        private void Profile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
