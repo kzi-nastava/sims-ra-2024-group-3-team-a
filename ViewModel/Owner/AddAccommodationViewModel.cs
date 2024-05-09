@@ -8,6 +8,7 @@ using BookingApp.View.Owner;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,10 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _addCommand;
         private RelayCommand _addImagesCommand;
+        private RelayCommand _removeImageCommand;
 
         private UserDTO _loggedInOwner;
-        private List<string> _images; 
+        private ObservableCollection<string> _images; 
         public AddAccommodationViewModel(UserDTO loggedInOwner)
         {
             _loggedInOwner = loggedInOwner;
@@ -34,7 +36,7 @@ namespace BookingApp.ViewModel.Owner
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>(); 
             _accommodationService = new AccommodationService(accommodationRepository);
 
-            _images = new List<string>();
+            _images = new ObservableCollection<string>();
 
             _accommodationDTO = new AccommodationDTO();
             _accommodationDTO.OwnerId = _loggedInOwner.Id;
@@ -44,6 +46,20 @@ namespace BookingApp.ViewModel.Owner
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _addCommand = new RelayCommand(Add);
             _addImagesCommand = new RelayCommand(AddImages);
+            _removeImageCommand = new RelayCommand(RemoveImage);
+        }
+
+        public ObservableCollection<string> Images
+        {
+            get
+            {
+                return _images;
+            }
+            set
+            {
+                _images = value;
+                OnPropertyChanged();
+            }
         }
 
         public AccommodationDTO AccommodationDTO
@@ -120,6 +136,19 @@ namespace BookingApp.ViewModel.Owner
             }
         }
 
+        public RelayCommand RemoveImageCommand
+        {
+            get
+            {
+                return _removeImageCommand;
+            }
+            set
+            {
+                _removeImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void ShowSideMenu()
         {
             OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
@@ -130,7 +159,7 @@ namespace BookingApp.ViewModel.Owner
         }
         private void Add()
         {
-            _accommodationDTO.Images = _images;
+            _accommodationDTO.Images = _images.ToList();
 
             _accommodationService.Save(_accommodationDTO.ToAccommodation());
 
@@ -145,12 +174,24 @@ namespace BookingApp.ViewModel.Owner
 
             if (response == true)
             {
-                _images = openFileDialog.FileNames.ToList();
+                List<String> images = openFileDialog.FileNames.ToList();
 
-                for (int i = 0; i < _images.Count; i++)
+                for (int i = 0; i < images.Count; i++)
                 {
-                    _images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, _images[i]).ToString();
+                    images[i] = System.IO.Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, images[i]).ToString();
                 }
+
+                for(int i = 0; i < images.Count; i++) 
+                {
+                    _images.Add(images[i]);
+                }   
+            }
+        }
+        private void RemoveImage(object parameter)
+        {
+            if (parameter is string imagePath)
+            {
+                Images.Remove(imagePath);
             }
         }
     }

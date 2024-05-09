@@ -29,10 +29,10 @@ namespace BookingApp.View
         {
             InitializeComponent();
             DataContext = new AllToursViewModel(guide);
-            if (Instance == null)
-            {
-                Instance = this;
-            }
+
+            Instance = this;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
         }
         public static AllToursWindow GetInstance()
         {

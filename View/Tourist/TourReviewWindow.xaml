@@ -156,35 +156,35 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
-                  
+
                 </Grid.RowDefinitions>
                 <TextBlock FontWeight="Bold" Grid.Row ="1">Leave a comment:</TextBlock>
                 <TextBox Grid.Row="2"  TextWrapping="Wrap" AcceptsReturn="True" Height="80" VerticalScrollBarVisibility="Auto" Width="310"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourReviewDTO.Comment}"  />
                 <TextBlock FontWeight="Bold" Grid.Row ="3">Add photos:</TextBlock>
                 <Button Grid.Row ="4" BorderThickness="2" BorderBrush="Black" Width="200" Margin="55,5,55,5" Height="40" FontWeight="Bold" Background="#fa8ec4" Command="{Binding AddImagesCommand}"  >Upload button</Button>
-                
-                <Border Grid.Row="5" BorderThickness="1" BorderBrush="Black" Margin="0,0,0,5">
-                <ListView Grid.Row="5" x:Name="imageListView" MaxHeight="128" MaxWidth="305" SelectedItem="{Binding SelectedImage}" ItemsSource="{Binding ImagePreviews}" >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <Image  Source="{Binding}" Width="90" Height="81" Margin="5,5,5,0"/>
-                                <Button Height="18" Width="15" Margin="0" Padding="0" Command="{Binding DataContext.RemoveImageCommand, ElementName=imageListView}" Content="x" CommandParameter="{Binding}">
-                                  
 
-                                </Button>
-                            </StackPanel>
+                <Border Grid.Row="5" BorderThickness="1" BorderBrush="Black" Margin="0,0,0,5">
+                    <ListView Grid.Row="5" x:Name="imageListView" MaxHeight="128" MaxWidth="305" SelectedItem="{Binding SelectedImage}" ItemsSource="{Binding ImagePreviews}" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Image  Source="{Binding}" Width="90" Height="81" Margin="5,5,5,0"/>
+                                    <Button Height="18" Width="15" Margin="0" Padding="0" Command="{Binding DataContext.RemoveImageCommand, ElementName=imageListView}" Content="x" CommandParameter="{Binding}">
+
+
+                                    </Button>
+                                </StackPanel>
                             </DataTemplate>
-                        
-                    </ListView.ItemTemplate>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="3"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
+
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
                 </Border>
-            
+
             </Grid>
 
 

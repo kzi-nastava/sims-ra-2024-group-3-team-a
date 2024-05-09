@@ -13,6 +13,7 @@ namespace BookingApp.Model.Enums
         AccommodationChangeRequest,
         AccommodationReservationCanceled,
         ForumOpened,
+
         TourAttendance,
         AcceptedChangeRequest,
         RejectedChangeRequest

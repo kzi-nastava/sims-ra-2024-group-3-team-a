@@ -130,5 +130,15 @@ namespace BookingApp.Repository
             }
             return mostVisited;
         }
+        public List<Tour> GetUpcoming()
+        {
+            List<Tour> tours = new List<Tour>();
+            foreach (Tour tour in GetNotCancelled())
+            {
+                if (tour.BeginingTime >= DateTime.Now && tour.CurrentKeyPoint != "finished")
+                    tours.Add(tour);
+            }
+            return tours;
+        }
     }
 }
