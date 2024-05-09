@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -42,6 +43,9 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _closePopUpCommand;
         private RelayCommand _logOutCommand;
         private RelayCommand _showCommand;
+        private RelayCommand _showOrindaryTourRequestWindow;
+        private RelayCommand _showTourRequestsCommand;
+        private RelayCommand _resetSearchParametersCommand;
 
         public TouristMainViewModel(UserDTO loggedInUser)
         {
@@ -72,12 +76,15 @@ namespace BookingApp.ViewModel.Tourist
             _showMyToursWindowCommand = new RelayCommand(ShowMyToursWindow);
             _showVoucherWindowCommand = new RelayCommand(ShowVoucherWindow);
             _showInboxWindowCommand = new RelayCommand(ShowinboxWindow);
+            _showOrindaryTourRequestWindow = new RelayCommand(ShowOrindaryTourRequestWindow);
             _messageService.CreateMessage(_message, loggedInUser.ToUser());
             CheckOpenPopUp();
             _popUpCommand = new RelayCommand(OpenPopUp);
             _closePopUpCommand = new RelayCommand(ClosePopUp);
             _logOutCommand = new RelayCommand(LogOut);
             _showCommand = new RelayCommand(ShowWindow);
+            _showTourRequestsCommand = new RelayCommand(ShowTourRequestsWindow);
+            _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
 
         }
 
@@ -155,6 +162,8 @@ namespace BookingApp.ViewModel.Tourist
             set { }
         }
 
+        
+
         private bool _isOpen;
         public bool IsOpen
         {
@@ -209,15 +218,15 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
-        public RelayCommand ShowInboxWindowCommand
+        public RelayCommand ResetSearchParametersCommand
         {
             get
             {
-                return _showInboxWindowCommand;
+                return _resetSearchParametersCommand;
             }
             set
             {
-                _showInboxWindowCommand = value;
+                _resetSearchParametersCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -234,6 +243,7 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+       
 
         public RelayCommand ShowVoucherWindowCommand
         {
@@ -260,6 +270,32 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+
+        public RelayCommand ShowOrindaryTourRequestWindowCommand
+        {
+            get
+            {
+                return _showOrindaryTourRequestWindow;
+            }
+            set
+            {
+                _showOrindaryTourRequestWindow = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowInboxWindowCommand
+        {
+            get
+            {
+                return _showInboxWindowCommand;
+            }
+            set
+            {
+                _showInboxWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public RelayCommand ClosePopUpCommand
         {
@@ -296,6 +332,19 @@ namespace BookingApp.ViewModel.Tourist
             set
             {
                 _showCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowTourRequestsCommand
+        {
+            get
+            {
+                return _showTourRequestsCommand;
+            }
+            set
+            {
+                _showTourRequestsCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -385,6 +434,19 @@ namespace BookingApp.ViewModel.Tourist
             FilteredToursDTO = new ObservableCollection<TourDTO>(filtered);
         }
 
+        private void ResetSearchParameters()
+        {
+            SearchCountryInput = string.Empty;
+            SearchCityInput = string.Empty;
+            TouristMainWindow.GetInstance().languageComboBox.SelectedIndex = -1;
+            SearchLanguageInput = string.Empty;
+            // Languages = Enumerable.Empty<Languages>();
+            SearchMaxTouristNumberInput = string.Empty;
+            SearchDurationInput = string.Empty;
+            Search();
+
+        }
+
         public void ShowAppropriateWindow()
         {
 
@@ -403,11 +465,13 @@ namespace BookingApp.ViewModel.Tourist
            if(selectedItem.CurrentCapacity >0)
             {
                 TourInformationWindow tourInformationWindow = new TourInformationWindow(new TourDTO(selectedItem), _userDTO);
+              //  tourInformationWindow.Owner = Application.Current.MainWindow;
                 tourInformationWindow.ShowDialog();
             }
             else
             {
                 AlternativeToursWindow alternativeToursWindow = new AlternativeToursWindow(new TourDTO(selectedItem), _userDTO);
+               // alternativeToursWindow.Owner = Application.Current.MainWindow;
                 alternativeToursWindow.ShowDialog();
             }
            
@@ -416,6 +480,7 @@ namespace BookingApp.ViewModel.Tourist
         public void ShowFinishedToursWindow()
         {
             FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
+        //    finishedToursWindow.Owner = Application.Current.MainWindow;
             finishedToursWindow.ShowDialog();
         }
 
@@ -441,7 +506,16 @@ namespace BookingApp.ViewModel.Tourist
           TourInformationWindow tourInformationWindow = new TourInformationWindow(_tourDTO, _userDTO);
             tourInformationWindow.ShowDialog();
         }
-
+        public void ShowOrindaryTourRequestWindow()
+        {
+           OrdinaryTourRequestWindow ordinaryTourRequestWindow = new OrdinaryTourRequestWindow( _userDTO);
+           ordinaryTourRequestWindow.ShowDialog();
+        }
+        public void ShowTourRequestsWindow()
+        {
+            TourRequestsWindow ordinaryTourRequestWindow = new TourRequestsWindow(_userDTO);
+            ordinaryTourRequestWindow.ShowDialog();
+        }
         public void CheckOpenPopUp()
         {
             

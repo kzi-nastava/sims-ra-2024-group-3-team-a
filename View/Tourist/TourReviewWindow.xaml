@@ -5,11 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="TourReviewWindow" Height="450" Width="800">
 
     <Window.Resources>
         <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter" />
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SearchCommand}" />
+        <KeyBinding Key="F1"  Command="{Binding ShowTouristMainWindowCommand}" />
+        <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
+        <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
+        <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
+        <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
+        <KeyBinding Key="C" Command="{Binding CloseWindowCommand}"/>
+    </Window.InputBindings>
     <Grid Background="#fae8f1">
 
         <Grid.RowDefinitions>
@@ -20,34 +31,40 @@
         </Grid.RowDefinitions>
 
         <Menu DockPanel.Dock="Top" BorderThickness="1" >
-            <MenuItem x:Name="Home" Focusable="False" Header="Home(F1)" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
-            <MenuItem x:Name="MyTours" Focusable="False" Header="My Tours(F2)"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
-            <MenuItem x:Name="TourRequests" Focusable="False" Header="Tour Requests(F3)" Foreground="#fa8ec4"></MenuItem>
-            <MenuItem x:Name="CreateRequest" Focusable="False" Header="Create Request(F4)" Foreground="#fa8ec4" Command="{Binding ShowCommand}"></MenuItem>
-            <MenuItem x:Name="RateTour" Focusable="False" Header="Rate Tour(F5)" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
-            <MenuItem x:Name="Vouchers" Focusable="False" Header="Vouchers(F6)" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
-            <MenuItem x:Name="Inbox" Focusable="False" Header="Inbox(F7)" Margin="50,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
-            <MenuItem x:Name="Profile" Focusable="False" Header="Profile(F8)" Margin="5,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
+            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="10"  FontWeight="Bold"></MenuItem>
+            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="10"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="10"  Command="{Binding ShowOrindaryTourRequestWindowCommand}"></MenuItem>
+            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="10"  Command="{Binding ShowTourRequestsCommand}"></MenuItem>
+            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="10" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="10" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="10" Command="{Binding ShowInboxWindowCommand}" />
+            <MenuItem x:Name="Profile" Focusable="True" Header="Profile(F8)" Margin="0,0,0,0" Foreground="Black" FontSize="10" FontWeight="Bold"  Command="{Binding ShowInboxWindowCommand}" />
 
 
-            <MenuItem x:Name="More" Focusable="False" Header="More" Margin="5,0,0,0" >
+            <MenuItem x:Name="More" Header="More(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="10">
 
-                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="#fa8ec4" >
+                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
 
                 </MenuItem>
-                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="#fa8ec4" Command="{Binding LogOutCommand}">
-
+                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="#fa8ec4">
-
+                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
 
         </Menu>
 
-
-        <TextBlock Grid.Row="1" Margin="30,0,0,0" FontWeight="Heavy" FontSize="40">Rate tour ☆</TextBlock>
+        <TextBlock Grid.Row="1" Margin="25,0,0,0" FontWeight="Bold" FontSize="40">Rate tour ☆</TextBlock>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -56,7 +73,7 @@
 
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="Beige" BorderBrush="Black" Margin="30,5" BorderThickness="1">
+            <Border Grid.Column="0" Background="Beige" CornerRadius="8" BorderBrush="Black" Margin="25,5" BorderThickness="1">
                 <Grid Grid.Column="0" Width="400">
 
 
@@ -142,7 +159,7 @@
                   
                 </Grid.RowDefinitions>
                 <TextBlock FontWeight="Bold" Grid.Row ="1">Leave a comment:</TextBlock>
-                <TextBox Grid.Row="2" TextWrapping="Wrap" AcceptsReturn="True" Height="80" VerticalScrollBarVisibility="Auto" Width="310"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourReviewDTO.Comment}"  />
+                <TextBox Grid.Row="2"  TextWrapping="Wrap" AcceptsReturn="True" Height="80" VerticalScrollBarVisibility="Auto" Width="310"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourReviewDTO.Comment}"  />
                 <TextBlock FontWeight="Bold" Grid.Row ="3">Add photos:</TextBlock>
                 <Button Grid.Row ="4" BorderThickness="2" BorderBrush="Black" Width="200" Margin="55,5,55,5" Height="40" FontWeight="Bold" Background="#fa8ec4" Command="{Binding AddImagesCommand}"  >Upload button</Button>
                 
@@ -173,7 +190,7 @@
 
         </Grid>
         <Button Grid.Row="3"  Content="Rate" Background="#fc8eac" Margin="30,5,670,5"  Command="{Binding RateTourCommand}" ></Button>
-        <Button Grid.Row="3"  Background="Beige" Command="{Binding CancelCommand}" Margin="670,5,30,5">Cancel</Button>
+        <Button Grid.Row="3"  Background="Beige" Command="{Binding CloseWindowCommand}" Margin="670,5,21,5">Cancel</Button>
 
     </Grid>
 </Window>
