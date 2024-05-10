@@ -44,13 +44,45 @@
     <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
+    <None Remove="Resources\Images\Tourist\athens1.png" />
+    <None Remove="Resources\Images\Tourist\athens2.png" />
+    <None Remove="Resources\Images\Tourist\athens3.png" />
+    <None Remove="Resources\Images\Tourist\athens4.png" />
+    <None Remove="Resources\Images\Tourist\athens5.png" />
+    <None Remove="Resources\Images\Tourist\athens6.png" />
     <None Remove="Resources\Images\Tourist\daenerys.jpg" />
     <None Remove="Resources\Images\Tourist\denijon.png" />
     <None Remove="Resources\Images\Tourist\dragonstone.jpg" />
     <None Remove="Resources\Images\Tourist\hawaii.jpg" />
+    <None Remove="Resources\Images\Tourist\help.png" />
     <None Remove="Resources\Images\Tourist\jonsnow.png" />
+    <None Remove="Resources\Images\Tourist\logout.png" />
     <None Remove="Resources\Images\Tourist\message.png" />
+    <None Remove="Resources\Images\Tourist\paris1.png" />
+    <None Remove="Resources\Images\Tourist\paris2.png" />
+    <None Remove="Resources\Images\Tourist\paris3.png" />
+    <None Remove="Resources\Images\Tourist\paris4.png" />
+    <None Remove="Resources\Images\Tourist\paris5.png" />
+    <None Remove="Resources\Images\Tourist\paris6.png" />
+    <None Remove="Resources\Images\Tourist\refresh-2-16.png" />
+    <None Remove="Resources\Images\Tourist\request.png" />
+    <None Remove="Resources\Images\Tourist\rome1.png" />
+    <None Remove="Resources\Images\Tourist\rome2.png" />
+    <None Remove="Resources\Images\Tourist\rome3.png" />
+    <None Remove="Resources\Images\Tourist\rome4.png" />
+    <None Remove="Resources\Images\Tourist\rome5.png" />
+    <None Remove="Resources\Images\Tourist\settings.png" />
     <None Remove="Resources\Images\Tourist\trebinje.jpg" />
+    <None Remove="Resources\Images\Tourist\trebinje2.png" />
+    <None Remove="Resources\Images\Tourist\trebinje3.png" />
+    <None Remove="Resources\Images\Tourist\trebinje4.png" />
+    <None Remove="Resources\Images\Tourist\trebinje5.png" />
+    <None Remove="Resources\Images\Tourist\trebinje6.png" />
+    <None Remove="Resources\Images\Tourist\vienna1.png" />
+    <None Remove="Resources\Images\Tourist\vienna2.png" />
+    <None Remove="Resources\Images\Tourist\vienna3.png" />
+    <None Remove="Resources\Images\Tourist\vienna4.png" />
+    <None Remove="Resources\Images\Tourist\vienna5.png" />
     <None Remove="Resources\Images\Tourist\voucher.png" />
     <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
@@ -58,6 +90,19 @@
 
   <ItemGroup>
     <Content Include="Resources\Images\Icons\AppLogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Tourist\trebinje2.png" />
+    <Resource Include="Resources\Images\Tourist\trebinje3.png" />
+    <Resource Include="Resources\Images\Tourist\trebinje4.png" />
+    <Resource Include="Resources\Images\Tourist\trebinje5.png" />
+    <Resource Include="Resources\Images\Tourist\trebinje6.png" />
+    <Resource Include="Resources\Images\Tourist\vienna1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Tourist\athens1.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,13 +135,38 @@
     <Resource Include="Resources\Images\Owner\renovation.png" />
     <Resource Include="Resources\Images\profile.png" />
     <Resource Include="Resources\Images\star_icon.png" />
+    <Resource Include="Resources\Images\Tourist\athens2.png" />
+    <Resource Include="Resources\Images\Tourist\athens3.png" />
+    <Resource Include="Resources\Images\Tourist\athens4.png" />
+    <Resource Include="Resources\Images\Tourist\athens5.png" />
+    <Resource Include="Resources\Images\Tourist\athens6.png" />
     <Resource Include="Resources\Images\Tourist\daenerys.jpg" />
     <Resource Include="Resources\Images\Tourist\denijon.png" />
     <Resource Include="Resources\Images\Tourist\dragonstone.jpg" />
     <Resource Include="Resources\Images\Tourist\hawaii.jpg" />
+    <Resource Include="Resources\Images\Tourist\help.png" />
     <Resource Include="Resources\Images\Tourist\jonsnow.png" />
+    <Resource Include="Resources\Images\Tourist\logout.png" />
     <Resource Include="Resources\Images\Tourist\message.png" />
+    <Resource Include="Resources\Images\Tourist\paris1.png" />
+    <Resource Include="Resources\Images\Tourist\paris2.png" />
+    <Resource Include="Resources\Images\Tourist\paris3.png" />
+    <Resource Include="Resources\Images\Tourist\paris4.png" />
+    <Resource Include="Resources\Images\Tourist\paris5.png" />
+    <Resource Include="Resources\Images\Tourist\paris6.png" />
+    <Resource Include="Resources\Images\Tourist\refresh-2-16.png" />
+    <Resource Include="Resources\Images\Tourist\request.png" />
+    <Resource Include="Resources\Images\Tourist\rome1.png" />
+    <Resource Include="Resources\Images\Tourist\rome2.png" />
+    <Resource Include="Resources\Images\Tourist\rome3.png" />
+    <Resource Include="Resources\Images\Tourist\rome4.png" />
+    <Resource Include="Resources\Images\Tourist\rome5.png" />
+    <Resource Include="Resources\Images\Tourist\settings.png" />
     <Resource Include="Resources\Images\Tourist\trebinje.jpg" />
+    <Resource Include="Resources\Images\Tourist\vienna2.png" />
+    <Resource Include="Resources\Images\Tourist\vienna3.png" />
+    <Resource Include="Resources\Images\Tourist\vienna4.png" />
+    <Resource Include="Resources\Images\Tourist\vienna5.png" />
     <Resource Include="Resources\Images\Tourist\voucher.png" />
     <Resource Include="Resources\Images\users.png" />
     <Resource Include="Resources\Images\view.png">

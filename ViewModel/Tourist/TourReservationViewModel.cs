@@ -6,6 +6,7 @@ using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
+using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +20,7 @@ namespace BookingApp.ViewModel.Tourist
     public class TourReservationViewModel:ViewModel
     {
         private TourReservationService _tourReservationService;
-        private TourService _tourService;
+     
         private TourDTO _tourDTO;
         private TourReservationDTO _tourReservationDTO;
         private UserDTO _userDTO;
@@ -28,12 +29,16 @@ namespace BookingApp.ViewModel.Tourist
         private Voucher voucher;
         private VoucherService _voucherService;
         private ObservableCollection<VoucherDTO> _vouchersDTO;
-        public ObservableCollection<TouristDTO> _touristsDTO;
+        public  ObservableCollection<TouristDTO> _touristsDTO;
         private TouristDTO _selectedTouristDTO = null;
         private VoucherDTO _selectedVoucherDTO = null;
         private RelayCommand _addTouristCommand;
         private RelayCommand _removeTouristCommand;
         private RelayCommand _confirmTourReservationCommand;
+        private RelayCommand _useVoucherCommand;
+        private RelayCommand _closeWindowCommand;
+        private RelayCommand _showTouristMainWindowCommand;
+        public Action CloseAction { get; set; }
         public TourReservationViewModel(TourReservationService tourReservationService,TourDTO tourDTO, UserDTO loggedInUser)
         {
             _tourDTO = tourDTO;
@@ -41,14 +46,20 @@ namespace BookingApp.ViewModel.Tourist
             _touristDTO = new TouristDTO();
             _tourReservationDTO = new TourReservationDTO();
             voucher = new Voucher();
+           // _keyPoints = new List<KeyPointDTO>();
+          //  List<KeyPointDTO> keypoints = 
 
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+         
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _voucherService = new VoucherService(voucherRepository);
+           
+         
+         
 
             _voucherService.UpdateHeader();
             _voucherService.UpdateVouchers();
@@ -58,6 +69,11 @@ namespace BookingApp.ViewModel.Tourist
             _addTouristCommand = new RelayCommand(AddTourist);
             _removeTouristCommand = new RelayCommand(RemoveTourist);
             _confirmTourReservationCommand = new RelayCommand(ConfirmTourReservation);
+            _useVoucherCommand = new RelayCommand(UseVoucher);
+            IsAddButtonEnabled = tourDTO.CurrentCapacity > 0;
+            _closeWindowCommand = new RelayCommand(CloseWindow);
+            _touristsDTO.Add(new TouristDTO("Milena","Mima", 22));
+            _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
         }
         public TourDTO TourDTO
         {
@@ -107,6 +123,7 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+       
         public TouristDTO TouristDTO
         {
             get
@@ -119,13 +136,24 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+
+        private bool _isAddButtonEnabled;
+        public bool IsAddButtonEnabled
+        {
+            get { return _isAddButtonEnabled; }
+            set
+            {
+                _isAddButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<VoucherDTO> VouchersDTO
         {
             get
             {
                 return _vouchersDTO;
             }
-            set
+            set 
             {
                 _vouchersDTO = value;
                 OnPropertyChanged();
@@ -145,6 +173,7 @@ namespace BookingApp.ViewModel.Tourist
 
             }
         }
+       
         public TouristDTO SelectedTouristDTO
         {
             get { return _selectedTouristDTO; }
@@ -161,7 +190,7 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedVoucherDTO = value;
                 OnPropertyChanged();
-                UseVoucher();
+               
             }
         }
         public RelayCommand AddTouristCommand
@@ -200,11 +229,50 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        public RelayCommand UseVoucherCommand
+        {
+            get
+            {
+                return _useVoucherCommand;
+            }
+            set
+            {
+                _useVoucherCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowTouristMainWindowCommand
+        {
+            get
+            {
+                return _showTouristMainWindowCommand;
+            }
+            set
+            {
+                _showTouristMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public void AddTourist()
         {
             _touristsDTO.Add(new TouristDTO(_touristDTO));
             _tourDTO.CurrentCapacity--;
+
+            IsAddButtonEnabled = _tourDTO.CurrentCapacity > 0;
         }
         public void RemoveTourist()
         {
@@ -215,6 +283,8 @@ namespace BookingApp.ViewModel.Tourist
             var selectedItem = _selectedTouristDTO as TouristDTO;
             _touristsDTO.Remove(selectedItem);
             _tourDTO.CurrentCapacity ++;
+
+            IsAddButtonEnabled = _tourDTO.CurrentCapacity > 0;
         }
         public void UseVoucher()
         {
@@ -256,6 +326,19 @@ namespace BookingApp.ViewModel.Tourist
             }
 
             MessageBox.Show("Successfully added reservation!");
+        }
+        public void ShowTouristMainWindow()
+        {
+
+
+            TouristMainWindow touristMainWindow = new TouristMainWindow(_userDTO.ToUser());
+            touristMainWindow.ShowDialog();
+
+
+        }
+        public void CloseWindow()
+        {
+            CloseAction();
         }
     }
 }

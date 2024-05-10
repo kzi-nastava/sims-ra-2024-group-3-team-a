@@ -16,7 +16,7 @@ namespace BookingApp.DTO
             GuestImages = new List<string>();
         }
 
-        public ReviewDTO(int ownerCleannessRating, int ownerRulesRespectRating, string ownerComment, int guestCleanlinessRating, int guestHospitalityRating, string guestComment, List<string> guestImages)
+        public ReviewDTO(int ownerCleannessRating, int ownerRulesRespectRating, string ownerComment, int guestCleanlinessRating, int guestHospitalityRating, string guestComment, int guestRenovationRating, string guestRenovationComment, List<string> guestImages)
         {
             this.ownerCleannessRating = ownerCleannessRating;
             this.ownerRulesRespectRating = ownerRulesRespectRating;
@@ -24,6 +24,8 @@ namespace BookingApp.DTO
             this.guestCleanlinessRating = guestCleanlinessRating;
             this.guestHospitalityRating = guestHospitalityRating;
             this.guestComment = guestComment;
+            this.guestRenovationRating = guestRenovationRating;
+            this.guestRenovationComment = guestRenovationComment;
             this.guestImages = guestImages;
         }
 
@@ -50,6 +52,8 @@ namespace BookingApp.DTO
             guestCleanlinessRating = reviewDTO.GuestCleanlinessRating;
             guestHospitalityRating = reviewDTO.GuestHospitalityRating;
             guestComment = reviewDTO.GuestComment;
+            guestRenovationRating = reviewDTO.guestRenovationRating;
+            guestRenovationComment = reviewDTO.guestRenovationComment;
             guestImages = reviewDTO.GuestImages;
         }
 
@@ -61,6 +65,8 @@ namespace BookingApp.DTO
             guestCleanlinessRating = review.GuestCleannessRating;
             guestHospitalityRating = review.GuestHospitalityRating;
             guestComment = review.GuestComment;
+            guestRenovationRating = review.GuestRenovationRating;
+            guestRenovationComment = review.GuestRenovationComment;
             guestImages = review.GuestImages;
         }
 
@@ -148,6 +154,34 @@ namespace BookingApp.DTO
             }
         }
 
+        private int guestRenovationRating;
+        public int GuestRenovationRating
+        {
+            get { return guestRenovationRating; }
+            set
+            {
+                if (value != guestRenovationRating)
+                {
+                    guestRenovationRating = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string guestRenovationComment;
+        public string GuestRenovationComment
+        {
+            get { return guestRenovationComment; }
+            set
+            {
+                if (value != guestRenovationComment)
+                {
+                    guestRenovationComment = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private List<string> guestImages;
         public List<string> GuestImages
         {
@@ -164,7 +198,7 @@ namespace BookingApp.DTO
 
         public Review ToGuestRating()
         {
-            return new Review(ownerCleannessRating, ownerRulesRespectRating, ownerComment, guestCleanlinessRating, guestHospitalityRating, guestComment, guestImages);
+            return new Review(ownerCleannessRating, ownerRulesRespectRating, ownerComment, guestCleanlinessRating, guestHospitalityRating, guestComment, guestRenovationRating, guestRenovationComment, guestImages);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -27,13 +27,43 @@ namespace BookingApp.View.Tourist
     public partial class FinishedToursWindow : Window
     {
         private FinishedToursViewModel _finishedToursViewModel { get; set; }
+        public static FinishedToursWindow Instance;
+
         public FinishedToursWindow(UserDTO userDTO)
         {
             InitializeComponent();
             _finishedToursViewModel = new FinishedToursViewModel(userDTO);
+            if (Instance == null)
+            {
+                Instance = this;
+            }
 
             DataContext = _finishedToursViewModel;
-            finishedToursListView.Focus();
+
+            if (_finishedToursViewModel.CloseAction == null)
+                _finishedToursViewModel.CloseAction = new Action(this.Close);
+            //finishedToursListView.Focus();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            this.PreviewKeyDown += TouristFinishedWindow_PreviewKeyDown;
+
+
+          
+
+
+        }
+        private void TouristFinishedWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F9 && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+            {
+
+                More.IsSubmenuOpen = true;
+                Settings.Focus();
+                e.Handled = true;
+            }
+        }
+        public static FinishedToursWindow GetInstance()
+        {
+            return Instance;
         }
     }
 }
