@@ -74,6 +74,7 @@
         <Button Content="My Inbox" Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Left" Command="{Binding ShowInboxCommand}"></Button>
         <Button Content="Log out" Grid.Row="1" Grid.Column="3" Width="150" HorizontalAlignment="Left" Command="{Binding LogOutCommand}"></Button>
         <Button Content="Ratings to me" Grid.Row="2" Grid.Column="0" Width="150" HorizontalAlignment="Left" Command="{Binding ShowRatingsFromOwnersCommand}"></Button>
+        <Button Content="My Profile" Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Left" Command="{Binding ShowMyProfileCommand}"></Button>
 
         <Frame Grid.Row="3" Grid.ColumnSpan="4" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
         

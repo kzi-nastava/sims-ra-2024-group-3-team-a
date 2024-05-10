@@ -24,6 +24,7 @@ namespace BookingApp.DTO
             beginDate = reservation.BeginDate;
             endDate = reservation.EndDate;
             canceled = reservation.Canceled;
+            usedPoint = reservation.UsedPoint;
             ratingDTO = new ReviewDTO(reservation.Rating);
         }
 
@@ -135,6 +136,19 @@ namespace BookingApp.DTO
                 }
             }
         }
+        private bool usedPoint;
+        public bool UsedPoint
+        {
+            get { return usedPoint; }
+            set
+            {
+                if (value != usedPoint)
+                {
+                    usedPoint = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string DatesConcatenated
         {
@@ -144,7 +158,7 @@ namespace BookingApp.DTO
 
         public AccommodationReservation ToAccommodationReservation()
         {
-            return new AccommodationReservation(id, guestId, accommodationId, beginDate, endDate, canceled, ratingDTO.ToGuestRating());
+            return new AccommodationReservation(id, guestId, accommodationId, beginDate, endDate, canceled, usedPoint, ratingDTO.ToGuestRating());
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
