@@ -45,6 +45,8 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _showAccommodationReservationsPageCommand;
         private RelayCommand _searchAccommodationsCommand;
         private RelayCommand _showInboxCommand;
+        private RelayCommand _showRatingsFromOwnersCommand;
+        
 
         public GuestMainViewModel(UserDTO loggedInGuest)
         {
@@ -77,6 +79,7 @@ namespace BookingApp.ViewModel.Guest
             _showAccommodationReservationsPageCommand = new RelayCommand(ShowAccommodationReservationPage);
             _searchAccommodationsCommand = new RelayCommand(SearchAccommodations);
             _showInboxCommand = new RelayCommand(MyInbox);
+            _showRatingsFromOwnersCommand = new RelayCommand(ShowRatingsFromOwnersPage);
             UpdateReservations();
 
         }
@@ -102,6 +105,15 @@ namespace BookingApp.ViewModel.Guest
         {
 
             GuestMainWindow.MainFrame.Content = new GuestReservationsPage(_loggedInGuest);
+            IsFrameMyRequestsVisible = false;
+            IsFrameMyInboxVisible = false;
+            GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
+
+        }
+        private void ShowRatingsFromOwnersPage()
+        {
+
+            GuestMainWindow.MainFrame.Content = new GuestReviewsFromOwners(_loggedInGuest);
             IsFrameMyRequestsVisible = false;
             IsFrameMyInboxVisible = false;
             GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
@@ -329,6 +341,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _showMyRequestsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowRatingsFromOwnersCommand
+        {
+            get
+            {
+                return _showRatingsFromOwnersCommand;
+            }
+            set
+            {
+                _showRatingsFromOwnersCommand = value;
                 OnPropertyChanged();
             }
         }

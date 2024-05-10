@@ -23,6 +23,7 @@ namespace BookingApp.Repository.Interfaces
         public List<AccommodationReservation> GetAllByAccommodationId(int id);
 
         public List<AccommodationReservation> GetAllByGuestId(int id);
+        public List<AccommodationReservation> GetAllRatedByGuestId(int id);
 
         public double GetAverageRating(List<AccommodationReservation> finishedReservations);
     }

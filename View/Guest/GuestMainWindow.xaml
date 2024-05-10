@@ -73,10 +73,11 @@
         <Button Content="My Change Requests" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" Command="{Binding ShowMyRequestsCommand}"></Button>
         <Button Content="My Inbox" Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Left" Command="{Binding ShowInboxCommand}"></Button>
         <Button Content="Log out" Grid.Row="1" Grid.Column="3" Width="150" HorizontalAlignment="Left" Command="{Binding LogOutCommand}"></Button>
+        <Button Content="Ratings to me" Grid.Row="2" Grid.Column="0" Width="150" HorizontalAlignment="Left" Command="{Binding ShowRatingsFromOwnersCommand}"></Button>
 
-        <Frame Grid.Row="2" Grid.ColumnSpan="4" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Row="3" Grid.ColumnSpan="4" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
         
-        <Grid x:Name="frameMyRequests" Grid.Row="3" Grid.ColumnSpan="4">
+        <Grid x:Name="frameMyRequests" Grid.Row="4" Grid.ColumnSpan="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -113,7 +114,7 @@
 
             </DataGrid>
         </Grid>
-        <Grid x:Name="frameMyInbox" Grid.Row="3" Grid.ColumnSpan="4">
+        <Grid x:Name="frameMyInbox" Grid.Row="4" Grid.ColumnSpan="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -150,7 +151,7 @@
             </DataGrid>
         </Grid>
 
-        <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" SelectedItem="{Binding SelectedAccommodationDTO}"  Grid.Row="4" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="4">
+        <DataGrid ItemsSource="{Binding AccommodationsDTO}" x:Name="dataGridAccommodation" SelectedItem="{Binding SelectedAccommodationDTO}"  Grid.Row="5" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="4">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="City" Binding="{Binding PlaceDTO.City}" Width="*"/>
