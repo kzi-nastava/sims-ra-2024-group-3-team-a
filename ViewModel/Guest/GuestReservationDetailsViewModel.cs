@@ -9,9 +9,11 @@ using BookingApp.View.Guest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace BookingApp.ViewModel.Guest
 {
@@ -23,20 +25,35 @@ namespace BookingApp.ViewModel.Guest
         private UserDTO _userDTO;
         private AccommodationDTO _accommodationDTO;
         private AccommodationReservationService _accommodationReservationService;
+        private SuperGuestService _superGuestService;
         private RelayCommand _newReservationCommand;
 
         public GuestReservationDetailsViewModel(AccommodationDTO accommodationDTO, UserDTO userDTO, DateOnly begin, DateOnly end)
         {
+            isSuper = true;
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ISuperGuestRepository superGuestRepository = Injector.CreateInstance<ISuperGuestRepository>();
             _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
+            _superGuestService = new SuperGuestService(superGuestRepository);
 
             _accommodationDTO = accommodationDTO;
             _userDTO = userDTO;
             _selectedBeginDate = begin;
             _selectedEndDate = end;
             _newReservationCommand = new RelayCommand(NewReservation);
+
+            if((_superGuestService.GetByUserId(userDTO.Id) == null) || _superGuestService.GetByUserId(userDTO.Id).Points == 0)
+            {
+                IsSuper = false;
+                
+            }
+            else
+            {
+                IsSuper = true;
+                
+            }
         }
         private void NewReservation()
         {
@@ -49,13 +66,47 @@ namespace BookingApp.ViewModel.Guest
                     return;
                 }
                 Review rating = new Review();
-                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, false, rating);
+                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, _selectedBeginDate, _selectedEndDate, false,usedPoint, rating);
                 _accommodationReservationService.Save(acc);
                 MessageBox.Show("Reservation successful!");
+                if (UsedPoint)
+                {
+                    SuperGuest superGuest = _superGuestService.GetByUserId(_userDTO.Id);
+                    superGuest.Points--;
+                    _superGuestService.Update(superGuest);
+                }
             }
             else
             {
                 MessageBox.Show("Please enter number of guests!");
+            }
+        }
+        private bool isSuper;
+        public bool IsSuper
+        {
+            get
+            {
+                return isSuper;
+            }
+            set
+            {
+                isSuper = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsToggleEnabled));
+            }
+        }
+        public bool IsToggleEnabled => IsSuper;
+        private bool usedPoint;
+        public bool UsedPoint
+        {
+            get
+            {
+                return usedPoint;
+            }
+            set
+            {
+                usedPoint = value;
+                OnPropertyChanged();
             }
         }
         public RelayCommand NewReservationCommand
