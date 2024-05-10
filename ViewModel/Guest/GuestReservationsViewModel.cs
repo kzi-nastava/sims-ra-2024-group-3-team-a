@@ -22,6 +22,7 @@ namespace BookingApp.ViewModel.Guest
     public class GuestReservationsViewModel: ViewModel
     {
         public static ObservableCollection<AccommodationReservationDTO> _myReservations { get; set; }
+        public static ObservableCollection<AccommodationReservationDTO> _myRatedReservations { get; set; }
         public static ObservableCollection<AccommodationReservationChangeRequestDTO> _myChangeRequests { get; set; }
 
         private AccommodationReservationService _accommodationReservationService;
@@ -78,7 +79,9 @@ namespace BookingApp.ViewModel.Guest
         public void UpdateMyReservations()
         {
             List<AccommodationReservationDTO> AccommodationReservationsList = _accommodationReservationService.GetAllByGuestId(_loggedInGuest.Id).Select(accommodationReservation => new AccommodationReservationDTO(accommodationReservation)).ToList();
+            List<AccommodationReservationDTO> RatedAccommodationReservationsList = _accommodationReservationService.GetAllRatedByGuestId(_loggedInGuest.Id).Select(accommodationReservation => new AccommodationReservationDTO(accommodationReservation)).ToList();
             _myReservations = new ObservableCollection<AccommodationReservationDTO>(AccommodationReservationsList);
+            _myRatedReservations = new ObservableCollection<AccommodationReservationDTO>(RatedAccommodationReservationsList);
         }
 
         private void CancelReservation()
@@ -230,6 +233,19 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _myReservations = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<AccommodationReservationDTO> MyRatedReservationsDTO
+        {
+            get
+            {
+                return _myRatedReservations;
+            }
+            set
+            {
+                _myRatedReservations = value;
                 OnPropertyChanged();
             }
         }

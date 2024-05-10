@@ -52,8 +52,8 @@ namespace BookingApp.DTO
             guestCleanlinessRating = reviewDTO.GuestCleanlinessRating;
             guestHospitalityRating = reviewDTO.GuestHospitalityRating;
             guestComment = reviewDTO.GuestComment;
-            guestRenovationRating = reviewDTO.guestRenovationRating;
-            guestRenovationComment = reviewDTO.guestRenovationComment;
+            guestRenovationRating = reviewDTO.GuestRenovationRating;
+            guestRenovationComment = reviewDTO.GuestRenovationComment;
             guestImages = reviewDTO.GuestImages;
         }
 
