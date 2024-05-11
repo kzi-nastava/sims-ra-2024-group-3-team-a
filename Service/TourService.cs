@@ -16,11 +16,13 @@ namespace BookingApp.Service
     {
         private ITourRepository _tourRepository;
         private TourReservationService _tourReservationService;
+        private MessageRepository _messageRepository;
 
         public TourService(ITourRepository tourRepository, IUserRepository userRepository, ITouristRepository touristRepository, ITourReservationRepository tourReservationRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository) 
         {
             _tourRepository = tourRepository;
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+           
         }
 
         public List<Tour> GetAll() 
@@ -172,6 +174,11 @@ namespace BookingApp.Service
             }
             return tourists;
         }
+
+       /* public void FindRejectedTourRequestWithSameParameters(Tour tour)
+        {
+            foreach
+        }*/
 
         
     }
