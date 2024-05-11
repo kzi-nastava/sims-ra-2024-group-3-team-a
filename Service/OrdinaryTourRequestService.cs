@@ -1,4 +1,4 @@
-﻿using BookingApp.Model;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using System;
@@ -100,6 +100,19 @@ namespace BookingApp.Service
                 double numberOfTourists = GetAllForUser(userId).Where(request => request.Status == TourRequestStatus.Accepted && request.BeginDate.Year == selectedYear).Sum(request => request.NumberOfTourists);
                 return numberOfTourists / acceptedRequestsCount;
             } 
+        }
+
+        public List<OrdinaryTourRequest> GetOnWait()
+        {
+            List<OrdinaryTourRequest> notRejectedTours = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if(request.Status == TourRequestStatus.OnWait)
+                {
+                    notRejectedTours.Add(request);
+                }
+            }
+            return notRejectedTours;
         }
 
     }

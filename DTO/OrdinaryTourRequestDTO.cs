@@ -19,7 +19,7 @@ namespace BookingApp.DTO
 
         }
 
-        public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateOnly beginDate, DateOnly endDate)
+        public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate)
         {
             this.id = id;
             this.guideId = guideId;
@@ -48,7 +48,9 @@ namespace BookingApp.DTO
             numberOfTourists = ordinaryTourRequest.NumberOfTourists ;
             status = ordinaryTourRequest .Status ;
             beginDate = ordinaryTourRequest .BeginDate ;
+            description = ordinaryTourRequest.Description;
             endDate = ordinaryTourRequest .EndDate ;
+            language=ordinaryTourRequest .Language ;
             touristsDTO = new List<TouristDTO>();
             foreach (Tourist tour in ordinaryTourRequest.Tourists)
             {
@@ -184,8 +186,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private DateOnly beginDate;
-        public DateOnly BeginDate
+        private DateTime beginDate;
+        public DateTime BeginDate
         {
             get { return beginDate; }
             set
@@ -198,8 +200,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private DateOnly endDate;
-        public DateOnly EndDate
+        private DateTime endDate;
+        public DateTime EndDate
         {
             get { return endDate; }
             set

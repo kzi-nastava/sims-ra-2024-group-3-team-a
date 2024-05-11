@@ -28,8 +28,8 @@ namespace BookingApp.Model
         public int NumberOfTourists { get; set; }
 
         public TourRequestStatus Status { get; set; }
-        public DateOnly BeginDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateTime BeginDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public OrdinaryTourRequest()
         {
@@ -37,7 +37,7 @@ namespace BookingApp.Model
             Tourists = new List<Tourist>();
         }
 
-        public OrdinaryTourRequest(int id, int guideId,int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateOnly beginDate, DateOnly endDate)
+        public OrdinaryTourRequest(int id, int guideId,int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate)
         {
             Id = id;
             GuideId = guideId;
@@ -89,8 +89,8 @@ namespace BookingApp.Model
             Language = (Languages)Enum.Parse(typeof(Languages), values[6]);
             NumberOfTourists = Convert.ToInt32(values[7]);
             Status = (TourRequestStatus)Enum.Parse(typeof(TourRequestStatus), values[8]);
-            BeginDate = DateOnly.Parse(values[9]);
-            EndDate = DateOnly.Parse(values[10]);
+            BeginDate = DateTime.Parse(values[9]);
+            EndDate = DateTime.Parse(values[10]);
             for (int i = 11; i < values.Length; i = i + 4)
             {
                 if (i + 3 < values.Length)
