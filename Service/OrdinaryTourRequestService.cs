@@ -1,4 +1,5 @@
 ﻿using BookingApp.Model;
+using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -45,5 +46,18 @@ namespace BookingApp.Service
         {
             return _ordinaryTourRequestRepository.GetAll().Where(ordinaryTourRequest => ordinaryTourRequest.UserId == userId).ToList();
         }
+        public List<OrdinaryTourRequest> GetOnWait()
+        {
+            List<OrdinaryTourRequest> notRejectedTours = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if(request.Status == TourRequestStatus.OnWait)
+                {
+                    notRejectedTours.Add(request);
+                }
+            }
+            return notRejectedTours;
+        }
+
     }
 }

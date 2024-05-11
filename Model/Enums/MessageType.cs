@@ -16,6 +16,7 @@ namespace BookingApp.Model.Enums
 
         TourAttendance,
         AcceptedChangeRequest,
-        RejectedChangeRequest
+        RejectedChangeRequest,
+        AcceptedTourRequest
     }
 }
