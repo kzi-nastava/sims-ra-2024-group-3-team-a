@@ -21,6 +21,7 @@ namespace BookingApp.Service
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService;
         private AccommodationService _accommodationService;
         private TourService _tourService;
+       // private OrdinaryTourRequestService _ordinaryTourRequestRepository;
 
         public MessageService(IMessageRepository messageRepository, IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository, IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IUserRepository userRepository, ITourRepository tourRepository, ITourReservationRepository tourReservationRepository, ITouristRepository touristRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
@@ -30,6 +31,7 @@ namespace BookingApp.Service
             _accommodationService = new AccommodationService(accommodationRepository);
             _userService = new UserService(userRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            //_ordinaryTourRequestRepository = new OrdinaryTourRequestService(ordinaryTourRequestRepository);
         }
 
         public List<Message> GetAll()
@@ -149,5 +151,41 @@ namespace BookingApp.Service
         {
             return GetByOwner(user.Id).Any(oldMessage => oldMessage.RequestId == tour.Id);
         }
+       /* public void FindRejectedTourWithSameParameters(Tour tour)
+        {
+            foreach (OrdinaryTourRequest ordinaryTourRequest in _ordinaryTourRequestRepository.GetAll())
+            {
+                if (ordinaryTourRequest.Language.Equals(tour.Language) || (ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country== tour.Place.City))
+                {
+                    bool sameLanguage = ordinaryTourRequest.Language.Equals(tour.Language);
+                    bool sameLocation = ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country == tour.Place.City;
+                    CreateSystemMessage(ordinaryTourRequest.UserId, tour, sameLanguage, sameLocation);
+                }
+            }
+        }
+        public void CreateSystemMessage(int userId, Tour tour, bool sameLanguage, bool sameLocation)
+        {
+            Message message = new Message();
+            message.RequestId = tour.Id;
+            message.Sender = "System";
+            message.RecieverId = userId;
+            message.Header = "New tour created";
+            message.Type = MessageType.NewCreatedTour;
+            message.IsRead = false;
+           
+            if(sameLanguage && sameLocation)
+            {
+                message.Content = $"Guide has recently created a new tour with language {tour.Language} and location {tour.Place}. Click for more info.";
+            }
+            else if (sameLanguage)
+            {
+                message.Content = $"Guide has recently created a new tour with language {tour.Language}. Click for more info.";
+            }
+            else
+            {
+                message.Content = $"Guide has recently created a new tour with  location {tour.Place}. Click for more info.";
+            }
+            Save(message);
+        }*/
     }
 }

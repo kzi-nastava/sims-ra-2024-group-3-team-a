@@ -10,6 +10,6 @@ namespace BookingApp.Model.Enums
     {
        OnWait,
        Accepted,
-       Rejecteds
+       Rejected
     }
 }
