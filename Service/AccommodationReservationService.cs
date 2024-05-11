@@ -56,6 +56,11 @@ namespace BookingApp.Service
             return _accommodationReservationRepository.GetAllByGuestId(id);
         }
 
+        public List<AccommodationReservation> GetAllRatedByGuestId(int id)
+        {
+            return _accommodationReservationRepository.GetAllRatedByGuestId(id);
+        }
+
         public List<AccommodationReservation> GetFinishedAccommodationReservations(User loggedInOwner)
         {
             List<AccommodationReservation>  finishedAccommodationReservations = new List<AccommodationReservation>();
@@ -95,6 +100,18 @@ namespace BookingApp.Service
 
             return userAndOwnerReviewedAccommodationReservations;
         }
+        public List<AccommodationReservation> GetGuestLastYearAccommodationReservations(User loggedInGuest)
+        {
+            List<AccommodationReservation> guestLastYearAccommodationReservations = new List<AccommodationReservation>();
+            foreach (var reservation in _accommodationReservationRepository.GetAllByGuestId(loggedInGuest.Id))
+            {
+                if(reservation.BeginDate.AddDays(365) > DateOnly.FromDateTime(DateTime.Now))
+                {
+                    guestLastYearAccommodationReservations.Add(reservation);
+                }    
+            }
+            return guestLastYearAccommodationReservations;
+        }
         public double GetAverageRating(User loggedInOwner)
         {
             List<AccommodationReservation> userReviewedAccommodationReservations = GetUserReviewedAccommodationReservations(loggedInOwner);
@@ -118,6 +135,23 @@ namespace BookingApp.Service
             }
 
             return loggedInOwner;
+        }
+
+        public User SetSuperGuest(User loggedInGuest)
+        {
+            int numberOfReservations = GetGuestLastYearAccommodationReservations(loggedInGuest).Count();
+            if (numberOfReservations >= 10)
+            {
+                loggedInGuest.IsSuper = true;
+                _userService.Update(loggedInGuest);
+            }
+            else
+            {
+                loggedInGuest.IsSuper = false;
+                _userService.Update(loggedInGuest);
+            }
+
+            return loggedInGuest;
         }
         private bool IsLoggedOwner(Accommodation accommodation, User loggedInOwner)
         {
