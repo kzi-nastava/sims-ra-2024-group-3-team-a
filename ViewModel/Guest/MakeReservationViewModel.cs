@@ -42,7 +42,7 @@ namespace BookingApp.ViewModel.Guest
             _searchDatesCommand = new RelayCommand(SearchAvailableDates);
             _showReservationDetailsPageCommand = new RelayCommand(ShowReservationDetailsPage);
             _accommodationReservationsDTO = new List<AccommodationReservationDTO>();
-            _accommodationReservationsDTO = _accommodationReservationService.GetAll().Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
+            _accommodationReservationsDTO = _accommodationReservationService.GetAllByAccommodationId(_accommodationDTO.Id).Where(c => c.Canceled == false).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
         }
 
         private DateOnly _selectedBeginDate;

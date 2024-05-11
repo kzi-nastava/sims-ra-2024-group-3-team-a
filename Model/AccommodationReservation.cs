@@ -17,6 +17,7 @@ namespace BookingApp.Model
         public DateOnly BeginDate { get; set; }
         public DateOnly EndDate { get; set;}
         public bool Canceled { get; set; }
+        public bool UsedPoint {  get; set; }
         public Review Rating { get; set; }
 
         public AccommodationReservation()
@@ -24,7 +25,7 @@ namespace BookingApp.Model
             Rating = new Review();
         }
 
-        public AccommodationReservation(int id, int guestId, int accommodationId, DateOnly beginDate, DateOnly endDate, bool canceled, Review rating)
+        public AccommodationReservation(int id, int guestId, int accommodationId, DateOnly beginDate, DateOnly endDate, bool canceled,bool usedPoint, Review rating)
         {
             Id = id;
             GuestId = guestId;
@@ -32,6 +33,7 @@ namespace BookingApp.Model
             BeginDate = beginDate;
             EndDate = endDate;
             Rating = rating;
+            UsedPoint = usedPoint;
             Canceled = canceled;
         }
 
@@ -41,12 +43,12 @@ namespace BookingApp.Model
             if (Rating.GuestImages != null)
             {
                 string images = string.Join("|", Rating.GuestImages);
-                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, Rating.GuestRenovationRating.ToString(), Rating.GuestRenovationComment,images };
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, Rating.GuestRenovationRating.ToString(), Rating.GuestRenovationComment, UsedPoint.ToString(),images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, Rating.GuestRenovationRating.ToString(), Rating.GuestRenovationComment };
+                string[] csvValues = { Id.ToString(), GuestId.ToString(), AccommodationId.ToString(), BeginDate.ToString(), EndDate.ToString(), Canceled.ToString(), Rating.OwnerCleannessRating.ToString(), Rating.OwnerRulesRespectRating.ToString(), Rating.OwnerComment, Rating.GuestCleannessRating.ToString(), Rating.GuestHospitalityRating.ToString(), Rating.GuestComment, Rating.GuestRenovationRating.ToString(), Rating.GuestRenovationComment, UsedPoint.ToString() };
                 return csvValues;
             }
         }
@@ -67,7 +69,8 @@ namespace BookingApp.Model
             Rating.GuestComment = values[11];
             Rating.GuestRenovationRating = Convert.ToInt32(values[12]);
             Rating.GuestRenovationComment = values[13];
-            for (int i = 14; i < values.Length; i++)
+            UsedPoint = bool.Parse(values[14]);
+            for (int i = 15; i < values.Length; i++)
             {
                 Rating.GuestImages.Add(values[i]);
             }

@@ -1,4 +1,4 @@
-﻿using BookingApp.Model;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using System;
@@ -46,6 +46,62 @@ namespace BookingApp.Service
         {
             return _ordinaryTourRequestRepository.GetAll().Where(ordinaryTourRequest => ordinaryTourRequest.UserId == userId).ToList();
         }
+        public int CountAcceptedOrdinaryTourRequests(int userId)
+        {
+            return GetAllForUser(userId).Count(request => request.Status == TourRequestStatus.Accepted);
+        }
+        public int CountRejectedOrdinaryTourRequests(int userId)
+        {
+            return GetAllForUser(userId).Count(request => request.Status == TourRequestStatus.Rejected);
+        }
+        public int CountAcceptedOrdinaryTourRequestsForSpecificYear(int userId, int year)
+        {
+            return GetAllForUser(userId)
+          .Count(request => request.Status == TourRequestStatus.Accepted &&
+                            request.BeginDate.Year == year);
+        }
+        public int CountRejectedOrdinaryTourRequestsForSpecificYear(int userId, int year)
+        {
+            return GetAllForUser(userId)
+          .Count(request => request.Status == TourRequestStatus.Accepted &&
+                            request.BeginDate.Year == year);
+        }
+        public int CountOrdinaryTourRequestsbyLanguage(int userId,string language)
+        {
+            return GetAllForUser(userId)
+          .Count(request => request.Language.ToString().Equals(language));
+        }
+
+        public List<string> GetLanguages(int userId)
+        {
+            List<string> languageList = new List<string>();
+           foreach(OrdinaryTourRequest ordinaryTourRequest in GetAllForUser(userId)) 
+           {
+
+                languageList.Add(ordinaryTourRequest.Language.ToString());
+            
+           }
+            languageList = languageList.Distinct().ToList();
+            return languageList;
+        }
+
+        public double CalculateAverageTouristNumber(int userId, int selectedYear)
+        {
+            if(selectedYear == 0)
+            {
+                double acceptedRequestsCount = CountAcceptedOrdinaryTourRequests(userId);
+                double numberOfTourists =  GetAllForUser(userId).Where(request => request.Status == TourRequestStatus.Accepted).Sum(request => request.NumberOfTourists);
+                if(acceptedRequestsCount == 0) { return 0; }
+                return numberOfTourists / acceptedRequestsCount;
+            }
+            else
+            {
+                double acceptedRequestsCount = CountAcceptedOrdinaryTourRequestsForSpecificYear(userId, selectedYear);
+                double numberOfTourists = GetAllForUser(userId).Where(request => request.Status == TourRequestStatus.Accepted && request.BeginDate.Year == selectedYear).Sum(request => request.NumberOfTourists);
+                return numberOfTourists / acceptedRequestsCount;
+            } 
+        }
+
         public List<OrdinaryTourRequest> GetOnWait()
         {
             List<OrdinaryTourRequest> notRejectedTours = new List<OrdinaryTourRequest>();

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -63,6 +64,7 @@ namespace BookingApp.ViewModel.Tourist
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();   
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            IOrdinaryTourRequestRepository ordinaryTourRequestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
             _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
@@ -419,6 +421,8 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
+      
+
         private void Search()
         {
             
@@ -521,7 +525,7 @@ namespace BookingApp.ViewModel.Tourist
             
             foreach (Message message in _messageService.GetAll())
             {
-                if (message.Type.Equals(MessageType.TourAttendance) && !message.IsRead)
+                if (message.Type.Equals(MessageType.TourAttendance) || message.Type.Equals(MessageType.NewReviewNotification) && !message.IsRead)
                 {
                     IsOpen = true;
                     return;
