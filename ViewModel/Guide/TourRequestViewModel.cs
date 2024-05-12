@@ -30,6 +30,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _resetSearchParametersCommand;
         private RelayCommand _cancelTourRequestCommand;
         private RelayCommand _acceptTourRequestCommand;
+        private RelayCommand _showTourRequestStatisticsCommand;
         public TourRequestViewModel(UserDTO user)
         {
             _userDTO = user;
@@ -43,6 +44,7 @@ namespace BookingApp.ViewModel.Guide
             _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
             _cancelTourRequestCommand = new RelayCommand(CancelTourRequest);
             _acceptTourRequestCommand = new RelayCommand(AcceptTourRequest);
+            _showTourRequestStatisticsCommand = new RelayCommand(ShowTourRequestStatistic);
         }
         public ObservableCollection<OrdinaryTourRequestDTO> RequestsDTO
         {
@@ -113,6 +115,21 @@ namespace BookingApp.ViewModel.Guide
                 _acceptTourRequestCommand = value;
                 OnPropertyChanged();
             }
+        }
+        
+            public RelayCommand ShowTourRequestStatistics
+        {
+            get { return _showTourRequestStatisticsCommand; }
+            set
+            {
+                _showTourRequestStatisticsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourRequestStatistic()
+        {
+            TourRequestStatisticsWindow statistics = new TourRequestStatisticsWindow();
+            statistics.Show();
         }
         private void AcceptTourRequest(object parameter)
         {

@@ -114,6 +114,48 @@ namespace BookingApp.Service
             }
             return notRejectedTours;
         }
+        public int CountByLanguage(string language, List<OrdinaryTourRequest> requests)
+        {
+            int count = 0;
+            foreach(OrdinaryTourRequest request in requests)
+            {
+                if(request.Language.ToString().ToLower().Contains(language.ToString().ToLower())) { count++; }
+            }
+            return count;
+        }
+        public int CountByLocation(string location, List<OrdinaryTourRequest> requests)
+        {
+            int count = 0;
+            foreach (OrdinaryTourRequest request in requests)
+            {
+                if (request.Place.City == location) { count++; }
+            }
+            return count;
+        }
+        public List<OrdinaryTourRequest> GetByYear(int year)
+        {
+            List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if (request.BeginDate.Year == year)
+                {
+                    requests.Add(request);
+                }
+            }
+            return requests;
+        }
+        public List<OrdinaryTourRequest> GetByMonth(int year, int month)
+        {
+            List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetByYear(year))
+            {
+                if (request.BeginDate.Month == month || request.EndDate.Month == month)
+                {
+                    requests.Add(request);
+                }
+            }
+            return requests;
+        }
 
     }
 }

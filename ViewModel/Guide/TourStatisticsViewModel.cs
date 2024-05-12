@@ -18,6 +18,7 @@ namespace BookingApp.ViewModel.Guide
 {
     class TourStatisticsViewModel : ViewModel
     {
+        
         private TourDTO _mostVisitedTourDTO;
         private TourDTO _selectedTourDTO = null;
         private TourReservationService _tourReservationService;
@@ -60,6 +61,7 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        
         public TourDTO MostVisitedTourDTO
         {
             get { return _mostVisitedTourDTO; }

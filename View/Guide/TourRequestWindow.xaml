@@ -147,5 +147,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button Grid.Row="3" Grid.Column="6" Content="STATISTIKA" Height="40" Background="Beige" Command="{Binding ShowTourRequestStatistics}"></Button>
     </Grid>
 </Window>
