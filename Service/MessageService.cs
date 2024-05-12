@@ -151,18 +151,22 @@ namespace BookingApp.Service
         {
             return GetByOwner(user.Id).Any(oldMessage => oldMessage.RequestId == tour.Id);
         }
-       /* public void FindRejectedTourWithSameParameters(Tour tour)
-        {
-            foreach (OrdinaryTourRequest ordinaryTourRequest in _ordinaryTourRequestRepository.GetAll())
-            {
-                if (ordinaryTourRequest.Language.Equals(tour.Language) || (ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country== tour.Place.City))
-                {
-                    bool sameLanguage = ordinaryTourRequest.Language.Equals(tour.Language);
-                    bool sameLocation = ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country == tour.Place.City;
-                    CreateSystemMessage(ordinaryTourRequest.UserId, tour, sameLanguage, sameLocation);
-                }
-            }
-        }
+        /*  public void FindRejectedTourWithSameParameters()
+          {
+              foreach(CreatedTour createdTour in _createdTourRepository.GetAll())
+              {
+
+              foreach (OrdinaryTourRequest ordinaryTourRequest in _ordinaryTourRequestRepository.GetAll())
+              {
+                  if (ordinaryTourRequest.Language.Equals(createdTour.Language) || (createdTour.Place.City == tour.Place.City && createdTour.Place.Country== createdTour.Place.City))
+                  {
+                      bool sameLanguage = ordinaryTourRequest.Language.Equals(tour.Language);
+                      bool sameLocation = ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country == tour.Place.City;
+                      CreateSystemMessage(ordinaryTourRequest.UserId, tour, sameLanguage, sameLocation);
+                  }
+              }
+              }
+          }*/
         public void CreateSystemMessage(int userId, Tour tour, bool sameLanguage, bool sameLocation)
         {
             Message message = new Message();
@@ -186,6 +190,6 @@ namespace BookingApp.Service
                 message.Content = $"Guide has recently created a new tour with  location {tour.Place}. Click for more info.";
             }
             Save(message);
-        }*/
+        }
     }
 }

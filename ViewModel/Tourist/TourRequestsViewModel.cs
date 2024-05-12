@@ -11,9 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace BookingApp.ViewModel.Tourist
 {
@@ -25,6 +28,8 @@ namespace BookingApp.ViewModel.Tourist
 
         private List<OrdinaryTourRequestDTO> _ordinaryTourRequestsDTO { get; set; }
 
+        private List<SolidColorBrush> SolidColorBrushes { get; set; }
+
         private OrdinaryTourRequestDTO _selectedTourDTO = null;
 
         private RelayCommand _showOrdinaryTourRequestInfoWindowCommand;
@@ -32,8 +37,11 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _averageTouristNumberCommand;
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesCollection HistogramData { get; set; }
+        public SeriesCollection HistogramDataForLocation { get; set; }
         public string[] Labels { get; set; }
-       
+        public List<SolidColorBrush> brushes { get; set; }
+
+
 
 
         public TourRequestsViewModel(UserDTO loggedInUser)
@@ -49,21 +57,60 @@ namespace BookingApp.ViewModel.Tourist
             _averageTouristNumberCommand = new RelayCommand(GetAverageTouristNumber);
             LoadDataForPieChart();
 
+            // Convert hexadecimal color codes to Color objects
+            Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1"); // LightYellow
+            Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea"); // LightSteelBlue
+            Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de"); // LightCoral
+            Color color4 = (Color)ColorConverter.ConvertFromString("#ffaad7"); // LightCoral
+            Color color5 = (Color)ColorConverter.ConvertFromString("#ffffd8"); // LightCoral
 
+            // Create SolidColorBrush instances with the colors
+           // SolidColorBrush brush1 = new SolidColorBrush(color1);
+           // SolidColorBrush brush2 = new SolidColorBrush(color2);
+            SolidColorBrush brush3 = new SolidColorBrush(color1);
+            SolidColorBrush brush4 = new SolidColorBrush(color4);
+            SolidColorBrush brush5 = new SolidColorBrush(color5);
+
+            // Add SolidColorBrush instances to the list
+             brushes = new List<SolidColorBrush>();
+            brushes.Add(brush3);
+            brushes.Add(brush4);
+            brushes.Add(brush5);
 
             HistogramData = new SeriesCollection();
+            int brushIndex = 0;
 
             foreach (var language in _ordinaryTourRequestService.GetLanguages(_userDTO.Id))
             {
+
                 ColumnSeries columnSeries = new ColumnSeries
                 {
                     Title = $"Number of {language}",
-                    Values = new ChartValues<int> { _ordinaryTourRequestService.CountOrdinaryTourRequestsbyLanguage(_userDTO.Id, language.ToString()) }
+                    Values = new ChartValues<int> { _ordinaryTourRequestService.CountOrdinaryTourRequestsbyLanguage(_userDTO.Id, language.ToString()) },
+                    Fill = brushes[brushIndex % brushes.Count],
                 };
 
-                HistogramData.Add(columnSeries);  
+                HistogramData.Add(columnSeries);
+                brushIndex++;
             }
              Labels = new[] { "Languages" };
+
+            HistogramDataForLocation = new SeriesCollection();
+
+            foreach (var location in _ordinaryTourRequestService.GetLocations(_userDTO.Id))
+            {
+                ColumnSeries columnSeries = new ColumnSeries
+                {
+                    Title = $"Number of {location.City} {location.Country}",
+                    Values = new ChartValues<int> { _ordinaryTourRequestService.CountOrdinaryTourRequestsByLocation(_userDTO.Id, location) },
+                    Fill = brushes[brushIndex % brushes.Count],
+
+
+                };
+
+                HistogramDataForLocation.Add(columnSeries);
+                brushIndex++;
+            }
 
 
         }
@@ -257,12 +304,14 @@ namespace BookingApp.ViewModel.Tourist
                     Title = "Accepted",
                     Values = new ChartValues<double> { acceptedPercentage },
                     DataLabels = true
+                    //Fill = brushes[4]
                 },
                 new PieSeries
                 {
                     Title = "Rejected",
                     Values = new ChartValues<double> { declinedPercentage },
                     DataLabels = true
+                    //Fill = brushes[3]
                 }
             };
         }

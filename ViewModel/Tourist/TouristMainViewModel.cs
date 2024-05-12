@@ -70,6 +70,7 @@ namespace BookingApp.ViewModel.Tourist
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
 
             List<TourDTO> tours = _tourService.GetAll().Select(tours => new TourDTO(tours)).ToList();
+            //GetCandidatesForMessages();
             _toursDTO = new ObservableCollection<TourDTO>(tours);
             _filteredToursDTO = _toursDTO;
             _searchCommand = new RelayCommand(Search);

@@ -72,7 +72,11 @@ namespace BookingApp.Service
             return GetAllForUser(userId)
           .Count(request => request.Language.ToString().Equals(language));
         }
-
+        public int CountOrdinaryTourRequestsByLocation(int userId, Model.Location location)
+        {
+            return GetAllForUser(userId)
+                .Count(request => request.Place.City.Equals(location.City) && request.Place.Country.Equals(location.Country));
+        }
         public List<string> GetLanguages(int userId)
         {
             List<string> languageList = new List<string>();
@@ -85,7 +89,30 @@ namespace BookingApp.Service
             languageList = languageList.Distinct().ToList();
             return languageList;
         }
+        public List<Model.Location> GetLocations(int userId)
+        {
+            List<Model.Location> locationList = new List<Model.Location>();
+            foreach (OrdinaryTourRequest ordinaryTourRequest in GetAllForUser(userId))
+            {
 
+                locationList.Add(ordinaryTourRequest.Place);
+
+            }
+            locationList = locationList.Distinct(new LocationEqualityComparer()).ToList();
+            return locationList;
+        }
+        public class LocationEqualityComparer : IEqualityComparer<Model.Location>
+        {
+            public bool Equals(Model.Location x, Model.Location y)
+            {
+                return x.City.Equals(y.City) && x.Country.Equals(y.Country);
+            }
+
+            public int GetHashCode(Model.Location obj)
+            {
+                return obj.City.GetHashCode() ^ obj.Country.GetHashCode();
+            }
+        }
         public double CalculateAverageTouristNumber(int userId, int selectedYear)
         {
             if(selectedYear == 0)
@@ -99,6 +126,7 @@ namespace BookingApp.Service
             {
                 double acceptedRequestsCount = CountAcceptedOrdinaryTourRequestsForSpecificYear(userId, selectedYear);
                 double numberOfTourists = GetAllForUser(userId).Where(request => request.Status == TourRequestStatus.Accepted && request.BeginDate.Year == selectedYear).Sum(request => request.NumberOfTourists);
+                if (acceptedRequestsCount == 0) { return 0; }
                 return numberOfTourists / acceptedRequestsCount;
             } 
         }

@@ -250,7 +250,7 @@ namespace BookingApp.ViewModel.Guide
                 _tourDTO=new TourDTO(_tourService.Save(tourDTO.ToTourAllParam()));
                 SetKeyPoints(tourKeyPoints);
             }
-
+             
              AddTourWindow.GetInstance().Close();
         }
         public IEnumerable<Languages> Languages
