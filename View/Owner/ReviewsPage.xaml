@@ -44,14 +44,12 @@
                     <ListView x:Name="myReviewsList" ItemsSource="{Binding FinishedAccommodationReservationsDTO}" SelectedItem="{Binding SelectedMyReviewDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="Black" BorderThickness="5">
+                                <GroupBox Header="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}" Foreground="#d4ff00" FontSize="21">
+                                    <GroupBox.Background>
+                                        <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                                    </GroupBox.Background>
                                     <StackPanel Orientation="Vertical" Width="390">
-                                        <StackPanel.Background>
-                                            <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
-                                        </StackPanel.Background>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Accommodation:"/>
-                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
                                             <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Date:"/>
                                             <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=BeginDate}"/>
                                             <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="-"/>
@@ -68,7 +66,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                </Border>
+                                </GroupBox>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -90,14 +88,12 @@
                     <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="listViewUserReviews" ItemsSource="{Binding UserAndOwnerReviewedAccommodationReservationsDTO}" SelectedItem="{Binding SelectedUserReviewDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="Black" BorderThickness="5">
+                                <GroupBox Header="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}" Foreground="#d4ff00" FontSize="21">
+                                    <GroupBox.Background>
+                                        <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                                    </GroupBox.Background>
                                     <StackPanel Orientation="Vertical" Width="390">
-                                        <StackPanel.Background>
-                                            <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
-                                        </StackPanel.Background>
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Accommodation:"/>
-                                            <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=AccommodationId, Converter={StaticResource AccommodationIdToAccommodationConverter}}"/>
                                             <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" FontWeight="Bold" Content="Date:"/>
                                             <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="{Binding Path=BeginDate}"/>
                                             <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="12" Content="-"/>
@@ -114,7 +110,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                </Border>
+                                </GroupBox>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
