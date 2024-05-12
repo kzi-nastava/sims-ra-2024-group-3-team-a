@@ -17,7 +17,7 @@ namespace BookingApp.DTO
             reservations = accommodationStatisticsDTO.Reservations;
             cancellations = accommodationStatisticsDTO.Cancellations;
             accommodationReservationChanges = accommodationStatisticsDTO.AccommodationReservationChanges;
-            accommodationRenovationReccommendations = accommodationStatisticsDTO.AccommodationRenovationReccommendations;
+            accommodationRenovationReccommendations = accommodationStatisticsDTO.AccommodationRenovationRecommendations;
             isMostOccupied = accommodationStatisticsDTO.IsMostOccupied;
         }
 
@@ -26,7 +26,7 @@ namespace BookingApp.DTO
             reservations = accommodationStatistics.Reservations;
             cancellations = accommodationStatistics.AccommodationReservationCancellations;
             accommodationReservationChanges = accommodationStatistics.AccommodationReservationChangeRequests;
-            accommodationRenovationReccommendations = accommodationStatistics.AccommodationRenovationReccommendations;
+            accommodationRenovationReccommendations = accommodationStatistics.AccommodationRenovationRecommendations;
             isMostOccupied = accommodationStatistics.IsMostOccupied;
         }
 
@@ -73,7 +73,7 @@ namespace BookingApp.DTO
         }
 
         private int accommodationRenovationReccommendations;
-        public int AccommodationRenovationReccommendations
+        public int AccommodationRenovationRecommendations
         {
             get { return accommodationRenovationReccommendations; }
             set
