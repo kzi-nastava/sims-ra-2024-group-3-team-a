@@ -72,7 +72,7 @@ namespace BookingApp.Service
             return GetAllForUser(userId)
           .Count(request => request.Language.ToString().Equals(language));
         }
-        public int CountOrdinaryTourRequestsByLocation(int userId, Location location)
+        public int CountOrdinaryTourRequestsByLocation(int userId, Model.Location location)
         {
             return GetAllForUser(userId)
                 .Count(request => request.Place.City.Equals(location.City) && request.Place.Country.Equals(location.Country));
@@ -89,9 +89,9 @@ namespace BookingApp.Service
             languageList = languageList.Distinct().ToList();
             return languageList;
         }
-        public List<Location> GetLocations(int userId)
+        public List<Model.Location> GetLocations(int userId)
         {
-            List<Location> locationList = new List<Location>();
+            List<Model.Location> locationList = new List<Model.Location>();
             foreach (OrdinaryTourRequest ordinaryTourRequest in GetAllForUser(userId))
             {
 
@@ -101,14 +101,14 @@ namespace BookingApp.Service
             locationList = locationList.Distinct(new LocationEqualityComparer()).ToList();
             return locationList;
         }
-        public class LocationEqualityComparer : IEqualityComparer<Location>
+        public class LocationEqualityComparer : IEqualityComparer<Model.Location>
         {
-            public bool Equals(Location x, Location y)
+            public bool Equals(Model.Location x, Model.Location y)
             {
                 return x.City.Equals(y.City) && x.Country.Equals(y.Country);
             }
 
-            public int GetHashCode(Location obj)
+            public int GetHashCode(Model.Location obj)
             {
                 return obj.City.GetHashCode() ^ obj.Country.GetHashCode();
             }
