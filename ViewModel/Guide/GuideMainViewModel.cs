@@ -32,6 +32,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourStatisticsCommand;
         private RelayCommand _borderClickedCommand;
         private RelayCommand _showTourDetailsCommand;
+        private RelayCommand _showTourRequestCommand;
         private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
         public GuideMainViewModel(User guide)
@@ -50,6 +51,7 @@ namespace BookingApp.ViewModel.Guide
             _showAllToursCommand = new RelayCommand(ShowAllTours);
             _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
             _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
+            _showTourRequestCommand = new RelayCommand(ShowTourRequest);
             _borderClickedCommand = new RelayCommand(ShowAllTours);
             _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
@@ -203,6 +205,21 @@ namespace BookingApp.ViewModel.Guide
             TourDTO selectedTourDTO = parameter as TourDTO;
             TourDetailsWindow details = new TourDetailsWindow(selectedTourDTO, _loggedInGuide);
             details.Show();
+
+        }
+        public RelayCommand ShowTourRequestCommand
+        {
+            get { return _showTourRequestCommand; }
+            set
+            {
+                _showTourRequestCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourRequest()
+        {
+            TourRequestWindow requests = new TourRequestWindow(_loggedInGuide);
+            requests.Show();
 
         }
         public UserDTO User

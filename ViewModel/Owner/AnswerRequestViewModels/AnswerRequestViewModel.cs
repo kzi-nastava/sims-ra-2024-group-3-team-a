@@ -49,7 +49,7 @@ namespace BookingApp.ViewModel.Owner.AnswerRequestViewModels
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
-         //   _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository );
+            _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository );
             _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
             _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository);
             _userService = new UserService(userRepository);

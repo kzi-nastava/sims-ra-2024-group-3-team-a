@@ -1,4 +1,4 @@
-using BookingApp.Commands;
+﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
@@ -25,15 +25,16 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.ViewModel.Guide
 {
-    public class AddTourViewModel : ViewModel
+    public class MostWantedLanguageViewModel : ViewModel
     {
         private KeyPointService _keyPointService;
         private TourService _tourService;
-        private Languages _selectedLanguage;
+        private OrdinaryTourRequestService _tourRequestService;
         private RelayCommand _addImagesCommand;
         private RelayCommand _removeImageCommand;
         private List<BitmapImage> _imagePreviews;
         public ObservableCollection<BitmapImage> imagesCollection;
+        private Languages _mostWantedLanguage;
         private BitmapImage _selectedImage;
         private DateTime _selectedDate;
         private RelayCommand _addDateCommand;
@@ -44,10 +45,10 @@ namespace BookingApp.ViewModel.Guide
         private ObservableCollection<DateTime> _dates;
         private UserDTO _loggedGuide;
         public event EventHandler TourAdded;
-        public AddTourViewModel(UserDTO guide)
+        public MostWantedLanguageViewModel(UserDTO guide)
         {
             _loggedGuide = guide;
-            
+
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -55,18 +56,21 @@ namespace BookingApp.ViewModel.Guide
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
-            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            IOrdinaryTourRequestRepository requestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
+            _tourRequestService = new OrdinaryTourRequestService(requestRepository);
             _keyPointService = new KeyPointService(keyPointsRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _imagePreviews = new List<BitmapImage>();
             imagesCollection = new ObservableCollection<BitmapImage>(_imagePreviews);
             _tourDTO = new TourDTO();
             _submitCommand = new RelayCommand(Submit);
-            _dates = new ObservableCollection<DateTime> ();
+            _dates = new ObservableCollection<DateTime>();
             _addDateCommand = new RelayCommand(AddDate);
             _submitCommand = new RelayCommand(Submit);
             _addImagesCommand = new RelayCommand(AddImages);
+            _mostWantedLanguage = _tourRequestService.GetMostWantedLanguage();
             _removeImageCommand = new RelayCommand(RemoveImage);
-            countries = new List<string> { "Austrija","BiH", "Crna Gora","Francuska","Hrvatska","Italija", "Makedonija","Madjarska","Njemacka", "Srbija", "Slovenija", "Spanija" };
+            countries = new List<string> { "Austrija", "BiH", "Crna Gora", "Francuska", "Hrvatska", "Italija", "Makedonija", "Madjarska", "Njemacka", "Srbija", "Slovenija", "Spanija" };
         }
         public TourDTO TourDTO
         {
@@ -86,7 +90,7 @@ namespace BookingApp.ViewModel.Guide
             get { return countries; }
             set
             {
-                countries = value; 
+                countries = value;
                 OnPropertyChanged();
             }
         }
@@ -109,17 +113,17 @@ namespace BookingApp.ViewModel.Guide
             }
         }
         public RelayCommand RemoveImageCommand
-         {
-             get
-             {
-                 return _removeImageCommand;
-             }
-             set
-             {
-                 _removeImageCommand = value;
-                 OnPropertyChanged();
-             }
-         }
+        {
+            get
+            {
+                return _removeImageCommand;
+            }
+            set
+            {
+                _removeImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<BitmapImage> ImagePreviews
         {
             get
@@ -241,32 +245,27 @@ namespace BookingApp.ViewModel.Guide
             }
             _tourDTO.Images = _images;
             _tourDTO.GuideId = _loggedGuide.Id;
-
+            _tourDTO.Language = _mostWantedLanguage;
             foreach (var date in _dates)
             {
                 TourDTO tourDTO = new TourDTO(_tourDTO);
                 tourDTO.BeginingTime = date;
                 tourDTO.Images = _images;
-                _tourDTO=new TourDTO(_tourService.Save(tourDTO.ToTourAllParam()));
+                tourDTO.MadeFromStatistics = true;
+                tourDTO.Language = _mostWantedLanguage;
+                _tourDTO = new TourDTO(_tourService.Save(tourDTO.ToTourFromStatistics()));
                 SetKeyPoints(tourKeyPoints);
             }
-             
-             AddTourWindow.GetInstance().Close();
+
+            //AddTourWindow.GetInstance().Close();
         }
-        public IEnumerable<Languages> Languages
+
+        public Languages MostWantedLanguage
         {
-            get
-            {
-                return Enum.GetValues(typeof(Languages)).Cast<Languages>();
-            }
-            set { }
-        }
-        public Languages SelectedLanguage
-        {
-            get { return _selectedLanguage; }
+            get { return _mostWantedLanguage; }
             set
             {
-                _selectedLanguage = value;
+                _mostWantedLanguage = value;
                 OnPropertyChanged();
             }
         }

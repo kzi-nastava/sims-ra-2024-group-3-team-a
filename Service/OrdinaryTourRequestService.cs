@@ -1,4 +1,4 @@
-﻿using BookingApp.Model;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using System;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit.Core;
 
 namespace BookingApp.Service
 {
@@ -130,5 +131,101 @@ namespace BookingApp.Service
             } 
         }
 
+        public List<OrdinaryTourRequest> GetOnWait()
+        {
+            List<OrdinaryTourRequest> notRejectedTours = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if(request.Status == TourRequestStatus.OnWait)
+                {
+                    notRejectedTours.Add(request);
+                }
+            }
+            return notRejectedTours;
+        }
+        public int CountByLanguage(string language, List<OrdinaryTourRequest> requests)
+        {
+            int count = 0;
+            foreach(OrdinaryTourRequest request in requests)
+            {
+                if(request.Language.ToString().ToLower().Contains(language.ToString().ToLower())) { count++; }
+            }
+            return count;
+        }
+        public int CountByLocation(string location, List<OrdinaryTourRequest> requests)
+        {
+            int count = 0;
+            foreach (OrdinaryTourRequest request in requests)
+            {
+                if (request.Place.City == location) { count++; }
+            }
+            return count;
+        }
+        public List<OrdinaryTourRequest> GetByYear(int year)
+        {
+            List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if (request.BeginDate.Year == year)
+                {
+                    requests.Add(request);
+                }
+            }
+            return requests;
+        }
+        public List<OrdinaryTourRequest> GetForOneYearTime()
+        {
+            List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+            DateTime today = DateTime.Now;
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if (request.RequestSentDate >= oneYearAgo && request.RequestSentDate <= today)
+                {
+                    requests.Add(request);
+                }
+            }
+            return requests;
+        }
+        public List<OrdinaryTourRequest> GetByMonth(int year, int month)
+        {
+            List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
+            foreach (OrdinaryTourRequest request in GetByYear(year))
+            {
+                if (request.BeginDate.Month == month || request.EndDate.Month == month)
+                {
+                    requests.Add(request);
+                }
+            }
+            return requests;
+        }
+        public Languages GetMostWantedLanguage()
+        {
+            int count = 0;
+            Languages mostWanted = Languages.Afrikaans;
+            foreach (OrdinaryTourRequest request in GetForOneYearTime())
+            {
+                if (CountByLanguage(request.Language.ToString(), GetForOneYearTime()) > count)
+                {
+                    count = CountByLanguage(request.Language.ToString(), GetForOneYearTime());
+                    mostWanted = request.Language;
+                }
+            }
+            return mostWanted;
+        }
+        public Model.Location GetMostWantedLocation()
+        {
+            int count = 0;
+            Model.Location mostWanted = null;
+            foreach (OrdinaryTourRequest request in GetForOneYearTime())
+            {
+                if (CountByLocation(request.Place.City.ToString(), GetForOneYearTime()) > count)
+                {
+                    count = CountByLocation(request.Place.City.ToString(), GetForOneYearTime());
+                    mostWanted = request.Place;
+                }
+            }
+            return mostWanted;
+        }
     }
 }

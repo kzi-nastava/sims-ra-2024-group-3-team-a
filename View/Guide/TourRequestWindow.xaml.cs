@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BookingApp.DTO;
+using BookingApp.ViewModel.Guide;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +19,19 @@ namespace BookingApp.View.Guide
     /// <summary>
     /// Interaction logic for TourRequestsWindow.xaml
     /// </summary>
-    public partial class TourRequestsWindow : Window
+    public partial class TourRequestWindow : Window
     {
-        public TourRequestsWindow()
+        public static TourRequestWindow Instance;
+        public TourRequestWindow(UserDTO user)
         {
             InitializeComponent();
+            DataContext = new TourRequestViewModel(user);
+            Instance = this;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+        }
+        public static TourRequestWindow GetInstance()
+        {
+            return Instance;
         }
     }
 }

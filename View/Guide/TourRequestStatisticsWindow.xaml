@@ -1,0 +1,76 @@
+﻿<Window x:Class="BookingApp.View.Guide.TourRequestStatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Guide"
+        mc:Ignorable="d"
+        Title="TourRequestStatisticsWindow" Height="450" Width="800">
+    <Grid Background="AntiqueWhite">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Height="45">
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="STATISTKA ZAHTJEVA ZA TURE"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
+        </Grid>
+        <Border BorderBrush="SaddleBrown" BorderThickness="2" Grid.Row="1" Grid.RowSpan="2" Width="600" Background="Tan">
+        <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Right" Grid.Column="0">Lokacija</TextBlock>
+                <TextBox  Height="20"  Grid.Column="1"  Width="100" HorizontalAlignment="Left"
+                 Text="{Binding SearchLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="2">Jezik:</TextBlock>
+                <ComboBox  Grid.Row="0" Height="20" Grid.Column="3" IsEditable="True" Foreground="Black" x:Name="languageComboBox" Width="100"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchLanguageInput}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button x:Name="refreshButton" Grid.Row="0" BorderBrush="Transparent" Background="Transparent" Width="30" Height="30" Grid.Column="11" Margin="0" VerticalAlignment="Top" Command="{Binding ResetSearchParametersCommand}">
+                    <Image Source="../../Resources/Images/Guide/refresh.png" Width="30" Height="25" />
+                </Button>
+                <Button Grid.Column="4" Height="20" Content="Pretraga" Command="{Binding SearchCommand}"></Button>
+                <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1">Godina:</TextBlock>
+                <ComboBox  Grid.Row="1" Height="20" Grid.Column="1" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchYearInput}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">Mjesec:</TextBlock>
+                <ComboBox  Grid.Row="1" Height="20" Grid.Column="3" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchMonthInput}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Button Grid.Column="4"  Grid.Row="1" Height="20" Content="Pretraga" Command="{Binding FilterCommand}"></Button>
+                <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">Broj zahtjeva:</TextBlock>
+                <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="2" Text="{Binding Number}" Background="White"> </TextBlock>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="3">
+            <Button Height="30" Width="250" Margin="300,0,0,0" Content="NAPRAVI TURU ZA NAJTRAZENIJU LOKACIJU " Command="{Binding MostWantedLocationCommand }"></Button>
+            <Button Height="30" Width="250" Margin="0,0,300,0" Content="NAPRAVI TURU ZA NAJTRAZENIJI JEZIK " Command="{Binding MostWantedLanguageCommand }" ></Button>
+        </Grid>
+    </Grid>
+</Window>

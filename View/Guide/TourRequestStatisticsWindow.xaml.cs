@@ -1,15 +1,8 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Repository;
-using BookingApp.View.Guide;
-using BookingApp.View.Owner;
 using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,28 +11,28 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BookingApp.View
+namespace BookingApp.View.Guide
 {
-
-    public partial class GuideMainWindow : Window
+    /// <summary>
+    /// Interaction logic for TourRequestStatisticsWindow.xaml
+    /// </summary>
+    public partial class TourRequestStatisticsWindow : Window
     {
-        public static GuideMainWindow Instance;
-        public GuideMainWindow(User guide)
+        public static TourRequestStatisticsWindow Instance;
+        public TourRequestStatisticsWindow( UserDTO user)
         {
             InitializeComponent();
-            DataContext = new GuideMainViewModel(guide);
+            DataContext = new TourRequestStatisticsViewModel(user);
             Instance = this;
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
-        public static GuideMainWindow GetInstance()
+        public static TourRequestStatisticsWindow GetInstance()
         {
             return Instance;
         }
-       
 
     }
 }

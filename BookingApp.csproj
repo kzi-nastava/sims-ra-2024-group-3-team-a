@@ -24,6 +24,7 @@
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\Guide\eye.png" />
     <None Remove="Resources\Images\Guide\question.jpg" />
+    <None Remove="Resources\Images\Guide\refresh.png" />
     <None Remove="Resources\Images\Guide\star.png" />
     <None Remove="Resources\Images\Icons\AppLogo.ico" />
     <None Remove="Resources\Images\inbox.png" />
@@ -93,6 +94,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Guide\refresh.png" />
     <Resource Include="Resources\Images\Tourist\trebinje2.png" />
     <Resource Include="Resources\Images\Tourist\trebinje3.png" />
     <Resource Include="Resources\Images\Tourist\trebinje4.png" />

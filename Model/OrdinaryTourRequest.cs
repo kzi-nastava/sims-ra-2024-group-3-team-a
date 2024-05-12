@@ -28,8 +28,10 @@ namespace BookingApp.Model
         public int NumberOfTourists { get; set; }
 
         public TourRequestStatus Status { get; set; }
-        public DateOnly BeginDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateTime BeginDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public DateTime RequestSentDate { get; set; }
+        public DateTime RequestAcceptedDate { get; set; }
 
         public OrdinaryTourRequest()
         {
@@ -37,7 +39,7 @@ namespace BookingApp.Model
             Tourists = new List<Tourist>();
         }
 
-        public OrdinaryTourRequest(int id, int guideId,int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateOnly beginDate, DateOnly endDate)
+        public OrdinaryTourRequest(int id, int guideId,int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate, DateTime requestSent, DateTime requestAccepted)
         {
             Id = id;
             GuideId = guideId;
@@ -50,6 +52,8 @@ namespace BookingApp.Model
             Status = status;
             BeginDate = beginDate;
             EndDate = endDate;
+            RequestAcceptedDate = requestAccepted;
+            RequestSentDate = requestSent;
         }
 
         public string[] ToCSV()
@@ -57,12 +61,12 @@ namespace BookingApp.Model
             if (Tourists != null)
             {
                 string tourists = CreateTouristsString();
-                string[] csvValues = { Id.ToString(),GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(), tourists };
+                string[] csvValues = { Id.ToString(),GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(),RequestAcceptedDate.ToString(),RequestSentDate.ToString(), tourists };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString() };
+                string[] csvValues = { Id.ToString(), GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(),RequestAcceptedDate.ToString(),RequestSentDate.ToString() };
                 return csvValues;
             }
         }
@@ -89,9 +93,11 @@ namespace BookingApp.Model
             Language = (Languages)Enum.Parse(typeof(Languages), values[6]);
             NumberOfTourists = Convert.ToInt32(values[7]);
             Status = (TourRequestStatus)Enum.Parse(typeof(TourRequestStatus), values[8]);
-            BeginDate = DateOnly.Parse(values[9]);
-            EndDate = DateOnly.Parse(values[10]);
-            for (int i = 11; i < values.Length; i = i + 4)
+            BeginDate = DateTime.Parse(values[9]);
+            EndDate = DateTime.Parse(values[10]);
+            RequestAcceptedDate = DateTime.Parse(values[11]);
+            RequestSentDate = DateTime.Parse(values[12]);
+            for (int i = 13; i < values.Length; i = i + 4)
             {
                 if (i + 3 < values.Length)
                 {
