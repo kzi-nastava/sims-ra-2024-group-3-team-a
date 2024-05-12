@@ -6,7 +6,63 @@
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
         Title="InboxWindow" Height="450" Width="800">
-    <Grid>
+
+
+    <Border  BorderThickness="3" BorderBrush="#d470a2" Margin="30,20,30,20">
+        <Grid Background="White" Grid.Row="1">
+
+
+
+            <Grid Grid.Column="0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Grid.Row="1">
+                        <ListView x:Name="finishedToursListView" ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedMessageDTO}"  >
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate >
+                                    <Border BorderThickness="2" BorderBrush="Black"  Background="#f6f1ea" Margin="10,10,5,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel  Width="650"  Orientation="Horizontal"  Margin =" 10,10,0,10" Grid.Column="0">
+                                                <Image Source="../../Resources/Images/Tourist/message.png" Height="100" Width="110" Stretch="Fill" />
+                                                <StackPanel Margin="10,0,0,0">
+                                                    <DockPanel Margin="0,5,5,5">
+                                                        <TextBlock Text="From: " FontSize="12"   FontWeight="Bold"></TextBlock>
+                                                        <TextBlock FontSize="12" Text="{Binding Sender}"/>
+                                                    </DockPanel>
+                                                    <DockPanel Margin="0,5,5,5">
+                                                        <TextBlock Text="Message: " FontWeight="Bold" FontSize="12"/>
+                                                        <TextBlock FontSize="12"  Width="400" Height="30"  TextWrapping="Wrap" Text="{Binding Content}"/>
+                                                        <!--<Button Content="Rate tour" Width="70" Height="30" HorizontalAlignment="Center" Margin="50,0,0,0" />-->
+                                                    </DockPanel>
+                                                    <DockPanel  Margin="0,5,5,5">
+                                                        <TextBlock  FontWeight="Bold" FontSize="12" Text="Is read: " />
+                                                        <TextBlock FontWeight="Bold" FontSize="12"   Text="{Binding IsRead}" />
+                                                    </DockPanel>
+                                                </StackPanel>
+
+                                            </StackPanel>
+                                           
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Border>
+
+
+
+
+
+
+    <!--<Grid>
         <StackPanel Grid.Row="2">
             <ListView ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedMessageDTO}" >
                 <ListView.ItemTemplate>
@@ -25,5 +81,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
-    </Grid>
+    </Grid>-->
 </Window>

@@ -11,7 +11,7 @@ namespace BookingApp.Model
         public int Reservations { get; set; }
         public int AccommodationReservationCancellations { get; set; }
         public int AccommodationReservationChangeRequests { get; set; }
-        public int AccommodationRenovationReccommendations { get; set; }
+        public int AccommodationRenovationRecommendations { get; set; }
         public bool IsMostOccupied { get; set; }
 
         public AccommodationStatistics()
@@ -19,7 +19,7 @@ namespace BookingApp.Model
             Reservations = 0;
             AccommodationReservationCancellations = 0;
             AccommodationReservationChangeRequests = 0;
-            AccommodationRenovationReccommendations = 0;
+            AccommodationRenovationRecommendations = 0;
         }
 
         public AccommodationStatistics(int reservations, int accommodationReservationCancellations, int accommodationReservationChangeRequests, int accommodationRenovationReccommendations, bool isMostOccupied)
@@ -27,7 +27,7 @@ namespace BookingApp.Model
             Reservations = reservations;
             AccommodationReservationCancellations = accommodationReservationCancellations;
             AccommodationReservationChangeRequests = accommodationReservationChangeRequests;
-            AccommodationRenovationReccommendations = accommodationRenovationReccommendations;
+            AccommodationRenovationRecommendations = accommodationRenovationReccommendations;
             IsMostOccupied = isMostOccupied;
         }
     }

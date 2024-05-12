@@ -47,7 +47,20 @@ namespace BookingApp.Service
             return cancellations;
         }
 
-        public int GetAccommodationReservationChangeRequestsByYear(int accommodationId, int year, int month = 0)
+        public int GetRenovationRecommendationsNumber(int accommodationId, int year, int month = 0)
+        {
+            int recommendations = 0;
+            foreach (var reservation in _accommodationReservationRepository.GetAll())
+            {
+                if (reservation.BeginDate.Year == year && accommodationId == reservation.AccommodationId && reservation.Rating.GuestRenovationRating != 0 && (reservation.BeginDate.Month == month || month == 0))
+                {
+                    recommendations++;
+                }
+            }
+            return recommendations;
+        }
+
+        public int GetAccommodationReservationChangeRequestsNumber(int accommodationId, int year, int month = 0)
         {
             int changeRequests = 0;
             foreach (var changeRequest in _accommodationReservationChangeRequestRepository.GetAll())

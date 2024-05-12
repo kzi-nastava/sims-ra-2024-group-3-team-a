@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
 {
@@ -138,7 +139,8 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 AccommodationStatisticsDTO accommodationStatisticsDTO = new AccommodationStatisticsDTO();
                 accommodationStatisticsDTO.Reservations = _accommodationStatisticsService.GetReservationsNumber(_accommodationDTO.Id, year);
                 accommodationStatisticsDTO.Cancellations = _accommodationStatisticsService.GetCancellationsNumber(_accommodationDTO.Id, year);
-                accommodationStatisticsDTO.AccommodationReservationChanges = _accommodationStatisticsService.GetAccommodationReservationChangeRequestsByYear(_accommodationDTO.Id, year);
+                accommodationStatisticsDTO.AccommodationRenovationRecommendations = _accommodationStatisticsService.GetRenovationRecommendationsNumber(_accommodationDTO.Id, year);
+                accommodationStatisticsDTO.AccommodationReservationChanges = _accommodationStatisticsService.GetAccommodationReservationChangeRequestsNumber(_accommodationDTO.Id, year);
 
                 if (year == _mostOccupiedYear)
                 {

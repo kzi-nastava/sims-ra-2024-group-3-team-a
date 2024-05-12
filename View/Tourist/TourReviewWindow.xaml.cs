@@ -43,11 +43,26 @@ namespace BookingApp.View.Tourist
             {
                 Instance = this;
             }
+            if (_tourReviewViewModel.CloseAction == null)
+                _tourReviewViewModel.CloseAction = new Action(this.Close);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            this.PreviewKeyDown += TouristReviewWindow_PreviewKeyDown;
         }
 
         public static TourReviewWindow GetInstance()
         {
             return Instance;
+        }
+
+        private void TouristReviewWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F9 && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+            {
+
+                More.IsSubmenuOpen = true;
+                Settings.Focus();
+                e.Handled = true;
+            }
         }
     }
 

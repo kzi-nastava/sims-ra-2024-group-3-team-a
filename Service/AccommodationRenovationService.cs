@@ -48,16 +48,8 @@ namespace BookingApp.Service
         }
         public List<DateTime> FindAvailableDates(int accommodationId, DateTime fromDate, DateTime toDate, int length)
         {
-            List<AccommodationReservation> reservations = _accommodationReservationRepository.GetAll().Where(r => r.AccommodationId == accommodationId).ToList();
-            List<DateTime> notAvailableDates = new List<DateTime>();
-            foreach(AccommodationReservation reservation in reservations)
-            {
-                for(DateTime date = reservation.BeginDate.ToDateTime(new TimeOnly(0,0,0)); date <= reservation.EndDate.ToDateTime(new TimeOnly(0, 0, 0)); date = date.AddDays(1))
-                {
-                    notAvailableDates.Add(date);
-                }
-            }
-
+            List<DateTime> notAvailableDates = findNotAvailableDates(accommodationId);
+            
             List<DateTime> availableDates = new List<DateTime>();
             int len = 0;
             for(DateTime i = fromDate; i <= toDate.AddDays(-length); i = i.AddDays(1))
@@ -82,6 +74,19 @@ namespace BookingApp.Service
             }
 
             return availableDates;
+        }
+        private List<DateTime> findNotAvailableDates(int accommodationId)
+        {
+            List<DateTime> notAvailableDates = new List<DateTime>();
+            List<AccommodationReservation> reservations = _accommodationReservationRepository.GetAll().Where(r => r.AccommodationId == accommodationId).ToList();
+            foreach (AccommodationReservation reservation in reservations)
+            {
+                for (DateTime date = reservation.BeginDate.ToDateTime(new TimeOnly(0, 0, 0)); date <= reservation.EndDate.ToDateTime(new TimeOnly(0, 0, 0)); date = date.AddDays(1))
+                {
+                    notAvailableDates.Add(date);
+                }
+            }
+            return notAvailableDates;
         }
         public List<AccommodationRenovation> GetRenovationsForOwner(User loggedInUser)
         {

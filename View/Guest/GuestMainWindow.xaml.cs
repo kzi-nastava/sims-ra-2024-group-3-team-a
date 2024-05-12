@@ -29,7 +29,7 @@ namespace BookingApp.View.Guest
     public partial class GuestMainWindow : Window
     {
         public static ObservableCollection<AccommodationDTO> AccommodationsDTO { get; set; }
-        private UserDTO _userDTO;
+        public static UserDTO _userDTO;
         public static Frame MainFrame;
         public static Frame MyRequestsFrame;
         public static GuestMainWindow Instance;

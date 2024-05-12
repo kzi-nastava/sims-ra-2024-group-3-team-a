@@ -32,10 +32,8 @@ namespace BookingApp.View
         {
             InitializeComponent();
             DataContext = new GuideMainViewModel(guide);
-            if (Instance == null)
-            {
-                Instance = this;
-            }
+            Instance = this;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
         public static GuideMainWindow GetInstance()
         {

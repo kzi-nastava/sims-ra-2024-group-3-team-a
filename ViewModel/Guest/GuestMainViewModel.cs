@@ -1,4 +1,4 @@
-﻿using BookingApp.DTO;
+using BookingApp.DTO;
 using BookingApp.Service;
 using BookingApp.View.Guest;
 using BookingApp.View;
@@ -13,6 +13,8 @@ using BookingApp.Repository;
 using BookingApp.Commands;
 using BookingApp.Repository.Interfaces;
 using BookingApp.InjectorNameSpace;
+using BookingApp.View.Owner;
+using BookingApp.Model;
 
 namespace BookingApp.ViewModel.Guest
 {
@@ -28,6 +30,7 @@ namespace BookingApp.ViewModel.Guest
 
         private UserService _userService;
         private UserDTO _loggedInGuest;
+        private SuperGuestService _superGuestService;
 
         private ObservableCollection<AccommodationReservationChangeRequestDTO> _myChangeRequestsDTO;
         private ObservableCollection<MessageDTO> _myMessagesDTO;
@@ -45,12 +48,14 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _showAccommodationReservationsPageCommand;
         private RelayCommand _searchAccommodationsCommand;
         private RelayCommand _showInboxCommand;
+        private RelayCommand _showRatingsFromOwnersCommand;
+        private RelayCommand _showMyProfileCommand;
+        
 
         public GuestMainViewModel(UserDTO loggedInGuest)
         {
             _loggedInGuest = loggedInGuest;
             
-
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
@@ -61,11 +66,13 @@ namespace BookingApp.ViewModel.Guest
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            ISuperGuestRepository superGuestRepository = Injector.CreateInstance<ISuperGuestRepository>();
             _userService = new UserService(userRepository);
             _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
             _accommodationService = new AccommodationService(accommodationRepository);
             _accommodationReservationChangeRequestService = new AccommodationReservationChangeRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository);
             _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _superGuestService = new SuperGuestService(superGuestRepository);
 
             _logOutCommand = new RelayCommand(LogOut);
             _showMyRequestsCommand = new RelayCommand(ShowMyRequests);
@@ -77,8 +84,36 @@ namespace BookingApp.ViewModel.Guest
             _showAccommodationReservationsPageCommand = new RelayCommand(ShowAccommodationReservationPage);
             _searchAccommodationsCommand = new RelayCommand(SearchAccommodations);
             _showInboxCommand = new RelayCommand(MyInbox);
+            _showRatingsFromOwnersCommand = new RelayCommand(ShowRatingsFromOwnersPage);
+            _showMyProfileCommand = new RelayCommand(ShowMyProfilePage);
+
+            GuestMainWindow._userDTO = new UserDTO(_accommodationReservationService.SetSuperGuest(_loggedInGuest.ToUser()));
+            IsSuperGuest();
+
             UpdateReservations();
 
+        }
+
+        private void IsSuperGuest()
+        {
+            if (GuestMainWindow._userDTO.IsSuper)
+            {
+                SuperGuest superGuest = _superGuestService.GetByUserId(GuestMainWindow._userDTO.Id);
+                if ( superGuest != null)
+                {
+                    if(superGuest.EndingDate < DateOnly.FromDateTime(DateTime.Now))
+                    {
+                        superGuest.EndingDate = DateOnly.FromDateTime(DateTime.Now).AddDays(365);
+                        superGuest.Points = 5;
+                        _superGuestService.Update(superGuest);
+                    }
+                }
+                else
+                {
+                    superGuest = new SuperGuest(0, GuestMainWindow._userDTO.Id, 5, DateOnly.FromDateTime(DateTime.Now).AddDays(365));
+                    _superGuestService.Save(superGuest);
+                }
+            }
         }
 
         public void UpdateReservations()
@@ -106,6 +141,20 @@ namespace BookingApp.ViewModel.Guest
             IsFrameMyInboxVisible = false;
             GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
 
+        }
+        private void ShowRatingsFromOwnersPage()
+        {
+            GuestMainWindow.MainFrame.Content = new GuestReviewsFromOwners(_loggedInGuest);
+            IsFrameMyRequestsVisible = false;
+            IsFrameMyInboxVisible = false;
+            GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
+        }
+        private void ShowMyProfilePage()
+        {
+            GuestMainWindow.MainFrame.Content = new GuestProfilePage(_loggedInGuest);
+            IsFrameMyRequestsVisible = false;
+            IsFrameMyInboxVisible = false;
+            GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
         }
         private void MyInbox()
         {
@@ -221,6 +270,7 @@ namespace BookingApp.ViewModel.Guest
             GuestMainWindow.GetInstance().Close();
             signInForm.Show();
         }
+        
         public ObservableCollection<MessageDTO> MyMessagesDTO
         {
             get
@@ -266,6 +316,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _isFrameMyInboxVisible = value;
+                OnPropertyChanged();
+            }
+        }
+        public UserDTO GuestDTO
+        {
+            get
+            {
+                return _loggedInGuest;
+            }
+            set
+            {
+                _loggedInGuest = value;
                 OnPropertyChanged();
             }
         }
@@ -329,6 +391,30 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _showMyRequestsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowRatingsFromOwnersCommand
+        {
+            get
+            {
+                return _showRatingsFromOwnersCommand;
+            }
+            set
+            {
+                _showRatingsFromOwnersCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowMyProfileCommand
+        {
+            get
+            {
+                return _showMyProfileCommand;
+            }
+            set
+            {
+                _showMyProfileCommand = value;
                 OnPropertyChanged();
             }
         }

@@ -3,6 +3,7 @@ using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
+using BookingApp.View;
 using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,9 @@ namespace BookingApp.ViewModel.Tourist
         private UserDTO _userDTO;
 
         private RelayCommand _showTourReviewWindowCommand;
+        private RelayCommand _closeWindowCommand;
+        private RelayCommand _showTouristMainWindowCommand;
+        public Action CloseAction { get; set; }
 
         public FinishedToursViewModel(UserDTO loggedInUser)
         {
@@ -43,6 +47,8 @@ namespace BookingApp.ViewModel.Tourist
             List<TourDTO> finishedTours = _tourService.GetFinishedTours().Select(finishedTours => new TourDTO(finishedTours)).ToList();
             _finishedTourDTO = new ObservableCollection<TourDTO>(finishedTours);
             _showTourReviewWindowCommand = new RelayCommand(ShowTourReviewWindow);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
+            _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
         }
 
         public ObservableCollection<TourDTO> FinishedToursDTO
@@ -86,6 +92,30 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowTouristMainWindowCommand
+        {
+            get
+            {
+                return _showTouristMainWindowCommand;
+            }
+            set
+            {
+                _showTouristMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void ShowTourReviewWindow()
         {
@@ -107,6 +137,20 @@ namespace BookingApp.ViewModel.Tourist
                 tourReviewWindow.ShowDialog();
             }
             
+        }
+        public void ShowTouristMainWindow()
+        {
+
+            
+                TouristMainWindow touristMainWindow = new TouristMainWindow( _userDTO.ToUser());
+                  touristMainWindow.ShowDialog();
+            
+
+        }
+
+        public void CloseWindow()
+        {
+            CloseAction();
         }
     }
 }

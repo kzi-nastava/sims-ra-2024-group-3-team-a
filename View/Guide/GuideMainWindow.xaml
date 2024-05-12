@@ -158,7 +158,7 @@
                 <Button Content="NAPRAVI NOVU TURU" Command="{Binding AddNewTourCommand}"  VerticalAlignment="Top" Height="50" Margin="5"   />
             </Grid>
             <Grid Grid.Row="2" >
-                <Button Content="ZAHTJEVI ZA TURE" Command="{Binding ShowAllToursCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
+                <Button Content="ZAHTJEVI ZA TURE" Command="{Binding ShowTourRequestCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
             </Grid>
             <Grid Grid.Row="3" >
                 <Button Content="PRIKAŽI SVE TURE" Command="{Binding ShowAllToursCommand}"   VerticalAlignment="Top" Height="50" Margin="5"/>

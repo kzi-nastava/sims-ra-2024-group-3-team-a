@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BookingApp.View.Guide
+namespace BookingApp.View.Tourist
 {
     /// <summary>
-    /// Interaction logic for TourRequestsWindow.xaml
+    /// Interaction logic for TestWindow.xaml
     /// </summary>
-    public partial class TourRequestsWindow : Window
+    public partial class TestWindow : Window
     {
-        public TourRequestsWindow()
+        public TestWindow()
         {
             InitializeComponent();
         }

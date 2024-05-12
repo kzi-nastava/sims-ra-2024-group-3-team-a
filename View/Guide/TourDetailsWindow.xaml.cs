@@ -24,10 +24,8 @@ namespace BookingApp.View.Guide
         {
             InitializeComponent();
             DataContext = new TourDetailsViewModel(tour, guide);
-            if (Instance == null)
-            {
-                Instance = this;
-            }
+            Instance = this;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
         }
         public static TourDetailsWindow GetInstance()

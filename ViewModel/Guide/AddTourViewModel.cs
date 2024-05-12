@@ -30,7 +30,7 @@ namespace BookingApp.ViewModel.Guide
         private KeyPointService _keyPointService;
         private TourService _tourService;
         private Languages _selectedLanguage;
-       private RelayCommand _addImagesCommand;
+        private RelayCommand _addImagesCommand;
         private RelayCommand _removeImageCommand;
         private List<BitmapImage> _imagePreviews;
         public ObservableCollection<BitmapImage> imagesCollection;
@@ -250,7 +250,7 @@ namespace BookingApp.ViewModel.Guide
                 _tourDTO=new TourDTO(_tourService.Save(tourDTO.ToTourAllParam()));
                 SetKeyPoints(tourKeyPoints);
             }
-            
+             
              AddTourWindow.GetInstance().Close();
         }
         public IEnumerable<Languages> Languages

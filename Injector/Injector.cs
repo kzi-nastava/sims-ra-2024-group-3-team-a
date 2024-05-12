@@ -24,7 +24,9 @@ namespace BookingApp.InjectorNameSpace
             { typeof(ITourRepository), new TourRepository() },
             { typeof(ITourReservationRepository), new TourReservationRepository() },
             { typeof(ITourReviewRepository), new TourReviewRepository() },
-            { typeof(IVoucherRepository), new VoucherRepository() }
+            { typeof(IVoucherRepository), new VoucherRepository() },
+            { typeof(IOrdinaryTourRequestRepository), new OrdinaryTourRequestRepository() },
+            { typeof(ISuperGuestRepository), new SuperGuestRepository() }
          };
 
         public static T CreateInstance<T>()
