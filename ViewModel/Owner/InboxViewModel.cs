@@ -50,7 +50,7 @@ namespace BookingApp.ViewModel.Owner
         {
             get
             {
-                return _messagesDTO;
+                return new ObservableCollection<MessageDTO>(_messagesDTO.ToList().OrderBy(c => c.IsRead));
             }
             set
             {
