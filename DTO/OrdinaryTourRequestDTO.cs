@@ -19,7 +19,7 @@ namespace BookingApp.DTO
 
         }
 
-        public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate)
+        public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate, DateTime requestSentDate, DateTime requestAcceptedDate)
         {
             this.id = id;
             this.guideId = guideId;
@@ -31,6 +31,8 @@ namespace BookingApp.DTO
             this.status = status;
             this.beginDate = beginDate;
             this.endDate = endDate;
+            this.RequestSentDate = requestSentDate;
+            this.RequestAcceptedDate = requestAcceptedDate;
             touristsDTO = new List<TouristDTO>();
             foreach(Tourist tour in tourists)
             {
@@ -52,6 +54,8 @@ namespace BookingApp.DTO
             endDate = ordinaryTourRequest .EndDate ;
             language=ordinaryTourRequest .Language ;
             touristsDTO = new List<TouristDTO>();
+            requestAcceptedDate = ordinaryTourRequest.RequestAcceptedDate;
+            requestSentDate = ordinaryTourRequest.RequestSentDate;
             foreach (Tourist tour in ordinaryTourRequest.Tourists)
             {
                 touristsDTO.Add(new TouristDTO(tour));
@@ -199,6 +203,32 @@ namespace BookingApp.DTO
                 }
             }
         }
+        private DateTime requestAcceptedDate;
+        public DateTime RequestAcceptedDate
+        {
+            get { return requestAcceptedDate; }
+            set
+            {
+                if (value != requestAcceptedDate)
+                {
+                    requestAcceptedDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private DateTime requestSentDate;
+        public DateTime RequestSentDate
+        {
+            get { return requestSentDate; }
+            set
+            {
+                if (value != requestSentDate)
+                {
+                    requestSentDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private DateTime endDate;
         public DateTime EndDate
@@ -241,7 +271,7 @@ namespace BookingApp.DTO
                 tourists.Add(touristDTO.ToTourist());
             }
 
-            return new OrdinaryTourRequest(id, guideId, userId, locationDTO.ToLocation(), description,language, tourists, numberOfTourists, status, beginDate, endDate);
+            return new OrdinaryTourRequest(id, guideId, userId, locationDTO.ToLocation(), description,language, tourists, numberOfTourists, status, beginDate, endDate , requestSentDate, requestAcceptedDate);
         }
 
 
