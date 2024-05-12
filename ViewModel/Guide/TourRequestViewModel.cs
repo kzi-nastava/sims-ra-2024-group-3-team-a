@@ -128,7 +128,7 @@ namespace BookingApp.ViewModel.Guide
         }
         private void ShowTourRequestStatistic()
         {
-            TourRequestStatisticsWindow statistics = new TourRequestStatisticsWindow();
+            TourRequestStatisticsWindow statistics = new TourRequestStatisticsWindow(_userDTO);
             statistics.Show();
         }
         private void AcceptTourRequest(object parameter)

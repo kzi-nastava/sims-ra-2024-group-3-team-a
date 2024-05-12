@@ -1,4 +1,5 @@
-﻿using BookingApp.ViewModel.Guide;
+﻿using BookingApp.DTO;
+using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace BookingApp.View.Guide
     public partial class TourRequestStatisticsWindow : Window
     {
         public static TourRequestStatisticsWindow Instance;
-        public TourRequestStatisticsWindow()
+        public TourRequestStatisticsWindow( UserDTO user)
         {
             InitializeComponent();
-            DataContext = new TourRequestStatisticsViewModel();
+            DataContext = new TourRequestStatisticsViewModel(user);
             Instance = this;
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }

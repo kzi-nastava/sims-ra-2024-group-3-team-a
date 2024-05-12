@@ -4,6 +4,7 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
+using BookingApp.View;
 using BookingApp.View.Guide;
 using BookingApp.View.Owner;
 using System;
@@ -22,14 +23,20 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _searchCommand;
         private RelayCommand _filterCommand;
         private RelayCommand _resetSearchParametersCommand;
+        private RelayCommand _mostWantedLanguageCommand;
+        private RelayCommand _mostWantedLocationCommand;
         private List<string> _years;
         private List<string> _months;
-        public TourRequestStatisticsViewModel() 
+        private UserDTO _loggedInGuide;
+        public TourRequestStatisticsViewModel(UserDTO user) 
         {
+            _loggedInGuide = user;
             IOrdinaryTourRequestRepository requestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
             _tourRequestService = new OrdinaryTourRequestService(requestRepository);
             _searchCommand = new RelayCommand(Search);
             _filterCommand = new RelayCommand(Filter);
+            _mostWantedLanguageCommand = new RelayCommand(SuggestMostWantedLanguage);
+            _mostWantedLocationCommand = new RelayCommand(SuggestMostWantedLocation);
             _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
             _years  = new List<string> { "2028", "2027" , "2026" , "2025" , "2024" , "2023" , "2022" , "2021", "2020" };
             _months = new List<string> {"1","2","3","4","5","6","7","8","9","10","11","12" };
@@ -96,6 +103,34 @@ namespace BookingApp.ViewModel.Guide
             {
                 Number = _tourRequestService.CountByLocation(_searchLocationInput, _tourRequestService.GetByMonth(Convert.ToInt32(_searchYearInput), Convert.ToInt32(_searchMonthInput)));
             }
+        }
+        public RelayCommand MostWantedLanguageCommand
+        {
+            get { return _mostWantedLanguageCommand; }
+            set
+            {
+                _mostWantedLanguageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void SuggestMostWantedLanguage()
+        {
+            MostWantedLanguageWindow suggestions = new MostWantedLanguageWindow(_loggedInGuide);
+            suggestions.Show();
+        }
+        public RelayCommand MostWantedLocationCommand
+        {
+            get { return _mostWantedLocationCommand; }
+            set
+            {
+                _mostWantedLocationCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void SuggestMostWantedLocation()
+        {
+            MostWantedLocation suggestions = new MostWantedLocation(_loggedInGuide);
+            suggestions.Show();
         }
         public RelayCommand SearchCommand
         {
