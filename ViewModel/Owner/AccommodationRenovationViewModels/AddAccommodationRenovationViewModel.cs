@@ -38,6 +38,9 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
             _accommodationRenovationDTO = new AccommodationRenovationDTO();
             _accommodationRenovationDTO.AccommodationId = accommodationDTO.Id;
 
+            _fromDate = DateTime.Now;
+            _toDate = DateTime.Now;
+
             _accommodationDTO = accommodationDTO;
             _availableDates = new ObservableCollection<DateTime>();
 

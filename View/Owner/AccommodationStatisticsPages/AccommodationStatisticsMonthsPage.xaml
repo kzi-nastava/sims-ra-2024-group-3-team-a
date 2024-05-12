@@ -130,7 +130,7 @@
 
                                     <StackPanel Orientation="Horizontal">
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Renovation Recommendations: "/>
-                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.AccommodationRenovationReccommendations}"/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.AccommodationRenovationRecommendations}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
