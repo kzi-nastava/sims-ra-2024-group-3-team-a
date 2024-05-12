@@ -107,6 +107,7 @@ namespace BookingApp.ViewModel.Guide
             _requestDTO.BeginDate = _begin;
             _requestDTO.EndDate = _begin;
             _requestDTO.Status=Model.Enums.TourRequestStatus.Accepted;
+             _requestDTO.RequestAcceptedDate = DateTime.Now;
             _tourRequestService.Update(_requestDTO.ToOrdinaryTourRequest());
                 MessageDTO message = new MessageDTO();
                 message.RequestId = _requestDTO.Id;

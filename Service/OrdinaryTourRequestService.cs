@@ -145,6 +145,20 @@ namespace BookingApp.Service
             }
             return requests;
         }
+        public List<OrdinaryTourRequest> GetForOneYearTime()
+        {
+            List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+            DateTime today = DateTime.Now;
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if (request.RequestSentDate >= oneYearAgo && request.RequestSentDate <= today)
+                {
+                    requests.Add(request);
+                }
+            }
+            return requests;
+        }
         public List<OrdinaryTourRequest> GetByMonth(int year, int month)
         {
             List<OrdinaryTourRequest> requests = new List<OrdinaryTourRequest>();
@@ -161,11 +175,11 @@ namespace BookingApp.Service
         {
             int count = 0;
             Languages mostWanted = Languages.Afrikaans;
-            foreach (OrdinaryTourRequest request in GetAll())
+            foreach (OrdinaryTourRequest request in GetForOneYearTime())
             {
-                if (CountByLanguage(request.Language.ToString(),GetAll()) > count)
+                if (CountByLanguage(request.Language.ToString(), GetForOneYearTime()) > count)
                 {
-                    count = CountByLanguage(request.Language.ToString(), GetAll());
+                    count = CountByLanguage(request.Language.ToString(), GetForOneYearTime());
                     mostWanted = request.Language;
                 }
             }
@@ -175,11 +189,11 @@ namespace BookingApp.Service
         {
             int count = 0;
             Model.Location mostWanted = null;
-            foreach (OrdinaryTourRequest request in GetAll())
+            foreach (OrdinaryTourRequest request in GetForOneYearTime())
             {
-                if (CountByLocation(request.Place.City.ToString(), GetAll()) > count)
+                if (CountByLocation(request.Place.City.ToString(), GetForOneYearTime()) > count)
                 {
-                    count = CountByLocation(request.Place.City.ToString(), GetAll());
+                    count = CountByLocation(request.Place.City.ToString(), GetForOneYearTime());
                     mostWanted = request.Place;
                 }
             }
