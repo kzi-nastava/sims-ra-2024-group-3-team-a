@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit.Core;
 
 namespace BookingApp.Service
 {
@@ -156,6 +157,33 @@ namespace BookingApp.Service
             }
             return requests;
         }
-
+        public Languages GetMostWantedLanguage()
+        {
+            int count = 0;
+            Languages mostWanted = Languages.Afrikaans;
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if (CountByLanguage(request.Language.ToString(),GetAll()) > count)
+                {
+                    count = CountByLanguage(request.Language.ToString(), GetAll());
+                    mostWanted = request.Language;
+                }
+            }
+            return mostWanted;
+        }
+        public Model.Location GetMostWantedLocation()
+        {
+            int count = 0;
+            Model.Location mostWanted = null;
+            foreach (OrdinaryTourRequest request in GetAll())
+            {
+                if (CountByLocation(request.Place.City.ToString(), GetAll()) > count)
+                {
+                    count = CountByLocation(request.Place.City.ToString(), GetAll());
+                    mostWanted = request.Place;
+                }
+            }
+            return mostWanted;
+        }
     }
 }

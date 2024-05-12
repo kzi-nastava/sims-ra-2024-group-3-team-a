@@ -1,4 +1,5 @@
 ﻿using BookingApp.Model;
+using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Serializer;
 using System;

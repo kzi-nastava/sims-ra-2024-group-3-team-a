@@ -1,4 +1,4 @@
-using BookingApp.Commands;
+﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
@@ -25,10 +25,11 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.ViewModel.Guide
 {
-    public class AddTourViewModel : ViewModel
+    public class MostWantedLocationViewModel : ViewModel
     {
         private KeyPointService _keyPointService;
         private TourService _tourService;
+        private OrdinaryTourRequestService _tourRequestService;
         private Languages _selectedLanguage;
         private RelayCommand _addImagesCommand;
         private RelayCommand _removeImageCommand;
@@ -36,6 +37,7 @@ namespace BookingApp.ViewModel.Guide
         public ObservableCollection<BitmapImage> imagesCollection;
         private BitmapImage _selectedImage;
         private DateTime _selectedDate;
+        private LocationDTO _mostWantedLocation;
         private RelayCommand _addDateCommand;
         private RelayCommand _submitCommand;
         private string _keyPointString;
@@ -44,10 +46,10 @@ namespace BookingApp.ViewModel.Guide
         private ObservableCollection<DateTime> _dates;
         private UserDTO _loggedGuide;
         public event EventHandler TourAdded;
-        public AddTourViewModel(UserDTO guide)
+        public MostWantedLocationViewModel(UserDTO guide)
         {
             _loggedGuide = guide;
-            
+
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -55,18 +57,21 @@ namespace BookingApp.ViewModel.Guide
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
-            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            IOrdinaryTourRequestRepository requestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
+            _tourRequestService = new OrdinaryTourRequestService(requestRepository);
             _keyPointService = new KeyPointService(keyPointsRepository);
+            _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _imagePreviews = new List<BitmapImage>();
             imagesCollection = new ObservableCollection<BitmapImage>(_imagePreviews);
             _tourDTO = new TourDTO();
             _submitCommand = new RelayCommand(Submit);
-            _dates = new ObservableCollection<DateTime> ();
+            _dates = new ObservableCollection<DateTime>();
             _addDateCommand = new RelayCommand(AddDate);
             _submitCommand = new RelayCommand(Submit);
             _addImagesCommand = new RelayCommand(AddImages);
             _removeImageCommand = new RelayCommand(RemoveImage);
-            countries = new List<string> { "Austrija","BiH", "Crna Gora","Francuska","Hrvatska","Italija", "Makedonija","Madjarska","Njemacka", "Srbija", "Slovenija", "Spanija" };
+            _mostWantedLocation = new LocationDTO(_tourRequestService.GetMostWantedLocation());
+            countries = new List<string> { "Austrija", "BiH", "Crna Gora", "Francuska", "Hrvatska", "Italija", "Makedonija", "Madjarska", "Njemacka", "Srbija", "Slovenija", "Spanija" };
         }
         public TourDTO TourDTO
         {
@@ -86,7 +91,7 @@ namespace BookingApp.ViewModel.Guide
             get { return countries; }
             set
             {
-                countries = value; 
+                countries = value;
                 OnPropertyChanged();
             }
         }
@@ -109,17 +114,17 @@ namespace BookingApp.ViewModel.Guide
             }
         }
         public RelayCommand RemoveImageCommand
-         {
-             get
-             {
-                 return _removeImageCommand;
-             }
-             set
-             {
-                 _removeImageCommand = value;
-                 OnPropertyChanged();
-             }
-         }
+        {
+            get
+            {
+                return _removeImageCommand;
+            }
+            set
+            {
+                _removeImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<BitmapImage> ImagePreviews
         {
             get
@@ -154,6 +159,18 @@ namespace BookingApp.ViewModel.Guide
             set
             {
                 _keyPointString = value;
+                OnPropertyChanged();
+            }
+        }
+        public LocationDTO MostWantedLocationDTO
+        {
+            get
+            {
+                return _mostWantedLocation;
+            }
+            set
+            {
+                _mostWantedLocation = value;
                 OnPropertyChanged();
             }
         }
@@ -241,17 +258,20 @@ namespace BookingApp.ViewModel.Guide
             }
             _tourDTO.Images = _images;
             _tourDTO.GuideId = _loggedGuide.Id;
+            _tourDTO.LocationDTO = _mostWantedLocation;
 
             foreach (var date in _dates)
             {
                 TourDTO tourDTO = new TourDTO(_tourDTO);
                 tourDTO.BeginingTime = date;
                 tourDTO.Images = _images;
-                _tourDTO=new TourDTO(_tourService.Save(tourDTO.ToTourAllParam()));
+                tourDTO.MadeFromStatistics = true;
+                tourDTO.LocationDTO = _mostWantedLocation;
+                _tourDTO = new TourDTO(_tourService.Save(tourDTO.ToTourFromStatistics()));
                 SetKeyPoints(tourKeyPoints);
             }
 
-             AddTourWindow.GetInstance().Close();
+            //AddTourWindow.GetInstance().Close();
         }
         public IEnumerable<Languages> Languages
         {

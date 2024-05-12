@@ -37,6 +37,7 @@ namespace BookingApp.DTO
             isActive = tour.IsActive;
             currentCapacity = tour.CurrentCapacity;
             touristsPresent = tour.TouristsPresent;
+            madeFromStatistics = tour.MadeFromStatistics;
         }
         public TourDTO(TourDTO tourDTO)
         {
@@ -53,6 +54,7 @@ namespace BookingApp.DTO
             images = tourDTO.Images;
             currentCapacity= tourDTO.CurrentCapacity;
             touristsPresent= tourDTO.TouristsPresent;
+            madeFromStatistics = tourDTO.MadeFromStatistics;
         }
 
         private LocationDTO locationDTO;
@@ -228,6 +230,19 @@ namespace BookingApp.DTO
                 }
             }
         }
+        private bool madeFromStatistics;
+        public bool MadeFromStatistics
+        {
+            get { return madeFromStatistics; }
+            set
+            {
+                if (value != madeFromStatistics)
+                {
+                    madeFromStatistics = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private int currentCapacity;
         public int CurrentCapacity
@@ -265,6 +280,11 @@ namespace BookingApp.DTO
         {
             
             return new Tour(id,guideId, name, locationDTO.ToLocation(), description, language, maxTouristNumber,  beginingTime, duration, images, currentKeyPoint, isActive, touristsPresent);
+        }
+        public Tour ToTourFromStatistics()
+        {
+
+            return new Tour(id, guideId, name, locationDTO.ToLocation(), description, language, maxTouristNumber, beginingTime, duration, images, currentKeyPoint, isActive, touristsPresent, madeFromStatistics);
         }
 
         public Tour ToTourWithCapacity()
