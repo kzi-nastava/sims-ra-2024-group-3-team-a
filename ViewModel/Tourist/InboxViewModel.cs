@@ -18,8 +18,10 @@ namespace BookingApp.ViewModel.Tourist
     {
         private MessageService _messageService;
         private TourService _tourService;
+        private OrdinaryTourRequestService _ordinaryTourRequestService;
         private ObservableCollection<MessageDTO> _messageDTO;
         private MessageDTO _selectedMessageDTO = null;
+        private UserDTO _userDTO;
         public InboxViewModel(UserDTO loggedInUser)
         {
 
@@ -35,8 +37,9 @@ namespace BookingApp.ViewModel.Tourist
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             IOrdinaryTourRequestRepository ordinaryTourRequestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
             _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-
+            _userDTO = loggedInUser;
             List<MessageDTO> messages = _messageService.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
             _messageDTO = new ObservableCollection<MessageDTO>(messages);
 
@@ -79,12 +82,29 @@ namespace BookingApp.ViewModel.Tourist
             selectedItem.IsRead = true;
             _messageService.Update(selectedItem.ToMessage());
 
-            Tour tour = _tourService.GetById(selectedItem.RequestId);
-            TrackTourWindow trackTourWindow = new TrackTourWindow(new TourDTO(tour));
+           
+          
+           
+            
+          
 
             if (selectedItem.Type.Equals(Model.Enums.MessageType.TourAttendance)) 
             {
+                Tour tour = _tourService.GetById(selectedItem.RequestId);
+                TrackTourWindow trackTourWindow = new TrackTourWindow(new TourDTO(tour));
                 trackTourWindow.ShowDialog();   
+            }
+            else if(selectedItem.Type.Equals(Model.Enums.MessageType.NewCreatedTour))
+            {
+                Tour tour = _tourService.GetById(selectedItem.RequestId);
+                TourInformationWindow tourInformationWindow = new TourInformationWindow(new TourDTO(tour), _userDTO);
+                tourInformationWindow.ShowDialog();
+            }
+            else if(selectedItem.Type.Equals(Model.Enums.MessageType.AcceptedTourRequest))
+            {
+                OrdinaryTourRequest ordinaryTourRequest = _ordinaryTourRequestService.GetById(selectedItem.RequestId);
+                OrdinaryTourRequestInfoWindow ordinaryTourRequestInfoWindow = new OrdinaryTourRequestInfoWindow(new OrdinaryTourRequestDTO(ordinaryTourRequest));
+                ordinaryTourRequestInfoWindow.ShowDialog();
             }
         }
     }

@@ -28,6 +28,7 @@ namespace BookingApp.ViewModel.Tourist
         private TourService _tourService {  get; set; }
         private TourReservationService _tourReservationService { get; set; }
         private MessageService _messageService { get; set; }
+        private OrdinaryTourRequestService _ordinaryTourRequestService { get; set; }
         private ObservableCollection<TourDTO> _toursDTO;
         private ObservableCollection<TourDTO> _filteredToursDTO;
         private Message _message { get; set; }
@@ -68,9 +69,11 @@ namespace BookingApp.ViewModel.Tourist
             _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            
 
             List<TourDTO> tours = _tourService.GetAll().Select(tours => new TourDTO(tours)).ToList();
-            //GetCandidatesForMessages();
+       
             _toursDTO = new ObservableCollection<TourDTO>(tours);
             _filteredToursDTO = _toursDTO;
             _searchCommand = new RelayCommand(Search);
@@ -80,8 +83,10 @@ namespace BookingApp.ViewModel.Tourist
             _showVoucherWindowCommand = new RelayCommand(ShowVoucherWindow);
             _showInboxWindowCommand = new RelayCommand(ShowinboxWindow);
             _showOrindaryTourRequestWindow = new RelayCommand(ShowOrindaryTourRequestWindow);
-            _messageService.CreateMessage(_message, loggedInUser.ToUser());
-            CheckOpenPopUp();
+            _messageService.CreateMessage(_message, _userDTO.ToUser());
+            _ordinaryTourRequestService.GetCandidatesForMessages(_userDTO);
+            _ordinaryTourRequestService.FindInvalidOrdinaryTourRequests(_userDTO);
+             SendNotification();
             _popUpCommand = new RelayCommand(OpenPopUp);
             _closePopUpCommand = new RelayCommand(ClosePopUp);
             _logOutCommand = new RelayCommand(LogOut);
@@ -153,7 +158,6 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
-               // ShowAppropriateWindow();
             }
         }
         public IEnumerable<Languages> Languages
@@ -445,7 +449,6 @@ namespace BookingApp.ViewModel.Tourist
             SearchCityInput = string.Empty;
             TouristMainWindow.GetInstance().languageComboBox.SelectedIndex = -1;
             SearchLanguageInput = string.Empty;
-            // Languages = Enumerable.Empty<Languages>();
             SearchMaxTouristNumberInput = string.Empty;
             SearchDurationInput = string.Empty;
             Search();
@@ -462,21 +465,17 @@ namespace BookingApp.ViewModel.Tourist
 
             
             var selectedItem = _selectedTourDTO as TourDTO;
-           /* if(selectedItem.CurrentCapacity > 0)
-            {
-                TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationService, new TourDTO(selectedItem), _userDTO);
-                tourReservationWindow.ShowDialog();
-            }*/
+     
            if(selectedItem.CurrentCapacity >0)
             {
                 TourInformationWindow tourInformationWindow = new TourInformationWindow(new TourDTO(selectedItem), _userDTO);
-              //  tourInformationWindow.Owner = Application.Current.MainWindow;
+        
                 tourInformationWindow.ShowDialog();
-            }
+           }
             else
             {
                 AlternativeToursWindow alternativeToursWindow = new AlternativeToursWindow(new TourDTO(selectedItem), _userDTO);
-               // alternativeToursWindow.Owner = Application.Current.MainWindow;
+   
                 alternativeToursWindow.ShowDialog();
             }
            
@@ -485,7 +484,6 @@ namespace BookingApp.ViewModel.Tourist
         public void ShowFinishedToursWindow()
         {
             FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
-        //    finishedToursWindow.Owner = Application.Current.MainWindow;
             finishedToursWindow.ShowDialog();
         }
 
@@ -521,14 +519,14 @@ namespace BookingApp.ViewModel.Tourist
             TourRequestsWindow ordinaryTourRequestWindow = new TourRequestsWindow(_userDTO);
             ordinaryTourRequestWindow.ShowDialog();
         }
-        public void CheckOpenPopUp()
+        public void SendNotification()
         {
-            
+
             foreach (Message message in _messageService.GetAll())
             {
-                if (message.Type.Equals(MessageType.TourAttendance) || message.Type.Equals(MessageType.NewReviewNotification) && !message.IsRead)
+                if ((message.Type.Equals(MessageType.TourAttendance) || message.Type.Equals(MessageType.NewCreatedTour) || message.Type.Equals(MessageType.AcceptedTourRequest)) && !message.IsRead)
                 {
-                    IsOpen = true;
+                    IsOpen = true; //SetSendNotification
                     return;
                 }
             }

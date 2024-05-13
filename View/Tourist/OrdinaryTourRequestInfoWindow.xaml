@@ -40,7 +40,7 @@
         </Menu>
         <DockPanel Grid.Row="1">
         <TextBlock Text="Your tour request is " Margin="30,10,0,0" FontWeight="Bold" FontSize="20"></TextBlock>
-            <TextBlock Text="{Binding OrdinaryTourRequestDTO.Status}" FontWeight="Bold" FontSize="20"/>
+            <TextBlock Margin="30,10,0,0" Text="{Binding OrdinaryTourRequestDTO.Status}" FontWeight="Bold" FontSize="20"/>
         </DockPanel>
         <Border  BorderBrush="Black" BorderThickness="1" Grid.Row="2" Margin="30,10,30,0" Padding="10">
         <Grid >
@@ -65,9 +65,9 @@
 
 
                     <TextBlock Text="Tour details:" FontSize="14" FontWeight="Bold"></TextBlock>
-                    <TextBlock Text="Tour name: "  FontSize="14"  Grid.Column="0"  Grid.Row="1"></TextBlock>
-                    <TextBlock Text="Location: "  FontSize="14"  Grid.Column="0"  Grid.Row="2"></TextBlock>
-                    <TextBlock Text="Language: "  FontSize="14"  Grid.Column="0"  Grid.Row="3"></TextBlock>
+                  
+                    <TextBlock Text="Location: "  FontSize="14"  Grid.Column="0"  Grid.Row="1"></TextBlock>
+                    <TextBlock Text="Language: "  FontSize="14"  Grid.Column="0"  Grid.Row="2"></TextBlock>
                     <Border  Grid.Column="0"  Background="LightGray" Grid.Row="4" BorderBrush="Black" BorderThickness="1" Padding="5">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -82,15 +82,15 @@
 
                             <TextBlock Text="Date:" FontSize="14" FontWeight="Bold" ></TextBlock>
                             <TextBlock Text="Duration:"  Grid.Column="0" Grid.Row="1" FontSize="14" FontWeight="Bold" ></TextBlock>
-                            <TextBlock Text="{Binding OrdinaryTourRequestDTO.BeginDate}"  Width="100" Grid.Column="1" Grid.Row="0" FontSize="14" FontWeight="Bold" ></TextBlock>
-                            <TextBlock Text="{Binding OrdinaryTourRequestDTO.EndDate}"  Width="100" Grid.Column="1" Grid.Row="1" FontSize="14" FontWeight="Bold" ></TextBlock>
+                            <TextBlock Text="{Binding OrdinaryTourRequestDTO.BeginDate, StringFormat='{}{0:dd/MM/yyyy}'}"  Width="100" Grid.Column="1" Grid.Row="0" FontSize="14" FontWeight="Bold" ></TextBlock>
+                            <TextBlock Text="{Binding OrdinaryTourRequestDTO.EndDate, StringFormat='{}{0:dd/MM/yyyy}'}"  Width="100" Grid.Column="1" Grid.Row="1" FontSize="14" FontWeight="Bold" ></TextBlock>
                         </Grid>
                     </Border>
                     <TextBlock Text="Guide:"  FontSize="14" FontWeight="Bold" Grid.Row="5" ></TextBlock>
-                    <TextBlock Text="{Binding OrdinaryTourRequestDTO.Name}"  FontSize="14"  Grid.Column="1" Width="100" Grid.Row="1"></TextBlock>
-                    <TextBlock Text="{Binding OrdinaryTourRequestDTO.LocationDTOString}"  FontSize="14" Width="100"  Grid.Column="1"  Grid.Row="2"></TextBlock>
-                    <TextBlock Text="{Binding OrdinaryTourRequestDTO.Language}"  FontSize="14" Width="100"  Grid.Column="1"  Grid.Row="3"></TextBlock>
-                    <TextBlock Text="{Binding OrdinaryTourRequestDTO.GuideId}"  FontSize="14" Width="100"  Grid.Column="1"  Grid.Row="5"></TextBlock>
+                  
+                    <TextBlock Text="{Binding OrdinaryTourRequestDTO.LocationDTOString}"  FontSize="14" Width="100"  Grid.Column="1"  Grid.Row="1"></TextBlock>
+                    <TextBlock Text="{Binding OrdinaryTourRequestDTO.Language}"  FontSize="14" Width="100"  Grid.Column="1"  Grid.Row="2"></TextBlock>
+                    <TextBlock Text="{Binding UserDTO.Username}"  FontSize="14" Width="100"  Grid.Column="1"  Grid.Row="5"></TextBlock>
 
                 </Grid>
 

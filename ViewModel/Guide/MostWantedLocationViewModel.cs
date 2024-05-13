@@ -50,6 +50,7 @@ namespace BookingApp.ViewModel.Guide
         {
             _loggedGuide = guide;
 
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -58,7 +59,10 @@ namespace BookingApp.ViewModel.Guide
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             IOrdinaryTourRequestRepository requestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
-            _tourRequestService = new OrdinaryTourRequestService(requestRepository);
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            _tourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _keyPointService = new KeyPointService(keyPointsRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _imagePreviews = new List<BitmapImage>();

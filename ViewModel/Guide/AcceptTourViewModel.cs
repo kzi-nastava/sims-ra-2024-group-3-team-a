@@ -2,6 +2,7 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Guide;
@@ -43,7 +44,7 @@ namespace BookingApp.ViewModel.Guide
             _userDTO = user;
             _acceptTourRequestCommand = new RelayCommand(AcceptTourRequest);
             IOrdinaryTourRequestRepository requestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
-            _tourRequestService = new OrdinaryTourRequestService(requestRepository);
+            _tourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             AddDates();
         }
         private void AddDates()
