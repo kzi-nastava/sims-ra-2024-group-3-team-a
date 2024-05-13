@@ -2,6 +2,7 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
+using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View;
@@ -32,7 +33,19 @@ namespace BookingApp.ViewModel.Guide
         {
             _loggedInGuide = user;
             IOrdinaryTourRequestRepository requestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
-            _tourRequestService = new OrdinaryTourRequestService(requestRepository);
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+
+            _tourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _searchCommand = new RelayCommand(Search);
             _filterCommand = new RelayCommand(Filter);
             _mostWantedLanguageCommand = new RelayCommand(SuggestMostWantedLanguage);

@@ -1,5 +1,7 @@
+using BookingApp.DTO;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
+using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,22 +16,41 @@ namespace BookingApp.Service
     {
 
         private IOrdinaryTourRequestRepository _ordinaryTourRequestRepository;
+        private ITourRepository _tourRepository;
+        private IMessageRepository _messageRepository;
+        private ITouristRepository _touristRepository;
+        private IUserRepository _userRepository;
+        private ITourReservationRepository _tourReservationRepository;
+        private ITourReviewRepository _tourReviewRepository;
+        private IVoucherRepository _voucherRepository;
+        private IAccommodationReservationChangeRequestRepository _accommodationReservationChangeRequestRepository;
+        private IAccommodationReservationRepository _accommodationReservationRepository;
+        private IAccommodationRepository _accommodationRepository;
+        private MessageService _messageService;
 
-        public OrdinaryTourRequestService(IOrdinaryTourRequestRepository ordinaryTourRequestRepository)
+        public OrdinaryTourRequestService(IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository, IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IOrdinaryTourRequestRepository ordinaryTourRequestRepository, ITourRepository tourRepository, IMessageRepository messageRepository, ITouristRepository touristRepository, IUserRepository userRepository, ITourReservationRepository tourReservationRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
             _ordinaryTourRequestRepository = ordinaryTourRequestRepository;
+            _tourRepository = tourRepository;
+            _touristRepository = touristRepository;
+            _userRepository = userRepository;
+            _tourReservationRepository = tourReservationRepository;
+            _tourReviewRepository = tourReviewRepository;
+            _voucherRepository = voucherRepository;
+            _accommodationReservationChangeRequestRepository = accommodationReservationChangeRequestRepository;
+            _accommodationRepository= accommodationRepository;
+            _accommodationReservationRepository = accommodationReservationRepository;
+            _messageService = new MessageService(messageRepository,accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository,tourRepository, tourReservationRepository, touristRepository,  tourReviewRepository, voucherRepository);
+            
         }
-
         public List<OrdinaryTourRequest> GetAll()
         {
             return _ordinaryTourRequestRepository.GetAll();
         }
-
         public OrdinaryTourRequest Save(OrdinaryTourRequest ordinaryTourRequestRepository)
         {
             return _ordinaryTourRequestRepository.Save(ordinaryTourRequestRepository);
         }
-
         public void Delete(OrdinaryTourRequest ordinaryTourRequestRepository)
         {
             _ordinaryTourRequestRepository.Delete(ordinaryTourRequestRepository);
@@ -227,5 +248,40 @@ namespace BookingApp.Service
             }
             return mostWanted;
         }
+        public void GetCandidatesForMessages(UserDTO userDTO)
+        {
+            foreach (Tour tour in _tourRepository.GetAll())
+            {
+
+                foreach (OrdinaryTourRequest ordinaryTourRequest in GetAllForUser(userDTO.Id))
+                {
+                    if (ordinaryTourRequest.Status.Equals(TourRequestStatus.Rejected) || ordinaryTourRequest.Status.Equals(TourRequestStatus.Invalid))
+                    {
+                        if ((ordinaryTourRequest.Language.Equals(tour.Language) || (tour.Place.City == ordinaryTourRequest.Place.City && tour.Place.Country == ordinaryTourRequest.Place.Country)) && tour.MadeFromStatistics)
+                        {
+                            bool sameLanguage = ordinaryTourRequest.Language.Equals(tour.Language);
+                            bool sameLocation = ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country == tour.Place.Country;
+                            _messageService.CreateSystemMessage(userDTO.ToUser(), tour, sameLanguage, sameLocation);
+                        }
+                    }
+                }
+            }
+        }
+        public void FindInvalidOrdinaryTourRequests(UserDTO userDTO)
+        {
+            DateTime currentTimePlus48Hours = DateTime.Now.AddHours(48);
+            foreach(OrdinaryTourRequest ordinaryTour in GetAllForUser(userDTO.Id))
+            {
+                if (ordinaryTour.BeginDate < currentTimePlus48Hours)
+                {
+                    ordinaryTour.Status = TourRequestStatus.Invalid;
+                    Update(ordinaryTour);
+                }
+      
+            }
+
+
+            
+        }    
     }
 }

@@ -16,7 +16,8 @@ namespace BookingApp.DTO
         public OrdinaryTourRequestDTO()
         {
             locationDTO = new LocationDTO();
-
+            this.endDate = DateTime.Now;
+            this.beginDate = DateTime.Now;
         }
 
         public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate, DateTime requestSentDate, DateTime requestAcceptedDate)
@@ -71,6 +72,7 @@ namespace BookingApp.DTO
             numberOfTourists = ordinaryTourRequestDTO.NumberOfTourists;
             status = ordinaryTourRequestDTO.Status;
             beginDate = ordinaryTourRequestDTO.BeginDate;
+            language = ordinaryTourRequestDTO.Language;
             endDate = ordinaryTourRequestDTO.EndDate;
             touristsDTO = ordinaryTourRequestDTO.TouristsDTO;
         }
@@ -239,6 +241,7 @@ namespace BookingApp.DTO
                 if (value != endDate)
                 {
                     endDate = value;
+                  
                     OnPropertyChanged();
                 }
             }

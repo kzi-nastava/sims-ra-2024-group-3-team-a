@@ -151,45 +151,38 @@ namespace BookingApp.Service
         {
             return GetByOwner(user.Id).Any(oldMessage => oldMessage.RequestId == tour.Id);
         }
-        /*  public void FindRejectedTourWithSameParameters()
-          {
-              foreach(CreatedTour createdTour in _createdTourRepository.GetAll())
-              {
-
-              foreach (OrdinaryTourRequest ordinaryTourRequest in _ordinaryTourRequestRepository.GetAll())
-              {
-                  if (ordinaryTourRequest.Language.Equals(createdTour.Language) || (createdTour.Place.City == tour.Place.City && createdTour.Place.Country== createdTour.Place.City))
-                  {
-                      bool sameLanguage = ordinaryTourRequest.Language.Equals(tour.Language);
-                      bool sameLocation = ordinaryTourRequest.Place.City == tour.Place.City && ordinaryTourRequest.Place.Country == tour.Place.City;
-                      CreateSystemMessage(ordinaryTourRequest.UserId, tour, sameLanguage, sameLocation);
-                  }
-              }
-              }
-          }*/
-        public void CreateSystemMessage(int userId, Tour tour, bool sameLanguage, bool sameLocation)
+       
+        public void CreateSystemMessage(User user, Tour tour, bool sameLanguage, bool sameLocation)
         {
             Message message = new Message();
             message.RequestId = tour.Id;
             message.Sender = "System";
-            message.RecieverId = userId;
+            message.RecieverId = user.Id;
             message.Header = "New tour created";
             message.Type = MessageType.NewCreatedTour;
             message.IsRead = false;
-           
-            if(sameLanguage && sameLocation)
+
+            if (!DoesMessageExists(tour, user))
             {
-                message.Content = $"Guide has recently created a new tour with language {tour.Language} and location {tour.Place}. Click for more info.";
+                CreateMessageContent(message,tour,sameLanguage, sameLocation, sameLanguage && sameLocation);
+            }
+        }
+        public void CreateMessageContent(Message message, Tour tour,bool sameLanguage, bool sameLocation, bool bothSame)
+        {
+            if (bothSame)
+            {
+                message.Content = $"Guide has recently created a new tour with language {tour.Language} and location {tour.Place.City} {tour.Place.Country}. Click for more info.";
             }
             else if (sameLanguage)
             {
                 message.Content = $"Guide has recently created a new tour with language {tour.Language}. Click for more info.";
             }
-            else
+            else if(sameLocation)
             {
-                message.Content = $"Guide has recently created a new tour with  location {tour.Place}. Click for more info.";
+                message.Content = $"Guide has recently created a new tour with  location {tour.Place.City} {tour.Place.Country}. Click for more info.";
             }
             Save(message);
         }
+        
     }
 }

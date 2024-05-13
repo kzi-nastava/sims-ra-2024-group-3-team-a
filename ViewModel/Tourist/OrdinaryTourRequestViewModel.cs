@@ -34,6 +34,8 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _addTouristCommand;
         private RelayCommand _removeTouristCommand;
         private RelayCommand _confirmTourRequestCommand;
+        private RelayCommand _closeWindowCommand;
+        public Action CloseAction { get; set; }
 
         public OrdinaryTourRequestViewModel(UserDTO loggedInUser)
         {
@@ -41,11 +43,23 @@ namespace BookingApp.ViewModel.Tourist
             _touristDTO = new TouristDTO();
             _ordinaryTourRequestDTO = new OrdinaryTourRequestDTO();
             IOrdinaryTourRequestRepository ordinaryTourRequestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
-            _ordinaryTourRequestService = new OrdinaryTourRequestService(ordinaryTourRequestRepository);
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _touristsDTO = new ObservableCollection<TouristDTO>();
             _addTouristCommand = new RelayCommand(AddTourist);
             _removeTouristCommand = new RelayCommand(RemoveTourist);
             _confirmTourRequestCommand = new RelayCommand(ConfirmTourRequest);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
 
         }
 
@@ -149,7 +163,18 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public IEnumerable<Languages> Languages
         {
             get
@@ -174,8 +199,10 @@ namespace BookingApp.ViewModel.Tourist
             _ordinaryTourRequestDTO.TouristsDTO = TouristsDTO.ToList();
             _ordinaryTourRequestDTO.UserId = _userDTO.Id;
             _ordinaryTourRequestDTO.NumberOfTourists = TouristsDTO.Count;
+            _ordinaryTourRequestDTO.RequestSentDate = DateTime.Now;
             _ordinaryTourRequestService.Save(_ordinaryTourRequestDTO.ToOrdinaryTourRequest());
             MessageBox.Show("made!");
+            
         }
 
 
@@ -194,10 +221,9 @@ namespace BookingApp.ViewModel.Tourist
             TouristsDTO.Remove(selectedItem);
           
         }
-
-
-
-
-
+        public void CloseWindow()
+        {
+            CloseAction();
+        }
     }
 }

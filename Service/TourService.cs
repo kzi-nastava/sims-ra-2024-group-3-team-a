@@ -174,12 +174,6 @@ namespace BookingApp.Service
             }
             return tourists;
         }
-
-       /* public void FindRejectedTourRequestWithSameParameters(Tour tour)
-        {
-            foreach
-        }*/
-
         
     }
 }

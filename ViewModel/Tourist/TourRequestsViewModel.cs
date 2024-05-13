@@ -2,6 +2,7 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
+using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Tourist;
@@ -35,6 +36,7 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _showOrdinaryTourRequestInfoWindowCommand;
         private RelayCommand _updateCommand;
         private RelayCommand _averageTouristNumberCommand;
+        private RelayCommand _showForAllYearsCommand;
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesCollection HistogramData { get; set; }
         public SeriesCollection HistogramDataForLocation { get; set; }
@@ -49,54 +51,57 @@ namespace BookingApp.ViewModel.Tourist
             _userDTO = loggedInUser;
             _ordinaryTourRequestDTO = new OrdinaryTourRequestDTO();
             IOrdinaryTourRequestRepository ordinaryTourRequestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
-            _ordinaryTourRequestService = new OrdinaryTourRequestService(ordinaryTourRequestRepository);
+            IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
+            ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
+            IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
+            IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             List<OrdinaryTourRequestDTO> ordinaryTourRequests = _ordinaryTourRequestService.GetAllForUser(_userDTO.Id).Select(ordinaryTourRequests => new OrdinaryTourRequestDTO(ordinaryTourRequests)).ToList();
             _ordinaryTourRequestsDTO = new List<OrdinaryTourRequestDTO>(ordinaryTourRequests);
             _showOrdinaryTourRequestInfoWindowCommand = new RelayCommand(ShowOrdinaryTourRequestInfoWindow);
             _updateCommand = new RelayCommand(Update);
             _averageTouristNumberCommand = new RelayCommand(GetAverageTouristNumber);
+            _showForAllYearsCommand = new RelayCommand(LoadDataForPieChart);
             LoadDataForPieChart();
 
-            // Convert hexadecimal color codes to Color objects
-            Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1"); // LightYellow
-            Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea"); // LightSteelBlue
-            Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de"); // LightCoral
-            Color color4 = (Color)ColorConverter.ConvertFromString("#ffaad7"); // LightCoral
-            Color color5 = (Color)ColorConverter.ConvertFromString("#ffffd8"); // LightCoral
+          
+            Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1"); 
+            Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea"); 
+            Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de"); 
+            Color color4 = (Color)ColorConverter.ConvertFromString("#ffaad7"); 
+            Color color5 = (Color)ColorConverter.ConvertFromString("#ffffd8"); 
 
-            // Create SolidColorBrush instances with the colors
-           // SolidColorBrush brush1 = new SolidColorBrush(color1);
-           // SolidColorBrush brush2 = new SolidColorBrush(color2);
+           
             SolidColorBrush brush3 = new SolidColorBrush(color1);
             SolidColorBrush brush4 = new SolidColorBrush(color4);
             SolidColorBrush brush5 = new SolidColorBrush(color5);
 
-            // Add SolidColorBrush instances to the list
-             brushes = new List<SolidColorBrush>();
+            brushes = new List<SolidColorBrush>();
             brushes.Add(brush3);
             brushes.Add(brush4);
             brushes.Add(brush5);
-
             HistogramData = new SeriesCollection();
             int brushIndex = 0;
-
             foreach (var language in _ordinaryTourRequestService.GetLanguages(_userDTO.Id))
             {
-
                 ColumnSeries columnSeries = new ColumnSeries
                 {
                     Title = $"Number of {language}",
                     Values = new ChartValues<int> { _ordinaryTourRequestService.CountOrdinaryTourRequestsbyLanguage(_userDTO.Id, language.ToString()) },
                     Fill = brushes[brushIndex % brushes.Count],
                 };
-
                 HistogramData.Add(columnSeries);
                 brushIndex++;
             }
-             Labels = new[] { "Languages" };
-
+            Labels = new[] { "Languages" };
             HistogramDataForLocation = new SeriesCollection();
-
             foreach (var location in _ordinaryTourRequestService.GetLocations(_userDTO.Id))
             {
                 ColumnSeries columnSeries = new ColumnSeries
@@ -104,17 +109,13 @@ namespace BookingApp.ViewModel.Tourist
                     Title = $"Number of {location.City} {location.Country}",
                     Values = new ChartValues<int> { _ordinaryTourRequestService.CountOrdinaryTourRequestsByLocation(_userDTO.Id, location) },
                     Fill = brushes[brushIndex % brushes.Count],
-
-
                 };
-
                 HistogramDataForLocation.Add(columnSeries);
                 brushIndex++;
             }
 
 
         }
-
 
 
         public List<OrdinaryTourRequestDTO> OrdinaryTourRequestsDTO
@@ -189,6 +190,16 @@ namespace BookingApp.ViewModel.Tourist
             set
             {
                 _chartValues = value;
+                OnPropertyChanged();
+            }
+        }
+      
+        public RelayCommand ShowForAllYearsCommand
+        {
+            get { return _showForAllYearsCommand; }
+            set
+            {
+                _showForAllYearsCommand = value;
                 OnPropertyChanged();
             }
         }
