@@ -66,7 +66,7 @@ namespace BookingApp.ViewModel.Guide
             _touristJoiningPointCommand = new RelayCommand(TouristJoiningPoint);
             _showAllToursCommand = new RelayCommand(ShowAllTours);
             _logoutCommand = new RelayCommand(Logout);
-            _showTourStatisticsCommand = new RelayCommand(ShowTourDetails);
+            _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
             _showMainWindowCommand = new RelayCommand(ShowMainWindow);
             _keyPointsService = new KeyPointService(keyPointsRepository);
             List<KeyPointDTO> keypointsDTO = _keyPointsService.GetKeyPointsForTour(tour.ToTourAllParam()).Select(k=> new KeyPointDTO(k)).ToList();

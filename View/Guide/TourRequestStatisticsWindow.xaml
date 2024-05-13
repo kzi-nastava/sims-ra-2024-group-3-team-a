@@ -47,7 +47,7 @@
                 </Button>
                 <Button Grid.Column="4" Height="20" Content="Pretraga" Command="{Binding SearchCommand}"></Button>
                 <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1">Godina:</TextBlock>
-                <ComboBox  Grid.Row="1" Height="20" Grid.Column="1" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchYearInput}">
+                <ComboBox  Grid.Row="1" Height="20" x:Name="yearComboBox" Grid.Column="1" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchYearInput}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" />
@@ -55,14 +55,16 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">Mjesec:</TextBlock>
-                <ComboBox  Grid.Row="1" Height="20" Grid.Column="3" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchMonthInput}">
+                <ComboBox  Grid.Row="1" Height="20"  x:Name="monthComboBox"  Grid.Column="3" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding Months, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchMonthInput}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                
+                <Button x:Name="restartButton" Grid.Row="1" BorderBrush="Transparent" Background="Transparent" Width="30" Height="30" Grid.Column="11" Margin="0" VerticalAlignment="Top" Command="{Binding ResetSearchCommand}">
+                    <Image Source="../../Resources/Images/Guide/refresh.png" Width="30" Height="25" />
+                </Button>
                 <Button Grid.Column="4"  Grid.Row="1" Height="20" Content="Pretraga" Command="{Binding FilterCommand}"></Button>
                 <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">Broj zahtjeva:</TextBlock>
                 <TextBlock VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="2" Text="{Binding Number}" Background="White"> </TextBlock>
