@@ -105,14 +105,12 @@
             <ListView ItemsSource="{Binding AccommodationStatisticsDTO}" SelectedValue="{Binding SelectedYear}" SelectedValuePath="Key" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Black" BorderThickness="5">
+                        <GroupBox Header="{Binding Key}" Foreground="#d4ff00" FontSize="21">
+                            <GroupBox.Background>
+                                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                            </GroupBox.Background>
                             <StackPanel Orientation="Horizontal" Width="390">
-                                <StackPanel.Background>
-                                    <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
-                                </StackPanel.Background>
                                 <StackPanel>
-                                    <Label HorizontalAlignment="Center" Foreground="#d4ff00" FontSize="24" FontWeight="Bold" Content="{Binding Key}"/>
-
                                     <StackPanel Orientation="Horizontal">
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Reservations: "/>
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.Reservations}"/>
@@ -134,7 +132,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
+                        </GroupBox>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemContainerStyle>

@@ -26,7 +26,7 @@ namespace BookingApp.Service
             int reservations = 0;
             foreach(var reservation in _accommodationReservationRepository.GetAll())
             {
-                if (reservation.BeginDate.Year == year && accommodationId == reservation.AccommodationId && (reservation.BeginDate.Month == month || month == 0))
+                if (reservation.BeginDate.Year == year && accommodationId == reservation.AccommodationId && (reservation.BeginDate.Month == month || month == 0) && reservation.Canceled == false)
                 {
                     reservations++;
                 }
