@@ -24,6 +24,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _searchCommand;
         private RelayCommand _filterCommand;
         private RelayCommand _resetSearchParametersCommand;
+        private RelayCommand _resetSearchCommand;
         private RelayCommand _mostWantedLanguageCommand;
         private RelayCommand _mostWantedLocationCommand;
         private List<string> _years;
@@ -51,6 +52,7 @@ namespace BookingApp.ViewModel.Guide
             _mostWantedLanguageCommand = new RelayCommand(SuggestMostWantedLanguage);
             _mostWantedLocationCommand = new RelayCommand(SuggestMostWantedLocation);
             _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
+            _resetSearchCommand = new RelayCommand(ResetSearch);
             _years  = new List<string> { "2028", "2027" , "2026" , "2025" , "2024" , "2023" , "2022" , "2021", "2020" };
             _months = new List<string> {"1","2","3","4","5","6","7","8","9","10","11","12" };
 
@@ -234,8 +236,26 @@ namespace BookingApp.ViewModel.Guide
         {
 
             SearchLocationInput = string.Empty;
-            TourRequestWindow.GetInstance().languageComboBox.SelectedIndex = -1;
+            TourRequestStatisticsWindow.GetInstance().languageComboBox.SelectedIndex = -1;
             SearchLanguageInput = string.Empty;
+            Search();
+        }
+        public RelayCommand ResetSearchCommand
+        {
+
+            get { return _resetSearchCommand; }
+            set
+            {
+                _resetSearchCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ResetSearch()
+        {
+            SearchMonthInput = string.Empty;
+            TourRequestStatisticsWindow.GetInstance().monthComboBox.SelectedIndex = -1;
+            SearchYearInput = string.Empty;
+            TourRequestStatisticsWindow.GetInstance().yearComboBox.SelectedIndex = -1;
             Search();
         }
     }

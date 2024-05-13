@@ -26,7 +26,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTouristsStatistcsCommand;
         private RelayCommand _showMostVisitedByYearCommand;
         public static ObservableCollection<TourDTO> _finishedToursDTO { get; set; }
-        //private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
+
         public TourStatisticsViewModel()
         {
 

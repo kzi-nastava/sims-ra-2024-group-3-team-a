@@ -263,7 +263,7 @@ namespace BookingApp.ViewModel.Guide
                 SetKeyPoints(tourKeyPoints);
             }
 
-            //AddTourWindow.GetInstance().Close();
+         
         }
 
         public Languages MostWantedLanguage

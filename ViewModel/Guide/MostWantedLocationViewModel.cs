@@ -275,7 +275,7 @@ namespace BookingApp.ViewModel.Guide
                 SetKeyPoints(tourKeyPoints);
             }
 
-            //AddTourWindow.GetInstance().Close();
+           
         }
         public IEnumerable<Languages> Languages
         {
