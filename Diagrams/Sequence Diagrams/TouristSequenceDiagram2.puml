@@ -1,0 +1,54 @@
+@startuml dijagram
+
+actor "User" as u
+
+participant TouristMainViewModel
+participant InboxViewModel
+participant MessageService
+
+u->TouristMainViewModel: OpenTouristMainWindow
+activate TouristMainViewModel
+
+TouristMainViewModel->InboxViewModel:OpenInboxWindow
+activate InboxViewModel
+create MessageService
+InboxViewModel -> MessageService: <<create>>
+
+InboxViewModel->MessageService: GetFromUser(user.Id)
+activate MessageService
+
+create MessageRepository
+MessageService -> MessageRepository: <<create>>
+MessageService -> MessageRepository: GetFromUser(user.Id)
+
+activate MessageRepository
+MessageRepository-->MessageService: messages
+
+deactivate MessageRepository
+MessageService-->InboxViewModel: messages
+deactivate MessageService
+InboxViewModel-->TouristMainViewModel: messages
+
+u->InboxViewModel: OpenMessage
+
+alt if(message.Type.Equals(Enums.MessageType.AcceptedTourRequest))
+InboxViewModel->InboxViewModel: ShowAcceptedTourRequestDetails(message)
+activate InboxViewModel
+InboxViewModel-->InboxViewModel: acceptedTourRequestDetails
+deactivate InboxViewModel
+else else if(message.Type.Equals(Enums.MessageType.NewCreatedTour))
+InboxViewModel->InboxViewModel: ShowNewCreatedTourDetails(message)
+activate InboxViewModel
+InboxViewModel-->InboxViewModel: showNewCreatedTourDetails
+deactivate InboxViewModel
+else else 
+InboxViewModel->InboxViewModel: ShowActiveTourDetails(message)
+activate InboxViewModel
+InboxViewModel-->InboxViewModel: showNewCreatedTourDetails
+deactivate InboxViewModel
+end
+InboxViewModel-->TouristMainViewModel:details
+deactivate InboxViewModel
+TouristMainViewModel-->u: details
+deactivate TouristMainViewModel
+@enduml

@@ -1,0 +1,259 @@
+@startuml dijagram Kreiranje ture spram statistike o zahtevima za ture
+actor User
+participant TourStatisticsViewModel as tsVM
+participant MostWantedLocationViewModel as mwlo
+participant MostWantedLanguageViewModel as mwla
+participant TourService
+participant TourDTO
+participant KeyPointService as kps
+participant OrdinaryTourRequestService as otrs
+participant KeyPointDTO
+participant TourRepository as tr
+participant KeyPointRepository as kpr
+
+User -> tsVM: Open TourStatistics
+activate tsVM
+
+alt User chooses make tour for most wanted location button
+    User -> tsVM: Choose MostWantedLocation
+    tsVM -> mwlo: Open MostWantedLocation
+    activate mwlo
+
+    mwlo -> TourService**: <<create>>
+    mwlo -> kps**: <<create>>
+    mwlo -> otrs**: <<create>>
+   
+
+    mwlo -> TourDTO**: <<create>>
+    activate TourDTO
+    TourDTO --> mwlo: _tourDTO
+    deactivate TourDTO
+   
+    mwlo -> otrs: GetMostWantedLocation()
+    activate otrs
+    otrs->otrs: GetForOneYearTime()
+    activate otrs
+    otrs-->otrs: requests
+    deactivate otrs
+    loop  foreach request in requests
+    otrs->otrs: CountByLocation(Place, requests)
+    activate otrs
+    otrs-->otrs: location
+     deactivate otrs
+    opt location > count 
+    otrs->otrs: CountByLocation(Place, requests)
+    activate otrs
+    otrs-->otrs: location set
+     deactivate otrs
+    end
+    end
+    
+    otrs --> mwlo : mostWantedLocation
+     deactivate otrs
+
+    User -> mwlo:Inputs
+    activate mwlo
+    mwlo --> mwlo: Set properties
+    deactivate mwlo 
+    
+    
+   
+
+    User -> mwlo: Choose to add images
+    activate mwlo
+    mwlo -> mwlo: AddImages()
+    activate mwlo
+    mwlo --> mwlo: AddImages
+    deactivate mwlo
+    deactivate mwlo
+
+    User -> mwlo: Choose to remove an image
+    activate mwlo
+    mwlo -> mwlo: RemoveImage()
+    activate mwlo
+    mwlo --> mwlo: RemoveImage
+    deactivate mwlo
+    deactivate mwlo
+
+    loop AddingDates
+    User -> mwlo: Choose to add a date
+    activate mwlo
+    mwlo -> mwlo: AddDate()
+    activate mwlo
+    mwlo --> mwlo: AddDate
+    deactivate mwlo
+     end
+    mwlo-->mwlo: dates
+    deactivate mwlo
+    
+
+    User -> mwlo: Choose to submit tour information
+    activate mwlo
+    
+    loop foreach date in dates 
+    mwlo-> mwlo : SetKeyPoints(_keypoints)
+    loop foreach keyPoint in _keyPoints
+    activate mwlo
+    
+    mwlo -> KeyPointDTO**: <<create>>
+    activate KeyPointDTO
+    KeyPointDTO --> mwlo:newpoint
+    deactivate KeyPointDTO
+    mwlo -> KeyPointDTO : newPoint
+    activate KeyPointDTO
+    KeyPointDTO -> KeyPointDTO: ToKeyPoint()
+    KeyPointDTO --> mwlo:newpoint
+    deactivate KeyPointDTO
+     mwlo -> kps: Save(newPoint)
+    activate kps
+    kps -> kpr**: <<create>>
+     kps -> kpr:Save(newPoint)
+     activate kpr
+     deactivate kpr
+    deactivate kps
+    mwlo --> mwlo: SetKeyPoints
+    deactivate mwlo
+    end
+
+    mwlo->TourDTO: ToTourFromStatistics()
+    activate TourDTO
+    TourDTO-->mwlo: tourDTO
+    deactivate TourDTO
+
+    mwlo -> TourService: Save(tourDTO)
+    activate TourService
+     TourService -> tr**: <<create>>
+     TourService -> tr:Save(tourDTO)
+     activate tr
+     deactivate tr
+    deactivate TourService
+    end
+    mwlo --> mwlo:Submit
+    deactivate mwlo
+    
+
+
+else User chooses make tour for most wanted language button
+    User -> tsVM: Choose MostWantedLanguage
+    tsVM -> mwla: Open MostWantedLanguage
+    activate mwla
+    
+    mwla -> TourService**: <<create>>
+    mwla -> kps**: <<create>>
+    mwla -> otrs**: <<create>>
+   
+
+    mwla -> TourDTO**: <<create>>
+    activate TourDTO
+    TourDTO --> mwla: _tourDTO
+    deactivate TourDTO
+   
+    mwla -> otrs: GetMostWantedLanguage()
+    activate otrs
+    otrs->otrs: GetForOneYearTime()
+    activate otrs
+    otrs-->otrs: requests
+    deactivate otrs
+    loop  foreach request in requests
+    otrs->otrs: CountByLanguage(Language, requests)
+    activate otrs
+    otrs-->otrs: language
+     deactivate otrs
+    opt language > count 
+    otrs->otrs: CountByLanguage(Language, requests)
+    activate otrs
+    otrs-->otrs: language set
+     deactivate otrs
+    end
+    end
+    
+    otrs --> mwla : mostWantedLanguage
+     deactivate otrs
+
+    User -> mwla:Inputs
+    activate mwla
+    mwla --> mwla: Set properties
+    deactivate mwla 
+    
+    
+   
+
+    User -> mwla: Choose to add images
+    activate mwla
+    mwla -> mwla: AddImages()
+    activate mwla
+    mwla --> mwla: AddImages
+    deactivate mwla
+    deactivate mwla
+
+    User -> mwla: Choose to remove an image
+    activate mwla
+    mwla -> mwla: RemoveImage()
+    activate mwla
+    mwla --> mwla: RemoveImage
+    deactivate mwla
+    deactivate mwla
+
+    loop AddingDates
+    User -> mwla: Choose to add a date
+    activate mwla
+    mwla -> mwla: AddDate()
+    activate mwla
+    mwla --> mwla: AddDate
+    deactivate mwla
+     end
+    mwla-->mwla: dates
+    deactivate mwla
+    
+
+    User -> mwla: Choose to submit tour information
+    activate mwla
+    
+    loop foreach date in dates 
+    mwla-> mwla : SetKeyPoints(_keypoints)
+    loop foreach keyPoint in _keyPoints
+    activate mwla
+    
+    mwla -> KeyPointDTO**: <<create>>
+    activate KeyPointDTO
+    KeyPointDTO --> mwla:newpoint
+    deactivate KeyPointDTO
+    mwla -> KeyPointDTO : newPoint
+    activate KeyPointDTO
+    KeyPointDTO -> KeyPointDTO: ToKeyPoint()
+    KeyPointDTO --> mwla:newpoint
+    deactivate KeyPointDTO
+     mwla -> kps: Save(newPoint)
+    activate kps
+     kps -> kpr**: <<create>>
+     kps -> kpr:Save(newPoint)
+     activate kpr
+     deactivate kpr
+    deactivate kps
+    mwla --> mwla: SetKeyPoints
+    deactivate mwla
+    end
+
+    mwla->TourDTO: ToTourFromStatistics()
+    activate TourDTO
+    TourDTO-->mwla: tour
+    deactivate TourDTO
+
+    mwla -> TourService: Save(tour)
+    activate TourService
+     TourService -> tr**: <<create>>
+     TourService -> tr:Save(tourDTO)
+     activate tr
+     deactivate tr
+    deactivate TourService
+    end
+    mwla --> mwla:Submit
+    deactivate mwla
+
+end
+
+deactivate mwlo
+deactivate mwla
+tsVM --> User: Created request
+deactivate tsVM
+@enduml

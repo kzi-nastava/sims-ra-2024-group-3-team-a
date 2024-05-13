@@ -1,0 +1,171 @@
+@startuml dijagram
+
+actor "User" as u
+participant TouristMainViewModel
+participant OrdinaryTourRequestService
+participant MessageService
+
+
+u -> TouristMainViewModel: OpenTouristMainWindow
+
+activate TouristMainViewModel
+
+create OrdinaryTourRequestService
+TouristMainViewModel -> OrdinaryTourRequestService: <<create>>
+
+create MessageService
+TouristMainViewModel -> MessageService: <<create>>
+
+
+
+
+
+TouristMainViewModel -> OrdinaryTourRequestService: GetCandidatesForMessages() 
+
+activate OrdinaryTourRequestService
+create OrdinaryTourRequestRepository
+OrdinaryTourRequestService -> OrdinaryTourRequestRepository: <<create>>
+
+OrdinaryTourRequestService -> MessageService: <<create>>
+create TourRepository
+OrdinaryTourRequestService -> TourRepository: <<create>>
+
+OrdinaryTourRequestService -> OrdinaryTourRequestRepository: GetAll()
+activate OrdinaryTourRequestRepository
+OrdinaryTourRequestRepository --> OrdinaryTourRequestService: ordinaryTourRequests
+deactivate OrdinaryTourRequestRepository
+
+OrdinaryTourRequestService -> TourRepository: GetAll()
+activate TourRepository
+TourRepository --> OrdinaryTourRequestService: tours
+deactivate TourRepository
+create MessageDTO
+OrdinaryTourRequestService -> MessageDTO: <<create>>
+
+loop foreach(tour in tours)
+    loop foreach(ordinaryTourRequest in ordinaryTourRequests)
+    
+        opt if(ordinaryTourRequest.Status.Equals(TourRequestStatus.Rejected) || ordinaryTourRequest.Status.Equals(TourRequestStatus.Invalid))
+        
+        opt if(tour.Language == ordinaryTourRequest.Language || (tour.Place.City == ordinaryTourRequest.Place.City && tour.Place.Country == ordinaryTourRequest.Place.City))
+        OrdinaryTourRequestService->OrdinaryTourRequestService: IsLanguageTheSame(tour.Language == ordinaryTourRequest.Language)
+        activate OrdinaryTourRequestService
+        OrdinaryTourRequestService-->OrdinaryTourRequestService: isLanguageTheSame
+        deactivate OrdinaryTourRequestService
+         OrdinaryTourRequestService->OrdinaryTourRequestService: IsLocationTheSame(tour.Place.City == ordinaryTourRequest.Place.City && cratedTour.Place.Country == createdTour.Place.City)
+        activate OrdinaryTourRequestService
+        OrdinaryTourRequestService-->OrdinaryTourRequestService: isLocationTheSame
+        deactivate OrdinaryTourRequestService
+        OrdinaryTourRequestService->OrdinaryTourRequestService: AreBothTheSame(tour.Language == ordinaryTourRequest.Language,tour.Place.City == ordinaryTourRequest.Place.City && tour.Place.Country == ordinaryTourRequest.Place.City)
+        activate OrdinaryTourRequestService
+        OrdinaryTourRequestService-->OrdinaryTourRequestService: areBothTheSame
+        deactivate OrdinaryTourRequestService
+        OrdinaryTourRequestService -> MessageService: CreateMessage(ordinaryTourRequest.UserId, tour,isLanguageTheSame,isLocationTheSame,areBothTheSame)
+        activate MessageService
+            create MessageRepository
+            MessageService->MessageRepository: <<create>>
+
+            MessageService->MessageRepository: GetAll()
+            activate MessageRepository
+            MessageRepository-->MessageService: oldMessages
+            deactivate MessageRepository
+           
+            loop foreach(oldMessage in oldMessages)
+                opt if(oldMessage.RecieverId ==user.id)
+                MessageService->MessageService: oldMessagesForUser.Add(oldMessage)
+                activate MessageService
+                end
+               
+            end
+             MessageService-->MessageService: oldMessagesForUser
+                deactivate MessageService
+             
+
+            loop foreach(oldMessageForUser in oldMessagesForUser)
+                alt if(!oldMessageForUser.Request ==tour.id)
+                MessageService->MessageService: SetDoesMessageExist(false)
+                activate MessageService
+                
+                MessageService-->MessageService: doesMessageExist
+                deactivate MessageService
+                else 
+                    MessageService->MessageService: SetDoesMessageExist(true)
+                activate MessageService
+                
+                MessageService-->MessageService: doesMessageExist
+                deactivate MessageService
+                end
+                    opt if(!doesMessageExist)
+                    MessageService->MessageService: CreateMessageContent(messageDTO,isLanguageTheSame,isLocationTheSame,areBothTheSame)
+                    activate MessageService
+                    end
+                    end
+                    MessageService-->MessageService: messageDTO
+                      deactivate MessageService
+                    
+              
+            
+               
+                
+            
+        MessageService --> OrdinaryTourRequestService: messageDTO
+        deactivate MessageService
+       OrdinaryTourRequestService -> MessageDTO: ToMessage()
+       activate MessageDTO
+       MessageDTO --> OrdinaryTourRequestService: message
+       deactivate MessageDTO
+
+
+
+        OrdinaryTourRequestService -> MessageService: Save(message)
+        activate MessageService
+       
+        MessageService -> MessageRepository: Save(message)
+        activate MessageRepository
+        MessageRepository->MessageRepository: NextId()
+        activate MessageRepository
+        MessageRepository-->MessageRepository: Id()
+        deactivate MessageRepository
+        MessageRepository --> MessageService: message
+        deactivate MessageRepository
+        MessageService --> OrdinaryTourRequestService: message
+        deactivate MessageService
+        end
+    end
+    end
+
+
+end
+
+OrdinaryTourRequestService --> TouristMainViewModel: messages
+deactivate OrdinaryTourRequestService
+deactivate TouristMainViewModel
+
+TouristMainViewModel->MessageService: GetAllMessages()
+activate TouristMainViewModel
+activate MessageService
+MessageService-->TouristMainViewModel: messages
+deactivate MessageService
+loop foreach(message in messages)
+    opt if((message.Type.Equals(MessageType.TourAttendance) || message.Type.Equals(MessageType.NewCreatedTour) ||  message.Type.Equals(MessageType.AcceptedTourRequest)) && !message.IsRead)
+    TouristMainViewModel->TouristMainViewModel: SetSendNotification(true)
+    activate TouristMainViewModel
+   
+    end
+end
+ TouristMainViewModel --> TouristMainViewModel: SendNotification
+    deactivate TouristMainViewModel
+
+opt if(SendNotification)
+    TouristMainViewModel->TouristMainViewModel: SendNotification()
+    activate TouristMainViewModel
+    TouristMainViewModel --> TouristMainViewModel: notification
+    deactivate TouristMainViewModel
+end
+TouristMainViewModel -->  u : notification
+
+ref over TouristMainViewModel
+  Go to TouristSequenceDiagram2.puml
+  for OpenMessage request
+end ref
+@enduml
