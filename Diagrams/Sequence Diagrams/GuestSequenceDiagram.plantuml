@@ -1,32 +1,11 @@
 @startuml GuestSequenceDiagram
-actor User
+actor Guest
 participant GuestMainViewModel
 participant ReservationDetailsViewModel
-activate User
+activate Guest
 
 
-User -> GuestMainViewModel: OpenGuestManWindow(User loggedUser)
-activate GuestMainViewModel
-create SuperGuestService
-
-GuestMainViewModel -> SuperGuestService : <<create>>
-create AccommodationReservationService
-GuestMainViewModel -> AccommodationReservationService : <<create>>
-create UserService
-GuestMainViewModel -> UserService : <<create>>
-deactivate GuestMainViewModel
-activate UserService
-create UserRepository
-UserService -> UserRepository : <<create>>
-deactivate UserService
-activate SuperGuestService
-create SuperGuestRepository
-activate AccommodationReservationService
-create AccommodationReservationRepository
-AccommodationReservationService -> AccommodationReservationRepository: <<create>>
-deactivate AccommodationReservationService
-SuperGuestService -> SuperGuestRepository: <<create>>
-deactivate SuperGuestService
+Guest -> GuestMainViewModel: OpenGuestManWindow(User loggedUser)
 
 activate GuestMainViewModel
 GuestMainViewModel -> AccommodationReservationService: SetSuperGuest(User loggedUser)
@@ -114,22 +93,5 @@ ReservationDetailsViewModel --> GuestMainViewModel : newReservation
 deactivate ReservationDetailsViewModel
 GuestMainViewModel --> User : newReservation
 deactivate GuestMainViewModel
-User -> GuestMainViewModel : <<destroy>>
-destroy GuestMainViewModel
-GuestMainViewModel --> SuperGuestService : <<destroy>>
-SuperGuestService -> SuperGuestRepository: <<destroy>>
-destroy SuperGuestService
-destroy SuperGuestRepository
-
-GuestMainViewModel --> AccommodationReservationService : <<destroy>>
-AccommodationReservationService -> AccommodationReservationRepository: <<destroy>>
-destroy AccommodationReservationRepository
-destroy AccommodationReservationService
-GuestMainViewModel --> UserService : <<destroy>>
-UserService -> UserRepository: <<destroy>>
-destroy UserRepository
-destroy UserService
-User -> ReservationDetailsViewModel : <<destroy>>
-destroy ReservationDetailsViewModel
 
 @enduml

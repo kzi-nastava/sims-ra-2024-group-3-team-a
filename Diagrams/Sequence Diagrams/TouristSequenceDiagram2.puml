@@ -1,6 +1,6 @@
 @startuml dijagram
 
-actor "User" as u
+actor "Tourist" as u
 
 participant TouristMainViewModel
 participant InboxViewModel
@@ -11,14 +11,13 @@ activate TouristMainViewModel
 
 TouristMainViewModel->InboxViewModel:OpenInboxWindow
 activate InboxViewModel
-create MessageService
-InboxViewModel -> MessageService: <<create>>
+
+
 
 InboxViewModel->MessageService: GetFromUser(user.Id)
 activate MessageService
 
-create MessageRepository
-MessageService -> MessageRepository: <<create>>
+
 MessageService -> MessageRepository: GetFromUser(user.Id)
 
 activate MessageRepository
