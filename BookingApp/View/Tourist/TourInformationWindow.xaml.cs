@@ -25,21 +25,21 @@ namespace BookingApp.View.Tourist
     {
         public static TourInformationViewModel _tourInformationView;
         public static TourInformationWindow Instance;
-        private IInputElement[] FocusChain;
+    
         public TourInformationWindow(TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
             _tourInformationView = new TourInformationViewModel(tourDTO, userDTO);
             DataContext = _tourInformationView;
-            if (Instance == null)
-            {
+           
+            
                 Instance = this;
-            }
+            
             if (_tourInformationView.CloseAction == null)
                 _tourInformationView.CloseAction = new Action(this.Close);
 
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            this.PreviewKeyDown += TouristInformationWindow_PreviewKeyDown;
+            
         }
         public static TourInformationWindow GetInstance()
         {
@@ -103,8 +103,48 @@ namespace BookingApp.View.Tourist
                 e.Handled = true;
             }
         }
+      
     }
-   
+
+    public static class ScrollViewerBehavior
+    {
+        public static readonly DependencyProperty ScrollOffsetProperty =
+            DependencyProperty.RegisterAttached(
+                "ScrollOffset",
+                typeof(double),
+                typeof(ScrollViewerBehavior),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnScrollOffsetChanged));
+
+        public static double GetScrollOffset(DependencyObject obj)
+        {
+            return (double)obj.GetValue(ScrollOffsetProperty);
+        }
+
+        public static void SetScrollOffset(DependencyObject obj, double value)
+        {
+            obj.SetValue(ScrollOffsetProperty, value);
+        }
+
+        private static void OnScrollOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ScrollViewer scrollViewer && !IsProgrammaticScrolling(scrollViewer))
+            {
+                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
+            }
+        }
+
+        private static bool IsProgrammaticScrolling(ScrollViewer scrollViewer)
+        {
+            return scrollViewer.Tag != null && scrollViewer.Tag.ToString() == "ProgrammaticScrolling";
+        }
+
+        public static void SetHorizontalOffset(ScrollViewer scrollViewer, double value)
+        {
+            scrollViewer.Tag = "ProgrammaticScrolling";
+            scrollViewer.ScrollToHorizontalOffset(value);
+            scrollViewer.Tag = null;
+        }
+    }
 
     public class IntToVisibilityConverter : IValueConverter
     {
@@ -121,6 +161,8 @@ namespace BookingApp.View.Tourist
         {
             throw new NotImplementedException();
         }
+      
     }
+    
 
 }

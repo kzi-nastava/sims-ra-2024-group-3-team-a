@@ -1,4 +1,5 @@
-﻿using BookingApp.DTO;
+﻿using BookingApp.Commands;
+using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
@@ -11,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace BookingApp.ViewModel.Tourist
 {
@@ -23,6 +25,8 @@ namespace BookingApp.ViewModel.Tourist
         private ObservableCollection<TourDTO> _unactiveTourDTO;
 
         private TourDTO _selectedTourDTO = null;
+
+        private RelayCommand _showTourTrackingWindowCommand;
 
         public MyToursViewModel()
         {
@@ -37,6 +41,7 @@ namespace BookingApp.ViewModel.Tourist
             List<TourDTO> unactiveTours = _tourService.GetUnactiveTours().Select(unactiveTours => new TourDTO(unactiveTours)).ToList();
             _activeTourDTO = new ObservableCollection<TourDTO>(activeTours);
             _unactiveTourDTO = new ObservableCollection<TourDTO>(unactiveTours);
+            _showTourTrackingWindowCommand = new RelayCommand(ShowTourTrackingWindow);
         }
         public ObservableCollection<TourDTO> ActiveToursDTO
         {
@@ -76,7 +81,19 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedTourDTO = value;
                 OnPropertyChanged();
-                ShowTourTrackingWindow();
+               
+            }
+        }
+        public RelayCommand ShowTourTrackingWindowCommand
+        {
+            get
+            {
+                return _showTourTrackingWindowCommand;
+            }
+            set
+            {
+                _showTourTrackingWindowCommand = value;
+                OnPropertyChanged();
             }
         }
 

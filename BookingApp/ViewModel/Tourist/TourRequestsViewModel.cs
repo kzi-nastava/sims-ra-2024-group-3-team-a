@@ -70,8 +70,8 @@ namespace BookingApp.ViewModel.Tourist
             _averageTouristNumberCommand = new RelayCommand(GetAverageTouristNumber);
             _showForAllYearsCommand = new RelayCommand(LoadDataForPieChart);
             LoadDataForPieChart();
+            _isLocationGridVisible = 3;
 
-          
             Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1"); 
             Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea"); 
             Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de"); 
@@ -214,6 +214,7 @@ namespace BookingApp.ViewModel.Tourist
             set
             {
                 _selectedYear = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -245,7 +246,39 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-        
+        private int _selectedParameterForChar;
+        public int SelectedParameterForChar
+        {
+            get
+            {
+                return _selectedParameterForChar;
+            }
+            set
+            {
+                _selectedParameterForChar = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _isLanguageGridVisible;
+        public int IsLanguageGridVisible
+        {
+            get { return _isLanguageGridVisible; }
+            set
+            {
+                _isLanguageGridVisible = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _isLocationGridVisible;
+        public int IsLocationGridVisible
+        {
+            get { return _isLocationGridVisible; }
+            set
+            {
+                _isLocationGridVisible = value;
+                OnPropertyChanged();
+            }
+        }
         private double _averageTouristNumber;
         public double AverageTouristNumber
         {
@@ -296,7 +329,22 @@ namespace BookingApp.ViewModel.Tourist
 
         public void LoadDataForPieChart()
         {
-            
+            Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1");
+            Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea");
+            Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de");
+            Color color4 = (Color)ColorConverter.ConvertFromString("#ffaad7");
+            Color color5 = (Color)ColorConverter.ConvertFromString("#ffffd8");
+
+
+            SolidColorBrush brush3 = new SolidColorBrush(color1);
+            SolidColorBrush brush4 = new SolidColorBrush(color4);
+            SolidColorBrush brush5 = new SolidColorBrush(color5);
+
+            brushes = new List<SolidColorBrush>();
+            brushes.Add(brush3);
+            brushes.Add(brush4);
+            brushes.Add(brush5);
+
             int acceptedCount = _ordinaryTourRequestService.CountAcceptedOrdinaryTourRequests(_userDTO.Id);
             int rejectedCount = _ordinaryTourRequestService.CountRejectedOrdinaryTourRequests(_userDTO.Id);
 
@@ -307,23 +355,23 @@ namespace BookingApp.ViewModel.Tourist
             double declinedPercentage = (rejectedCount / totalRequests) * 100;
 
 
-           
+
             ChartValues = new SeriesCollection
             {
                 new PieSeries
                 {
                     Title = "Accepted",
                     Values = new ChartValues<double> { acceptedPercentage },
-                    DataLabels = true
-                    //Fill = brushes[4]
+                    DataLabels = true,
+                    Fill = brushes[1]
                 },
                 new PieSeries
                 {
                     Title = "Rejected",
                     Values = new ChartValues<double> { declinedPercentage },
-                    DataLabels = true
-                    //Fill = brushes[3]
-                }
+                    DataLabels = true,
+                    Fill = brushes[2]
+        }
             };
         }
 
