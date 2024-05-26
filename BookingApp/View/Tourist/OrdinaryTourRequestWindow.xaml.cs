@@ -29,5 +29,7 @@ namespace BookingApp.View.Tourist
             _ordinaryTourRequestViewModel = new OrdinaryTourRequestViewModel(loggedInUser);
             DataContext = _ordinaryTourRequestViewModel;
         }
+
+       
     }
 }

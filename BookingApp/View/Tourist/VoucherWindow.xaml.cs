@@ -30,7 +30,7 @@ namespace BookingApp.View.Tourist
 
             DataContext = _voucherViewModel;
 
-            voucherListView.Focus();
+            //voucherListView.Focus();
         }
     }
 }
