@@ -165,7 +165,7 @@ end
 TouristMainViewModel -->  u : notification
 
 ref over TouristMainViewModel
-  Go to TouristSequenceDiagram2.puml
+  Go to dijagram_otvaranje_poruke.puml
   for OpenMessage request
 end ref
 @enduml

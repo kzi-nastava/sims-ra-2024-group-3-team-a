@@ -1,5 +1,5 @@
 @startuml dijagram Kreiranje ture spram statistike o zahtevima za ture
-actor User
+actor Guide
 participant TourStatisticsViewModel as tsVM
 participant MostWantedLocationViewModel as mwlo
 participant MostWantedLanguageViewModel as mwla
@@ -9,21 +9,19 @@ participant KeyPointService as kps
 participant OrdinaryTourRequestService as otrs
 participant KeyPointDTO
 participant TourRepository as tr
+participant TourRepository as trr
 participant KeyPointRepository as kpr
+participant KeyPointRepository as kprr
 
-User -> tsVM: Open TourStatistics
+
+Guide -> tsVM: Open TourStatistics
 activate tsVM
 
-alt User chooses make tour for most wanted location button
-    User -> tsVM: Choose MostWantedLocation
+alt Guide chooses make tour for most wanted location button
+    Guide -> tsVM: Choose MostWantedLocation
     tsVM -> mwlo: Open MostWantedLocation
     activate mwlo
-
-    mwlo -> TourService**: <<create>>
-    mwlo -> kps**: <<create>>
-    mwlo -> otrs**: <<create>>
    
-
     mwlo -> TourDTO**: <<create>>
     activate TourDTO
     TourDTO --> mwlo: _tourDTO
@@ -51,7 +49,7 @@ alt User chooses make tour for most wanted location button
     otrs --> mwlo : mostWantedLocation
      deactivate otrs
 
-    User -> mwlo:Inputs
+    Guide -> mwlo:Inputs
     activate mwlo
     mwlo --> mwlo: Set properties
     deactivate mwlo 
@@ -59,26 +57,26 @@ alt User chooses make tour for most wanted location button
     
    
 
-    User -> mwlo: Choose to add images
+    Guide -> mwlo: Choose to add images
     activate mwlo
-    mwlo -> mwlo: AddImages()
+    mwlo -> mwlo: AddImages(List<string> images)
     activate mwlo
     mwlo --> mwlo: AddImages
     deactivate mwlo
     deactivate mwlo
 
-    User -> mwlo: Choose to remove an image
+    Guide -> mwlo: Choose to remove an image
     activate mwlo
-    mwlo -> mwlo: RemoveImage()
+    mwlo -> mwlo: RemoveImage(BitmapImage image)
     activate mwlo
     mwlo --> mwlo: RemoveImage
     deactivate mwlo
     deactivate mwlo
 
     loop AddingDates
-    User -> mwlo: Choose to add a date
+    Guide -> mwlo: Choose to add a date
     activate mwlo
-    mwlo -> mwlo: AddDate()
+    mwlo -> mwlo: AddDate(DateTime date)
     activate mwlo
     mwlo --> mwlo: AddDate
     deactivate mwlo
@@ -87,7 +85,7 @@ alt User chooses make tour for most wanted location button
     deactivate mwlo
     
 
-    User -> mwlo: Choose to submit tour information
+    Guide -> mwlo: Choose to submit tour information
     activate mwlo
     
     loop foreach date in dates 
@@ -106,10 +104,11 @@ alt User chooses make tour for most wanted location button
     deactivate KeyPointDTO
      mwlo -> kps: Save(newPoint)
     activate kps
-    kps -> kpr**: <<create>>
-     kps -> kpr:Save(newPoint)
-     activate kpr
-     deactivate kpr
+    kps -> kprr**: <<create>>
+     kps -> kprr:Save(newPoint)
+     activate kprr
+     deactivate kprr
+    
     deactivate kps
     mwlo --> mwlo: SetKeyPoints
     deactivate mwlo
@@ -122,10 +121,10 @@ alt User chooses make tour for most wanted location button
 
     mwlo -> TourService: Save(tourDTO)
     activate TourService
-     TourService -> tr**: <<create>>
-     TourService -> tr:Save(tourDTO)
-     activate tr
-     deactivate tr
+     TourService -> trr**: <<create>>
+     TourService -> trr:Save(tourDTO)
+     activate trr
+     deactivate trr
     deactivate TourService
     end
     mwlo --> mwlo:Submit
@@ -133,15 +132,10 @@ alt User chooses make tour for most wanted location button
     
 
 
-else User chooses make tour for most wanted language button
-    User -> tsVM: Choose MostWantedLanguage
+else Guide chooses make tour for most wanted language button
+    Guide -> tsVM: Choose MostWantedLanguage
     tsVM -> mwla: Open MostWantedLanguage
     activate mwla
-    
-    mwla -> TourService**: <<create>>
-    mwla -> kps**: <<create>>
-    mwla -> otrs**: <<create>>
-   
 
     mwla -> TourDTO**: <<create>>
     activate TourDTO
@@ -170,7 +164,7 @@ else User chooses make tour for most wanted language button
     otrs --> mwla : mostWantedLanguage
      deactivate otrs
 
-    User -> mwla:Inputs
+    Guide -> mwla:Inputs
     activate mwla
     mwla --> mwla: Set properties
     deactivate mwla 
@@ -178,26 +172,26 @@ else User chooses make tour for most wanted language button
     
    
 
-    User -> mwla: Choose to add images
+    Guide -> mwla: Choose to add images
     activate mwla
-    mwla -> mwla: AddImages()
+    mwla -> mwla: AddImages(List<string>images)
     activate mwla
     mwla --> mwla: AddImages
     deactivate mwla
     deactivate mwla
 
-    User -> mwla: Choose to remove an image
+    Guide -> mwla: Choose to remove an image
     activate mwla
-    mwla -> mwla: RemoveImage()
+    mwla -> mwla: RemoveImage(BitmapImage image)
     activate mwla
     mwla --> mwla: RemoveImage
     deactivate mwla
     deactivate mwla
 
     loop AddingDates
-    User -> mwla: Choose to add a date
+    Guide -> mwla: Choose to add a date
     activate mwla
-    mwla -> mwla: AddDate()
+    mwla -> mwla: AddDate(DateTime date)
     activate mwla
     mwla --> mwla: AddDate
     deactivate mwla
@@ -206,7 +200,7 @@ else User chooses make tour for most wanted language button
     deactivate mwla
     
 
-    User -> mwla: Choose to submit tour information
+    Guide -> mwla: Choose to submit tour information
     activate mwla
     
     loop foreach date in dates 
@@ -254,6 +248,6 @@ end
 
 deactivate mwlo
 deactivate mwla
-tsVM --> User: Created request
+tsVM --> Guide: Created request
 deactivate tsVM
 @enduml

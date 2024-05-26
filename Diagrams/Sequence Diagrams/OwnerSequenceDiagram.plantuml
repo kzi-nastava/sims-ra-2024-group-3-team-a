@@ -1,5 +1,5 @@
 @startuml SequenceDiagram AddRenovation
-actor "User" as u
+actor "Owner" as u
 participant "AddAccommodationRenovationViewModel" as arVM
 participant "RenovationDTO" as rDTO
 participant "RenovationService" as service
@@ -7,20 +7,6 @@ participant "AccommodationRenovationRepository" as renovationRepository
 participant "AccommodationReservationRepository" as reservationRepository
 
 u -> arVM: OpenAddAccommodationRenovationPage
-
-activate arVM
-create service
-arVM -> service: <<create>>
-create rDTO
-arVM -> rDTO: <<create>>
-deactivate arVM
-
-activate service
-create renovationRepository
-service -> renovationRepository: <<create>>
-create reservationRepository
-service -> reservationRepository: <<create>>
-deactivate service
 
 u -> arVM: SetFromDate(fromDate)
 activate arVM
@@ -113,19 +99,4 @@ arVM --> u: renovation
 deactivate arVM
 
 end
-
-u -> arVM: <<destroy>>
-destroy arVM 
-
-arVM -> rDTO: <<destroy>>
-destroy rDTO 
-
-arVM -> service: <<destroy>>
-destroy service
-
-service -> renovationRepository: <<destroy>>
-destroy renovationRepository
-
-service -> reservationRepository: <<destroy>>
-destroy reservationRepository
 @enduml
