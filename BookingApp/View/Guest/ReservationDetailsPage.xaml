@@ -1,0 +1,70 @@
+﻿<Page x:Class="BookingApp.View.Guest.ReservationDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookingApp.View.Guest"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ReservationDetailsPage">
+    <Page.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="YesNoToggleSwitchStyle" TargetType="ToggleButton">
+            
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Height" Value="30"/>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border" CornerRadius="15" BorderBrush="#FFD6D6D6" BorderThickness="1" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Rectangle x:Name="rectBackground" Fill="White" RadiusX="15" RadiusY="15"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Ellipse x:Name="thumb" Width="30" Height="30" Fill="#FFD6D6D6" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="rectBackground" Property="Fill" Value="LightGreen"/>
+                                <Setter TargetName="thumb" Property="Fill" Value="Green"/>
+                                <Setter TargetName="thumb" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Content" Value="Yes"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="rectBackground" Property="Fill" Value="#FFEEEEEE"/>
+                                <Setter TargetName="thumb" Property="Fill" Value="Red"/>
+                                <Setter TargetName="thumb" Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="Content" Value="No"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0">Enter number of guests:</Label>
+        <TextBox x:Name="GuestNumberTextBox" Grid.Row="0" Grid.Column="1" Width="50" HorizontalAlignment="Center" />
+        <Label Grid.Row="1" Visibility="{Binding IsSuper, Converter={StaticResource BooleanToVisibilityConverter}}">Use point to get discount:</Label>
+        <ToggleButton Grid.Row="2" Style="{StaticResource YesNoToggleSwitchStyle}" IsChecked="{Binding UsedPoint, Mode=TwoWay}" IsEnabled="{Binding IsToggleEnabled}" Grid.Column="0" HorizontalAlignment="Left" x:Name="ToggleSwitch" Visibility="{Binding IsSuper, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!-- Adjusted button width and alignment -->
+        <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Width="150" Command="{Binding NewReservationCommand}" HorizontalAlignment="Left">
+            Make reservation
+        </Button>
+    </Grid>
+</Page>

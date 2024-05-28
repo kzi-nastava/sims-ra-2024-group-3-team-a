@@ -1,0 +1,149 @@
+<Window x:Class="BookingApp.View.AddTourWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+        mc:Ignorable="d"
+        Title="Napravi novu turu" Height="610" Width="573"  ResizeMode="NoResize">
+    <Grid Background="AntiqueWhite">
+        <Grid x:Name="gridInput">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"  Grid.ColumnSpan="2" Height="45">
+                <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="NAPRAVI NOVU TURU"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
+                <Button Width="20" Height="20" Command="{Binding Helps}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="White"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
+                </Button>
+            </Grid>
+
+            <Label Grid.Column="0" Grid.Row="1" Content="Naziv:" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="2" Content="Država:" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+       HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="3" Content="Grad" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+       HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="4" Content="Jezik" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+       HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="5" Content="Opis" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+       HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="6" Content="Maksimalan broj turista" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+        HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="7" Content="Ključne tačke:" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+        HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="8" Content="Datum i vrijeme početka" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+        HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="9" Content="Trajanje" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+HorizontalContentAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="10" Content="Fotografije" FontSize="18" FontStyle="Italic" VerticalContentAlignment="Center"
+HorizontalContentAlignment="Center"/>
+            <Grid Grid.Row="12" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="SubmitButton" Content="NAPRAVI" Command="{Binding SubmitCommand}" Grid.Column="1"
+                 Background="SaddleBrown"/>
+            </Grid>
+            <TextBox x:Name="textBoxName" Grid.Column="1" Grid.Row="1" Margin="10"
+                 Text="{Binding TourDTO.Name, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged" />
+            <TextBox x:Name="GradTextBox" Grid.Column="1" Grid.Row="3" Margin="10"
+                 Text="{Binding TourDTO.LocationDTO.City, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+            <ComboBox x:Name="comboBoxCountry" ItemsSource="{Binding Countries}"  SelectedItem="{Binding TourDTO.LocationDTO.Country}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="1"/>
+            <!--<TextBox x:Name="DrzavaTextBox"  Grid.Column="1" Grid.Row="2" Margin="10"
+                 Text="{Binding TourDTO.LocationDTO.Country, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged" />-->
+
+            <TextBox x:Name="OpisTextBox" Grid.Column="1" Grid.Row="5" Margin="10" 
+                  Text="{Binding TourDTO.Description, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+
+            <ComboBox x:Name="comboBoxType" ItemsSource="{Binding Languages}"  SelectedItem="{Binding TourDTO.Language}" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="1"/>
+
+            <TextBox x:Name="MaxTouristTextBox" Grid.Column="1" Grid.Row="6" Width="40" HorizontalAlignment="Left" Margin="10"
+          Text="{Binding TourDTO.MaxTouristNumber,UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+            <TextBox x:Name="textBoxKeyPoints" Grid.Column="1" Grid.Row="7" Margin="10" TextChanged="textBox_TextChanged" Text="{Binding KeyPointsString}"/>
+            <ScrollViewer  Grid.Column="1" Grid.Row="8" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <Grid x:Name="GridDates">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+
+                    </Grid.RowDefinitions>
+
+
+                    <xctk:DateTimePicker  Value="{Binding SelectedDate}" x:Name="datePicker" Margin="10" Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" />
+                    <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Content="+" Command="{Binding AddDateCommand}"/>
+                    <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dates}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding}"></Label>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ScrollViewer>
+
+            <TextBox x:Name="textBoxDuration" Grid.Column="1" Grid.Row="9" Width="40" HorizontalAlignment="Left" Margin="10"
+         Text="{Binding TourDTO.Duration,UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+            <Button Grid.Row ="10" BorderThickness="2" Grid.Column="1 " BorderBrush="Black" Width="200"  Height="30" FontWeight="Bold" Background="SaddleBrown" Command="{Binding AddImagesCommand}"  >Dodaj fotografije</Button>
+
+            <Border Grid.Row="11" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="Black" Margin="0,0,0,5">
+                <ListView Grid.Row="10" x:Name="imageListView" MaxHeight="120" MaxWidth="300" SelectedItem="{Binding SelectedImage}" ItemsSource="{Binding ImagePreviews}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Image  Source="{Binding}" Width="90" Height="81" Margin="5,5,5,0"/>
+                                <Button Height="18" Width="15" Margin="0" Padding="0" Command="{Binding Path=DataContext.RemoveImageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"   Content="x" CommandParameter="{Binding}">
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Window>

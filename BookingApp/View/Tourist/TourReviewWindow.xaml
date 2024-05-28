@@ -1,0 +1,196 @@
+﻿<Window x:Class="BookingApp.View.Tourist.TourReviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="TourReviewWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter" />
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SearchCommand}" />
+        <KeyBinding Key="F1"  Command="{Binding ShowTouristMainWindowCommand}" />
+        <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
+        <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
+        <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
+        <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
+        <KeyBinding Key="C" Command="{Binding CloseWindowCommand}"/>
+    </Window.InputBindings>
+    <Grid Background="#fae8f1">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu DockPanel.Dock="Top" BorderThickness="1" >
+            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="10"  FontWeight="Bold"></MenuItem>
+            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="10"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
+            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="10"  Command="{Binding ShowOrindaryTourRequestWindowCommand}"></MenuItem>
+            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="10"  Command="{Binding ShowTourRequestsCommand}"></MenuItem>
+            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="10" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="10" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
+            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="10" Command="{Binding ShowInboxWindowCommand}" />
+            <MenuItem x:Name="Profile" Focusable="True" Header="Profile(F8)" Margin="0,0,0,0" Foreground="Black" FontSize="10" FontWeight="Bold"  Command="{Binding ShowInboxWindowCommand}" />
+
+
+            <MenuItem x:Name="More" Header="More(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="10">
+
+                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
+
+                </MenuItem>
+                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+
+        </Menu>
+
+        <TextBlock Grid.Row="1" Margin="25,0,0,0" FontWeight="Bold" FontSize="40">Rate tour ☆</TextBlock>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="Beige" CornerRadius="8" BorderBrush="Black" Margin="25,5" BorderThickness="1">
+                <Grid Grid.Column="0" Width="400">
+
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  FontWeight="ExtraBlack"  Foreground="#d470a2" Margin="5,5,0,0" Grid.Row="0" Grid.Column="0">Name:</TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TourDTO.Name}" Margin="5,2,155,3"  Width="100"></TextBlock>
+                        <TextBlock FontWeight="ExtraBlack"  Foreground="#d470a2"  Margin="5,5,0,0"  Grid.Row="1" Grid.Column="0">Location:</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TourDTO.LocationDTOString,Mode=OneWay}" Margin="10,2,150,3"  Width="100" ></TextBlock>
+                        <TextBlock FontWeight="ExtraBlack"  Foreground="#d470a2" Margin="5,5,0,0"  Grid.Row="2" Grid.Column="0">Date:</TextBlock>
+                        <TextBlock Grid.Row="2" Text="{Binding TourDTO.BeginingTime}"  Width="180"  Margin="59,2,80,3" Grid.ColumnSpan="2"/>
+                    </Grid>
+                    <Border Grid.Row="2" Margin="10" Background="White" BorderBrush="Black" BorderThickness="1">
+                        <Grid Grid.Row="2" >
+
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock  Margin="2.5,0,0,4" Grid.Row="0" FontWeight="Bold" FontSize="13" Width="390" Grid.ColumnSpan="5">Rate categories on scale from 1 to 5: (to navigate use arrows)</TextBlock>
+                            <TextBlock FontWeight="Bold"  Foreground="#d470a2" Margin="5" Grid.Row="1" Grid.ColumnSpan="5">Guide's knowledge: (press spacebar to select a grade)</TextBlock>
+                            <RadioButton   Margin="10" Grid.Row="2" Grid.Column="0" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}" GroupName="GuideKnowledge"/>
+                            <RadioButton  Margin="10" Grid.Row="2" Grid.Column="1" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                            <RadioButton  Margin="10" Grid.Row="2" Grid.Column="2" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                            <RadioButton   Margin="10" Grid.Row="2" Grid.Column="3" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                            <RadioButton Margin="10" Grid.Row="2" Grid.Column="4" GroupName="GuideKnowledge" IsChecked="{Binding Path=TourReviewDTO.GuideKnowledgeRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                            <TextBlock FontWeight="Bold"  Foreground="#d470a2"  Margin="5"  Grid.Row="3" Grid.ColumnSpan="5">Guide's language: (press spacebar to select a grade)</TextBlock>
+                            <RadioButton  Margin="10" Grid.Row="4" Grid.Column="0" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                            <RadioButton  Margin="10" Grid.Row="4" Grid.Column="1" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                            <RadioButton  Margin="10" Grid.Row="4" Grid.Column="2" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                            <RadioButton   Margin="10" Grid.Row="4" Grid.Column="3" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                            <RadioButton Margin="10"  Grid.Row="4" Grid.Column="4" GroupName="GuideLanguage" IsChecked="{Binding Path=TourReviewDTO.GuideLanguageRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+                            <TextBlock FontWeight="Bold"  Foreground="#d470a2" Margin="5" Grid.Row="5" Grid.ColumnSpan="5">Tour's entertainment: (press spacebar to select a grade)</TextBlock>
+                            <RadioButton Margin="10" Grid.Row="6" Grid.Column="0" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                            <RadioButton Margin="10" Grid.Row="6" Grid.Column="1" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"/>
+                            <RadioButton Margin="10" Grid.Row="6" Grid.Column="2" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}"/>
+                            <RadioButton Margin="10" Grid.Row="6" Grid.Column="3" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}"/>
+                            <RadioButton Margin="10" Grid.Row="6" Grid.Column="4" GroupName="TourEntertainment" IsChecked="{Binding Path=TourReviewDTO.TourEntertainmentRating, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=5}"/>
+
+                        </Grid>
+                    </Border>
+
+
+
+
+                </Grid>
+            </Border>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <TextBlock FontWeight="Bold" Grid.Row ="1">Leave a comment:</TextBlock>
+                <TextBox Grid.Row="2"  TextWrapping="Wrap" AcceptsReturn="True" Height="80" VerticalScrollBarVisibility="Auto" Width="310"  Background="LightGray" BorderBrush="Black" HorizontalScrollBarVisibility="Auto" Text="{Binding TourReviewDTO.Comment}"  />
+                <TextBlock FontWeight="Bold" Grid.Row ="3">Add photos:</TextBlock>
+                <Button Grid.Row ="4" BorderThickness="2" BorderBrush="Black" Width="200" Margin="55,5,55,5" Height="40" FontWeight="Bold" Background="#fa8ec4" Command="{Binding AddImagesCommand}"  >Upload button</Button>
+
+                <Border Grid.Row="5" BorderThickness="1" BorderBrush="Black" Margin="0,0,0,5">
+                    <ListView Grid.Row="5" x:Name="imageListView" MaxHeight="128" MaxWidth="305" SelectedItem="{Binding SelectedImage}" ItemsSource="{Binding ImagePreviews}" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Image  Source="{Binding}" Width="90" Height="81" Margin="5,5,5,0"/>
+                                    <Button Height="18" Width="15" Margin="0" Padding="0" Command="{Binding DataContext.RemoveImageCommand, ElementName=imageListView}" Content="x" CommandParameter="{Binding}">
+
+
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </Border>
+
+            </Grid>
+
+
+        </Grid>
+        <Button Grid.Row="3"  Content="Rate" Background="#fc8eac" Margin="30,5,670,5"  Command="{Binding RateTourCommand}" ></Button>
+        <Button Grid.Row="3"  Background="Beige" Command="{Binding CloseWindowCommand}" Margin="670,5,21,5">Cancel</Button>
+
+    </Grid>
+</Window>
