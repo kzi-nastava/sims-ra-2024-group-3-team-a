@@ -29,15 +29,18 @@ namespace BookingApp.ViewModel.Tourist
 
         private Languages _selectedLanguage;
 
+        public int _complexTourRequestId { get; set; }
+
         public ObservableCollection<TouristDTO> _touristsDTO;
 
         private RelayCommand _addTouristCommand;
         private RelayCommand _removeTouristCommand;
         private RelayCommand _confirmTourRequestCommand;
         private RelayCommand _closeWindowCommand;
+        
         public Action CloseAction { get; set; }
 
-        public OrdinaryTourRequestViewModel(UserDTO loggedInUser)
+        public OrdinaryTourRequestViewModel(UserDTO loggedInUser, int complexTourRequestId)
         {
             _userDTO = loggedInUser;
             _touristDTO = new TouristDTO();
@@ -60,7 +63,7 @@ namespace BookingApp.ViewModel.Tourist
             _removeTouristCommand = new RelayCommand(RemoveTourist);
             _confirmTourRequestCommand = new RelayCommand(ConfirmTourRequest);
             _closeWindowCommand = new RelayCommand(CloseWindow);
-
+            _complexTourRequestId = complexTourRequestId;
         }
 
         public OrdinaryTourRequestDTO OrdinaryTourRequestDTO
@@ -200,6 +203,7 @@ namespace BookingApp.ViewModel.Tourist
             _ordinaryTourRequestDTO.UserId = _userDTO.Id;
             _ordinaryTourRequestDTO.NumberOfTourists = TouristsDTO.Count;
             _ordinaryTourRequestDTO.RequestSentDate = DateTime.Now;
+            _ordinaryTourRequestDTO.ComplexTourRequestId = _complexTourRequestId;
             _ordinaryTourRequestService.Save(_ordinaryTourRequestDTO.ToOrdinaryTourRequest());
             MessageBox.Show("made!");
             

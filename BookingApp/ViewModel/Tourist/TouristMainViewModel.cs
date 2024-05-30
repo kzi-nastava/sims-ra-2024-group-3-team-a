@@ -511,8 +511,12 @@ namespace BookingApp.ViewModel.Tourist
         }
         public void ShowOrindaryTourRequestWindow()
         {
-           OrdinaryTourRequestWindow ordinaryTourRequestWindow = new OrdinaryTourRequestWindow( _userDTO);
-           ordinaryTourRequestWindow.ShowDialog();
+           /*OrdinaryTourRequestWindow ordinaryTourRequestWindow = new OrdinaryTourRequestWindow( _userDTO,-1);
+           ordinaryTourRequestWindow.ShowDialog();*/
+          /* ComplexTourRequestWindow complexTourRequestWindow = new ComplexTourRequestWindow(_userDTO);
+            complexTourRequestWindow.ShowDialog();*/
+          CreateTourRequestWindow createTourRequestWindow = new CreateTourRequestWindow(_userDTO);
+           createTourRequestWindow.ShowDialog();
         }
         public void ShowTourRequestsWindow()
         {
@@ -526,7 +530,7 @@ namespace BookingApp.ViewModel.Tourist
             {
                 if ((message.Type.Equals(MessageType.TourAttendance) || message.Type.Equals(MessageType.NewCreatedTour) || message.Type.Equals(MessageType.AcceptedTourRequest)) && !message.IsRead)
                 {
-                    IsOpen = true; //SetSendNotification
+                    IsOpen = true; 
                     return;
                 }
             }

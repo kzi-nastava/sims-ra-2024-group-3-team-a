@@ -1,6 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
@@ -9,6 +10,7 @@ using BookingApp.View.Tourist;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,11 +29,16 @@ namespace BookingApp.ViewModel.Tourist
         private UserDTO _userDTO { get; set; }
         private OrdinaryTourRequestDTO _ordinaryTourRequestDTO { get; set; }
 
-        private List<OrdinaryTourRequestDTO> _ordinaryTourRequestsDTO { get; set; }
+        private List<OrdinaryTourRequestDTO> _complexTourPartsDTO { get; set; }
+
+        private ObservableCollection<OrdinaryTourRequestDTO> _ordinaryTourRequestsDTO { get; set; }
+
+        private ObservableCollection<ComplexTourRequestDTO> _complexTourRequestsDTO { get; set; }
 
         private List<SolidColorBrush> SolidColorBrushes { get; set; }
 
         private OrdinaryTourRequestDTO _selectedTourDTO = null;
+        private ComplexTourRequestService _complexTourRequestService { get; set; }
 
         private RelayCommand _showOrdinaryTourRequestInfoWindowCommand;
         private RelayCommand _updateCommand;
@@ -43,13 +50,14 @@ namespace BookingApp.ViewModel.Tourist
         public string[] Labels { get; set; }
         public List<SolidColorBrush> brushes { get; set; }
 
-
-
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> keyValuePairs { get; set; }
+        private Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> _dictionary;
 
         public TourRequestsViewModel(UserDTO loggedInUser)
         {
             _userDTO = loggedInUser;
             _ordinaryTourRequestDTO = new OrdinaryTourRequestDTO();
+            IComplexTourRequestRepository complexTourRequestRepository = Injector.CreateInstance<IComplexTourRequestRepository>();
             IOrdinaryTourRequestRepository ordinaryTourRequestRepository = Injector.CreateInstance<IOrdinaryTourRequestRepository>();
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
@@ -63,15 +71,20 @@ namespace BookingApp.ViewModel.Tourist
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
             _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _complexTourRequestService = new ComplexTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository, complexTourRequestRepository);
             List<OrdinaryTourRequestDTO> ordinaryTourRequests = _ordinaryTourRequestService.GetAllForUser(_userDTO.Id).Select(ordinaryTourRequests => new OrdinaryTourRequestDTO(ordinaryTourRequests)).ToList();
-            _ordinaryTourRequestsDTO = new List<OrdinaryTourRequestDTO>(ordinaryTourRequests);
+            List<ComplexTourRequestDTO> complexTourRequests = _complexTourRequestService.GetAll().Select(complexTourRequests => new ComplexTourRequestDTO(complexTourRequests)).ToList();
+            _ordinaryTourRequestsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(ordinaryTourRequests);
+            _complexTourRequestsDTO= new ObservableCollection<ComplexTourRequestDTO>(complexTourRequests);
+            _complexTourPartsDTO = new List<OrdinaryTourRequestDTO>();
             _showOrdinaryTourRequestInfoWindowCommand = new RelayCommand(ShowOrdinaryTourRequestInfoWindow);
             _updateCommand = new RelayCommand(Update);
             _averageTouristNumberCommand = new RelayCommand(GetAverageTouristNumber);
             _showForAllYearsCommand = new RelayCommand(LoadDataForPieChart);
             LoadDataForPieChart();
+           
             _isLocationGridVisible = 3;
-
+            keyValuePairs = new Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>>();
             Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1"); 
             Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea"); 
             Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de"); 
@@ -113,12 +126,12 @@ namespace BookingApp.ViewModel.Tourist
                 HistogramDataForLocation.Add(columnSeries);
                 brushIndex++;
             }
-
-
+            _dictionary = MakeDictionary();
+            ComplexTourRequestStatus();
         }
 
 
-        public List<OrdinaryTourRequestDTO> OrdinaryTourRequestsDTO
+        public ObservableCollection<OrdinaryTourRequestDTO> OrdinaryTourRequestsDTO
         {
             get
             {
@@ -131,6 +144,48 @@ namespace BookingApp.ViewModel.Tourist
             }
 
         }
+      
+        public ObservableCollection<ComplexTourRequestDTO> ComplexTourRequestsDTO
+        {
+            get
+            {
+                return _complexTourRequestsDTO;
+            }
+            set
+            {
+                _complexTourRequestsDTO = value;
+              //  _complexTourPartsDTO = _complexTourRequestService.getOrdinaryTourRequestsForUser()
+                OnPropertyChanged();
+            }
+
+        }
+    
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> Dictionary
+        {
+            get
+            {
+                return _dictionary;
+            }
+            set
+            {
+                _dictionary = value;
+                OnPropertyChanged();
+            }
+        }
+        /*public ObservableCollection<OrdinaryTourRequestDTO> ComplexTourPartsDTO
+        {
+            get
+            {
+                
+            }
+            set
+            {
+                _ordinaryTourRequestsDTO = value;
+                OnPropertyChanged();
+            }
+
+        }*/
+
 
         public OrdinaryTourRequestDTO SelectedTourDTO
         {
@@ -421,5 +476,50 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> MakeDictionary()
+        {
+
+
+            List<OrdinaryTourRequestDTO> complexTourParts = new List<OrdinaryTourRequestDTO>();
+            ObservableCollection<OrdinaryTourRequestDTO> complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>();
+
+            foreach (ComplexTourRequest c in _complexTourRequestService.GetAll())
+            {
+                 complexTourParts = _complexTourRequestService.getOrdinaryTourRequestsForUser(c.Id, _userDTO.Id).Select(ordinaryTourRequests => new OrdinaryTourRequestDTO(ordinaryTourRequests)).ToList();
+                complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(complexTourParts);
+                keyValuePairs.Add( new ComplexTourRequestDTO(c), complexPartsDTO);      
+            
+            
+            }
+
+            return keyValuePairs;
+
+           
+        }
+
+        public void Test()
+        {
+            ObservableCollection<OrdinaryTourRequestDTO> complexTourParts = new ObservableCollection<OrdinaryTourRequestDTO>();
+            ObservableCollection<ComplexTourRequestDTO> complex = new ObservableCollection<ComplexTourRequestDTO>();
+            // complexTourParts = _dictionary.ContainsKey()
+         
+        }
+        public void ComplexTourRequestStatus()
+        {
+            foreach (var pair in Dictionary)
+            {
+                var key = pair.Key;
+                var values = pair.Value;
+
+               
+                bool allAccepted = values.All(v => v.Status == TourRequestStatus.Accepted);
+
+                if (allAccepted)
+                {
+                    key.Status = TourRequestStatus.Accepted;
+                    _complexTourRequestService.Update(key.ToComplexTourRequest());
+                }
+            }
+        }
     }
 }

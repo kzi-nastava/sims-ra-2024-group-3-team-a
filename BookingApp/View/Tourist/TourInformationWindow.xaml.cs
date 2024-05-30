@@ -103,66 +103,17 @@ namespace BookingApp.View.Tourist
                 e.Handled = true;
             }
         }
-      
-    }
 
-    public static class ScrollViewerBehavior
-    {
-        public static readonly DependencyProperty ScrollOffsetProperty =
-            DependencyProperty.RegisterAttached(
-                "ScrollOffset",
-                typeof(double),
-                typeof(ScrollViewerBehavior),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnScrollOffsetChanged));
-
-        public static double GetScrollOffset(DependencyObject obj)
+        private void ImageListView_Loaded(object sender, RoutedEventArgs e)
         {
-            return (double)obj.GetValue(ScrollOffsetProperty);
-        }
-
-        public static void SetScrollOffset(DependencyObject obj, double value)
-        {
-            obj.SetValue(ScrollOffsetProperty, value);
-        }
-
-        private static void OnScrollOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ScrollViewer scrollViewer && !IsProgrammaticScrolling(scrollViewer))
+            if(DataContext is TourInformationViewModel viewModel)
             {
-                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
+                viewModel.SetScrollViewer(scrollViewer);
             }
         }
-
-        private static bool IsProgrammaticScrolling(ScrollViewer scrollViewer)
-        {
-            return scrollViewer.Tag != null && scrollViewer.Tag.ToString() == "ProgrammaticScrolling";
-        }
-
-        public static void SetHorizontalOffset(ScrollViewer scrollViewer, double value)
-        {
-            scrollViewer.Tag = "ProgrammaticScrolling";
-            scrollViewer.ScrollToHorizontalOffset(value);
-            scrollViewer.Tag = null;
-        }
     }
 
-    public class IntToVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is int count)
-            {
-                return count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            }
-            return Visibility.Collapsed; // Default to Collapsed if the value is not an integer
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-      
-    }
+   
     
 
 }

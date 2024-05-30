@@ -36,6 +36,9 @@ namespace BookingApp.ViewModel.Tourist
         public ObservableCollection<string> imagesCollection;
         private RelayCommand _closeWindowCommand;
         private RelayCommand _showTouristMainWindowCommand;
+        private ScrollViewer _scrollViewer;
+        public RelayCommand ScrollLeftCommand { get; }
+        public RelayCommand ScrollRightCommand { get; }
         public Action CloseAction { get; set; }
 
         public TourInformationViewModel(TourDTO tourDTO, UserDTO loggedInUser)
@@ -64,7 +67,7 @@ namespace BookingApp.ViewModel.Tourist
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
             ScrollLeftCommand = new RelayCommand(ScrollLeft);
             ScrollRightCommand = new RelayCommand(ScrollRight);
-            FocusedImageIndex = -1;
+         
         }
         public TourDTO TourDTO
         {
@@ -168,60 +171,12 @@ namespace BookingApp.ViewModel.Tourist
         }
 
 
-        private double _scrollOffset;
-        public double ScrollOffset
-        {
-            get { return _scrollOffset; }
-            set
-            {
-                if (_scrollOffset != value)
-                {
-                    _scrollOffset = value;
-                    OnPropertyChanged(nameof(ScrollOffset));
-                }
-            }
-        }
-        public RelayCommand _scrollLeftCommand;
-        public RelayCommand ScrollLeftCommand
-        {
-            get
-            {
-                return _scrollLeftCommand;
-            }
-            set
-            {
-                _scrollLeftCommand = value;
-                OnPropertyChanged();
-            }
-        }
-        public RelayCommand _scrollRightCommand;
-        public RelayCommand ScrollRightCommand
-       {
-            get
-            {
-                return _scrollRightCommand;
-            }
-            set
-            {
-                _scrollRightCommand = value;
-                OnPropertyChanged();
-            }
-        }
-        private double _horizontalOffset;
-        public double HorizontalOffset
-        {
-            get { return _horizontalOffset; }
-            set
-            {
-                _horizontalOffset = value;
-                OnPropertyChanged(nameof(HorizontalOffset));
-            }
-        }
-        private void ScrollLeft()
-        {
-
-            FocusedImageIndex--;
-        }
+       
+        
+        
+      
+       
+      
         private int _focusedImageIndex;
         public int FocusedImageIndex
         {
@@ -235,48 +190,22 @@ namespace BookingApp.ViewModel.Tourist
                 }
             }
         }
-        private string _selectedImage;
-        public string SelectedImage
+      
+
+        public void SetScrollViewer(ScrollViewer scrollViewer)
         {
-            get { return _selectedImage; }
-            set
-            {
-                if (_selectedImage != value)
-                {
-                    _selectedImage = value;
-                    OnPropertyChanged(nameof(SelectedImage));
-                }
-            }
+            _scrollViewer = scrollViewer;
         }
 
-        private void ScrollRight()
+        private void ScrollRight(object obj)
         {
 
-            //ScrollOffset += 50;
-            //TourInformationWindow.GetInstance().scrollViewer.ScrollToHorizontalOffset(ScrollOffset);
-            // FocusedImageIndex++;
-            int currentIndex = ImagesCollection.IndexOf(SelectedImage);
-            int nextIndex = (currentIndex + 1) % ImagesCollection.Count;
-            SelectedImage = ImagesCollection[nextIndex];
+           _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset+150);
+        }
+        private void ScrollLeft(object obj)
+        {
 
-            ListView listView = TourInformationWindow.GetInstance().imageListView;
-            ListViewItem listViewItem = listView.ItemContainerGenerator.ContainerFromIndex(nextIndex) as ListViewItem;
-
-            if (listViewItem != null)
-            {
-                listViewItem.IsSelected = true;
-            }
-            /* ListView listView = TourInformationWindow.GetInstance().imageListView;
-             ListViewItem listViewItem = listView.ItemContainerGenerator.ContainerFromIndex(nextIndex) as ListViewItem;
-
-
-             if (listViewItem != null)
-             {
-                 MouseButtonEventArgs args = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left);
-                 args.RoutedEvent = MouseLeftButtonDownEvent;
-
-                 listViewItem.RaiseEvent(args);
-             }*/
+            _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset-150);
         }
         public void ShowFinishedToursWindow()
         {
