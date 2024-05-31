@@ -39,7 +39,8 @@ namespace BookingApp.ViewModel.Owner
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
 
-            _messageService.UpdateAndCreateMessages();
+            List<Message> messages = _messageService.UpdateAndCreateMessages();
+            _messageService.SetBestLocationMessage(messages, loggedInUser);
             List<MessageDTO> messagesList = _messageService.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
             _messagesDTO = new ObservableCollection<MessageDTO>(messagesList);
 
@@ -111,6 +112,11 @@ namespace BookingApp.ViewModel.Owner
                 _selectedMessageDTO = null;
             }
             else if (selectedItem.Type == MessageType.ForumOpened)
+            {
+                OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
+                _selectedMessageDTO = null;
+            }
+            else if (selectedItem.Type == MessageType.GoodLocationReccomendation || selectedItem.Type == MessageType.BadLocationReccomendation)
             {
                 OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
                 _selectedMessageDTO = null;
