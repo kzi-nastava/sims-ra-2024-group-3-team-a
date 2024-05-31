@@ -1,6 +1,7 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using System;
@@ -34,6 +35,10 @@ namespace BookingApp.Service
         public Tour GetById(int id)
         {
             return _tourRepository.GetById(id);
+        }
+        public List<Tour> GetByGuideId(int id)
+        {
+            return _tourRepository.GetByGuideId(id);
         }
         public Tour Save(Tour tour) 
         {
@@ -104,12 +109,12 @@ namespace BookingApp.Service
             }
             return finishedTours.Distinct().ToList();
         }
-        public List<Tour> GetAllFinishedTours()
+        public List<Tour> GetAllFinishedTours(User guide)
         {
             List<Tour> finishedTours = new List<Tour>();
             foreach (Tour tour in GetAll())
             {
-                    if (tour.CurrentKeyPoint.Equals("finished"))
+                    if (tour.CurrentKeyPoint.Equals("finished") && tour.GuideId == guide.Id)
                     {
                         finishedTours.Add(tour);
                     }
@@ -129,9 +134,9 @@ namespace BookingApp.Service
         {
             return _tourRepository.GetNotCancelled();
         }
-        public List<Tour> GetUpcoming()
+        public List<Tour> GetUpcoming(User user)
         {
-            return _tourRepository.GetUpcoming();
+            return _tourRepository.GetUpcoming(user);
         }
         public List<Tour> GetTodayTours(User user)
         {
@@ -283,5 +288,12 @@ namespace BookingApp.Service
             }
             return tour;
         }
+
+        public List<Languages> GetExistingLanguages()
+        {
+            return _tourRepository.GetExistingLanguages();
+        }
+
+
     }
 }

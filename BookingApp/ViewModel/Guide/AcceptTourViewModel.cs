@@ -64,7 +64,7 @@ namespace BookingApp.ViewModel.Guide
         private List<DateTime> NotAvailableDates()
         {
             List<DateTime>  dates = new List<DateTime>();
-            foreach (Tour tour in _tourService.GetUpcoming())
+            foreach (Tour tour in _tourService.GetUpcoming(_userDTO.ToUser()))
             {
                 dates.Add(tour.BeginingTime);
             }
