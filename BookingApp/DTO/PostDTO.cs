@@ -11,7 +11,7 @@ namespace BookingApp.DTO
     {
         public PostDTO() 
         {
-            ownersReported = new List<int>();
+            ownersReported = new List<String>();
         }
 
         public PostDTO(Post post)
@@ -120,8 +120,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private List<int> ownersReported;
-        public List<int> OwnersReported
+        private List<String> ownersReported;
+        public List<String> OwnersReported
         {
             get { return ownersReported; }
             set
