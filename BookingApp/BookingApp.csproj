@@ -37,6 +37,8 @@
     <None Remove="Resources\Images\Owner\Beach.png" />
     <None Remove="Resources\Images\Owner\Cottage.jpg" />
     <None Remove="Resources\Images\Owner\Cottage.png" />
+    <None Remove="Resources\Images\Owner\forums.png" />
+    <None Remove="Resources\Images\Owner\forums1.png" />
     <None Remove="Resources\Images\Owner\Hotel.jpg" />
     <None Remove="Resources\Images\Owner\Hotel.png" />
     <None Remove="Resources\Images\Owner\menu.png" />
@@ -44,6 +46,7 @@
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
     <None Remove="Resources\Images\Owner\renovation.png" />
+    <None Remove="Resources\Images\Owner\reportFlag.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
     <None Remove="Resources\Images\Tourist\athens1.png" />
@@ -105,6 +108,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Guide\graystar.png" />
     <Resource Include="Resources\Images\Guide\refresh.png" />
+    <Resource Include="Resources\Images\Owner\forums.png" />
+    <Resource Include="Resources\Images\Owner\forums1.png" />
+    <Resource Include="Resources\Images\Owner\reportFlag.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
     <Resource Include="Resources\Images\Tourist\gift.png" />
