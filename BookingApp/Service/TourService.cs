@@ -18,12 +18,13 @@ namespace BookingApp.Service
         private ITourRepository _tourRepository;
         private TourReservationService _tourReservationService;
         private MessageRepository _messageRepository;
+        private VoucherService _voucherService;
 
         public TourService(ITourRepository tourRepository, IUserRepository userRepository, ITouristRepository touristRepository, ITourReservationRepository tourReservationRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository) 
         {
             _tourRepository = tourRepository;
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
-           
+            _voucherService = new VoucherService(voucherRepository);
         }
 
         public List<Tour> GetAll() 
@@ -178,6 +179,114 @@ namespace BookingApp.Service
                 }
             }
             return tourists;
+        }
+
+
+         public void FindCandidatesForVoucher(int userId)
+         {
+
+             Tour tour = new Tour();
+             DateTime tourDate;
+             int i;
+             List<Tourist> tourists = new List<Tourist> ();
+             List<TourReservation> tourReservations = new List<TourReservation>();
+             tourReservations = _tourReservationService.GetAllForUser(userId);
+             for (i = 0; i < tourReservations.Count;i++ )
+             {
+                 tourists = tourReservations[i].Tourists;
+                 if (tourists[0].JoiningKeyPoint!="")
+                 {
+                     tour = FindTourForReservation(tourReservations[i]);
+                     tourDate = tour.BeginingTime;
+                     i=FindOtherCandidatesForVoucher(i, tourDate, userId);
+
+
+
+                 }
+             }
+
+
+         }
+        public int FindOtherCandidatesForVoucher(int tourReservationIndex, DateTime beginingTime, int userId)
+        {
+            Tour tour = new Tour();
+            DateTime endDate = beginingTime.AddYears(1);
+            DateTime tourDate;
+            int count = 0;
+            List<Tourist> tourists = new List<Tourist>();
+            List<TourReservation> tourReservations = new List<TourReservation>();
+            tourReservations = _tourReservationService.GetAllForUser(userId);
+            int i=0;
+            for ( i = tourReservationIndex; i < tourReservations.Count; i++)
+                {
+                    if(count!=4)
+                    {
+                        tourists = tourReservations[i].Tourists;
+                        if (tourists[0].JoiningKeyPoint != "")
+                        {
+
+
+                            tour = FindTourForReservation(tourReservations[i]);
+                            tourDate = tour.BeginingTime;
+                            if (tourDate < endDate)
+                            {
+                                count++;
+                            }
+                            else
+                            {
+                                return i;
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        MakeVoucher(tour.Id, userId);
+                        return i++;
+                    }
+                }
+            MakeVoucher(tour.Id, userId);
+            return i++;
+
+        }
+        public void MakeVoucher(int tourId, int userId)
+        {
+            Voucher voucher = new Voucher();
+            voucher.Type = Model.Enums.VoucherType.Gift;
+            voucher.TourId = tourId;
+            voucher.UserId = userId;
+            voucher.IsUsed = false;
+            voucher.ExpireDate = DateTime.Now.AddMonths(6);
+            voucher.Header = "You went to five tours this year!";
+            if (!DoesVoucherAllreadyExists(voucher, userId))
+            {
+                _voucherService.Save(voucher);
+
+            }
+          
+        }
+        public bool DoesVoucherAllreadyExists(Voucher voucher, int userId)
+        {
+            foreach(Voucher v in _voucherService.GetAllForUser(userId))
+            {
+                if (v.ExpireDate == voucher.ExpireDate)
+                    return true;
+            }
+            return false;
+        }
+        public Tour FindTourForReservation(TourReservation tourReservation)
+        {
+            Tour tour = new Tour();
+            foreach (Tour t in GetAll())
+            {
+                if (t.Id == tourReservation.TourId)
+                {
+                    tour = t;
+                    break;
+
+                }
+            }
+            return tour;
         }
 
         public List<Languages> GetExistingLanguages()

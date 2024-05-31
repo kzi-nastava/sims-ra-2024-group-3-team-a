@@ -17,19 +17,18 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Tourist
 {
     /// <summary>
-    /// Interaction logic for OrdinaryTourRequestWindow.xaml
+    /// Interaction logic for ComplexTourRequestWindow.xaml
     /// </summary>
-    public partial class OrdinaryTourRequestWindow : Window
+    public partial class ComplexTourRequestWindow : Window
     {
-        public static OrdinaryTourRequestViewModel _ordinaryTourRequestViewModel;
-        public OrdinaryTourRequestWindow(UserDTO loggedInUser, int complexTourRequestId)
+        private ComplexTourRequestViewModel complexTourRequestViewModel;
+        public ComplexTourRequestWindow(UserDTO loggedInUser)
         {
+            complexTourRequestViewModel = new ComplexTourRequestViewModel(loggedInUser);
             InitializeComponent();
-
-            _ordinaryTourRequestViewModel = new OrdinaryTourRequestViewModel(loggedInUser, complexTourRequestId);
-            DataContext = _ordinaryTourRequestViewModel;
+            DataContext = complexTourRequestViewModel;
+            if (complexTourRequestViewModel.CloseAction == null)
+                complexTourRequestViewModel.CloseAction = new Action(this.Close);
         }
-
-       
     }
 }

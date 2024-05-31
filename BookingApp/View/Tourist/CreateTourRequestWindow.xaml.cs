@@ -3,6 +3,7 @@ using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,19 +18,17 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Tourist
 {
     /// <summary>
-    /// Interaction logic for OrdinaryTourRequestWindow.xaml
+    /// Interaction logic for CreateTourRequestWindow.xaml
     /// </summary>
-    public partial class OrdinaryTourRequestWindow : Window
+    public partial class CreateTourRequestWindow : Window
     {
-        public static OrdinaryTourRequestViewModel _ordinaryTourRequestViewModel;
-        public OrdinaryTourRequestWindow(UserDTO loggedInUser, int complexTourRequestId)
+        private CreateTourRequestViewModel _createTourRequestViewModel;
+        public CreateTourRequestWindow(UserDTO loggedInUser)
         {
+
             InitializeComponent();
-
-            _ordinaryTourRequestViewModel = new OrdinaryTourRequestViewModel(loggedInUser, complexTourRequestId);
-            DataContext = _ordinaryTourRequestViewModel;
+            _createTourRequestViewModel = new CreateTourRequestViewModel(loggedInUser);
+            DataContext = _createTourRequestViewModel;
         }
-
-       
     }
 }
