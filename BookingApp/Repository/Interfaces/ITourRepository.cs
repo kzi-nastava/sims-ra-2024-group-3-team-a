@@ -1,4 +1,5 @@
 ﻿using BookingApp.Model;
+using BookingApp.Model.Enums;
 using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace BookingApp.Repository.Interfaces
         public List<Tour> GetAll();
 
         public Tour GetById(int id);
+        public List<Tour> GetByGuideId(int id);
 
         public Tour Save(Tour tour);
 
@@ -27,8 +29,9 @@ namespace BookingApp.Repository.Interfaces
         public Tour GetMostVisitedTour();
         
         public List<Tour> GetNotCancelled();
-        public List<Tour> GetUpcoming();
+        public List<Tour> GetUpcoming(User user);
 
         public Tour GetMostVisitedByYear(int year);
+        public List<Languages> GetExistingLanguages();
     }
 }
