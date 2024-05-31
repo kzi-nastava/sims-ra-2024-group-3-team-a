@@ -27,7 +27,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showMostVisitedByYearCommand;
         public static ObservableCollection<TourDTO> _finishedToursDTO { get; set; }
 
-        public TourStatisticsViewModel()
+        public TourStatisticsViewModel(UserDTO user)
         {
 
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
@@ -39,7 +39,7 @@ namespace BookingApp.ViewModel.Guide
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
 
-            List<TourDTO> toursDTO = _tourService.GetAllFinishedTours().Select(tour => new TourDTO(tour)).ToList();
+            List<TourDTO> toursDTO = _tourService.GetAllFinishedTours(user.ToUser()).Select(tour => new TourDTO(tour)).ToList();
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             if (_tourService.GetMostVisitedTour() != null)
             {

@@ -156,7 +156,7 @@ namespace BookingApp.ViewModel.Guide
        
         private void ShowTourStatistics()
         {
-            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_loggedGuide);
             tourStatistics.Show();
         }
         public RelayCommand ShowMainWindowCommand

@@ -23,6 +23,7 @@
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\Guide\eye.png" />
+    <None Remove="Resources\Images\Guide\graystar.png" />
     <None Remove="Resources\Images\Guide\question.jpg" />
     <None Remove="Resources\Images\Guide\refresh.png" />
     <None Remove="Resources\Images\Guide\star.png" />
@@ -102,6 +103,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Guide\graystar.png" />
     <Resource Include="Resources\Images\Guide\refresh.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
