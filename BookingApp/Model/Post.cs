@@ -17,14 +17,14 @@ namespace BookingApp.Model
         public string Text { get; set; }
         public int Reports { get; set; }
         public PostType Type { get; set; }
-        public List<int> OwnersReported { get; set; }
+        public List<String> OwnersReported { get; set; }
 
         public Post()
         { 
-            OwnersReported = new List<int>();
+            OwnersReported = new List<String>();
         }
 
-        public Post(int id, int forumId, string username, string text, int reports, PostType type, List<int> ownersReported)
+        public Post(int id, int forumId, string username, string text, int reports, PostType type, List<String> ownersReported)
         {
             Id = id;
             ForumId = forumId;
@@ -58,9 +58,9 @@ namespace BookingApp.Model
             Text = values[3];
             Reports = Convert.ToInt32(values[4]);
             Type = (PostType)Enum.Parse(typeof(PostType), values[5]);
-            for (int i = 7; i < values.Length; i++)
+            for (int i = 6; i < values.Length; i++)
             {
-                OwnersReported.Add(Convert.ToInt32(values[i]));
+                OwnersReported.Add(values[i]);
             }
         }
     }

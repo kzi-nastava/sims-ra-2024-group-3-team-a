@@ -37,7 +37,7 @@
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="430"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
@@ -74,6 +74,36 @@
                                         <TextBlock Text="{Binding Path=Text}" TextWrapping="Wrap" />
                                     </Label>
                                 </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <Label Content="Reports: " Foreground="#d4ff00"></Label>
+                                        <Label Content="{Binding Reports}" Foreground="#d4ff00"></Label>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Background="Transparent" BorderBrush="Transparent"  Margin="0,20,0,0" Command="{Binding DataContext.ReportPostCommand, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" CommandParameter="{Binding}">
+                                        <Button.Content>
+                                            <Image Source="../../../Resources/Images/Owner/reportFlag.png" Width="40" Height="20"/>
+                                        </Button.Content>
+                                    </Button>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Type}" Value="SentByGuestWhoWasNotOnLocation">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Type}" Value="SentByOwner">
+                                                    <Setter Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Type}" Value="SentByGuestWhoWasOnLocation">
+                                                    <Setter Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
                             </StackPanel>
                         </GroupBox>
                     </DataTemplate>
