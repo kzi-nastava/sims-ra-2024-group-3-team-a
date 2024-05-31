@@ -4,6 +4,7 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
+using BookingApp.Validation;
 using BookingApp.View.Tourist;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ using System.Windows;
 
 namespace BookingApp.ViewModel.Tourist
 {
-    public class ComplexTourRequestViewModel:ViewModel
+    public class ComplexTourRequestViewModel: ViewModel
     {
 
         private OrdinaryTourRequestService _ordinaryTourRequestService { get; set; }
@@ -140,6 +141,9 @@ namespace BookingApp.ViewModel.Tourist
             MessageBox.Show("Complex tour succesfully created");
 
         }
+
+
+
         public void CloseWindow()
         {
 

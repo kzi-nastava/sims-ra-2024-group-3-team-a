@@ -53,8 +53,8 @@ namespace BookingApp.ViewModel.Tourist
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IKeyPointRepository keyPointRepository = Injector.CreateInstance<IKeyPointRepository>();
-       
-            
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _keyPointService = new KeyPointService(keyPointRepository);
             List<KeyPointDTO> keypoints = _keyPointService.GetKeyPointsForTour(_tourDTO.ToTourAllParam()).Select(keypoints => new KeyPointDTO(keypoints)).ToList();

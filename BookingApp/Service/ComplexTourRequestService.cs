@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace BookingApp.Service
 {
@@ -64,15 +65,19 @@ namespace BookingApp.Service
         {
             return _complexTourRequestRepository.GetById(id);
         }
-       /* public List<ComplexTourRequest> GetAllForUser(int userId) 
+        public List<ComplexTourRequest> GetAllForUser(int userId) 
         {
             List<ComplexTourRequest> complexTourRequests = new List<ComplexTourRequest>();
-            for (ComplexTourRequest  c in GetAll())
+            foreach (ComplexTourRequest complexTourRequest in GetAll())
             {
-                if()
+               
+                if (getOrdinaryTourRequestsForUser(complexTourRequest.Id, userId).Count!=0)
+                {
+                    complexTourRequests.Add(complexTourRequest);
+                } 
             }
-
-        }*/
+            return complexTourRequests;
+        }
         public List<OrdinaryTourRequest> getOrdinaryTourRequestsForUser(int complexTourRequestId, int userId)
         {
             List<OrdinaryTourRequest> ordinaryTourRequests = new List<OrdinaryTourRequest> ();
@@ -84,6 +89,35 @@ namespace BookingApp.Service
                     ordinaryTourRequests.Add(ordinaryTourRequest);
             }
             return ordinaryTourRequests;
+        }
+
+        public void CheckForInvalidComplexTourRequests(int userId)
+        {
+            foreach(ComplexTourRequest complexTourRequest in GetAll())
+            {
+                List<OrdinaryTourRequest> ordinaryTourRequests = new List<OrdinaryTourRequest>();
+                foreach(OrdinaryTourRequest ordinaryTourRequest in getOrdinaryTourRequestsForUser(complexTourRequest.Id, userId))
+                {
+                    ordinaryTourRequests = getOrdinaryTourRequestsForUser(complexTourRequest.Id, userId);
+                    if(Is48hoursbeforeFirstOrdinaryTour(ordinaryTourRequests))
+                    {
+                        complexTourRequest.Status = Model.Enums.TourRequestStatus.Invalid;
+                        Update(complexTourRequest);
+                    }
+                }
+            }
+        }
+        public bool Is48hoursbeforeFirstOrdinaryTour(List<OrdinaryTourRequest> ordinaryTourRequests)
+        {
+            if (ordinaryTourRequests == null || ordinaryTourRequests.Count == 0)
+                return false;
+
+            DateTime minBeginDate = ordinaryTourRequests.Min(request => request.BeginDate);
+            DateTime now = DateTime.Now;
+            TimeSpan difference = minBeginDate - now;
+            bool is48HoursBefore = difference.TotalHours <= 48;
+
+            return is48HoursBefore;
         }
     }
 }

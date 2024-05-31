@@ -483,7 +483,7 @@ namespace BookingApp.ViewModel.Tourist
             List<OrdinaryTourRequestDTO> complexTourParts = new List<OrdinaryTourRequestDTO>();
             ObservableCollection<OrdinaryTourRequestDTO> complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>();
 
-            foreach (ComplexTourRequest c in _complexTourRequestService.GetAll())
+            foreach (ComplexTourRequest c in _complexTourRequestService.GetAllForUser(_userDTO.Id))
             {
                  complexTourParts = _complexTourRequestService.getOrdinaryTourRequestsForUser(c.Id, _userDTO.Id).Select(ordinaryTourRequests => new OrdinaryTourRequestDTO(ordinaryTourRequests)).ToList();
                 complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(complexTourParts);

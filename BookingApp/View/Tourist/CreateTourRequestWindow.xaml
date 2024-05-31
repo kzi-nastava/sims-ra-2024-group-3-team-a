@@ -172,7 +172,7 @@
                                     </StackPanel>
 
                                 </StackPanel>
-                                <Button BorderThickness="2" BorderBrush="Transparent" Background="#f7459e" Foreground="White" FontWeight="Bold"  Command="{Binding OpenOrdinaryTourRequestWindowCommand}" Content="Create" Margin="533,27,63,34" Width="100" Height="60"/>
+                                <Button BorderThickness="2" BorderBrush="Transparent" Background="#f7459e" Foreground="White" FontWeight="Bold"  Command="{Binding OpenComplexTourRequestWindowCommand}" Content="Create" Margin="533,27,63,34" Width="100" Height="60"/>
                                 <TextBlock Text="(Press Enter)" FontSize="10" Margin="634,73,-534,7"/>
                                 <TextBlock Text="Complex tour is made of two or more ordinary tours" Margin="162,94,-62,-14"/>
                             </Grid>
