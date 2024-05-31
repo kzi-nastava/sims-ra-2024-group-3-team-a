@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookingApp.ViewModel.Owner
 {
-    public class NewReviewDetailsViewModel : ViewModel
+    public class ForumOpenedDetails : ViewModel
     {
         MessageService _messageService;
 
@@ -21,13 +21,13 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
 
-        public NewReviewDetailsViewModel(MessageDTO messageDTO)
+        public ForumOpenedDetails(MessageDTO messageDTO)
         {
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
             IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
-            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();    
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();

@@ -37,6 +37,8 @@
     <None Remove="Resources\Images\Owner\Beach.png" />
     <None Remove="Resources\Images\Owner\Cottage.jpg" />
     <None Remove="Resources\Images\Owner\Cottage.png" />
+    <None Remove="Resources\Images\Owner\forums.png" />
+    <None Remove="Resources\Images\Owner\forums1.png" />
     <None Remove="Resources\Images\Owner\Hotel.jpg" />
     <None Remove="Resources\Images\Owner\Hotel.png" />
     <None Remove="Resources\Images\Owner\menu.png" />
@@ -105,6 +107,8 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Guide\graystar.png" />
     <Resource Include="Resources\Images\Guide\refresh.png" />
+    <Resource Include="Resources\Images\Owner\forums.png" />
+    <Resource Include="Resources\Images\Owner\forums1.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
     <Resource Include="Resources\Images\Tourist\gift.png" />

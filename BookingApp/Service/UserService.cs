@@ -13,6 +13,7 @@ namespace BookingApp.Service
     public class UserService
     {
         private IUserRepository _userRepository;
+        private IAccommodationRepository _accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
 
         public UserService(IUserRepository userRepository) 
         {
@@ -47,6 +48,20 @@ namespace BookingApp.Service
         public User Update(User user)
         {
             return _userRepository.Update(user);
+        }
+
+        public List<User> GetUsersWithAccommodationOnLocation(Location location)
+        {
+            List<User> users = new List<User>();
+            List<Accommodation> accommodations = _accommodationRepository.GetAll().Where(a => a.Place.Country == location.Country && a.Place.City == location.City).ToList();
+
+            foreach (var accommodation in accommodations)
+            {
+                users.Add(_userRepository.GetById(accommodation.OwnerId));
+            }
+
+            List<User> uniqueUsers = users.GroupBy(user => user.Id).Select(group => group.First()).ToList();
+            return uniqueUsers;
         }
     }
 }

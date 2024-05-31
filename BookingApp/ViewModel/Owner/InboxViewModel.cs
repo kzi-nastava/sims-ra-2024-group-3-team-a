@@ -110,6 +110,11 @@ namespace BookingApp.ViewModel.Owner
                 OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
                 _selectedMessageDTO = null;
             }
+            else if (selectedItem.Type == MessageType.ForumOpened)
+            {
+                OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
+                _selectedMessageDTO = null;
+            }
         }
     }
 }

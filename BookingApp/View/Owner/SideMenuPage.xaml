@@ -57,6 +57,13 @@
                     </StackPanel>
                 </Button>
 
+                <Button Command="{Binding ShowForumsPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\..\Resources\Images\Owner/forums1.png" Height="50" Width="50" />
+                        <Label Content="Forums" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
                 <Button Command="{Binding LogOutCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\logout.png" Height="50" Width="50" />
