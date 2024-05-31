@@ -83,7 +83,16 @@
             </Button>
             <Button x:Name="ButtonSearch" Grid.Column="11" Width="70" Height="20 "  Content="PRETRAŽI" Command="{Binding SearchCommand}" HorizontalAlignment="Center"/>
         </Grid>
-        <ListView x:Name="listViewTours" 
+        <TabControl x:Name="TabControl" Grid.Row="3" Grid.ColumnSpan="6" Grid.RowSpan="2">
+            <TabItem Header="Prosti zahtjevi" >
+                <Grid Background="White" Grid.Row="1">
+                    <Grid Grid.Column="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Grid.Row="1">
+                                <ListView x:Name="listToursView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"  ItemsSource="{Binding FilteredRequestsDTO}" 
+ SelectedItem="{Binding SelectedRequestDTO}"   Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+
+                                    <!--<ListView x:Name="listViewTours" 
  Background="Transparent"
  ItemsSource="{Binding FilteredRequestsDTO}" 
  SelectedItem="{Binding SelectedRequestDTO}"  
@@ -93,60 +102,171 @@
  Grid.ColumnSpan="6"    
  Grid.RowSpan="2"
  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="3"
- VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate >
-                <DataTemplate >
-                    <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan" Width="700" Margin="0,10,5,10" >
-                        <StackPanel Background="Tan" Width="700" Orientation="Horizontal"  Margin ="15,15,25,10">
-                            <StackPanel Margin="10,0,10,10">
-                                <StackPanel Height="26">
-                                    <TextBlock FontWeight="ExtraBlack"  Text="ZAHTJEV" Background="Brown" FontStretch="Medium"/>
+ VerticalAlignment="Stretch" HorizontalAlignment="Stretch">-->
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Vertical" />
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+                                    <ListView.ItemTemplate >
+                                        <DataTemplate >
+                                            <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan"  Margin="0,10,5,10" >
+                                                <StackPanel Background="Tan"  Orientation="Horizontal"  Margin ="5,10,0,10">
+                                                    <StackPanel Margin="10,0,10,10">
+                                                        <StackPanel Height="26">
+                                                            <TextBlock FontWeight="ExtraBlack"  Text="ZAHTJEV" Background="Brown" FontStretch="Medium"/>
 
-                                </StackPanel>
-                                <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
-                                    <StackPanel Orientation="Vertical">
-                                        <StackPanel Margin="5,20,10,10">
-                                            <DockPanel >
-                                                <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.City}" />
-                                                <TextBlock FontWeight="Bold" Text=", "/>
-                                                <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="{Binding BeginDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
-                                                <TextBlock Text=" - " />
-                                                <TextBlock FontWeight="Bold" Text="{Binding EndDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="{Binding NumberOfTourists}" />
-                                                <TextBlock Text=" ljudi" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="{Binding Language}" />
-                                            </DockPanel>
-                                        </StackPanel>
-                                        <!--<Button DockPanel.Dock="Bottom" Height="20" Width="30" Background="White" HorizontalAlignment="Center" Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
-                                            <Image  Source="/BookingApp;component/Resources/Images/Guide/eye.png" Width="25" Height="15" />
-                                        </Button>-->
-                                    </StackPanel>
-                                </Border>
+                                                        </StackPanel>
+                                                        <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
+                                                            <StackPanel Orientation="Vertical">
+                                                                <StackPanel Margin="5,20,10,10">
+                                                                    <DockPanel >
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.City}" />
+                                                                        <TextBlock FontWeight="Bold" Text=", "/>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
+                                                                    </DockPanel>
+                                                                    <DockPanel>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding BeginDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                                                                        <TextBlock Text=" - " />
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding EndDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                                                                    </DockPanel>
+                                                                    <DockPanel>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding NumberOfTourists}" />
+                                                                        <TextBlock Text=" ljudi" />
+                                                                    </DockPanel>
+                                                                    <DockPanel>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding Language}" />
+                                                                    </DockPanel>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <Border BorderThickness="1" BorderBrush="SaddleBrown" Width="400">
+                                                        <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  Width="400" TextWrapping="Wrap" Text="{Binding Description}" FontStretch="Medium"/>
+                                                    </Border>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <Button Content="PRIHVATI" Width="65" Height="20" Margin="10" HorizontalAlignment="Right" Command="{Binding Path=DataContext.AcceptTourRequestCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"></Button>
+                                                        <Button Content="ODBIJ" Width="65" Height="20" Margin="10" HorizontalAlignment="Right" Command="{Binding Path=DataContext.CancelTourRequestCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"></Button>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
                             </StackPanel>
-                            <Border BorderThickness="1" BorderBrush="SaddleBrown" Width="400">
-                                <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  Width="400" TextWrapping="Wrap" Text="{Binding Description}" FontStretch="Medium"/>
-                            </Border>
-                            <StackPanel Orientation="Vertical">
-                                <Button Content="PRIHVATI" Width="65" Height="20" Margin="10" HorizontalAlignment="Right" Command="{Binding Path=DataContext.AcceptTourRequestCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"></Button>
-                                <Button Content="ODBIJ" Width="65" Height="20" Margin="10" HorizontalAlignment="Right" Command="{Binding Path=DataContext.CancelTourRequestCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"></Button>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Slozeni zahtjevi" >
+                <Grid Background="White" Grid.Row="1">
+                    <Grid Grid.Column="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Grid.Row="1">
+                                <ListView x:Name="complexToursView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Dictionary}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan" Margin="0,10,5,10">
+
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <DockPanel  Margin="10,10,5,0">
+                                                        <TextBlock Height="50" Grid.Row="0" FontSize="16" FontWeight="Bold" Text="ZAHTJEV "></TextBlock>
+                                                        <TextBlock Height="50" Grid.Row="0" FontSize="16" FontWeight="Bold" Margin="5,0,0,0" Text="{Binding Key.Id}"></TextBlock>
+                                                    </DockPanel>
+
+                                                    <Border Grid.Row="1" BorderThickness="2" Background="White" MaxHeight="300"   BorderBrush="SaddleBrown"  CornerRadius="8" Margin="10,0,10,10">
+                                                        <Grid>
+                                                            <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                                                                <ListView Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" MaxHeight="300"  ItemsSource="{Binding Value}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                                                    <ListView.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <WrapPanel Orientation="Horizontal"  />
+                                                                        </ItemsPanelTemplate>
+                                                                    </ListView.ItemsPanel>
+                                                                    <ListView.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border BorderThickness="2" Width="350" BorderBrush="LightGray" CornerRadius="8" Background="#fcfcf2" Margin="0,10,5,10">
+                                                                                <Grid>
+                                                                                    <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="260"/>
+                                                                                        <ColumnDefinition Width="auto"/>
+                                                                                    </Grid.ColumnDefinitions>
+                                                                                    <StackPanel  Width="400"  Orientation="Horizontal"  Margin ="10,10,0,10" Grid.Column="0">
+                                                                                        <StackPanel Margin="5,0,0,0">
+
+                                                                                            <DockPanel Margin="5,5,5,5">
+                                                                                                <TextBlock  FontSize="13" FontWeight="Bold" Text="Lokacija: " />
+                                                                                                <TextBlock   FontSize="13"  Text="{Binding  Path=LocationDTO.City}"/>
+                                                                                                <TextBlock   FontSize="13"  Text=", "/>
+                                                                                                <TextBlock   FontSize="13"  Text="{Binding  Path=LocationDTO.Country}"/>
+                                                                                                
+                                                                                            </DockPanel>
+                                                                                            <DockPanel Margin="5">
+                                                                                                <TextBlock FontWeight="Bold" FontSize="13" Text="Status ture: " />
+                                                                                                <TextBlock FontWeight="Bold" FontSize="13"   Text="{Binding Status}" />
+                                                                                            </DockPanel>
+                                                                                            <DockPanel  Margin="5,5,5,0">
+                                                                                                <TextBlock FontSize="13" FontWeight="Bold" Text="Datum: " />
+                                                                                                <TextBlock FontSize="13">
+                                                                                                    <TextBlock.Style>
+                                                                                                        <Style TargetType="TextBlock">
+                                                                                                            <Setter Property="Visibility" Value="Visible" />
+                                                                                                            <Setter Property="Text" Value="{Binding BeginDateOnly}" />
+                                                                                                        </Style>
+                                                                                                    </TextBlock.Style>
+                                                                                                </TextBlock>
+                                                                                                <TextBlock FontWeight="Bold" FontSize="13" Text=" - " />
+                                                                                                <TextBlock FontWeight="Bold" FontSize="13" Text="{Binding EndDateOnly}" />
+                                                                                            </DockPanel>
+                                                                                        </StackPanel>
+                                                                                    </StackPanel>
+                                                                                    <Button Grid.Column="1" BorderThickness="2" Background="Chocolate" FontWeight="Bold" Foreground="Black"  Content="Prihvati" Margin="0,10,60,10" Width="60" Height="20"  Command="{Binding Path=DataContext.AcceptComplexTourRequestCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
+                                                                                        <Button.Style>
+                                                                                            <Style TargetType="Button">
+                                                                                                <Style.Triggers>
+                                                                                                    <DataTrigger Binding="{Binding Status}" Value="Invalid">
+                                                                                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                                                                                    </DataTrigger>
+                                                                                                    <DataTrigger Binding="{Binding Status}" Value="Accepted">
+                                                                                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                                                                                    </DataTrigger>
+                                                                                                    <DataTrigger Binding="{Binding CanBeAccepted}" Value="False">
+                                                                                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                                                                                    </DataTrigger>
+                                                                                                    
+                                                                                                </Style.Triggers>
+                                                                                            </Style>
+
+                                                                                        </Button.Style>
+                                                                                    </Button>
+                                                                                </Grid>
+
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </ListView.ItemTemplate>
+                                                                </ListView>
+                                                            </ScrollViewer>
+                                                        </Grid>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
                             </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
         <Button Grid.Row="3" Grid.Column="6" Content="STATISTIKA" Height="40" Background="Beige" Command="{Binding ShowTourRequestStatistics}"></Button>
     </Grid>
 </Window>
