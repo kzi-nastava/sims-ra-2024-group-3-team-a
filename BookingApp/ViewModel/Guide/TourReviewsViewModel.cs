@@ -28,6 +28,7 @@ namespace BookingApp.ViewModel.Guide
         public TourReviewsViewModel(TourDTO tour)
         {
             _tourDTO = tour;
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();

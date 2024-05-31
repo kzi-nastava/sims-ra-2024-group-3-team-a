@@ -45,8 +45,8 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-            List<TourDTO> toursFinishedDTO = _tourService.GetAllFinishedTours().Select(tour => new TourDTO(tour)).ToList();
-            List<TourDTO> toursDTO = _tourService.GetUpcoming().Select(tour => new TourDTO(tour)).ToList();
+            List<TourDTO> toursFinishedDTO = _tourService.GetAllFinishedTours(guide.ToUser()).Select(tour => new TourDTO(tour)).ToList();
+            List<TourDTO> toursDTO = _tourService.GetUpcoming(guide.ToUser()).Select(tour => new TourDTO(tour)).ToList();
             _allToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursFinishedDTO);
             _showAddTourWindowCommand = new RelayCommand(ShowAddTourWindow);
@@ -91,7 +91,7 @@ namespace BookingApp.ViewModel.Guide
         }
         private void ShowTourStatistics()
         {
-            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_loggedGuide);
             tourStatistics.Show();
         }
         public ObservableCollection<TourDTO> AllToursDTO

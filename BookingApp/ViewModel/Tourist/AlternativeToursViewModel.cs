@@ -39,7 +39,7 @@ namespace BookingApp.ViewModel.Tourist
             
             _tourDTO = tourDTO;
             _userDTO = loggedInUser;
-            
+           
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();

@@ -52,5 +52,20 @@ namespace BookingApp.Service
             }
             return false;
         }
+        public  Boolean ScoreAboveFourCheck(Tour tour)
+        {
+            foreach(TourReview tourReview in GetAll())
+            {
+                if (tourReview.TourId == tour.Id)
+                {
+                    double tourScore = (tourReview.GuideKnowledgeRating + tourReview.GuideLanguageRating + tourReview.TourEntertainmentRating) / 3.0;
+                    if (tourScore > 4.0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

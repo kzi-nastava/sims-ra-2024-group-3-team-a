@@ -72,8 +72,34 @@
                     <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
                 </Button>
 
-                <Image Height="30"  Margin="0,0,0,0" Source="/BookingApp;component/Resources/Images/Guide/star.png" RenderTransformOrigin="0.772,0.5"/>
-                <TextBlock FontSize="16" Margin="0,20,0,0"> SUPERVODIČ</TextBlock>
+                <Image Height="30"  Margin="0,0,0,0" RenderTransformOrigin="0.772,0.5">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source"   Value="/BookingApp;component/Resources/Images/Guide/star.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=User.IsSuper}" Value="False">
+                                    <Setter Property="Source" Value="/BookingApp;component/Resources/Images/Guide/graystar.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <TextBlock FontSize="16" Margin="0,20,0,0">
+                <Hyperlink Command="{Binding ShowLanguagesCommand}" IsEnabled="{Binding Path=User.IsSuper}">
+                   <TextBlock Text="SUPERVODIČ">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=User.IsSuper}" Value="False">
+                                            <Setter Property="Foreground" Value="LightGray"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                         </TextBlock>
+                     </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </Grid>
         <ListView x:Name="listViewTours" 
@@ -101,7 +127,7 @@
                         <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="15,15,25,10">
                             <StackPanel Margin="10,0,10,10">
                                 <StackPanel Height="26">
-                                    <Viewbox Width="150" >
+                                        <Viewbox Width="150" Height="26" >
                                         <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Name}"  FontStretch="Medium"/>
                                     </Viewbox>
                                 </StackPanel>
@@ -207,8 +233,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="8" Grid.Column="5">
-            <TextBlock>Vodič:</TextBlock>
-            <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
+           
         </Grid>
     </Grid>
     <Window.InputBindings>
