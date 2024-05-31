@@ -15,13 +15,16 @@ namespace BookingApp.Service
     public class MessageService
     {
         private IMessageRepository _messageRepository;
-
+        
         private AccommodationReservationService _accommodationReservationService;
         private UserService _userService;
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService;
         private AccommodationService _accommodationService;
         private TourService _tourService;
-       // private OrdinaryTourRequestService _ordinaryTourRequestRepository;
+        private ForumService _forumService;
+        IForumRepository forumRepository = Injector.CreateInstance<IForumRepository>();
+        IPostRepository postRepository = Injector.CreateInstance<IPostRepository>();
+        // private OrdinaryTourRequestService _ordinaryTourRequestRepository;
 
         public MessageService(IMessageRepository messageRepository, IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository, IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IUserRepository userRepository, ITourRepository tourRepository, ITourReservationRepository tourReservationRepository, ITouristRepository touristRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
@@ -31,6 +34,7 @@ namespace BookingApp.Service
             _accommodationService = new AccommodationService(accommodationRepository);
             _userService = new UserService(userRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _forumService = new ForumService(forumRepository, postRepository, accommodationRepository);
             //_ordinaryTourRequestRepository = new OrdinaryTourRequestService(ordinaryTourRequestRepository);
         }
 
@@ -60,6 +64,7 @@ namespace BookingApp.Service
             SetAllUserReviewsMessages(messages);
             SetAllAccommodationChangeRequests(messages);
             SetAllAccommodationReservationCanceledMessages(messages);
+            SetAllNewForumMessages(messages);
         }
 
         private void SetAllUserReviewsMessages(List<Message> messages)
@@ -111,6 +116,23 @@ namespace BookingApp.Service
 
                     Message message = new Message(0, reservation.Id, _userService.GetById(reservation.GuestId).Username, _accommodationService.GetById(reservation.AccommodationId).OwnerId, "Reservation has been canceled", content, MessageType.AccommodationReservationCanceled, false);
                     Save(message);
+                }
+            }
+        }
+
+        private void SetAllNewForumMessages(List<Message> messages)
+        {
+            foreach(var forum in _forumService.GetAll())
+            {
+                foreach (User u in _userService.GetUsersWithAccommodationOnLocation(forum.Location))
+                {
+                    if (!(messages.Any(message => message.RequestId == forum.Id && message.Type == MessageType.ForumOpened)))
+                    {
+                        string content = "New forum has been created in location " + forum.Location.City + ", " + forum.Location.Country + ".";
+
+                        Message message = new Message(0, forum.Id, "System", u.Id, "New forum created", content, MessageType.ForumOpened, false);
+                        Save(message);
+                    }
                 }
             }
         }

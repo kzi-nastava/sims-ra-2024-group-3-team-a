@@ -23,13 +23,13 @@ namespace BookingApp.View.Owner
     /// </summary>
     public partial class NewReviewDetailsPage : Page
     {
-        private NewReviewDetailsViewModel _newReviewDetailsViewModel;
+        private NewMessageDetails _newReviewDetailsViewModel;
 
         public NewReviewDetailsPage(MessageDTO messageDTO)
         {
             InitializeComponent();
 
-            _newReviewDetailsViewModel = new NewReviewDetailsViewModel(messageDTO);
+            _newReviewDetailsViewModel = new NewMessageDetails(messageDTO);
             DataContext = _newReviewDetailsViewModel;
         }
     }
