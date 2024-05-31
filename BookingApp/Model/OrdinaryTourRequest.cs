@@ -33,6 +33,7 @@ namespace BookingApp.Model
         public DateTime EndDate { get; set; }
         public DateTime RequestSentDate { get; set; }
         public DateTime RequestAcceptedDate { get; set; }
+        public Boolean CanBeAccepted { get; set; }
 
         public OrdinaryTourRequest()
         {
@@ -57,6 +58,7 @@ namespace BookingApp.Model
             EndDate = endDate;
             RequestAcceptedDate = requestAccepted;
             RequestSentDate = requestSent;
+            CanBeAccepted = true;
         }
 
         public string[] ToCSV()
@@ -64,12 +66,12 @@ namespace BookingApp.Model
             if (Tourists != null)
             {
                 string tourists = CreateTouristsString();
-                string[] csvValues = { Id.ToString(),GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(),RequestAcceptedDate.ToString(),RequestSentDate.ToString(),ComplexTourRequestId.ToString(), tourists };
+                string[] csvValues = { Id.ToString(),GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(),RequestAcceptedDate.ToString(),RequestSentDate.ToString(),ComplexTourRequestId.ToString(),CanBeAccepted.ToString(), tourists };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(),RequestAcceptedDate.ToString(),RequestSentDate.ToString(),ComplexTourRequestId.ToString()};
+                string[] csvValues = { Id.ToString(), GuideId.ToString(), UserId.ToString(), Place.City, Place.Country, Description, Language.ToString(), NumberOfTourists.ToString(), Status.ToString(), BeginDate.ToString(), EndDate.ToString(),RequestAcceptedDate.ToString(),RequestSentDate.ToString(),ComplexTourRequestId.ToString(), CanBeAccepted.ToString() };
                 return csvValues;
             }
         }
@@ -101,7 +103,8 @@ namespace BookingApp.Model
             RequestAcceptedDate = DateTime.Parse(values[11]);
             RequestSentDate = DateTime.Parse(values[12]);
             ComplexTourRequestId = Convert.ToInt32(values[13]);
-            for (int i = 14; i < values.Length; i = i + 4)
+            CanBeAccepted = Convert.ToBoolean(values[14]);
+            for (int i = 15; i < values.Length; i = i + 4)
             {
                 if (i + 3 < values.Length)
                 {

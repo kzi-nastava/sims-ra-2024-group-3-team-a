@@ -15,22 +15,28 @@ using BookingApp.View.Guest;
 using BookingApp.Model.Enums;
 using BookingApp.View;
 using BookingApp.View.Guide;
+using System.Collections;
+using BookingApp.Model;
 
 namespace BookingApp.ViewModel.Guide
 {
     class TourRequestViewModel : ViewModel
     {
         private ObservableCollection<OrdinaryTourRequestDTO> _requestsDTO { get; set; }
+        private ObservableCollection<ComplexTourRequestDTO> _complexRequestsDTO { get; set; }
         private ObservableCollection<OrdinaryTourRequestDTO> _filteredRequestsDTO { get; set; }
         private OrdinaryTourRequestService _tourRequestService;
-        private MessageService _messageService;
+        private ComplexTourRequestService _complexRequestService;
         private TourDTO _selectedRequestDTO = null;
         private UserDTO _userDTO;
         private RelayCommand _searchCommand;
         private RelayCommand _resetSearchParametersCommand;
         private RelayCommand _cancelTourRequestCommand;
         private RelayCommand _acceptTourRequestCommand;
+        private RelayCommand _acceptComplexTourRequestCommand;
+        private Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> _dictionary;
         private RelayCommand _showTourRequestStatisticsCommand;
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> keyValuePairs { get; set; }
         public TourRequestViewModel(UserDTO user)
         {
             _userDTO = user;
@@ -46,16 +52,30 @@ namespace BookingApp.ViewModel.Guide
             IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
-
+            IComplexTourRequestRepository complexTourRequestRepository = Injector.CreateInstance<IComplexTourRequestRepository>();
             _tourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _complexRequestService = new ComplexTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository, complexTourRequestRepository);
             List<OrdinaryTourRequestDTO> requestsDTO = _tourRequestService.GetOnWait().Select(request => new OrdinaryTourRequestDTO(request)).ToList();
             _requestsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(requestsDTO);
+            List<ComplexTourRequestDTO> complexDTO = _complexRequestService.GetAll().Select(request => new ComplexTourRequestDTO(request)).ToList();
+            _complexRequestsDTO = new ObservableCollection<ComplexTourRequestDTO>(complexDTO);
             _filteredRequestsDTO = _requestsDTO;
             _searchCommand = new RelayCommand(Search);
             _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
             _cancelTourRequestCommand = new RelayCommand(CancelTourRequest);
             _acceptTourRequestCommand = new RelayCommand(AcceptTourRequest);
+            _acceptComplexTourRequestCommand = new RelayCommand(AcceptComplexTourRequest);
             _showTourRequestStatisticsCommand = new RelayCommand(ShowTourRequestStatistic);
+            keyValuePairs = new Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>>();
+            foreach (OrdinaryTourRequest requestOrdinary in _tourRequestService.GetAll())
+            {
+               
+                    requestOrdinary.CanBeAccepted = true;
+                    _tourRequestService.Update(requestOrdinary);
+                
+            }
+            _dictionary = MakeDictionary();
+          
         }
         public ObservableCollection<OrdinaryTourRequestDTO> RequestsDTO
         {
@@ -63,6 +83,60 @@ namespace BookingApp.ViewModel.Guide
             set
             {
                 _requestsDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> MakeDictionary()
+        {
+
+            List<OrdinaryTourRequestDTO> complexTourParts = new List<OrdinaryTourRequestDTO>();
+            ObservableCollection<OrdinaryTourRequestDTO> complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>();
+
+            foreach (ComplexTourRequest c in _complexRequestService.GetAll())
+            {
+                complexTourParts = _complexRequestService.getOrdinaryTourRequests(c.Id).Select(ordinaryTourRequests => new OrdinaryTourRequestDTO(ordinaryTourRequests)).ToList();
+                foreach (OrdinaryTourRequestDTO request in complexTourParts)
+                {
+                    if (request.Status == TourRequestStatus.Accepted && request.GuideId== _userDTO.Id)
+                    {
+                        foreach (OrdinaryTourRequestDTO requestOrdinary in complexTourParts)
+                        {
+                            if (request.ComplexTourRequestId == requestOrdinary.ComplexTourRequestId )
+                            {
+                                requestOrdinary.CanBeAccepted = false;
+                                _tourRequestService.Update(requestOrdinary.ToOrdinaryTourRequest());
+                            }
+                        }
+                    }
+                }
+                complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(complexTourParts);
+                keyValuePairs.Add(new ComplexTourRequestDTO(c), complexPartsDTO);
+
+
+            }
+
+            return keyValuePairs;
+
+
+        }
+        public ObservableCollection<ComplexTourRequestDTO> ComplexRequestsDTO
+        {
+            get { return _complexRequestsDTO; }
+            set
+            {
+                _complexRequestsDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> Dictionary
+        {
+            get
+            {
+                return _dictionary;
+            }
+            set
+            {
+                _dictionary = value;
                 OnPropertyChanged();
             }
         }
@@ -127,8 +201,20 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        
-            public RelayCommand ShowTourRequestStatistics
+        public RelayCommand AcceptComplexTourRequestCommand
+        {
+            get
+            {
+                return _acceptComplexTourRequestCommand;
+            }
+            set
+            {
+                _acceptComplexTourRequestCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowTourRequestStatistics
         {
             get { return _showTourRequestStatisticsCommand; }
             set
@@ -142,12 +228,20 @@ namespace BookingApp.ViewModel.Guide
             TourRequestStatisticsWindow statistics = new TourRequestStatisticsWindow(_userDTO);
             statistics.Show();
         }
+        private void AcceptComplexTourRequest(object parameter)
+        {
+            OrdinaryTourRequestDTO requestDTO = parameter as OrdinaryTourRequestDTO;
+            ComplexTourRequestDTO _complexRequestDTO = new ComplexTourRequestDTO(_complexRequestService.GetById(requestDTO.ComplexTourRequestId));
+            AcceptComplexTourWindow acceptWindow = new AcceptComplexTourWindow(requestDTO,_complexRequestDTO,_userDTO);
+            acceptWindow.Show();
+        }
         private void AcceptTourRequest(object parameter)
         {
             OrdinaryTourRequestDTO requestDTO = parameter as OrdinaryTourRequestDTO;
-            AcceptTourWindow acceptWindow = new AcceptTourWindow(requestDTO,_userDTO);
+            AcceptTourWindow acceptWindow = new AcceptTourWindow(requestDTO, _userDTO);
             acceptWindow.Show();
         }
+ 
         private string _searchCountryInput = String.Empty;
         public string SearchCountryInput
         {

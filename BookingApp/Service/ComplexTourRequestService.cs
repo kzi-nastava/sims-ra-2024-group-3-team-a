@@ -90,6 +90,18 @@ namespace BookingApp.Service
             }
             return ordinaryTourRequests;
         }
+        public List<OrdinaryTourRequest> getOrdinaryTourRequests(int complexTourRequestId)
+        {
+            List<OrdinaryTourRequest> ordinaryTourRequests = new List<OrdinaryTourRequest>();
+
+
+            foreach (OrdinaryTourRequest ordinaryTourRequest in _ordinaryTourRequestService.GetAll())
+            {
+                if (ordinaryTourRequest.ComplexTourRequestId == complexTourRequestId)
+                    ordinaryTourRequests.Add(ordinaryTourRequest);
+            }
+            return ordinaryTourRequests;
+        }
 
         public void CheckForInvalidComplexTourRequests(int userId)
         {
