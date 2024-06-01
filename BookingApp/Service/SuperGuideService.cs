@@ -39,6 +39,25 @@ namespace BookingApp.Service
             }
             return null;
         }
+        public Boolean ScoreAboveFourCheck(User user, Languages language)
+        {
+            int count = 0;
+            double score = 0;
+
+            foreach (TourReview tourReview in _tourReviewService.GetAll())
+            {
+                Tour tour = _tourService.GetById(tourReview.TourId);
+
+                if (tour.Language == language && tour.GuideId == user.Id)
+                {
+                    double tourScore = (tourReview.GuideKnowledgeRating + tourReview.GuideLanguageRating + tourReview.TourEntertainmentRating) / 3.0;
+                    score += tourScore;
+                    count++;
+                }
+            }
+            double finalScore = score / count;
+            if (finalScore > 4.0) { return true; } else { return false; }
+        }
         public SuperGuide Save(SuperGuide superGuide)
         {
             return _superGuideRepository.Save(superGuide);
@@ -68,7 +87,7 @@ namespace BookingApp.Service
             foreach (Languages language in _tourService.GetExistingLanguages()) {
 
               int count = FindCount(user, language);
-              if (count > 20) 
+              if (count > 20 ) 
               {
                     SuperGuide guide = new SuperGuide();
                     guide.GuideId = user.Id;
@@ -108,12 +127,17 @@ namespace BookingApp.Service
             int count = 0;
             foreach (Tour tour in _tourService.GetByGuideId(user.Id))
             {
-                if (tour.Language == language)
+                if (ScoreAboveFourCheck(user, language))
                 {
-                    if (_tourReviewService.ScoreAboveFourCheck(tour)) { count++; }
+                    if (tour.Language == language)
+                    {
+                        count++;
+                    }
                 }
             }
-            return count;
+
+                return count;
+
         }
         public void SuperUserCheck(User user)
         {

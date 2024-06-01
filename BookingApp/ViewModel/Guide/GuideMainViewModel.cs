@@ -24,6 +24,8 @@ namespace BookingApp.ViewModel.Guide
        
         private Boolean _doesActiveTourExist = false;
         private readonly TourService _tourService;
+        private readonly UserService _userService;
+        private readonly SuperGuideService _superGuideService;
         private TourDTO _selectedTourDTO = null;
         private UserDTO _loggedInGuide;
         private TourDTO _mostVisitedTourDTO;
@@ -35,6 +37,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourRequestCommand;
         private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
+        private RelayCommand _quitCommand;
         private RelayCommand _showLanguagesCommand;
         public GuideMainViewModel(User guide)
         {
@@ -47,10 +50,10 @@ namespace BookingApp.ViewModel.Guide
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             ISuperGuideRepository superGuideRepository = Injector.CreateInstance<ISuperGuideRepository>();
-          /*  SuperGuideService superGuideService = new SuperGuideService(userRepository, superGuideRepository, tourRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-            superGuideService.SuperGuideCheck(guide);*/
+            _superGuideService = new SuperGuideService(userRepository, superGuideRepository, tourRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-           
+            _userService = new UserService(userRepository);
             List<TourDTO> toursDTO = _tourService.GetTodayTours(guide).Select(tour => new TourDTO(tour)).ToList();
             _toursTodayDTO = new ObservableCollection<TourDTO>(toursDTO);
             _showActiveTourCommand = new RelayCommand(ShowActiveTour);
@@ -61,6 +64,7 @@ namespace BookingApp.ViewModel.Guide
             _borderClickedCommand = new RelayCommand(ShowAllTours);
             _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
+            _quitCommand = new RelayCommand(Quit);
             _showLanguagesCommand = new RelayCommand(ShowLanguages);
             if (_tourService.GetMostVisitedTour() != null)
             {
@@ -147,6 +151,26 @@ namespace BookingApp.ViewModel.Guide
                 _borderClickedCommand = value;
                 OnPropertyChanged();
             }
+        }
+        public RelayCommand QuitCommand
+        {
+            get { return _quitCommand; }
+            set
+            {
+                _quitCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Quit()
+        {
+            _tourService.CancelUpcoming(_loggedInGuide.ToUser());
+            /// _userService.Delete(_loggedInGuide.ToUser());
+            _loggedInGuide.Username = "xxxx";
+            _loggedInGuide.Password = "ghBHjk7869";
+            _userService.Update(_loggedInGuide.ToUser());
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            GuideMainWindow.GetInstance().Close();
         }
         private void ShowActiveTour()
         {
@@ -240,7 +264,23 @@ namespace BookingApp.ViewModel.Guide
         }
         private void ShowLanguages()
         {
-            MessageBox.Show("Languages", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            String languages = "";
+            foreach (SuperGuide guide in _superGuideService.GetAll())
+            {
+                if (guide.GuideId == _loggedInGuide.Id)
+                {
+                    if(languages.Length < 2) {
+                        languages += guide.Language.ToString();
+                    }
+                    else
+                    {
+                        languages += ", ";
+                        languages += guide.Language.ToString();
+                    }
+                }
+            }
+
+            MessageBox.Show(languages, "", MessageBoxButton.OK, MessageBoxImage.None);
 
         }
         public UserDTO User
