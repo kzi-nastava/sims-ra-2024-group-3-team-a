@@ -28,6 +28,7 @@ namespace BookingApp.View.Guide
         {
             InitializeComponent();
             DataContext = new TouristStatisticsViewModel(tourDTO);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
     }
 }

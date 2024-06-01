@@ -24,15 +24,13 @@
         <Grid Grid.ColumnSpan="5">
             <TextBlock HorizontalAlignment="Center" FontStyle="Italic"  >Odaberite termin ture</TextBlock>
         </Grid>
-        <DockPanel Grid.Row="2" Grid.ColumnSpan="4" HorizontalAlignment="Center">
-            <ComboBox Height="20" IsEditable="True" Foreground="Black"  Width="100"  ItemsSource="{Binding BeginDates ,StringFormat='{}{0:dd/MM/yyyy}', UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Begin}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </DockPanel>
+        <ComboBox Height="20" IsEditable="True" Foreground="Black"  Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding BeginDates ,StringFormat='{}{0:dd/MM/yyyy}', UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Begin}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Button Content="POTVRDI" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Height="30" Command="{Binding AcceptTourRequestCommand}"></Button>
     </Grid>
 </Window>

@@ -25,6 +25,8 @@ namespace BookingApp.ViewModel.Guide
         private TourService _tourService;
         private RelayCommand _showTouristsStatistcsCommand;
         private RelayCommand _showMostVisitedByYearCommand;
+        private int _chosenYear;
+
         public static ObservableCollection<TourDTO> _finishedToursDTO { get; set; }
 
         public TourStatisticsViewModel(UserDTO user)
@@ -38,6 +40,15 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+             years = new List<string>
+             {
+            "ukupno", "2024", "2023", "2022", "2021", "2020",
+            "2019", "2018", "2017", "2016", "2015",
+            "2014", "2013", "2012", "2011", "2010",
+            "2009", "2008", "2007", "2006", "2005",
+            "2004", "2003", "2002", "2001", "2000"
+            };
+            chosenYear = "ukupno";
 
             List<TourDTO> toursDTO = _tourService.GetAllFinishedTours(user.ToUser()).Select(tour => new TourDTO(tour)).ToList();
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursDTO);
@@ -61,7 +72,32 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        
+        private List<string> years;
+        public List<string> Years
+        {
+            get { return years; }
+            set
+            {
+                years = value;
+                OnPropertyChanged();
+            }
+        }
+        private string chosenYear;
+        public string ChosenYear
+        {
+            get { return chosenYear; }
+            set
+            {
+                if (chosenYear != value)
+                {
+                    chosenYear = value;
+                    OnPropertyChanged();
+                    ShowMostVisitedByYear();
+                }
+              
+            }
+        }
+
         public TourDTO MostVisitedTourDTO
         {
             get { return _mostVisitedTourDTO; }
@@ -80,21 +116,30 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        public RelayCommand ShowMostVisitedByYearCommand
+        private void ShowMostVisitedByYear()
         {
-            get { return _showMostVisitedByYearCommand; }
-            set
+            if(chosenYear == "ukupno")
             {
-                _showMostVisitedByYearCommand = value;
-                OnPropertyChanged();
+                MostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
             }
-        }
-        private void ShowMostVisitedByYear(object parameter)
-        {
-            string date = parameter as string;
-            int year = Convert.ToInt32(date);
-            MostVisitedTourWindow mostVisitedTour = new MostVisitedTourWindow(year);
-            mostVisitedTour.Show();
+            else{
+                string date = chosenYear;
+                int year = Convert.ToInt32(date);
+                if (_tourService.GetMostVisitedByYear(year) != null)
+                {
+                    MostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedByYear(year));
+                }
+                else
+                {
+                    TourDTO tour = new TourDTO();
+                    tour.Name = "";
+                    tour.LocationDTO.City = "";
+                    tour.LocationDTO.Country = "";
+                    tour.TouristsPresent = 0;
+                    MostVisitedTourDTO = tour;
+                    
+                }
+            }
         }
         public RelayCommand ShowTouristStatisticsCommand
         {
