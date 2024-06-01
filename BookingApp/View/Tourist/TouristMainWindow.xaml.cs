@@ -192,5 +192,14 @@ namespace BookingApp.View
         {
 
         }
+
+        private void LightThemeClick(object sender, RoutedEventArgs e)
+        {
+            AppTheme.ChangeTheme(new Uri("Themes/LightTheme.xaml",UriKind.Relative));
+        }
+        private void DarkThemeClick(object sender, RoutedEventArgs e)
+        {
+            AppTheme.ChangeTheme(new Uri("Themes/DarkTheme.xaml", UriKind.Relative));
+        }
     }
 }

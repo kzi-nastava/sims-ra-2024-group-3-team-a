@@ -1,6 +1,4 @@
-﻿using BookingApp.DTO;
-using BookingApp.ViewModel.Owner;
-using BookingApp.ViewModel.Tourist;
+﻿using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +16,16 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Tourist
 {
     /// <summary>
-    /// Interaction logic for VoucherWindow.xaml
+    /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class VoucherWindow : Window
+    public partial class SettingsWindow : Window
     {
-        private VoucherViewModel _voucherViewModel;
-        public VoucherWindow(UserDTO loggedInUser)
+        private SettingsViewModel _settingsViewModel;
+        public SettingsWindow()
         {
             InitializeComponent();
-
-            _voucherViewModel = new VoucherViewModel(loggedInUser);
-
-            DataContext = _voucherViewModel;
-
-            //voucherListView.Focus();
+            _settingsViewModel = new SettingsViewModel();
+            DataContext = _settingsViewModel;
         }
     }
 }

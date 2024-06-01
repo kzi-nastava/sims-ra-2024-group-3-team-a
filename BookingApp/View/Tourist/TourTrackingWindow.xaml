@@ -5,23 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
-        Title="TrackTourWindow" Height="450" Width="800">
+        Title="TrackTourWindow" Height="500" Width="1035">
     <Window.Resources>
+        <local:ReachedStatusToBrushConverter x:Key="ReachedStatusToBrushConverter"/>
         <Style TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Background="#edebfc">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Background="AntiqueWhite" Grid.Row="0">
+        <Grid  Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="200"/>
@@ -33,59 +34,172 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <Menu DockPanel.Dock="Top" BorderThickness="1" >
 
-            <Label Grid.Column="0" FontSize="30">Acctive tour information</Label>
-            <Grid Grid.Column="2">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="13"  FontWeight="Bold">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/home.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/trekking-16.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/map.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/edit.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/star.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/gift.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/email.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
 
-                <TextBlock Grid.Row="0" Grid.Column="0">Name:</TextBlock>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TourDTO.Name}" IsEnabled="False"  BorderBrush="Transparent" Width="100"></TextBox>
-                <TextBlock Grid.Row="1" Grid.Column="0">Location:</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TourDTO.LocationDTOString,Mode=OneWay}"  BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
-                <TextBlock Grid.Row="2" Grid.Column="0">Date:</TextBlock>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TourDTO.BeginingTime}" BorderBrush="Transparent" Width="100" IsEnabled="False"></TextBox>
 
-            </Grid>
+
+                <MenuItem x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+
+                    <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+
+            </Menu>
+            <Label Grid.Column="0" Margin="20,0,0,0" FontWeight="Bold" Grid.Row="1" FontSize="30">Active tour information</Label>
+
         </Grid>
-        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-            <Grid x:Name="gridMain" ShowGridLines="False"  Grid.Row="0" Margin="10,0,10,150" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="2" FontSize="30" Grid.Column="0">Current Key Point:</TextBlock>
-                <Button Grid.Row="2" Grid.Column="1" Background="LightPink" Content="{Binding TourDTO.CurrentKeyPoint}"></Button>
-           </Grid>
-        </Border>
-       
-        <Grid x:Name="Grid2"  Grid.Row="2">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <DataGrid x:Name="dataGridTourists"  ItemsSource="{Binding TouristsDTO}" Margin="0" AutoGenerateColumns="False" CanUserAddRows="False" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Joining key point " Width="*" Binding="{Binding JoiningKeyPoint}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            </ScrollViewer>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Margin="34,69,56,6" Grid.Row="0" FontSize="18" FontWeight="Bold" Text="Key points:"/>
+            <Border BorderBrush="LightGray" Background="#fcfcf2" CornerRadius="8" Width="250" BorderThickness="2" Margin="708,-20,0,7"  HorizontalAlignment="Left" Grid.Row="0">
+                <Grid Grid.Column="0" Width="250"  HorizontalAlignment="Right" Grid.Row="0" Grid.RowSpan="2"  >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" FontSize="15" Margin="5,0,0,0" FontWeight="Bold" Grid.Column="0">Name:</TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" Text="{Binding TourDTO.Name}" IsEnabled="False" FontSize="15"  ></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0,0,0" FontSize="15" FontWeight="Bold"  Grid.RowSpan="2" Grid.ColumnSpan="2">Location:</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="25,0,0,0" Text="{Binding TourDTO.LocationDTOString,Mode=OneWay}"  FontSize="15" ></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="5,0,0,0" FontWeight="Bold"  FontSize="15">Date:</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,0,0,0" Text="{Binding TourDTO.BeginingTime}" FontSize="15" ></TextBlock>
+
+                </Grid>
+            </Border>
+            <Border Background="#fcfcf2" Grid.Row="2" CornerRadius="8" BorderBrush="LightGray" Margin="30,0,30,0"  BorderThickness="2">
+                <Grid x:Name="gridMain" ShowGridLines="False" Grid.Row="2"  Margin="170,10,10,10" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="420"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
+
+                    </Button>
+                    <ScrollViewer Name="scrollViewer"
+                      VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Hidden"
+                      Loaded="ScrollViewer_Loaded"
+                      Grid.Column="1">
+
+                        <ItemsControl Background="White" ItemsSource="{Binding KeyPoints}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button  Content="{Binding Path=Name}"  IsHitTestVisible="False" Background="{Binding Path=IsCurrent, Converter={StaticResource ReachedStatusToBrushConverter}}" Width="130" Height="130" >
+
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}"  Height="50" Width="30" Margin="5">
+
+                    </Button>
+
+                </Grid>
+            </Border>
         </Grid>
-          
+        <Grid Grid.Row="3" >
+            <StackPanel>
+                <TextBlock  Margin="30,15,30,0" FontSize="18" FontWeight="Bold" Text="Attendance at the tour information:"></TextBlock>
+                <Grid x:Name="Grid2" MaxHeight="100" Grid.Row="3" Margin="30,10,30,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <DataGrid x:Name="dataGridTourists"  ItemsSource="{Binding TouristsDTO}" Margin="0" MaxHeight="150" AutoGenerateColumns="False" CanUserAddRows="False" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="NAME" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="SURNAME" Width="*" Binding="{Binding Surname}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Joining key point " Width="*" Binding="{Binding JoiningKeyPoint}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Window>

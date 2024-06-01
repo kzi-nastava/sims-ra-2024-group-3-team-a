@@ -108,6 +108,19 @@ namespace BookingApp.Service
             }
         }
 
+        public void DeleteExpiredVouchers(int userId)
+        {
+            foreach(Voucher voucher in GetAllForUser(userId))
+            {
+                if(voucher.ExpireDate<DateTime.Now)
+                {
+                    Delete(voucher);
+                }
+
+            
+            }
+        }
+
        
     }
 }
