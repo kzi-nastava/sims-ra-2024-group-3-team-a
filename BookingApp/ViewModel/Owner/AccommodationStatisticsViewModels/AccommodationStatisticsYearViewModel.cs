@@ -87,6 +87,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             }
         }
 
+
         public Dictionary<int, AccommodationStatisticsDTO> AccommodationStatisticsDTO
         {
             get
@@ -119,6 +120,18 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             set
             {
                 _goBackCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowAddAccommodationRenovationPageCommand
+        {
+            get
+            {
+                return _showAddAccommodationRenovationPageCommand;
+            }
+            set
+            {
+                _showAddAccommodationRenovationPageCommand = value;
                 OnPropertyChanged();
             }
         }
