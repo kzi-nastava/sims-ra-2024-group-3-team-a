@@ -59,6 +59,7 @@ namespace BookingApp.DTO
             requestAcceptedDate = ordinaryTourRequest.RequestAcceptedDate;
             requestSentDate = ordinaryTourRequest.RequestSentDate;
             complexTourRequestId = ordinaryTourRequest.ComplexTourRequestId;
+            canBeAccepted = ordinaryTourRequest.CanBeAccepted;
             foreach (Tourist tour in ordinaryTourRequest.Tourists)
             {
                 touristsDTO.Add(new TouristDTO(tour));
@@ -78,6 +79,7 @@ namespace BookingApp.DTO
             endDate = ordinaryTourRequestDTO.EndDate;
             complexTourRequestId = ordinaryTourRequestDTO.ComplexTourRequestId;
             touristsDTO = ordinaryTourRequestDTO.TouristsDTO;
+            canBeAccepted = ordinaryTourRequestDTO.CanBeAccepted;
         }
 
 
@@ -190,6 +192,20 @@ namespace BookingApp.DTO
                 if (value != numberOfTourists)
                 {
                     numberOfTourists = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private Boolean canBeAccepted;
+        public Boolean CanBeAccepted
+
+        {
+            get { return canBeAccepted; }
+            set
+            {
+                if (value != canBeAccepted)
+                {
+                    canBeAccepted = value;
                     OnPropertyChanged();
                 }
             }
