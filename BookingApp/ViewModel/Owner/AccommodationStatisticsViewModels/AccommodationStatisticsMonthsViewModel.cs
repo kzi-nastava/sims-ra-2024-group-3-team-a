@@ -1,6 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
+using BookingApp.Reports.Owner;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
@@ -18,6 +19,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showAddAccommodationRenovationPageCommand;
+        private RelayCommand _generateReportCommand;
 
         private AccommodationDTO _accommodationDTO;
         private int _year;
@@ -25,6 +27,9 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private Dictionary<string, AccommodationStatisticsDTO> _accommodationStatisticsDTO;
         private AccommodationStatisticsService _accommodationStatisticsService;
         private int _mostOccupiedMonth;
+
+        private Dictionary<int, AccommodationStatisticsDTO> _accommodationStatisticsDTOForReport;
+
 
         private int[] _months = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
@@ -39,8 +44,10 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             _goBackCommand = new RelayCommand(GoBack);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showAddAccommodationRenovationPageCommand = new RelayCommand(ShowAddAccommodationRenovationPage);
+            _generateReportCommand = new RelayCommand(GenerateReport);
 
             _accommodationStatisticsDTO = new Dictionary<string, AccommodationStatisticsDTO>();
+            _accommodationStatisticsDTOForReport = new Dictionary<int, AccommodationStatisticsDTO>();
 
             _mostOccupiedMonth = _accommodationStatisticsService.GetMostOccupiedMonth(_accommodationDTO.Id, _year, _months);
             SetStatistics();
@@ -117,6 +124,18 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 OnPropertyChanged();
             }
         }
+        public RelayCommand GenerateReportCommand
+        {
+            get
+            {
+                return _generateReportCommand;
+            }
+            set
+            {
+                _generateReportCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void SetStatistics()
         {
@@ -134,9 +153,15 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 }
 
                 _accommodationStatisticsDTO.Add(ConvertMonthToString(month), accommodationStatisticsDTO);
+                _accommodationStatisticsDTOForReport.Add(month, accommodationStatisticsDTO);
             }
         }
 
+        private void GenerateReport()
+        {
+            AccommodationStatisticsReport accommodationStatisticsReport = new AccommodationStatisticsReport();
+            accommodationStatisticsReport.GenerateReport(_accommodationStatisticsDTOForReport, _accommodationDTO, _year);
+        }
         private string ConvertMonthToString(int month)
         {
             string monthString = "";

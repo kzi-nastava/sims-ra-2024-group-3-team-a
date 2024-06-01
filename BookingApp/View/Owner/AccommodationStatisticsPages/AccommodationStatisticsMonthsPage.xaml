@@ -35,6 +35,9 @@
         </Button>
 
         <Label HorizontalAlignment="Center" Foreground="#d4ff00" FontWeight="Bold" Grid.Row="1" Content="{Binding Path=AccommodationDTO.Name}" FontSize="25"/>
+        <Button Background="CadetBlue" Grid.Row="5" Margin="0,20,50,0" Height="55" Width="55" HorizontalAlignment="Right" Command="{Binding GenerateReportCommand}">
+            <Image Source="..\..\..\Resources\Images\Owner\printer.png"></Image>
+        </Button>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
