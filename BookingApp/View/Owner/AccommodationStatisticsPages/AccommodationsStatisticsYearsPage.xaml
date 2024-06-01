@@ -99,7 +99,11 @@
                 <Label VerticalAlignment="Center" Content="RENOVATE" FontSize="15" Foreground="#d4ff00"/>
             </StackPanel>
         </Button>
+
         <Label Margin="0,25,0,0" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Content="YEARLY STATISTICS" FontSize="20"/>
+        <Button Background="CadetBlue" Grid.Row="5" Margin="0,20,50,0" Height="55" Width="55" HorizontalAlignment="Right" Command="{Binding GenerateReportCommand}">
+            <Image Source="..\..\..\Resources\Images\Owner\printer.png"></Image>
+        </Button>
 
         <StackPanel Grid.Row="6">
             <ListView ItemsSource="{Binding AccommodationStatisticsDTO}" SelectedValue="{Binding SelectedYear}" SelectedValuePath="Key" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
