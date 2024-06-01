@@ -164,10 +164,18 @@ namespace BookingApp.ViewModel.Guide
         private void Quit()
         {
             _tourService.CancelUpcoming(_loggedInGuide.ToUser());
-            /// _userService.Delete(_loggedInGuide.ToUser());
-            _loggedInGuide.Username = "xxxx";
-            _loggedInGuide.Password = "ghBHjk7869";
-            _userService.Update(_loggedInGuide.ToUser());
+          
+            if (_loggedInGuide.IsSuper == true)
+            {
+                foreach(SuperGuide guide in _superGuideService.GetAll())
+                {
+                    if(guide.GuideId == _loggedInGuide.Id)
+                    {
+                        _superGuideService.Delete(guide);
+                    }
+                }
+            }
+            _userService.Delete(_loggedInGuide.ToUser());
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             GuideMainWindow.GetInstance().Close();
