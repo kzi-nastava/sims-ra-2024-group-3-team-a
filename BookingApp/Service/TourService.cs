@@ -52,6 +52,33 @@ namespace BookingApp.Service
         {
             return _tourRepository.Update(tour);
         }
+        public void CancelUpcoming(User guide)
+        {
+            foreach (Tour tour in GetUpcoming(guide))
+            {
+                tour.CurrentKeyPoint = "canceled";
+                Update(tour);
+                GiveVouchers(tour);
+            }
+
+        }
+        public void GiveVouchers(Tour tour)
+        {
+            foreach(TourReservation reservation in _tourReservationService.GetAll())
+            {
+                if(reservation.TourId == tour.Id && tour.CurrentKeyPoint != "canceled" && tour.CurrentKeyPoint != "finised")
+                {
+                    Voucher voucher = new Voucher();
+                    voucher.Type = Model.Enums.VoucherType.GuideQuitJob;
+                    voucher.TourId = -1;
+                    voucher.UserId = reservation.UserId;
+                    voucher.IsUsed = false;
+                    voucher.ExpireDate = DateTime.Now.AddYears(2);
+                    voucher.Header = "Your tour guide quit job!";
+                    _voucherService.Save(voucher);
+                }
+            }
+        }
         public List<Tour> GetActiveTours()
         {
             List<Tour> activeTours = new List<Tour>();
@@ -269,7 +296,7 @@ namespace BookingApp.Service
         {
             foreach(Voucher v in _voucherService.GetAllForUser(userId))
             {
-                if (v.ExpireDate == voucher.ExpireDate)
+                if (v.ExpireDate.Day == voucher.ExpireDate.Day && v.ExpireDate.Month == voucher.ExpireDate.Month && v.ExpireDate.Year==voucher.ExpireDate.Year)
                     return true;
             }
             return false;

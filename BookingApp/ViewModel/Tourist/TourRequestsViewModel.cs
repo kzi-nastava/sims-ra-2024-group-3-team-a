@@ -38,9 +38,11 @@ namespace BookingApp.ViewModel.Tourist
         private List<SolidColorBrush> SolidColorBrushes { get; set; }
 
         private OrdinaryTourRequestDTO _selectedTourDTO = null;
+        private OrdinaryTourRequestDTO _selectedPartDTO = null;
         private ComplexTourRequestService _complexTourRequestService { get; set; }
 
         private RelayCommand _showOrdinaryTourRequestInfoWindowCommand;
+        private RelayCommand _showOrdinaryTourRequestInfoForComplexTourWindowCommand;
         private RelayCommand _updateCommand;
         private RelayCommand _averageTouristNumberCommand;
         private RelayCommand _showForAllYearsCommand;
@@ -78,6 +80,7 @@ namespace BookingApp.ViewModel.Tourist
             _complexTourRequestsDTO= new ObservableCollection<ComplexTourRequestDTO>(complexTourRequests);
             _complexTourPartsDTO = new List<OrdinaryTourRequestDTO>();
             _showOrdinaryTourRequestInfoWindowCommand = new RelayCommand(ShowOrdinaryTourRequestInfoWindow);
+            _showOrdinaryTourRequestInfoForComplexTourWindowCommand = new RelayCommand(ShowOrdinaryTourRequestInfoWindow);
             _updateCommand = new RelayCommand(Update);
             _averageTouristNumberCommand = new RelayCommand(GetAverageTouristNumber);
             _showForAllYearsCommand = new RelayCommand(LoadDataForPieChart);
@@ -200,6 +203,24 @@ namespace BookingApp.ViewModel.Tourist
 
             }
         }
+     
+        
+        public OrdinaryTourRequestDTO SelectedPartDTO
+        {
+            get
+            {
+                return _selectedPartDTO;
+            }
+            set
+            {
+                _selectedPartDTO = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+
+
 
         public RelayCommand ShowOrdinaryTourRequestInfoWindowCommand
         {
@@ -210,6 +231,18 @@ namespace BookingApp.ViewModel.Tourist
             set
             {
                 _showOrdinaryTourRequestInfoWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowOrdinaryTourRequestInfoForComplexTourWindowCommand
+        {
+            get
+            {
+                return _showOrdinaryTourRequestInfoForComplexTourWindowCommand;
+            }
+            set
+            {
+                _showOrdinaryTourRequestInfoForComplexTourWindowCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -496,14 +529,7 @@ namespace BookingApp.ViewModel.Tourist
 
            
         }
-
-        public void Test()
-        {
-            ObservableCollection<OrdinaryTourRequestDTO> complexTourParts = new ObservableCollection<OrdinaryTourRequestDTO>();
-            ObservableCollection<ComplexTourRequestDTO> complex = new ObservableCollection<ComplexTourRequestDTO>();
-            // complexTourParts = _dictionary.ContainsKey()
-         
-        }
+        
         public void ComplexTourRequestStatus()
         {
             foreach (var pair in Dictionary)

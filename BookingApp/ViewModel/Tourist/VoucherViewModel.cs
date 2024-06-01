@@ -16,15 +16,16 @@ namespace BookingApp.ViewModel.Tourist
         private VoucherService _voucherService;
 
         private ObservableCollection<VoucherDTO> _voucherDTO;
-
-        public VoucherViewModel()
+        private UserDTO _userDTO;
+        public VoucherViewModel(UserDTO loggedInUser)
         {
+            _userDTO = loggedInUser;
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _voucherService = new VoucherService(voucherRepository);
             _voucherService.UpdateHeader();
             List<VoucherDTO> vouchers = _voucherService.GetAll().Select(vouchers => new VoucherDTO(vouchers)).ToList();
             _voucherDTO = new ObservableCollection<VoucherDTO>(vouchers);
-
+            
         }
 
         public ObservableCollection<VoucherDTO> VouchersDTO

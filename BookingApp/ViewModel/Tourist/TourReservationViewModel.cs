@@ -45,16 +45,12 @@ namespace BookingApp.ViewModel.Tourist
             _tourDTO = tourDTO;
             _userDTO = loggedInUser;
             _touristDTO = new TouristDTO();
-         /*   _touristDTO.PropertyChanged += (sender, e) =>
-            {
-               
-                    Validate1();
-                
-            };*/
+            
             _tourReservationDTO = new TourReservationDTO();
             voucher = new Voucher();
-           // _keyPoints = new List<KeyPointDTO>();
-          //  List<KeyPointDTO> keypoints = 
+           
+            // _keyPoints = new List<KeyPointDTO>();
+            //  List<KeyPointDTO> keypoints = 
 
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
@@ -82,6 +78,7 @@ namespace BookingApp.ViewModel.Tourist
             _closeWindowCommand = new RelayCommand(CloseWindow);
             _touristsDTO.Add(new TouristDTO("Milena","Mima", 22));
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
+
         }
         public TourDTO TourDTO
         {
@@ -155,6 +152,17 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        private bool _isConfirmButtonEnabled;
+        public bool IsConfirmButtonEnabled
+        {
+            get { return _isConfirmButtonEnabled; }
+            set
+            {
+                _isConfirmButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<VoucherDTO> VouchersDTO
         {
             get
@@ -329,19 +337,24 @@ namespace BookingApp.ViewModel.Tourist
         }
         public void ConfirmTourReservation()
         {
-            _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
-            _tourReservationDTO.TourId = _tourDTO.Id;
-            _tourReservationDTO.UserId = _userDTO.Id;
-            _tourReservationDTO.NumberOfTourists = _tourReservationDTO.TouristsDTO.Count();
+           
+            
+                _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
+                _tourReservationDTO.TourId = _tourDTO.Id;
+                _tourReservationDTO.UserId = _userDTO.Id;
+                _tourReservationDTO.NumberOfTourists = _tourReservationDTO.TouristsDTO.Count();
 
-            _tourReservationService.Save(_tourReservationDTO.ToTourReservation());
+                _tourReservationService.Save(_tourReservationDTO.ToTourReservation());
 
-            if(_voucherDTO != null)
-            {
-                _voucherService.Delete(voucher);
-            }
+                if (_voucherDTO != null)
+                {
+                    _voucherService.Delete(voucher);
+                }
 
-            MessageBox.Show("Successfully added reservation!");
+                MessageBox.Show("Successfully added reservation!");
+            
+
+            
         }
         public void ShowTouristMainWindow()
         {
@@ -384,7 +397,13 @@ namespace BookingApp.ViewModel.Tourist
         }
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            Validate1();
+            _touristDTO.PropertyChanged += (sender, e) =>
+            {
+
+                Validate1();
+
+            };
+
         }
         public void CloseWindow()
         {
