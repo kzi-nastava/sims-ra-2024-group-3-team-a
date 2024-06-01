@@ -22,6 +22,7 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _postCommand;
+        private RelayCommand _reportPostCommand;
 
         private PostService _postService;
 
@@ -29,14 +30,17 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
         private PostDTO _newPostDTO;
         private ForumDTO _forumDTO;
         private UserDTO _loggedInUser;
+        private ForumDTO _selectedForumDTO;
 
         public ForumDetailsViewModel(ForumDTO selectedForum, UserDTO loggedInUser)
         {
             _newPostDTO = new PostDTO();
+            _selectedForumDTO = selectedForum;
 
             _goBackCommand = new RelayCommand(GoBack);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _postCommand = new RelayCommand(Post);
+            _reportPostCommand = new RelayCommand(ReportPost);
 
             _loggedInUser = loggedInUser;
             _forumDTO = selectedForum;
@@ -60,7 +64,29 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
 
                 _postsDTO.Add(new PostDTO(_postService.Save(_newPostDTO.ToPost())));
                 _newPostDTO.Text = String.Empty;
+
+                List<PostDTO> postsList = _postService.GetPostsForForum(_selectedForumDTO.ToForum()).Select(post => new PostDTO(post)).ToList();
+                _postsDTO = new ObservableCollection<PostDTO>(postsList);
             }  
+        }
+
+        private void ReportPost(object parameter)
+        {
+            PostDTO postDTO = parameter as PostDTO;
+
+            if (postDTO != null)
+            {
+                if (!postDTO.OwnersReported.Contains(_loggedInUser.Id.ToString()))
+                {
+                    var postToUpdate = _postsDTO.FirstOrDefault(p => p.Id == postDTO.Id);
+                    int index = _postsDTO.IndexOf(postToUpdate);
+                    postToUpdate.OwnersReported.Add(_loggedInUser.Id.ToString());
+                    postToUpdate.Reports++;
+                    _postService.Update(postToUpdate.ToPost());
+                    _postsDTO.RemoveAt(index);
+                    _postsDTO.Insert(index, postToUpdate);   
+                }
+            }
         }
 
         public PostDTO NewPostDTO
@@ -86,7 +112,7 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
             {
                 _postsDTO = value;
                 OnPropertyChanged();
-            }
+            }  
         }
 
         public RelayCommand PostCommand
@@ -114,7 +140,18 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand ReportPostCommand
+        {
+            get
+            {
+                return _reportPostCommand;
+            }
+            set
+            {
+                _reportPostCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public RelayCommand ShowSideMenuCommand
         {
             get

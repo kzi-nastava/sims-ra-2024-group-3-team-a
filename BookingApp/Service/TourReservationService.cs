@@ -111,6 +111,7 @@ namespace BookingApp.Service
             }
             return turisti;
         }
+      
         private void AddReview(TourReservation tourReservation, Model.Tourist tourist)
         {
             foreach (TourReview tourReview in _tourReviewService.GetAll())

@@ -45,7 +45,9 @@
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\Owner\printer.png" />
     <None Remove="Resources\Images\Owner\renovation.png" />
+    <None Remove="Resources\Images\Owner\reportFlag.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
     <None Remove="Resources\Images\Tourist\athens1.png" />
@@ -109,6 +111,8 @@
     <Resource Include="Resources\Images\Guide\refresh.png" />
     <Resource Include="Resources\Images\Owner\forums.png" />
     <Resource Include="Resources\Images\Owner\forums1.png" />
+    <Resource Include="Resources\Images\Owner\printer.png" />
+    <Resource Include="Resources\Images\Owner\reportFlag.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
     <Resource Include="Resources\Images\Tourist\gift.png" />
@@ -199,6 +203,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="12.17.0" />
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
