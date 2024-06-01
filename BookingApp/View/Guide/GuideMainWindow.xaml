@@ -229,7 +229,7 @@
                 </Border>
             </Grid>
             <Grid Grid.Row="7">
-                <Button Content="OTKAZ" Command="{Binding LogoutCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
+                <Button Content="OTKAZ" Command="{Binding QuitCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
             </Grid>
         </Grid>
         <Grid Grid.Row="8" Grid.Column="5">
