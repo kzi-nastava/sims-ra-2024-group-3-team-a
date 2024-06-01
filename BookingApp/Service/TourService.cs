@@ -269,7 +269,7 @@ namespace BookingApp.Service
         {
             foreach(Voucher v in _voucherService.GetAllForUser(userId))
             {
-                if (v.ExpireDate == voucher.ExpireDate)
+                if (v.ExpireDate.Day == voucher.ExpireDate.Day && v.ExpireDate.Month == voucher.ExpireDate.Month && v.ExpireDate.Year==voucher.ExpireDate.Year)
                     return true;
             }
             return false;

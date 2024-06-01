@@ -133,7 +133,7 @@
 
             <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
                   
-                </Button>
+            </Button>
              
                     <ScrollViewer Grid.Column="1" Name="scrollViewer"
                       VerticalScrollBarVisibility="Disabled"
@@ -160,7 +160,7 @@
 
             <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
 
-                </Button>
+            </Button>
           
         </Grid>
 

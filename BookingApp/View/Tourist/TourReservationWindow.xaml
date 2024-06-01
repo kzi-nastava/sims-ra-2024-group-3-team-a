@@ -247,7 +247,7 @@
 
         <Button x:Name="buttoCancel" Content="Cancel" Grid.Row="3"  Background="#d470a2" FontWeight="Bold" FontSize="10"  Margin="0,14,32,54"   Command="{Binding CloseWindowCommand}"   Grid.Column="0" HorizontalAlignment="Right" Width="120" Height="30" />
 
-        <Button x:Name= "buttonConfirm" Grid.Row="3" Background="#f1ddcf" Content="Confirm Reservation" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left"  Width="120" Height="30" Margin="32,14,0,54" Command="{Binding ComfirmTourReservationCommand}"  />
+        <Button x:Name= "buttonConfirm"  Grid.Row="3" Background="#f1ddcf" Content="Confirm Reservation" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left"  Width="120" Height="30" Margin="32,14,0,54" Command="{Binding ComfirmTourReservationCommand}"  />
 
 
 

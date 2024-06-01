@@ -30,6 +30,7 @@ namespace BookingApp.ViewModel.Tourist
         private MessageService _messageService { get; set; }
         private ComplexTourRequestService _complexTourRequestService { get; set; }
         private OrdinaryTourRequestService _ordinaryTourRequestService { get; set; }
+        private VoucherService _voucherService { get; set; }
         private ObservableCollection<TourDTO> _toursDTO;
         private ObservableCollection<TourDTO> _filteredToursDTO;
         private Message _message { get; set; }
@@ -49,13 +50,14 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _showOrindaryTourRequestWindow;
         private RelayCommand _showTourRequestsCommand;
         private RelayCommand _resetSearchParametersCommand;
+        private RelayCommand _showSettingsWindowCommand;
 
         public TouristMainViewModel(UserDTO loggedInUser)
         {
             _message = new Message();
             _tourDTO = new TourDTO();
             _userDTO = loggedInUser;
-
+           
             IComplexTourRequestRepository complexTourRequestRepository = Injector.CreateInstance<IComplexTourRequestRepository>();
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
             IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
@@ -73,7 +75,7 @@ namespace BookingApp.ViewModel.Tourist
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _complexTourRequestService = new ComplexTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository, complexTourRequestRepository);
-
+            _voucherService = new VoucherService(voucherRepository);
             List<TourDTO> tours = _tourService.GetAll().Select(tours => new TourDTO(tours)).ToList();
        
             _toursDTO = new ObservableCollection<TourDTO>(tours);
@@ -85,6 +87,7 @@ namespace BookingApp.ViewModel.Tourist
             _showVoucherWindowCommand = new RelayCommand(ShowVoucherWindow);
             _showInboxWindowCommand = new RelayCommand(ShowinboxWindow);
             _showOrindaryTourRequestWindow = new RelayCommand(ShowOrindaryTourRequestWindow);
+            _showSettingsWindowCommand =new RelayCommand(ShowSettingsWindow);
             _messageService.CreateMessage(_message, _userDTO.ToUser());
             _ordinaryTourRequestService.GetCandidatesForMessages(_userDTO);
             _ordinaryTourRequestService.FindInvalidOrdinaryTourRequests(_userDTO);
@@ -97,6 +100,8 @@ namespace BookingApp.ViewModel.Tourist
             _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
             _complexTourRequestService.CheckForInvalidComplexTourRequests(_userDTO.Id);
             _tourService.FindCandidatesForVoucher(_userDTO.Id);
+            _voucherService.DeleteExpiredVouchers(_userDTO.Id);
+            
         }
 
         public TourDTO TourDTO
@@ -358,6 +363,18 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowSettingsWindowCommand
+        {
+            get
+            {
+                return _showSettingsWindowCommand;
+            }
+            set
+            {
+                _showSettingsWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _searchCountryInput = String.Empty;
         public string SearchCountryInput
@@ -498,7 +515,7 @@ namespace BookingApp.ViewModel.Tourist
 
         public void ShowVoucherWindow()
         {
-            VoucherWindow voucherWindow = new VoucherWindow();
+            VoucherWindow voucherWindow = new VoucherWindow(_userDTO);
             voucherWindow.ShowDialog();
         }
 
@@ -526,7 +543,12 @@ namespace BookingApp.ViewModel.Tourist
             TourRequestsWindow ordinaryTourRequestWindow = new TourRequestsWindow(_userDTO);
             ordinaryTourRequestWindow.ShowDialog();
         }
-       
+        public void ShowSettingsWindow()
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.ShowDialog();
+        }
+
         public void SendNotification()
         {
 
