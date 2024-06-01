@@ -7,6 +7,7 @@ using ceTe.DynamicPDF.PageElements.Charting.Series;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -209,8 +210,9 @@ namespace BookingApp.Reports.Owner
 
                 thirdPage.Elements.Add(table);
 
-                string reportPath = "../../../../Reports/Owner/Yearly Report for " + accommodation.Name + " " + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".pdf";
+                string reportPath = "../../../../Reports/Owner/Yearly-Report-for-" + accommodation.Name.Replace(" ", "-") + "-" + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".pdf";
                 document.Draw(reportPath);
+                Process.Start("cmd", "/c start " + reportPath);
             }
             else
             {
@@ -408,8 +410,9 @@ namespace BookingApp.Reports.Owner
                 thirdPage.Elements.Add(table);
 
 
-                string reportPath = "../../../../Reports/Owner/Monthly Report for " + accommodation.Name + " " + yearForMonthReport.ToString() + " " + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".pdf";
+                string reportPath = "../../../../Reports/Owner/Monthly-Report-for-" + accommodation.Name.Replace(" ", "-") + "-" + yearForMonthReport.ToString() + "-" + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".pdf";
                 document.Draw(reportPath);
+                Process.Start("cmd", "/c start " + reportPath);
             }
         }
     }
