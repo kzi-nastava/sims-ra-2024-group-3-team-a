@@ -33,6 +33,7 @@ namespace BookingApp.ViewModel.Guest
         private DateTime _selectedNewBeginDate;
         private DateTime _selectedNewEndDate;
         private AccommodationReservationDTO _selectedReservation;
+        private AccommodationReservationChangeRequestDTO _selectedChangeRequest;
 
         private List<string> _images;
 
@@ -41,6 +42,7 @@ namespace BookingApp.ViewModel.Guest
 
         private RelayCommand _addImagesCommand;
         private RelayCommand _submitRateOwnerCommand;
+        private RelayCommand _showSideMenuCommand;
         private RelayCommand _rateOwnerCommand;
         private RelayCommand _requestChangeCommand;
         private RelayCommand _submitRequestCommand;
@@ -73,6 +75,7 @@ namespace BookingApp.ViewModel.Guest
             _submitRequestCommand = new RelayCommand(SubmitRequest);
             _cancelReservationCommand = new RelayCommand(CancelReservation);
             _renovationRatingCommand = new RelayCommand(ChangeRating);
+            _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             UpdateMyReservations();
         }
 
@@ -82,6 +85,9 @@ namespace BookingApp.ViewModel.Guest
             List<AccommodationReservationDTO> RatedAccommodationReservationsList = _accommodationReservationService.GetAllRatedByGuestId(_loggedInGuest.Id).Select(accommodationReservation => new AccommodationReservationDTO(accommodationReservation)).ToList();
             _myReservations = new ObservableCollection<AccommodationReservationDTO>(AccommodationReservationsList);
             _myRatedReservations = new ObservableCollection<AccommodationReservationDTO>(RatedAccommodationReservationsList);
+            List<AccommodationReservationChangeRequestDTO> MyRequestsList = _accommodationReservationChangeRequestService.GetAllByGuestId(_loggedInGuest.Id).Select(request => new AccommodationReservationChangeRequestDTO(request)).ToList();
+            _myChangeRequests = new ObservableCollection<AccommodationReservationChangeRequestDTO>(MyRequestsList);
+            MyChangeRequestsDTO = _myChangeRequests;
         }
 
         private void CancelReservation()
@@ -196,6 +202,18 @@ namespace BookingApp.ViewModel.Guest
             }
         }
 
+        private void ShowReservationDetails() 
+        {
+            if (_selectedReservation.BeginDate >= DateOnly.FromDateTime(DateTime.Now))
+            {
+                GuestMainViewWindow.MainFrame.Content = new UpcomingReservationPage(_selectedReservation);
+            }
+            else
+            {
+                GuestMainViewWindow.MainFrame.Content = new PastReservationPage(_selectedReservation);
+            }
+        }
+
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = sender as RadioButton;
@@ -233,6 +251,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _myReservations = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<AccommodationReservationChangeRequestDTO> MyChangeRequestsDTO
+        {
+            get
+            {
+                return _myChangeRequests;
+            }
+            set
+            {
+                _myChangeRequests = value;
                 OnPropertyChanged();
             }
         }
@@ -285,6 +315,20 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _selectedReservation = value;
+                OnPropertyChanged();
+                ShowReservationDetails();
+            }
+
+        }
+        public AccommodationReservationChangeRequestDTO SelectedChangeRequest
+        {
+            get
+            {
+                return _selectedChangeRequest;
+            }
+            set
+            {
+                _selectedChangeRequest = value;
                 OnPropertyChanged();
             }
 
@@ -430,6 +474,26 @@ namespace BookingApp.ViewModel.Guest
                     OnPropertyChanged(nameof(RecommendationText));
                 }
             }
+        }
+        public RelayCommand ShowSideMenuCommand
+        {
+            get
+            {
+                return _showSideMenuCommand;
+            }
+            set
+            {
+                _showSideMenuCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public void ShowSideMenu()
+        {
+            GuestMainViewWindow.SideMenuFrame.Content = new GuestSideMenuPage();
+        }
+        public void CloseSideMenu()
+        {
+            GuestMainViewWindow.SideMenuFrame.Content = null;
         }
 
         private void ChangeRating(object parameter)

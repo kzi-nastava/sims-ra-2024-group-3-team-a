@@ -1,11 +1,7 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Repository;
 using BookingApp.ViewModel.Guest;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,19 +18,17 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Guest
 {
     /// <summary>
-    /// Interaction logic for MakeAccommodationReservationPage.xaml
+    /// Interaction logic for UpcomingReservationPage.xaml
     /// </summary>
-    public partial class MakeAccommodationReservationPage : Page
+    public partial class UpcomingReservationPage : Page
     {
-        private UserDTO _userDTO;
-        public static MakeAccommodationReservationPage Instance;
-
-        public MakeAccommodationReservationPage(AccommodationDTO selectedAccommodationDTO, UserDTO userDTO)
+        public static UpcomingReservationPage Instance;
+        public static ReservationViewModel _reservationViewModel;
+        public UpcomingReservationPage(AccommodationReservationDTO selectedReservation)
         {
             InitializeComponent();
-            _userDTO = userDTO;
-            //DataContext = new MakeReservationViewModel(selectedAccommodationDTO, _userDTO, );
-            DataContext = this;
+            _reservationViewModel = new ReservationViewModel(selectedReservation);
+            DataContext = _reservationViewModel;
             if(Instance == null)
             {
                 Instance = this;
