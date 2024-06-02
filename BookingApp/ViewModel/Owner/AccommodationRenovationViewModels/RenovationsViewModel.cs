@@ -5,6 +5,7 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using BookingApp.View.Owner.AccommodationRenovationPages;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
         private AccommodationRenovationDTO _selectedAccommodationRenovationDTO;
 
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _showRenovationHelpCommand;
 
         public RenovationsViewModel(UserDTO loggedInUser)
         {
@@ -37,6 +39,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
             _accommodationRenovationsDTO = new ObservableCollection<AccommodationRenovationDTO>(renovationsDTO);
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showRenovationHelpCommand = new RelayCommand(ShowRenovationHelp);
         }
 
         public AccommodationRenovationDTO SelectedAccommodationRenovationDTO
@@ -77,6 +80,18 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowRenovationHelpCommand
+        {
+            get
+            {
+                return _showRenovationHelpCommand;
+            }
+            set
+            {
+                _showRenovationHelpCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void ShowSideMenu()
         {
@@ -85,6 +100,11 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
         public void ShowRenovationDetailsPage()
         {
             OwnerMainWindow.MainFrame.Content = new AccommodationRenovationDetailsPage(_selectedAccommodationRenovationDTO);
+        }
+
+        public void ShowRenovationHelp()
+        {
+            OwnerMainWindow.MainFrame.Content = new RenovationHelpPage(_loggedInUser);
         }
     }
 }

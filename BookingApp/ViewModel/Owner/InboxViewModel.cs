@@ -7,6 +7,7 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using BookingApp.View.Owner.AnswerRequestPages;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,11 +23,16 @@ namespace BookingApp.ViewModel.Owner
         private ObservableCollection<MessageDTO> _messagesDTO;
 
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _showInboxHelpCommand;
 
         private MessageDTO _selectedMessageDTO = null;
 
+        private UserDTO _loggedInUser;
+
         public InboxViewModel(UserDTO loggedInUser)
         {
+            _loggedInUser = loggedInUser;
+
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
             IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
@@ -45,6 +51,7 @@ namespace BookingApp.ViewModel.Owner
             _messagesDTO = new ObservableCollection<MessageDTO>(messagesList);
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showInboxHelpCommand = new RelayCommand(ShowInboxHelp);
         }
 
         public ObservableCollection<MessageDTO> MessagesDTO
@@ -69,6 +76,18 @@ namespace BookingApp.ViewModel.Owner
             set
             {
                 _showSideMenuCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowInboxHelpCommand
+        {
+            get
+            {
+                return _showInboxHelpCommand;
+            }
+            set
+            {
+                _showInboxHelpCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -121,6 +140,11 @@ namespace BookingApp.ViewModel.Owner
                 OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
                 _selectedMessageDTO = null;
             }
+        }
+
+        private void ShowInboxHelp()
+        {
+            OwnerMainWindow.MainFrame.Content = new InboxHelpPage(_loggedInUser);
         }
     }
 }

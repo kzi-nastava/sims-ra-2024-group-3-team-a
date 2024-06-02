@@ -5,6 +5,7 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using BookingApp.View.Owner.ForumPages;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,8 +19,9 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
     public class ForumsViewModel : ViewModel
     {
         private RelayCommand _showSideMenuCommand;
-        private UserDTO _loggedInUser;
+        private RelayCommand _showForumHelpCommand;
 
+        private UserDTO _loggedInUser;
         private ForumService _forumService;
         
 
@@ -39,6 +41,7 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
 
             _loggedInUser = loggedInUser;
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showForumHelpCommand = new RelayCommand(ShowForumHelp);
         }
 
         public ForumDTO SelectedForumDTO
@@ -77,6 +80,17 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
                 _showSideMenuCommand = value;
             }
         }
+        public RelayCommand ShowForumHelpCommand
+        {
+            get
+            {
+                return _showForumHelpCommand;
+            }
+            set
+            {
+                _showForumHelpCommand = value;
+            }
+        }
 
         private void ShowSideMenu()
         {
@@ -86,6 +100,11 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
         private void ShowForumDetailsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ForumDetailsPage(SelectedForumDTO, _loggedInUser);
+        }
+
+        private void ShowForumHelp()
+        {
+            OwnerMainWindow.MainFrame.Content = new ForumHelpPage(_loggedInUser);
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookingApp.ViewModel.Owner.WizardAndHelp
 {
-    public class AccommodationHelpViewModel : ViewModel
+    public class ReviewHelpViewModel : ViewModel
     {
         private List<string> _images;
         private string _currentImage;
@@ -19,16 +19,14 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
 
         private RelayCommand _nextImageCommand;
         private RelayCommand _previousImageCommand;
-        public AccommodationHelpViewModel(UserDTO loggedInUser)
+        public ReviewHelpViewModel(UserDTO loggedInUser)
         {
             _images = new List<string>();
             _loggedInUser = loggedInUser;
 
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp1.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp2.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp3.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp4.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp5.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ReviewHelp1.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ReviewHelp2.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ReviewHelp3.png");
 
             _currentImage = _images[0];
             _currentIndex = 0;
@@ -109,7 +107,7 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
             }
             else
             {
-                OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInUser);
+                OwnerMainWindow.MainFrame.Content = new ReviewsPage();
             }
         }
 
@@ -124,4 +122,3 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
         }
     }
 }
-

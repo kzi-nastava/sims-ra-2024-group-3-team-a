@@ -1,6 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.View.Owner;
+using BookingApp.View.Owner.ForumPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookingApp.ViewModel.Owner.WizardAndHelp
 {
-    public class AccommodationHelpViewModel : ViewModel
+    public class ForumHelpViewModel : ViewModel
     {
         private List<string> _images;
         private string _currentImage;
@@ -19,16 +20,15 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
 
         private RelayCommand _nextImageCommand;
         private RelayCommand _previousImageCommand;
-        public AccommodationHelpViewModel(UserDTO loggedInUser)
+        public ForumHelpViewModel(UserDTO loggedInUser)
         {
             _images = new List<string>();
             _loggedInUser = loggedInUser;
 
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp1.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp2.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp3.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp4.png");
-            _images.Add("../../../Resources/Images/WizardAndHelp/AccommodationHelp5.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ForumHelp1.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ForumHelp2.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ForumHelp3.png");
+            _images.Add("../../../Resources/Images/WizardAndHelp/ForumHelp4.png");
 
             _currentImage = _images[0];
             _currentIndex = 0;
@@ -109,7 +109,7 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
             }
             else
             {
-                OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInUser);
+                OwnerMainWindow.MainFrame.Content = new ForumsPage(_loggedInUser);
             }
         }
 
@@ -124,4 +124,3 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
         }
     }
 }
-

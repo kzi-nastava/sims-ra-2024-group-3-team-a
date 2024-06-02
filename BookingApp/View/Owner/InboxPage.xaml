@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Inbox Toolbar-->
         <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
@@ -26,8 +27,14 @@
             </Grid>
         </Border>
 
+        <Border CornerRadius="10" BorderThickness="0" Background="CadetBlue" Width="40" Height="40" Margin="13,13,0,0" Grid.Row="1" HorizontalAlignment="Left">
+            <Button Command="{Binding ShowInboxHelpCommand}" Width="40" Height="40" BorderThickness="0" Background="Transparent">
+                <Image Source="../../Resources/Images/help.png" />
+            </Button>
+        </Border>
+
         <!--Messages list-->
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="2">
             <ListView x:Name="listViewInbox" ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedMessageDTO}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

@@ -28,23 +28,24 @@
             </Grid>
         </Border>
 
-        <Button Command="{Binding ShowAddAccommodationPageCommand}"  Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0" Background="Transparent" x:Name="buttonFunction" Width="40" Height="40" Margin="0,0,13,0">
-            <Image x:Name="imageFunction" Source="../../../Resources/Images/add.png" />
-        </Button>
+        <Border CornerRadius="10" BorderThickness="0" Background="CadetBlue" Width="40" Height="40" Margin="13,13,0,0" Grid.Row="1" HorizontalAlignment="Left">
+            <Button Command="{Binding ShowRenovationHelpCommand}" Width="40" Height="40" BorderThickness="0" Background="Transparent">
+                <Image Source="../../../Resources/Images/help.png" />
+            </Button>
+        </Border>
 
         <!--Lista renovacija-->
         <StackPanel Grid.Row="2">
             <ListView ItemsSource="{Binding AccommodationRenovationsDTO}" SelectedItem="{Binding SelectedAccommodationRenovationDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Black" BorderThickness="5">
+                        <GroupBox Header="{Binding Path=AccommodationDTO.Name}" Foreground="#d4ff00" FontSize="24">
+                            <GroupBox.Background>
+                                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                            </GroupBox.Background>
                             <StackPanel Orientation="Horizontal" Width="390">
-                                <StackPanel.Background>
-                                    <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
-                                </StackPanel.Background>
                                 <Image Source="{Binding Path=AccommodationDTO.Images[0]}" Height="100" Width="100" Stretch="Fill"></Image>
                                 <StackPanel Margin="50,0,0,0">
-                                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold"  Content="{Binding Path=AccommodationDTO.Name}"/>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="18" Content="{Binding Path=BeginDate}"/>
                                         <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="18" Content=" - "/>
@@ -53,7 +54,7 @@
                                     <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="18" Content="{Binding Path=Description}"/>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
+                        </GroupBox>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

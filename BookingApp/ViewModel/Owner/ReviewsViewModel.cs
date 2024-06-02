@@ -5,6 +5,7 @@ using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +25,7 @@ namespace BookingApp.ViewModel.Owner
         private double _averageRating;
 
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _showReviewHelpCommand;
 
         private UserDTO _loggedInUser;
         private AccommodationReservationDTO _selectedMyReviewDTO = null;
@@ -47,6 +49,7 @@ namespace BookingApp.ViewModel.Owner
             _loggedInUser = loggedInUser;
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showReviewHelpCommand = new RelayCommand(ShowReviewHelp);
         }
 
         public ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO
@@ -85,6 +88,15 @@ namespace BookingApp.ViewModel.Owner
             set
             {
                 _showSideMenuCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowReviewHelpCommand
+        {
+            get { return _showReviewHelpCommand; }
+            set
+            {
+                _showReviewHelpCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -147,6 +159,11 @@ namespace BookingApp.ViewModel.Owner
 
             OwnerMainWindow.MainFrame.Content = new UserReviewDetailsPage(selectedItem);
             _selectedUserReviewDTO = null;
+        }
+
+        private void ShowReviewHelp()
+        {
+            OwnerMainWindow.MainFrame.Content = new ReviewHelpPage(_loggedInUser);
         }
     }
 }
