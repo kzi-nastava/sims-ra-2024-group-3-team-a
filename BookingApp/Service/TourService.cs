@@ -55,10 +55,10 @@ namespace BookingApp.Service
         public void CancelUpcoming(User guide)
         {
             foreach (Tour tour in GetUpcoming(guide))
-            {
+            {              
+                GiveVouchers(tour);
                 tour.CurrentKeyPoint = "canceled";
                 Update(tour);
-                GiveVouchers(tour);
             }
 
         }
