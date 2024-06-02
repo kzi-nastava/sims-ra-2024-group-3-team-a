@@ -25,10 +25,10 @@ namespace BookingApp.View.Guide
     /// </summary>
     public partial class TourStatisticsWindow : Window
     {
-        public TourStatisticsWindow()
+        public TourStatisticsWindow(UserDTO user)
         {
             InitializeComponent();
-            DataContext = new TourStatisticsViewModel();
+            DataContext = new TourStatisticsViewModel(user);
         }
     }
 }

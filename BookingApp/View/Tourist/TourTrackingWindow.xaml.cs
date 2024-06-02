@@ -6,6 +6,7 @@ using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,41 @@ namespace BookingApp.View.Tourist
          
             DataContext = new TourTrackingViewModel(tourDTO);
          
+        }
+       
+
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is TourTrackingViewModel viewModel)
+            {
+                viewModel.SetScrollViewer(scrollViewer);
+            }
+        }
+    }
+    public class ReachedStatusToBrushConverter : IValueConverter
+    {
+        SolidColorBrush brush3;
+        SolidColorBrush brush4;
+        SolidColorBrush brush5;
+        public ReachedStatusToBrushConverter()
+        {
+            Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1");
+            Color color4 = (Color)ColorConverter.ConvertFromString("#ffaad7");
+            Color color5 = (Color)ColorConverter.ConvertFromString("#ffffd8");
+
+            brush3 = new SolidColorBrush(color1);
+            brush4 = new SolidColorBrush(color4);
+            brush5 = new SolidColorBrush(color5);
+        }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool current = (bool)value;
+            return current ? brush4 : brush5;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

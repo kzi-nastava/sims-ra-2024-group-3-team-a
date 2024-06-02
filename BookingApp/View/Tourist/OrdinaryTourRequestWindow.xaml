@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
-        Title="OrdinaryTourRequestWindow" Height="450" Width="800">
+        Title="OrdinaryTourRequestWindow" Height="500" Width="1035">
     <Grid  Background="#edebfc">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -22,27 +24,73 @@
 
 
             <Menu DockPanel.Dock="Top" BorderThickness="1" >
-                <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="#fa8ec4" FontWeight="Bold"></MenuItem>
-                <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="#fa8ec4" FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
-                <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="#fa8ec4"></MenuItem>
-                <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="#fa8ec4" Command="{Binding ShowCommand}"></MenuItem>
-                <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="#fa8ec4" Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
-                <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="#fa8ec4" Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
-                <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="50,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
-                <MenuItem x:Name="Profile" Focusable="True" Header="Profile(F8)" Margin="5,0,0,0" Foreground="#fa8ec4" Command="{Binding ShowInboxWindowCommand}" />
 
 
-                <MenuItem x:Name="More" Header="More" Margin="5,0,0,0" >
+                <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="13"  FontWeight="Bold">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/home.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
 
-                    <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="#fa8ec4" >
+                <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/trekking-16.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/map.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/edit.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/star.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/gift.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/email.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+
+
+                <MenuItem x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
+                    </MenuItem.Icon>
+
+                    <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
 
                     </MenuItem>
-                    <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="#fa8ec4" Command="{Binding LogOutCommand}">
-
+                    <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="#fa8ec4">
-
+                    <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
 
@@ -63,12 +111,12 @@
                 <TextBlock Text="Create ordinary tour" Margin="50,10,0,5" FontSize="25"></TextBlock>
 
             </Grid >
-            <Border Grid.Row="1" Margin="0,0,0,5" Background="#fcfcf2" BorderBrush="LightGray"  CornerRadius="8" Width="300" BorderThickness="2">
+            <Border Grid.Row="1" Margin="0,0,110,5" Background="#fcfcf2" BorderBrush="LightGray"  CornerRadius="8" Width="300" BorderThickness="2">
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="177.43"/>
-                        <ColumnDefinition Width="22.57"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -78,13 +126,32 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Country:" Margin="10,5,10,5" FontWeight="Medium"  FontSize="13" ></TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="City:" Margin="10,5,10,5" FontWeight="Medium" FontSize="13"  ></TextBlock>
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Language:" Margin="10,0,0,10" FontWeight="Medium" FontSize="13"></TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="1" Width="180" Margin="10,5,10,5" Height="20"  Text="{Binding OrdinaryTourRequestDTO.LocationDTO.Country}"  FontSize="15" Grid.ColumnSpan="2"></TextBox>
-                    <TextBox Grid.Row="1" Grid.Column="1" Width="180" Margin="10,5,10,5" Height="20"  Text="{Binding OrdinaryTourRequestDTO.LocationDTO.City}" FontSize="15" Grid.ColumnSpan="2"></TextBox>
-                    <ComboBox  Margin="10,5,10,5"   Grid.Row="2" Grid.Column="1" x:Name="languageComboBox"  Height="20"   ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding OrdinaryTourRequestDTO.Language}" Grid.ColumnSpan="2"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1">
+                        <TextBox Grid.Row="0" Grid.Column="1" Width="180" Margin="10,5,10,5" Height="20"  Text="{Binding OrdinaryTourRequestDTO.LocationDTO.Country, UpdateSourceTrigger=PropertyChanged}"  FontSize="15" Grid.ColumnSpan="2">
+                        
+                        </TextBox>
+                        <TextBlock Margin="0,0,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Country], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1">
+                        <TextBox Grid.Row="1" Grid.Column="1" Width="180" Margin="10,5,10,5" Height="20"  Text="{Binding OrdinaryTourRequestDTO.LocationDTO.City,UpdateSourceTrigger=PropertyChanged}" FontSize="15" Grid.ColumnSpan="2"></TextBox>
+                        <TextBlock Margin="0,0,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[City], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="1">
+                        <ComboBox  Margin="12,4,8,6" IsEditable="True"  Grid.Row="2" Grid.Column="1" x:Name="languageComboBox"  Height="20"   ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  SelectedItem="{Binding OrdinaryTourRequestDTO.Language}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding LostFocusCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                          
+                        </ComboBox>
+                        <TextBlock Margin="0,0,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Language], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <Border Grid.Row="2"  Background="#fcfcf2" BorderBrush="LightGray"  CornerRadius="8" Width="300" BorderThickness="2">
+            <Border Grid.Row="2" Margin="0,0,110,0"  Background="#fcfcf2" BorderBrush="LightGray"  CornerRadius="8" Width="300" BorderThickness="2">
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -99,13 +166,32 @@
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="From date:" Margin="10,5" FontWeight="Medium" FontSize="13"></TextBlock>
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="To date:" Margin="10,5" FontWeight="Medium" FontSize="13"></TextBlock>
 
-                    <DatePicker   Grid.Row="1" Grid.Column="1" Width="140" Margin="10,5"  Height="22" Padding="0" SelectedDate="{Binding OrdinaryTourRequestDTO.BeginDate, Mode=TwoWay}"  FontSize="15"></DatePicker>
-                    <DatePicker Grid.Row="2" Grid.Column="1" Width="140" Margin="10,5,10,10"  Height="22" Padding="0" SelectedDate="{Binding OrdinaryTourRequestDTO.EndDate, Mode=TwoWay}"  FontSize="15"></DatePicker>
-
+                    <StackPanel  Grid.Row="1" Grid.Column="1">
+                        <DatePicker  DisplayDateStart="{x:Static sys:DateTime.Now}" SelectedDate="{Binding Start, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="1" Width="140" Margin="10,5"  Height="22" Padding="0"   FontSize="15">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding LostFocusBeginDateCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </DatePicker>
+                        <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[BeginDate], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="1">
+                        <DatePicker Grid.Row="2" Grid.Column="1" Width="140" Margin="10,5,10,10"   Height="22" Padding="0" DisplayDateStart="{Binding Start}" SelectedDate="{Binding End, Mode=OneWayToSource}"  FontSize="15">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding LostFocusEndDateCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </DatePicker>
+                        <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[EndDate], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                    </StackPanel>
+                    
+                    
                 </Grid>
             </Border>
             <TextBlock Grid.Row="3"  Margin="50,0,0,0" FontWeight="Bold" Text="Description:" FontSize="15"></TextBlock>
-            <TextBox Grid.Row="4" Background="#fcfcf2"  BorderThickness="2" BorderBrush="LightGray" Height="70" Width="300"  TextWrapping="Wrap" AcceptsReturn="True"  VerticalScrollBarVisibility="Auto" Text="{Binding OrdinaryTourRequestDTO.Description}"  HorizontalScrollBarVisibility="Auto" Grid.RowSpan="2"></TextBox>
+            <TextBox Grid.Row="4" Margin="0,0,110,0" Background="#fcfcf2"  BorderThickness="2" BorderBrush="LightGray" Height="70" Width="300"  TextWrapping="Wrap" AcceptsReturn="True"  VerticalScrollBarVisibility="Auto" Text="{Binding OrdinaryTourRequestDTO.Description}"  HorizontalScrollBarVisibility="Auto" Grid.RowSpan="2"></TextBox>
 
 
         </Grid>
@@ -127,8 +213,8 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" FontSize="15" Margin="5,5" FontWeight="Bold" Text="Tourist information: "></TextBlock>
-                    <Border  Grid.Row="1" Margin="10"  Background="#edebfc" BorderBrush="LightGray"  CornerRadius="8" BorderThickness="2" Padding="10">
+                    <TextBlock Grid.Row="0" FontSize="15" TextAlignment="Center" Margin="5,5" FontWeight="Bold" Text="Tourist information: "></TextBlock>
+                    <Border  Grid.Row="1" Margin="0,10,10,0" Width="300" Background="#edebfc" BorderBrush="LightGray"  CornerRadius="8" BorderThickness="2" Padding="10">
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -141,32 +227,43 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock FontWeight="Medium"  Text="Name: " FontSize="13" Grid.Row="0" Grid.Column="0" Margin="0,0,0,5"/>
-                            <TextBox x:Name="textBoxName"  Grid.Row="0" Text="{Binding TouristDTO.Name}"  Width="150" Grid.Column="1" Margin="0,0,0,5"/>
+                            <StackPanel  Grid.Row="0"  Grid.Column="1">
+                                <TextBox x:Name="textBoxName"  Grid.Row="0" Text="{Binding TouristDTO.Name,UpdateSourceTrigger=PropertyChanged}"  Width="150" Grid.Column="1" Margin="0,0,0,5"/>
+                                <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Name], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                            </StackPanel>
                             <TextBlock Text="Surname: " FontWeight="Medium" FontSize="13" Grid.Row="1" Grid.Column="0" Margin="0,0,0,5"/>
-                            <TextBox x:Name="textBoxSurname"  Grid.Row="1" Text="{Binding TouristDTO.Surname}"  Width="150" Grid.Column="1" Margin="0,0,0,5"/>
+                            <StackPanel  Grid.Row="1" Grid.Column="1">
+                                <TextBox x:Name="textBoxSurname"  Grid.Row="1" Text="{Binding TouristDTO.Surname,UpdateSourceTrigger=PropertyChanged}"  Width="150" Grid.Column="1" Margin="0,0,0,5"/>
+                                <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Surname], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                            </StackPanel >
                             <TextBlock Text="Age: "  FontSize="13" FontWeight="Medium" Grid.Row="2" Grid.Column="0" Margin="0,0,0,5"/>
-                            <TextBox x:Name="textBoxAge" Grid.Row="2" Text="{Binding TouristDTO.Age}"  Width="150" Grid.Column="1" Margin="0,0,0,5"/>
+                            <StackPanel  Grid.Row="2"  Grid.Column="1">
+                                <TextBox x:Name="textBoxAge" Grid.Row="2" Text="{Binding TouristDTO.Age,UpdateSourceTrigger=PropertyChanged}"  Width="150" Grid.Column="1" Margin="0,0,0,5">
+
+                                </TextBox>
+                                <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Age], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                            </StackPanel>
                             <Button x:Name="buttonAdd" Width="50" Background="#f1ddcf" Content="+" Grid.ColumnSpan="2" Margin="10,10,0,0" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Command="{Binding AddTouristCommand}" />
 
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
-                       
-                            <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"  x:Name="dataGridTourists" AutoGenerateColumns="False" Margin="2" ItemsSource="{Binding TouristsDTO}" CanUserAddRows="False" SelectedItem="{Binding SelectedTouristDTO}" MaxHeight="100" >
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="*" />
-                                    <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" />
-                                    <DataGridTemplateColumn Width="Auto">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Button  Background="#f1ddcf" Content="-" Width="12" Margin="2" Command="{Binding DataContext.RemoveTouristCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        
+
+                        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"  x:Name="dataGridTourists" AutoGenerateColumns="False" Margin="2" ItemsSource="{Binding TouristsDTO}" CanUserAddRows="False" SelectedItem="{Binding SelectedTouristDTO}" MaxHeight="100" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="*" />
+                                <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" />
+                                <DataGridTemplateColumn Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button  Background="#f1ddcf" Content="-" Width="12" Margin="2" Command="{Binding DataContext.RemoveTouristCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
 
                     </Grid>
 

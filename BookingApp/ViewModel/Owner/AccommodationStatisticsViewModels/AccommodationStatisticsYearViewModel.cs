@@ -2,6 +2,7 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Reports.Owner;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
@@ -24,6 +25,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showAddAccommodationRenovationPageCommand;
+        private RelayCommand _generateReportCommand;
 
         private int[] _years = { 2022, 2023, 2024, 2025 };
         private int _selectedYear;
@@ -41,6 +43,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             _goBackCommand = new RelayCommand(GoBack);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showAddAccommodationRenovationPageCommand = new RelayCommand(ShowAddAccommodationRenovationPage);
+            _generateReportCommand = new RelayCommand(GenerateReport);
 
             _mostOccupiedYear = _accommodationStatisticsService.GetMostOccupiedYear(_accommodationDTO.Id, _years);
             SetStatistics();
@@ -83,6 +86,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 _accommodationDTO = value;
             }
         }
+
 
         public Dictionary<int, AccommodationStatisticsDTO> AccommodationStatisticsDTO
         {
@@ -131,6 +135,19 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 OnPropertyChanged();
             }
         }
+        public RelayCommand GenerateReportCommand
+        {
+            get
+            {
+                return _generateReportCommand;
+            }
+            set
+            {
+                _generateReportCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         private void SetStatistics()
         {
@@ -149,6 +166,12 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
 
                 _accommodationStatisticsDTO.Add(year, accommodationStatisticsDTO);
             }
+        }
+
+        private void GenerateReport()
+        {
+            AccommodationStatisticsReport accommodationStatisticsReport = new AccommodationStatisticsReport();
+            accommodationStatisticsReport.GenerateReport(_accommodationStatisticsDTO, _accommodationDTO);
         }
 
         public void ShowAccommodationStatisticsMonths()

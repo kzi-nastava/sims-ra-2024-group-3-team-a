@@ -3,6 +3,7 @@ using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
+using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -282,6 +283,7 @@ namespace BookingApp.Service
 
 
             
-        }    
+        }
+        
     }
 }

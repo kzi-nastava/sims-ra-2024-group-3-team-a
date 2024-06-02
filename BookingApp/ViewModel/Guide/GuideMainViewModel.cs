@@ -24,6 +24,8 @@ namespace BookingApp.ViewModel.Guide
        
         private Boolean _doesActiveTourExist = false;
         private readonly TourService _tourService;
+        private readonly UserService _userService;
+        private readonly SuperGuideService _superGuideService;
         private TourDTO _selectedTourDTO = null;
         private UserDTO _loggedInGuide;
         private TourDTO _mostVisitedTourDTO;
@@ -35,8 +37,11 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourRequestCommand;
         private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
+        private RelayCommand _quitCommand;
+        private RelayCommand _showLanguagesCommand;
         public GuideMainViewModel(User guide)
         {
+           
             _loggedInGuide = new UserDTO(guide);
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
@@ -44,7 +49,11 @@ namespace BookingApp.ViewModel.Guide
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+            ISuperGuideRepository superGuideRepository = Injector.CreateInstance<ISuperGuideRepository>();
+            _superGuideService = new SuperGuideService(userRepository, superGuideRepository, tourRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _userService = new UserService(userRepository);
             List<TourDTO> toursDTO = _tourService.GetTodayTours(guide).Select(tour => new TourDTO(tour)).ToList();
             _toursTodayDTO = new ObservableCollection<TourDTO>(toursDTO);
             _showActiveTourCommand = new RelayCommand(ShowActiveTour);
@@ -55,6 +64,8 @@ namespace BookingApp.ViewModel.Guide
             _borderClickedCommand = new RelayCommand(ShowAllTours);
             _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
+            _quitCommand = new RelayCommand(Quit);
+            _showLanguagesCommand = new RelayCommand(ShowLanguages);
             if (_tourService.GetMostVisitedTour() != null)
             {
                 _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
@@ -141,6 +152,34 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public RelayCommand QuitCommand
+        {
+            get { return _quitCommand; }
+            set
+            {
+                _quitCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Quit()
+        {
+            _tourService.CancelUpcoming(_loggedInGuide.ToUser());
+          
+            if (_loggedInGuide.IsSuper == true)
+            {
+                foreach(SuperGuide guide in _superGuideService.GetAll())
+                {
+                    if(guide.GuideId == _loggedInGuide.Id)
+                    {
+                        _superGuideService.Delete(guide);
+                    }
+                }
+            }
+            _userService.Delete(_loggedInGuide.ToUser());
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            GuideMainWindow.GetInstance().Close();
+        }
         private void ShowActiveTour()
         {
             if (_selectedTourDTO.CurrentKeyPoint != "finished")
@@ -188,7 +227,7 @@ namespace BookingApp.ViewModel.Guide
         }
         private void ShowTourStatistics()
         {
-            TourStatisticsWindow tourStatistics = new TourStatisticsWindow();
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_loggedInGuide);
             tourStatistics.Show();
         }
         public RelayCommand ShowTourDetailsCommand
@@ -220,6 +259,36 @@ namespace BookingApp.ViewModel.Guide
         {
             TourRequestWindow requests = new TourRequestWindow(_loggedInGuide);
             requests.Show();
+
+        }
+        public RelayCommand ShowLanguagesCommand
+        {
+            get { return _showLanguagesCommand; }
+            set
+            {
+                _showLanguagesCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowLanguages()
+        {
+            String languages = "";
+            foreach (SuperGuide guide in _superGuideService.GetAll())
+            {
+                if (guide.GuideId == _loggedInGuide.Id)
+                {
+                    if(languages.Length < 2) {
+                        languages += guide.Language.ToString();
+                    }
+                    else
+                    {
+                        languages += ", ";
+                        languages += guide.Language.ToString();
+                    }
+                }
+            }
+
+            MessageBox.Show(languages, "", MessageBoxButton.OK, MessageBoxImage.None);
 
         }
         public UserDTO User

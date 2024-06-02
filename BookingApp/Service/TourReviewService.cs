@@ -1,6 +1,7 @@
 ﻿using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Model.Enums;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using System;
@@ -52,5 +53,6 @@ namespace BookingApp.Service
             }
             return false;
         }
+       
     }
 }

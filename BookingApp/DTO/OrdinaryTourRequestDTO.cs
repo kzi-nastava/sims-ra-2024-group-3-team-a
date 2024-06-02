@@ -20,7 +20,7 @@ namespace BookingApp.DTO
             this.beginDate = DateTime.Now;
         }
 
-        public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate, DateTime requestSentDate, DateTime requestAcceptedDate)
+        public OrdinaryTourRequestDTO(int id, int guideId, int userId, Location place, string description, Languages language, List<Tourist> tourists, int numberOfTourists, TourRequestStatus status, DateTime beginDate, DateTime endDate, DateTime requestSentDate, DateTime requestAcceptedDate, int complexTourRequestId)
         {
             this.id = id;
             this.guideId = guideId;
@@ -32,8 +32,9 @@ namespace BookingApp.DTO
             this.status = status;
             this.beginDate = beginDate;
             this.endDate = endDate;
-            this.RequestSentDate = requestSentDate;
-            this.RequestAcceptedDate = requestAcceptedDate;
+            this.requestSentDate = requestSentDate;
+            this.requestAcceptedDate = requestAcceptedDate;
+            this.complexTourRequestId = complexTourRequestId;
             touristsDTO = new List<TouristDTO>();
             foreach(Tourist tour in tourists)
             {
@@ -57,6 +58,8 @@ namespace BookingApp.DTO
             touristsDTO = new List<TouristDTO>();
             requestAcceptedDate = ordinaryTourRequest.RequestAcceptedDate;
             requestSentDate = ordinaryTourRequest.RequestSentDate;
+            complexTourRequestId = ordinaryTourRequest.ComplexTourRequestId;
+            canBeAccepted = ordinaryTourRequest.CanBeAccepted;
             foreach (Tourist tour in ordinaryTourRequest.Tourists)
             {
                 touristsDTO.Add(new TouristDTO(tour));
@@ -74,7 +77,9 @@ namespace BookingApp.DTO
             beginDate = ordinaryTourRequestDTO.BeginDate;
             language = ordinaryTourRequestDTO.Language;
             endDate = ordinaryTourRequestDTO.EndDate;
+            complexTourRequestId = ordinaryTourRequestDTO.ComplexTourRequestId;
             touristsDTO = ordinaryTourRequestDTO.TouristsDTO;
+            canBeAccepted = ordinaryTourRequestDTO.CanBeAccepted;
         }
 
 
@@ -116,6 +121,20 @@ namespace BookingApp.DTO
                 if (value != userId)
                 {
                     userId = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int complexTourRequestId;
+        public int ComplexTourRequestId
+        {
+            get { return complexTourRequestId; }
+            set
+            {
+                if (value != complexTourRequestId)
+                {
+                    complexTourRequestId = value;
                     OnPropertyChanged();
                 }
             }
@@ -173,6 +192,20 @@ namespace BookingApp.DTO
                 if (value != numberOfTourists)
                 {
                     numberOfTourists = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private Boolean canBeAccepted;
+        public Boolean CanBeAccepted
+
+        {
+            get { return canBeAccepted; }
+            set
+            {
+                if (value != canBeAccepted)
+                {
+                    canBeAccepted = value;
                     OnPropertyChanged();
                 }
             }
@@ -247,6 +280,24 @@ namespace BookingApp.DTO
             }
         }
 
+
+
+        public DateOnly BeginDateOnly
+        {
+            get { return new DateOnly(BeginDate.Year, BeginDate.Month, BeginDate.Day); }
+        }
+
+        public DateOnly EndDateOnly
+        {
+            get { return new DateOnly(EndDate.Year, EndDate.Month, EndDate.Day); }
+        }
+
+        public string DateIntervalStringDTO
+        {
+            get { return BeginDateOnly + "-"+ EndDateOnly.ToString(); }
+           
+        }
+
         private List<TouristDTO> touristsDTO;
         public List<TouristDTO> TouristsDTO
         {
@@ -274,7 +325,7 @@ namespace BookingApp.DTO
                 tourists.Add(touristDTO.ToTourist());
             }
 
-            return new OrdinaryTourRequest(id, guideId, userId, locationDTO.ToLocation(), description,language, tourists, numberOfTourists, status, beginDate, endDate , requestSentDate, requestAcceptedDate);
+            return new OrdinaryTourRequest(id, guideId, userId,ComplexTourRequestId, locationDTO.ToLocation(), description,language, tourists, numberOfTourists, status, beginDate, endDate , requestSentDate, requestAcceptedDate);
         }
 
 

@@ -1,4 +1,5 @@
-﻿using BookingApp.InjectorNameSpace;
+﻿using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository;
@@ -15,13 +16,18 @@ namespace BookingApp.Service
     public class MessageService
     {
         private IMessageRepository _messageRepository;
-
+        
         private AccommodationReservationService _accommodationReservationService;
         private UserService _userService;
         private AccommodationReservationChangeRequestService _accommodationReservationChangeRequestService;
         private AccommodationService _accommodationService;
         private TourService _tourService;
-       // private OrdinaryTourRequestService _ordinaryTourRequestRepository;
+        private ForumService _forumService;
+        private AccommodationStatisticsService _accommodationStatisticsService;
+        IForumRepository forumRepository = Injector.CreateInstance<IForumRepository>();
+        IPostRepository postRepository = Injector.CreateInstance<IPostRepository>();
+        
+        // private OrdinaryTourRequestService _ordinaryTourRequestRepository;
 
         public MessageService(IMessageRepository messageRepository, IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository, IAccommodationReservationRepository accommodationReservationRepository, IAccommodationRepository accommodationRepository, IUserRepository userRepository, ITourRepository tourRepository, ITourReservationRepository tourReservationRepository, ITouristRepository touristRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
@@ -31,6 +37,8 @@ namespace BookingApp.Service
             _accommodationService = new AccommodationService(accommodationRepository);
             _userService = new UserService(userRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _forumService = new ForumService(forumRepository, postRepository, accommodationRepository);
+            _accommodationStatisticsService = new AccommodationStatisticsService(accommodationReservationRepository, accommodationReservationChangeRequestRepository);
             //_ordinaryTourRequestRepository = new OrdinaryTourRequestService(ordinaryTourRequestRepository);
         }
 
@@ -54,12 +62,15 @@ namespace BookingApp.Service
             return _messageRepository.Update(message);
         }
 
-        public void UpdateAndCreateMessages()
+        public List<Message> UpdateAndCreateMessages()
         {
             List<Message> messages = GetAll();
             SetAllUserReviewsMessages(messages);
             SetAllAccommodationChangeRequests(messages);
             SetAllAccommodationReservationCanceledMessages(messages);
+            SetAllNewForumMessages(messages);
+
+            return messages;
         }
 
         private void SetAllUserReviewsMessages(List<Message> messages)
@@ -112,6 +123,70 @@ namespace BookingApp.Service
                     Message message = new Message(0, reservation.Id, _userService.GetById(reservation.GuestId).Username, _accommodationService.GetById(reservation.AccommodationId).OwnerId, "Reservation has been canceled", content, MessageType.AccommodationReservationCanceled, false);
                     Save(message);
                 }
+            }
+        }
+
+        private void SetAllNewForumMessages(List<Message> messages)
+        {
+            foreach(var forum in _forumService.GetAll())
+            {
+                foreach (User u in _userService.GetUsersWithAccommodationOnLocation(forum.Location))
+                {
+                    if (!(messages.Any(message => message.RequestId == forum.Id && message.Type == MessageType.ForumOpened)))
+                    {
+                        string content = "New forum has been created in location " + forum.Location.City + ", " + forum.Location.Country + ".";
+
+                        Message message = new Message(0, forum.Id, "System", u.Id, "New forum created", content, MessageType.ForumOpened, false);
+                        Save(message);
+                    }
+                }
+            }
+        }
+
+        public void SetBestLocationMessage(List<Message> messages, UserDTO user)
+        {
+            Dictionary<Location, double> locationsReservations = new Dictionary<Location, double>();
+            foreach(var reservation in _accommodationReservationService.GetAll())
+            {
+                if(_accommodationService.GetById(reservation.AccommodationId).OwnerId == user.Id)
+                {
+                    Accommodation accommodation = _accommodationService.GetById(reservation.AccommodationId);
+                    Location location = accommodation.Place;
+
+                    var matchingKeyValuePair = locationsReservations.FirstOrDefault(pair => pair.Key.Country == location.Country && pair.Key.City == location.City);
+                    if (matchingKeyValuePair.Key != null)
+                    {
+                        double newValue = matchingKeyValuePair.Value + (reservation.GuestNumber / accommodation.Capacity);
+                        locationsReservations.Remove(matchingKeyValuePair.Key);
+                        locationsReservations.Add(matchingKeyValuePair.Key, newValue);
+                    }
+                    else
+                    {
+                        double newValue = (double)reservation.GuestNumber / (double)accommodation.Capacity;
+                        locationsReservations.Add(location, newValue);
+                    }
+                } 
+            }
+
+            var maxReservationLocation = locationsReservations.OrderByDescending(kv => kv.Value).FirstOrDefault();
+            var minReservationLocation = locationsReservations.OrderBy(kv => kv.Value).FirstOrDefault();
+            Location theLeastPopularLocation = minReservationLocation.Key;
+            Location theMostPopularLocation = maxReservationLocation.Key;
+
+            if (!(messages.Any(message => message.RequestId == maxReservationLocation.Value && message.Type == MessageType.GoodLocationReccomendation)))
+            {
+                string content = "We reccommend you to open new location in " + theMostPopularLocation.Country + ", " + theMostPopularLocation.City + " because it is your most popular location!";
+
+                Message message = new Message(0, (int)maxReservationLocation.Value, "System", user.Id, "Open new accommodation reccommendation", content, MessageType.GoodLocationReccomendation, false);
+                Save(message);
+            }
+
+            if (!(messages.Any(message => message.RequestId == minReservationLocation.Value && message.Type == MessageType.BadLocationReccomendation)))
+            {
+                string content = "We reccommend you to close accommodations in this location " + theLeastPopularLocation.Country + ", " + theLeastPopularLocation.City + " because is your least popular location!";
+
+                Message message = new Message(0, (int)minReservationLocation.Value, "System", user.Id, "Closing accommodations reccommendaitons", content, MessageType.BadLocationReccomendation, false);
+                Save(message);
             }
         }
 

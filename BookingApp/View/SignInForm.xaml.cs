@@ -8,6 +8,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Repository.Interfaces;
+using BookingApp.Service;
+using System.Windows.Controls;
 
 namespace BookingApp.View
 {
@@ -42,6 +46,7 @@ namespace BookingApp.View
 
         public SignInForm()
         {
+
             InitializeComponent();
             DataContext = this;
             _repository = new UserRepository();
@@ -79,10 +84,19 @@ namespace BookingApp.View
                         }
                         case UserRole.Guide:
                         {
-                            GuideMainWindow guideMainWindow= new GuideMainWindow(user);
-                            guideMainWindow.Show();
-                            Close();
-                            break;
+                                ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+                                IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+                                ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+                                ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+                                ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+                                IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
+                                ISuperGuideRepository superGuideRepository = Injector.CreateInstance<ISuperGuideRepository>();
+                                SuperGuideService superGuideService = new SuperGuideService(userRepository, superGuideRepository, tourRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+                                superGuideService.SuperGuideCheck(user);
+                                GuideMainWindow guideMainWindow= new GuideMainWindow(user);
+                                 guideMainWindow.Show();
+                                 Close();
+                                 break;
                             
                         }
                         case UserRole.Tourist:

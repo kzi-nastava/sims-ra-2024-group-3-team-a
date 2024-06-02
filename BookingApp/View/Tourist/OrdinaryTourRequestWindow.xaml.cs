@@ -22,11 +22,11 @@ namespace BookingApp.View.Tourist
     public partial class OrdinaryTourRequestWindow : Window
     {
         public static OrdinaryTourRequestViewModel _ordinaryTourRequestViewModel;
-        public OrdinaryTourRequestWindow(UserDTO loggedInUser)
+        public OrdinaryTourRequestWindow(UserDTO loggedInUser, int complexTourRequestId)
         {
             InitializeComponent();
 
-            _ordinaryTourRequestViewModel = new OrdinaryTourRequestViewModel(loggedInUser);
+            _ordinaryTourRequestViewModel = new OrdinaryTourRequestViewModel(loggedInUser, complexTourRequestId);
             DataContext = _ordinaryTourRequestViewModel;
         }
 

@@ -5,6 +5,7 @@ using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
+using BookingApp.Validation;
 using BookingApp.View;
 using BookingApp.View.Tourist;
 using System;
@@ -17,7 +18,7 @@ using System.Windows;
 
 namespace BookingApp.ViewModel.Tourist
 {
-    public class TourReservationViewModel:ViewModel
+    public class TourReservationViewModel: Validation.ValidationBase
     {
         private TourReservationService _tourReservationService;
      
@@ -44,17 +45,20 @@ namespace BookingApp.ViewModel.Tourist
             _tourDTO = tourDTO;
             _userDTO = loggedInUser;
             _touristDTO = new TouristDTO();
+            
             _tourReservationDTO = new TourReservationDTO();
             voucher = new Voucher();
-           // _keyPoints = new List<KeyPointDTO>();
-          //  List<KeyPointDTO> keypoints = 
+           
+            // _keyPoints = new List<KeyPointDTO>();
+            //  List<KeyPointDTO> keypoints = 
 
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
-         
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _voucherService = new VoucherService(voucherRepository);
            
@@ -74,6 +78,7 @@ namespace BookingApp.ViewModel.Tourist
             _closeWindowCommand = new RelayCommand(CloseWindow);
             _touristsDTO.Add(new TouristDTO("Milena","Mima", 22));
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
+
         }
         public TourDTO TourDTO
         {
@@ -147,6 +152,17 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        private bool _isConfirmButtonEnabled;
+        public bool IsConfirmButtonEnabled
+        {
+            get { return _isConfirmButtonEnabled; }
+            set
+            {
+                _isConfirmButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<VoucherDTO> VouchersDTO
         {
             get
@@ -269,10 +285,18 @@ namespace BookingApp.ViewModel.Tourist
 
         public void AddTourist()
         {
-            _touristsDTO.Add(new TouristDTO(_touristDTO));
-            _tourDTO.CurrentCapacity--;
 
             IsAddButtonEnabled = _tourDTO.CurrentCapacity > 0;
+                 Validate1();
+                if (IsValid)
+                {
+                _touristsDTO.Add(new TouristDTO(_touristDTO));
+                _tourDTO.CurrentCapacity--;
+
+               
+                }
+
+               // _touristDTO.Age = 0;   
         }
         public void RemoveTourist()
         {
@@ -313,19 +337,24 @@ namespace BookingApp.ViewModel.Tourist
         }
         public void ConfirmTourReservation()
         {
-            _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
-            _tourReservationDTO.TourId = _tourDTO.Id;
-            _tourReservationDTO.UserId = _userDTO.Id;
-            _tourReservationDTO.NumberOfTourists = _tourReservationDTO.TouristsDTO.Count();
+           
+            
+                _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
+                _tourReservationDTO.TourId = _tourDTO.Id;
+                _tourReservationDTO.UserId = _userDTO.Id;
+                _tourReservationDTO.NumberOfTourists = _tourReservationDTO.TouristsDTO.Count();
 
-            _tourReservationService.Save(_tourReservationDTO.ToTourReservation());
+                _tourReservationService.Save(_tourReservationDTO.ToTourReservation());
 
-            if(_voucherDTO != null)
-            {
-                _voucherService.Delete(voucher);
-            }
+                if (_voucherDTO != null)
+                {
+                    _voucherService.Delete(voucher);
+                }
 
-            MessageBox.Show("Successfully added reservation!");
+                MessageBox.Show("Successfully added reservation!");
+            
+
+            
         }
         public void ShowTouristMainWindow()
         {
@@ -334,6 +363,46 @@ namespace BookingApp.ViewModel.Tourist
             TouristMainWindow touristMainWindow = new TouristMainWindow(_userDTO.ToUser());
             touristMainWindow.ShowDialog();
 
+
+        }
+
+        protected override void ValidateSelf1()
+        {
+            if (string.IsNullOrWhiteSpace(_touristDTO.Name))
+            {
+                ValidationErrors["Name"] = "First name is required.";
+            }
+
+            if (string.IsNullOrWhiteSpace(_touristDTO.Surname))
+            {
+                ValidationErrors["Surname"] = "Last name is required.";
+            }
+
+            int age;
+            if (!int.TryParse(_touristDTO.Age.ToString(), out age) || age==0)
+            {
+                ValidationErrors["Age"] = "Enter a valid age number.";
+            }
+            
+
+
+
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+        protected override void ValidateSelf2()
+        {
+           
+
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _touristDTO.PropertyChanged += (sender, e) =>
+            {
+
+                Validate1();
+
+            };
 
         }
         public void CloseWindow()

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
         Title="VoucherWindow" Height="450" Width="800">
-    <Grid Background="#ffe2f1">
+    <Grid Background="#edebfc">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>

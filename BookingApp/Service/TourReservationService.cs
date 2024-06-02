@@ -7,6 +7,7 @@ using BookingApp.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace BookingApp.Service
         private TouristService _touristService;
         private UserService _userService;
         private VoucherService _voucherService;
+        private TourService _tourService;
 
         public TourReservationService(ITourReservationRepository tourReservationRepository, IUserRepository userRepository, ITouristRepository touristRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository)
         {
@@ -28,6 +30,7 @@ namespace BookingApp.Service
             _touristService = new TouristService(touristRepository);
             _tourReviewService = new TourReviewService(tourReviewRepository);
             _voucherService = new VoucherService(voucherRepository);
+            
         }
 
         public List<TourReservation> GetAll()
@@ -54,6 +57,20 @@ namespace BookingApp.Service
         { 
             return _tourReservationRepository.GetById(id);
         }
+        public List<TourReservation> GetAllForUser(int userId)
+
+        {
+            List<TourReservation> tourReservations = new List<TourReservation>();
+            foreach(TourReservation tourReservation in GetAll())
+            {
+                if(tourReservation.UserId == userId)
+                {
+                    tourReservations.Add(tourReservation);  
+                }
+            
+            }
+            return tourReservations;
+        }
 
         public List<Tourist> GetJoinedTourists(Tour tour) 
         {
@@ -76,6 +93,7 @@ namespace BookingApp.Service
             }
             return turisti;
         }
+       
         public List<Tourist> GetReservationTourists(Tour tour)
         {
             List<Tourist> turisti = new List<Tourist>();
@@ -93,6 +111,7 @@ namespace BookingApp.Service
             }
             return turisti;
         }
+      
         private void AddReview(TourReservation tourReservation, Model.Tourist tourist)
         {
             foreach (TourReview tourReview in _tourReviewService.GetAll())
@@ -132,6 +151,98 @@ namespace BookingApp.Service
 
             return false;
         }
+       
 
+       /* public void FindCandidatesForVoucher(int userId)
+        {
+           
+            Tour tour = new Tour();
+            DateTime tourDate;
+            int i;
+            List<Tourist> tourists = new List<Tourist> ();
+            List<TourReservation> tourReservations = new List<TourReservation>();
+            for (i = 0; i < GetAllForUser(userId).Count;i++ )
+            {
+                tourists = tourReservations[i].Tourists;
+                if (tourists[0].JoiningKeyPoint!="")
+                {
+                    tour = FindTourForReservation(tourReservations[i]);
+                    tourDate = tour.BeginingTime;
+                    i=FindOtherCandidatesForVoucher(i, tourDate, userId);
+                   
+
+
+                }
+            }
+           
+
+        }*/
+        /*public int FindOtherCandidatesForVoucher(int tourReservationIndex, DateTime beginingTime, int userId)
+        {
+            Tour tour = new Tour();
+            DateTime endDate = beginingTime.AddYears(1);
+            DateTime tourDate;
+            int count = 0;
+            List<Tourist> tourists = new List<Tourist>();
+            List<TourReservation> tourReservations = new List<TourReservation>();
+           
+            
+                for (int i = tourReservationIndex; i < GetAllForUser(userId).Count; i++)
+                {
+                    if(count!=4)
+                    {
+                        tourists = tourReservations[i].Tourists;
+                        if (tourists[0].JoiningKeyPoint != "")
+                        {
+
+
+                            tour = FindTourForReservation(tourReservations[i]);
+                            tourDate = tour.BeginingTime;
+                            if (tourDate < endDate)
+                            {
+                                count++;
+                            }
+                            else
+                            {
+                                return i;
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        MakeVoucher(tour.Id, userId);
+                        return i++;
+                    }
+                }
+
+            return 0;
+
+        }
+        public void MakeVoucher(int tourId, int userId)
+        {
+            Voucher voucher = new Voucher();
+            voucher.Type = Model.Enums.VoucherType.Gift;
+            voucher.TourId = tourId;
+            voucher.UserId = userId;
+            voucher.IsUsed = false;
+            voucher.ExpireDate = DateTime.Now.AddMonths(6);
+            _voucherService.Save(voucher);
+            _voucherService.UpdateHeader();
+        }
+        public Tour FindTourForReservation(TourReservation tourReservation)
+        {
+            Tour tour = new Tour();
+            foreach (Tour t in _tourService.GetAll())
+            {
+                if (tour.Id == tourReservation.TourId)
+                {
+                    tour = t;
+                    break;
+
+                }
+            }
+            return tour;
+        }*/
     }
 }

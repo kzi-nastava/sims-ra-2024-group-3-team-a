@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         
-        Title="TourInformationWindow" Height="450" Width="800">
+        Title="TourInformationWindow" Height="500" Width="1035">
 
     <Window.InputBindings>
 
@@ -35,23 +35,51 @@
 
 
         <Menu DockPanel.Dock="Top" BorderThickness="1" >
-            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="10"  FontWeight="Bold"></MenuItem>
-            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="10"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" ></MenuItem>
-            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="10"  Command="{Binding ShowOrindaryTourRequestWindowCommand}"></MenuItem>
-            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="10"  Command="{Binding ShowTourRequestsCommand}"></MenuItem>
-            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="10" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}"></MenuItem>
-            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="10" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}"></MenuItem>
-            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="10" Command="{Binding ShowInboxWindowCommand}" />
+
+
+            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="13"  FontWeight="Bold">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/home.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/trekking-16.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/map.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/edit.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/star.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/gift.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/email.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
+            </MenuItem>
 
 
 
-            <MenuItem x:Name="More" Header="Profile(F8)" Margin="5,0,0,0" FontWeight="Bold"  Command="{Binding ShowInboxWindowCommand}"  FontSize="10">
-
-                <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+            <MenuItem x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
+                </MenuItem.Icon>
 
                 <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
                     <MenuItem.Icon>
@@ -59,7 +87,12 @@
                     </MenuItem.Icon>
 
                 </MenuItem>
-                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F9)" Foreground="Black" Command="{Binding LogOutCommand}">
+                <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
+                    <MenuItem.Icon>
+                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
                     <MenuItem.Icon>
                         <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
                     </MenuItem.Icon>
@@ -74,7 +107,7 @@
 
         </Menu>
 
-        <Grid Grid.Row="1" Margin="20,0,0,0"   >
+        <Grid Grid.Row="1" Margin="10,0,0,0"   >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
@@ -84,59 +117,51 @@
 
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" FontSize="25" FontWeight="Heavy" Text="Tour:"  ></TextBlock>
-            <TextBlock  FontSize="25" Text="{Binding TourDTO.Name}" Margin="66,0,0,0"  />
+            <DockPanel>
+            <TextBlock Grid.Column="0" FontSize="25" FontWeight="Heavy" Text="Tour:" Margin="20,20,0,10" ></TextBlock>
+            <TextBlock  FontSize="25" Text="{Binding TourDTO.Name}" Margin="5,20,0,10"  />
+            </DockPanel>
 
         </Grid>
         <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30">-->
-        <Grid Margin="20,5,20,0" Grid.Row="2">
-            <DockPanel>
-                <Button Content="◄" HorizontalAlignment="Left" VerticalAlignment="Center"  Command="{Binding ScrollLeftCommand}" Margin="5">
-                    <!--<i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding ScrollLeftCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>-->
-                </Button>
-                <Border BorderBrush="Black" Background="#fcfcf2" BorderThickness="1">
-                    <ScrollViewer x:Name="scrollViewer"
-                   VerticalScrollBarVisibility="Disabled"
-                      
-                
-                              
-                   >
+        <Grid Margin="30,5,20,0" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="880"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-                        <ListView x:Name="imageListView"  SelectedItem="{Binding SelectedImage, Mode=TwoWay}" Background="#fcfcf2" Width="695" ItemsSource="{Binding ImagesCollection}">
-                            <ListView.Resources>
-                                <Style TargetType="ListViewItem">
-                                   
-                                </Style>
-                            </ListView.Resources>
-                            <ListView.ItemsPanel >
+            <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
+                  
+            </Button>
+             
+                    <ScrollViewer Grid.Column="1" Name="scrollViewer"
+                      VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Hidden"
+                      Loaded="ImageListView_Loaded">
+
+                        <ItemsControl x:Name="imageListView"    Background="#fcfcf2"  ItemsSource="{Binding ImagesCollection}">
+                            
+                            <ItemsControl.ItemsPanel >
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                            <ListView.ItemTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="Black" Margin="1" BorderThickness="1">
-                                        <Image Width="100" Margin="1" Height="110" Source="{Binding}"/>
+                                    <Border BorderBrush="Black" Margin="5 0 5 0" BorderThickness="1">
+                                        <Image Width="140" Margin="1" Height="140" Stretch="UniformToFill" Source="{Binding}"/>
                                     </Border>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
                     </ScrollViewer>
-                </Border>
-                <Button Content="►" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Margin="5">
-                    
-                    <!--<i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding ScrollRightCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>-->
-                </Button>
-            </DockPanel>
+
+            <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
+
+            </Button>
+          
         </Grid>
 
         <Grid Grid.Row="3">
@@ -159,8 +184,8 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Text="Information:"  Foreground="#d470a2" FontWeight="ExtraBlack" FontSize="15" Margin="20,10,10,0"/>
-                <Border Grid.Row="1" BorderBrush="LightGray" Background="Beige" CornerRadius="8"  Height="130" Width="300" Margin="20,0,0,0" BorderThickness="1">
+                <TextBlock Grid.Row="0" Text="Information:"  Foreground="#d470a2" FontWeight="ExtraBlack" FontSize="15" Margin="75,10,10,0"/>
+                <Border Grid.Row="1" BorderBrush="LightGray" Background="Beige" CornerRadius="8"  Height="130" Width="300" Margin="75,0,0,0" BorderThickness="1">
                     <Grid Grid.Row="1">
 
                         <Grid.ColumnDefinitions>
@@ -243,9 +268,9 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"  Foreground="#d470a2" FontWeight="ExtraBlack" FontSize="15"  Grid.Column="0" Margin="10,5,0,0" Text="Check points: " Grid.ColumnSpan="3"/>
+                <TextBlock Grid.Row="0"  Foreground="#d470a2" FontWeight="ExtraBlack" FontSize="15"  Grid.Column="0" Margin="30,5,0,0" Text="Check points: " Grid.ColumnSpan="3"/>
                
-                <Border BorderBrush="LightGray" Background="Beige" Margin="10,0,0,0" CornerRadius="8" Grid.Row="1">
+                <Border BorderBrush="LightGray" Background="Beige" Margin="30,0,0,0" CornerRadius="8" Grid.Row="1">
                     <ScrollViewer Grid.Row="1" >
                         <ItemsControl  ItemsSource="{Binding KeyPointsDTO}" Height="130" >
                         <ItemsControl.ItemTemplate>
@@ -268,7 +293,7 @@
 
             </Grid>
 
-            <Grid Grid.Column="2" Margin="20,5,0,0" Height="170">
+            <Grid Grid.Column="2" Margin="40,5,0,0" Height="170">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -276,8 +301,8 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Description:" Foreground="#d470a2"  FontWeight="ExtraBold" Margin="0,3,0,2" FontSize="15" />
-                <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="130" Width="300" IsReadOnly="True"   BorderBrush="LightGray" Background="Beige" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}" Grid.RowSpan="4" Margin="0,22,10,0" />
+                <TextBlock Grid.Row="0" Text="Description:" Foreground="#d470a2"  FontWeight="ExtraBold" Margin="100,3,0,2" FontSize="15" />
+                <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="130" Width="300" IsReadOnly="True"   BorderBrush="LightGray" Background="Beige" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}" Grid.RowSpan="4" Margin="100,22,10,0" />
                 <!--<Border BorderBrush="HotPink"  Grid.Row="2"    Grid.Column="1" Width="380"  Height="80" BorderThickness="1" Margin="0,5,0,0">
                     <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Visible" >
                

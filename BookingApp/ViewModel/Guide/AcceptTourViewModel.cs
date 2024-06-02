@@ -26,6 +26,7 @@ namespace BookingApp.ViewModel.Guide
         private MessageService _messageService;
         private DateTime _begin =default;
         private List<DateTime> _beginDates;
+       
         public AcceptTourViewModel(OrdinaryTourRequestDTO  requestDTO, UserDTO user)
         {
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
@@ -60,11 +61,13 @@ namespace BookingApp.ViewModel.Guide
                 
 
             }
+           
         }
+      
         private List<DateTime> NotAvailableDates()
         {
             List<DateTime>  dates = new List<DateTime>();
-            foreach (Tour tour in _tourService.GetUpcoming())
+            foreach (Tour tour in _tourService.GetUpcoming(_userDTO.ToUser()))
             {
                 dates.Add(tour.BeginingTime);
             }
@@ -109,7 +112,8 @@ namespace BookingApp.ViewModel.Guide
             _requestDTO.EndDate = _begin;
             _requestDTO.Status=Model.Enums.TourRequestStatus.Accepted;
              _requestDTO.RequestAcceptedDate = DateTime.Now;
-            _tourRequestService.Update(_requestDTO.ToOrdinaryTourRequest());
+                _requestDTO.GuideId = _userDTO.Id;
+                _tourRequestService.Update(_requestDTO.ToOrdinaryTourRequest());
                 MessageDTO message = new MessageDTO();
                 message.RequestId = _requestDTO.Id;
                 message.Sender = _userDTO.Username;

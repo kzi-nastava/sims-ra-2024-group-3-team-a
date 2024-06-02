@@ -5,9 +5,12 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.Serializer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace BookingApp.Service
 {
@@ -54,7 +57,18 @@ namespace BookingApp.Service
             }
             
         }
-
+        public List<Voucher> GetAllForUser(int userId) 
+        {
+            List<Voucher> vouchers = new List<Voucher>();
+            foreach(Voucher v in GetAll())
+            {
+                if(v.UserId == userId)
+                {
+                    vouchers.Add(v);    
+                }
+            }
+            return vouchers;
+        }
         public Voucher Update(Voucher voucher)
         {
             return _voucherRepository.Update(voucher);
@@ -93,5 +107,20 @@ namespace BookingApp.Service
                 Update(voucher);
             }
         }
+
+        public void DeleteExpiredVouchers(int userId)
+        {
+            foreach(Voucher voucher in GetAllForUser(userId))
+            {
+                if(voucher.ExpireDate<DateTime.Now)
+                {
+                    Delete(voucher);
+                }
+
+            
+            }
+        }
+
+       
     }
 }

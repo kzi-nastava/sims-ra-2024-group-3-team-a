@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows;
 using BookingApp.Service;
 using BookingApp.Repository.Interfaces;
+using BookingApp.Model.Enums;
 
 namespace BookingApp.Repository
 {
@@ -39,7 +40,17 @@ namespace BookingApp.Repository
         {
 
             _tours = _serializer.FromCSV(FilePath);
-            return _tours.FirstOrDefault(u => u.Id == id);
+            return _tours.FirstOrDefault(u => u.Id == id  );
+
+        }
+        public List<Tour> GetByGuideId(int id)
+        {
+
+            _tours = _serializer.FromCSV(FilePath);
+            DateTime tomorrow = DateTime.Today.AddDays(1);
+            DateTime today = DateTime.Today;
+            DateTime oneYearAgo = today.AddYears(-1);
+            return _tours.FindAll(u => u.GuideId == id && u.BeginingTime >=oneYearAgo && u.BeginingTime < tomorrow);
 
         }
 
@@ -130,15 +141,28 @@ namespace BookingApp.Repository
             }
             return mostVisited;
         }
-        public List<Tour> GetUpcoming()
+        public List<Tour> GetUpcoming(User guide)
         {
             List<Tour> tours = new List<Tour>();
             foreach (Tour tour in GetNotCancelled())
             {
-                if (tour.BeginingTime >= DateTime.Now && tour.CurrentKeyPoint != "finished")
+                if (tour.BeginingTime >= DateTime.Now && tour.CurrentKeyPoint != "finished" && tour.GuideId == guide.Id)
                     tours.Add(tour);
             }
             return tours;
+        }
+      
+        public List<Languages> GetExistingLanguages()
+        {
+            List <Languages> languages = new List<Languages> ();
+            foreach (Tour tour in GetAll())
+            {
+                if ( !languages.Contains( tour.Language))
+                {
+                    languages.Add(tour.Language);
+                }
+            }
+            return languages;
         }
     }
 }

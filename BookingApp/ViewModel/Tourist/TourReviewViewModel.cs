@@ -306,7 +306,7 @@ namespace BookingApp.ViewModel.Tourist
 
         public void ShowVoucherWindow()
         {
-            VoucherWindow voucherWindow = new VoucherWindow();
+            VoucherWindow voucherWindow = new VoucherWindow(_userDTO);
             voucherWindow.ShowDialog();
         }
 
