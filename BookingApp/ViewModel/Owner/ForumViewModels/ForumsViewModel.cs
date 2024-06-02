@@ -1,6 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
@@ -23,27 +24,43 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
 
         private UserDTO _loggedInUser;
         private ForumService _forumService;
+        private OwnerSettingsService _ownerSettingsService;
         
-
         private ObservableCollection<ForumDTO> _forumsDTO;
         private ForumDTO _selectedForumDTO;
+        private OwnerSettings _ownerSettings;
 
         public ForumsViewModel(UserDTO loggedInUser)
         {
             IForumRepository forumRepository = Injector.CreateInstance<IForumRepository>();
             IPostRepository postRepository = Injector.CreateInstance<IPostRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
-
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
             _forumService = new ForumService(forumRepository, postRepository, accommodationRepository);
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
 
             List<ForumDTO> forumsList = _forumService.GetForUser(loggedInUser.ToUser()).Select(forum => new ForumDTO(forum)).ToList();
             _forumsDTO = new ObservableCollection<ForumDTO>(forumsList);
 
             _loggedInUser = loggedInUser;
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(loggedInUser.ToUser());
+
+
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showForumHelpCommand = new RelayCommand(ShowForumHelp);
         }
 
+        public OwnerSettings OwnerSettings
+        {
+            get
+            {
+                return _ownerSettings;
+            }
+            set
+            {
+                _ownerSettings = value;
+            }
+        }
         public ForumDTO SelectedForumDTO
         {
             get

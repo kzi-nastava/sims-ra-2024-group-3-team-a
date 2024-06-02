@@ -1,5 +1,9 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
+using BookingApp.Repository.Interfaces;
+using BookingApp.Service;
 using BookingApp.View.Owner;
 using System;
 using System.Collections.Generic;
@@ -19,6 +23,9 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
 
         private RelayCommand _nextImageCommand;
         private RelayCommand _previousImageCommand;
+
+        private OwnerSettings _ownerSettings;
+        private OwnerSettingsService _ownerSettingsService;
         public WizardViewModel(UserDTO loggedInUser)
         {
             _images = new List<string>();
@@ -32,6 +39,10 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
             _images.Add("../../../Resources/Images/WizardAndHelp/Wizard6.png");
             _images.Add("../../../Resources/Images/WizardAndHelp/Wizard7.png");
             _images.Add("../../../Resources/Images/WizardAndHelp/Wizard8.png");
+
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(loggedInUser.ToUser());
 
             _currentImage = _images[0];
             _currentIndex = 0;
@@ -112,6 +123,8 @@ namespace BookingApp.ViewModel.Owner.WizardAndHelp
             }
             else
             {
+                _ownerSettings.SeenWizard = true;
+                _ownerSettingsService.Update(_ownerSettings);
                 OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInUser);
             }
         }

@@ -28,6 +28,18 @@
         </Border>
 
         <Border CornerRadius="10" BorderThickness="0" Background="CadetBlue" Width="40" Height="40" Margin="13,13,0,0" Grid.Row="1" HorizontalAlignment="Left">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=OwnerSettings.HelpOn}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=OwnerSettings.HelpOn}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <Button Command="{Binding ShowForumHelpCommand}" Width="40" Height="40" BorderThickness="0" Background="Transparent">
                 <Image Source="../../../Resources/Images/help.png" />
             </Button>

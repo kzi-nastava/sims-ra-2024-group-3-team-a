@@ -1,6 +1,8 @@
 ﻿using BookingApp.DTO;
+using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository;
+using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner.WizardAndHelp;
 using BookingApp.ViewModel.Owner;
@@ -34,6 +36,9 @@ namespace BookingApp.View.Owner
 
         public static UserDTO LoggedInOwner;
 
+        private OwnerSettings _ownerSettings;
+        private OwnerSettingsService _ownerSettingsService;
+
         private static Timer _notificationTimer;
 
         public static Frame MainFrame;
@@ -56,7 +61,11 @@ namespace BookingApp.View.Owner
             NotificationFrame = frameNotification;
             MainFrame.Content = new AccommodationsPage(LoggedInOwner);
 
-            if(5 == 5)
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(LoggedInOwner.ToUser());
+
+            if (!_ownerSettings.SeenWizard)
             {
                 MainFrame.Content = new Wizard(LoggedInOwner);
             }
@@ -65,6 +74,8 @@ namespace BookingApp.View.Owner
             {
                 Instance = this;
             }
+
+            
         }
 
         public static OwnerMainWindow GetInstance()

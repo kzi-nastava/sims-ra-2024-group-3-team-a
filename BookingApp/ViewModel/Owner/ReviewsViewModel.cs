@@ -19,6 +19,7 @@ namespace BookingApp.ViewModel.Owner
     public class ReviewsViewModel : ViewModel
     {
         private AccommodationReservationService _accommodationReservationService;
+        private OwnerSettingsService _ownerSettingsService;
 
         private ObservableCollection<AccommodationReservationDTO> _finishedAccommodationReservationsDTO;
         private ObservableCollection<AccommodationReservationDTO> _userAndOwnerReviewedAccommodationReservationsDTO;
@@ -31,12 +32,16 @@ namespace BookingApp.ViewModel.Owner
         private AccommodationReservationDTO _selectedMyReviewDTO = null;
         private AccommodationReservationDTO _selectedUserReviewDTO = null;
 
+        private OwnerSettings _ownerSettings;
+
         public ReviewsViewModel(UserDTO loggedInUser)
         {
             IAccommodationReservationRepository _accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
             _accommodationReservationService = new AccommodationReservationService(_accommodationReservationRepository, accommodationRepository, userRepository);
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
 
             List<AccommodationReservationDTO> finishedAccommodationReservationsList = _accommodationReservationService.GetFinishedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
             _finishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(finishedAccommodationReservationsList);
@@ -47,9 +52,23 @@ namespace BookingApp.ViewModel.Owner
             _averageRating = _accommodationReservationService.GetAverageRating(loggedInUser.ToUser());
 
             _loggedInUser = loggedInUser;
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(loggedInUser.ToUser());
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showReviewHelpCommand = new RelayCommand(ShowReviewHelp);
+        }
+
+        public OwnerSettings OwnerSettings
+        {
+            get
+            {
+                return _ownerSettings;
+            }
+            set
+            {
+                _ownerSettings = value;
+                OnPropertyChanged();
+            }
         }
 
         public ObservableCollection<AccommodationReservationDTO> FinishedAccommodationReservationsDTO

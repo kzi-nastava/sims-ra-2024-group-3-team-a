@@ -53,6 +53,11 @@
     <None Remove="Resources\Images\Owner\printer.png" />
     <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\Owner\reportFlag.png" />
+    <None Remove="Resources\Images\Owner\settings.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOff.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOff1.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOn.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOn1.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
     <None Remove="Resources\Images\Tourist\athens1.png" />
@@ -153,6 +158,11 @@
     <Resource Include="Resources\Images\Owner\PreviousArrow.png" />
     <Resource Include="Resources\Images\Owner\printer.png" />
     <Resource Include="Resources\Images\Owner\reportFlag.png" />
+    <Resource Include="Resources\Images\Owner\settings.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOff.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOff1.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOn.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOn1.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
     <Resource Include="Resources\Images\Tourist\gift.png" />

@@ -1,6 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
@@ -20,7 +21,10 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
         private UserDTO _loggedInUser;
         private ObservableCollection<AccommodationRenovationDTO> _accommodationRenovationsDTO;
         private AccommodationRenovationService _renovationService;
+        private OwnerSettingsService _ownerSettingsService;
+
         private AccommodationRenovationDTO _selectedAccommodationRenovationDTO;
+        private OwnerSettings _ownerSettings;
 
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showRenovationHelpCommand;
@@ -33,7 +37,11 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
             IAccommodationRenovationRepository accommodationRenovationRepository = Injector.CreateInstance<IAccommodationRenovationRepository>();
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
             _renovationService = new AccommodationRenovationService(accommodationRenovationRepository, accommodationReservationRepository, accommodationRepository);
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
+
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(loggedInUser.ToUser());
 
             List<AccommodationRenovationDTO> renovationsDTO = _renovationService.GetRenovationsForOwner(loggedInUser.ToUser()).Select(renovation => new AccommodationRenovationDTO(renovation)).ToList();
             _accommodationRenovationsDTO = new ObservableCollection<AccommodationRenovationDTO>(renovationsDTO);
@@ -42,6 +50,18 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
             _showRenovationHelpCommand = new RelayCommand(ShowRenovationHelp);
         }
 
+        public OwnerSettings OwnerSettings
+        {
+            get
+            {
+                return _ownerSettings;
+            }
+            set
+            {
+                _ownerSettings = value;
+                OnPropertyChanged();
+            }
+        }
         public AccommodationRenovationDTO SelectedAccommodationRenovationDTO
         {
             get

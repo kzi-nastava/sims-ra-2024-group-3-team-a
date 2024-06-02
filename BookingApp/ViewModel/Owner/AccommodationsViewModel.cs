@@ -18,6 +18,7 @@ namespace BookingApp.ViewModel.Owner
     public class AccommodationsViewModel : ViewModel
     {
         private AccommodationService _accommodationService;
+        private OwnerSettingsService _ownerSettingsService;
         private ObservableCollection<AccommodationDTO> _accommodationsDTO;
 
         private RelayCommand _showSideMenuCommand;
@@ -25,13 +26,18 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showAccommodationHelpCommand;
 
         private UserDTO _loggedInUser;
+        private OwnerSettings _ownerSettings;
 
         private AccommodationDTO _selectedAccommodationDTO = null;
 
         public AccommodationsViewModel(UserDTO loggedInUser)
         {
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
             _accommodationService = new AccommodationService(accommodationRepository);
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
+
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(loggedInUser.ToUser());
 
             List<AccommodationDTO> accommodationsDTO = _accommodationService.GetAccommodationsForOwner(loggedInUser.ToUser()).Select(accommodation => new AccommodationDTO(accommodation)).ToList(); ;
             _accommodationsDTO = new ObservableCollection<AccommodationDTO>(accommodationsDTO);
@@ -43,6 +49,18 @@ namespace BookingApp.ViewModel.Owner
             _loggedInUser = loggedInUser;
         }
 
+        public OwnerSettings OwnerSettings
+        {
+            get
+            {
+                return _ownerSettings;
+            }
+            set
+            {
+                _ownerSettings = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<AccommodationDTO> AccommodationsDTO
         {
             get

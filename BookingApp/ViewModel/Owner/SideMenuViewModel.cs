@@ -22,6 +22,7 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showProfileMenuPageCommand;
         private RelayCommand _showRenovationsPageCommand;
         private RelayCommand _showForumsPageCommand;
+        private RelayCommand _showSettingsPageCommand;
 
         public SideMenuViewModel()
         {
@@ -33,7 +34,9 @@ namespace BookingApp.ViewModel.Owner
             _showProfileMenuPageCommand = new RelayCommand(ShowProfileMenuPage);
             _showRenovationsPageCommand = new RelayCommand(ShowRenovationsPage);
             _showForumsPageCommand = new RelayCommand(ShowForumsPage);
+            _showSettingsPageCommand = new RelayCommand(ShowSettingsPage);
         }
+
 
         public RelayCommand CloseSideMenuCommand
         {
@@ -131,6 +134,18 @@ namespace BookingApp.ViewModel.Owner
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowSettingsPageCommand
+        {
+            get
+            {
+                return _showSettingsPageCommand;
+            }
+            set
+            {
+                _showSettingsPageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void CloseSideMenu()
         {
@@ -172,6 +187,12 @@ namespace BookingApp.ViewModel.Owner
         public void ShowForumsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ForumsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
+        }
+
+        public void ShowSettingsPage()
+        {
+            OwnerMainWindow.MainFrame.Content = new SettingsPage(OwnerMainWindow.LoggedInOwner);
             OwnerMainWindow.SideMenuFrame.Content = null;
         }
     }
