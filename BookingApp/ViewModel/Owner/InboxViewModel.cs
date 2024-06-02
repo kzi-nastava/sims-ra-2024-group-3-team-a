@@ -7,6 +7,7 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
 using BookingApp.View.Owner.AnswerRequestPages;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,14 +20,21 @@ namespace BookingApp.ViewModel.Owner
     public class InboxViewModel : ViewModel
     {
         private MessageService _messageService;
+        private OwnerSettingsService _ownerSettingsService;
         private ObservableCollection<MessageDTO> _messagesDTO;
 
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _showInboxHelpCommand;
 
         private MessageDTO _selectedMessageDTO = null;
 
+        private UserDTO _loggedInUser;
+        private OwnerSettings _ownerSettings;
+
         public InboxViewModel(UserDTO loggedInUser)
         {
+            _loggedInUser = loggedInUser;
+
             IMessageRepository messageRepository = Injector.CreateInstance<IMessageRepository>();
             IAccommodationReservationChangeRequestRepository accommodationReservationChangeRequestRepository = Injector.CreateInstance<IAccommodationReservationChangeRequestRepository>();
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
@@ -37,7 +45,11 @@ namespace BookingApp.ViewModel.Owner
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            IOwnerSettingsRepository ownerSettingsRepository = Injector.CreateInstance<IOwnerSettingsRepository>();
             _messageService = new MessageService(messageRepository, accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, userRepository, tourRepository, tourReservationRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
+
+            _ownerSettings = _ownerSettingsService.GetOwnerSettingsByOwner(loggedInUser.ToUser());
 
             List<Message> messages = _messageService.UpdateAndCreateMessages();
             _messageService.SetBestLocationMessage(messages, loggedInUser);
@@ -45,8 +57,21 @@ namespace BookingApp.ViewModel.Owner
             _messagesDTO = new ObservableCollection<MessageDTO>(messagesList);
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _showInboxHelpCommand = new RelayCommand(ShowInboxHelp);
         }
 
+        public OwnerSettings OwnerSettings
+        {
+            get
+            {
+                return _ownerSettings;
+            }
+            set
+            {
+                _ownerSettings = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<MessageDTO> MessagesDTO
         {
             get
@@ -69,6 +94,18 @@ namespace BookingApp.ViewModel.Owner
             set
             {
                 _showSideMenuCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowInboxHelpCommand
+        {
+            get
+            {
+                return _showInboxHelpCommand;
+            }
+            set
+            {
+                _showInboxHelpCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -121,6 +158,11 @@ namespace BookingApp.ViewModel.Owner
                 OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
                 _selectedMessageDTO = null;
             }
+        }
+
+        private void ShowInboxHelp()
+        {
+            OwnerMainWindow.MainFrame.Content = new InboxHelpPage(_loggedInUser);
         }
     }
 }
