@@ -2,6 +2,7 @@
 using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Service;
+using BookingApp.View.Owner.WizardAndHelp;
 using BookingApp.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,11 @@ namespace BookingApp.View.Owner
             SideMenuFrame = frameSideMenu;
             NotificationFrame = frameNotification;
             MainFrame.Content = new AccommodationsPage(LoggedInOwner);
+
+            if(5 == 5)
+            {
+                MainFrame.Content = new Wizard(LoggedInOwner);
+            }
 
             if(Instance == null)
             {

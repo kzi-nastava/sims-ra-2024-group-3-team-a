@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
@@ -21,15 +22,21 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private AccommodationStatisticsService _accommodationStatisticsService;
         private AccommodationDTO _accommodationDTO;
         private Dictionary<int, AccommodationStatisticsDTO> _accommodationStatisticsDTO;
+        private ScrollViewer _scrollViewer;
 
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showAddAccommodationRenovationPageCommand;
         private RelayCommand _generateReportCommand;
-
+        private RelayCommand _nextImageCommand;
+        private RelayCommand _previousImageCommand;
+        
         private int[] _years = { 2022, 2023, 2024, 2025 };
         private int _selectedYear;
         private int _mostOccupiedYear;
+
+        private List<string> _images;
+        private string _selectedImage;
 
         public AccommodationStatisticsYearViewModel(AccommodationDTO accommodationDTO)
         {
@@ -44,11 +51,28 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showAddAccommodationRenovationPageCommand = new RelayCommand(ShowAddAccommodationRenovationPage);
             _generateReportCommand = new RelayCommand(GenerateReport);
+            _nextImageCommand = new RelayCommand(NextImage);
+            _previousImageCommand = new RelayCommand(PreviousImage);
+
+            _images = accommodationDTO.Images;
+            _selectedImage = _images[0];
 
             _mostOccupiedYear = _accommodationStatisticsService.GetMostOccupiedYear(_accommodationDTO.Id, _years);
             SetStatistics();
         }
 
+        public string SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
+        }
         public int MostOccupiedYear
         {
             get
@@ -147,7 +171,30 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand NextImageCommand
+        {
+            get
+            {
+                return _nextImageCommand;
+            }
+            set
+            {
+                _nextImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand PreviousImageCommand
+        {
+            get
+            {
+                return _previousImageCommand;
+            }
+            set
+            {
+                _previousImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void SetStatistics()
         {
@@ -189,6 +236,32 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private void GoBack()
         {
             OwnerMainWindow.MainFrame.GoBack();
+        }
+        
+        private void NextImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == _images.Count - 1)
+            {
+                SelectedImage = _images[0];
+            }
+            else
+            {
+                SelectedImage = _images[index + 1];
+            }
+        }
+
+        private void PreviousImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == 0)
+            {
+                SelectedImage = _images[_images.Count - 1];
+            }
+            else
+            {
+                SelectedImage = _images[index - 1];
+            }
         }
     }
 }

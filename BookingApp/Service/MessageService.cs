@@ -173,7 +173,7 @@ namespace BookingApp.Service
             Location theLeastPopularLocation = minReservationLocation.Key;
             Location theMostPopularLocation = maxReservationLocation.Key;
 
-            if (!(messages.Any(message => message.RequestId == maxReservationLocation.Value && message.Type == MessageType.GoodLocationReccomendation)))
+            if (!(messages.Any(message => message.Type == MessageType.GoodLocationReccomendation && message.Content.Contains(theMostPopularLocation.Country) && message.Content.Contains(theMostPopularLocation.City))))
             {
                 string content = "We reccommend you to open new location in " + theMostPopularLocation.Country + ", " + theMostPopularLocation.City + " because it is your most popular location!";
 
@@ -181,7 +181,7 @@ namespace BookingApp.Service
                 Save(message);
             }
 
-            if (!(messages.Any(message => message.RequestId == minReservationLocation.Value && message.Type == MessageType.BadLocationReccomendation)))
+            if (!(messages.Any(message =>message.Type == MessageType.BadLocationReccomendation && message.Content.Contains(theLeastPopularLocation.Country) && message.Content.Contains(theLeastPopularLocation.City))))
             {
                 string content = "We reccommend you to close accommodations in this location " + theLeastPopularLocation.Country + ", " + theLeastPopularLocation.City + " because is your least popular location!";
 

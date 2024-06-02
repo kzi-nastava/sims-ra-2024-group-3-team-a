@@ -5,6 +5,7 @@ using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +22,7 @@ namespace BookingApp.ViewModel.Owner
 
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showAddAccommodationPageCommand;
+        private RelayCommand _showAccommodationHelpCommand;
 
         private UserDTO _loggedInUser;
 
@@ -36,6 +38,7 @@ namespace BookingApp.ViewModel.Owner
 
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showAddAccommodationPageCommand = new RelayCommand(ShowAddAccommodationPage);
+            _showAccommodationHelpCommand = new RelayCommand(ShowAccommodationHelp);
 
             _loggedInUser = loggedInUser;
         }
@@ -93,6 +96,19 @@ namespace BookingApp.ViewModel.Owner
             }
         }
 
+        public RelayCommand ShowAccommodationHelpCommand
+        {
+            get
+            {
+                return _showAccommodationHelpCommand;
+            }
+            set
+            {
+                _showAccommodationHelpCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void ShowAccommodationStatisticsYear()
         {
             OwnerMainWindow.MainFrame.Content = new AccommodationsStatisticsYearsPage(_selectedAccommodationDTO);
@@ -106,6 +122,11 @@ namespace BookingApp.ViewModel.Owner
         public void ShowSideMenu()
         {
             OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
+        }
+
+        public void ShowAccommodationHelp()
+        {
+            OwnerMainWindow.MainFrame.Content = new AccommodationHelpPage(_loggedInUser);
         }
     }
 }

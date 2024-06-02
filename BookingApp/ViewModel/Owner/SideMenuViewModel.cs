@@ -135,18 +135,22 @@ namespace BookingApp.ViewModel.Owner
         public void CloseSideMenu()
         {
             OwnerMainWindow.SideMenuFrame.Content = null;
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowAccommodationsPage()
         {
             OwnerMainWindow.MainFrame.Content = new AccommodationsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowReviewsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ReviewsPage();
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowInboxPage()
         {
             OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         private void LogOut()
         {
@@ -157,15 +161,18 @@ namespace BookingApp.ViewModel.Owner
         public void ShowRenovationsPage()
         {
             OwnerMainWindow.MainFrame.Content = new RenovationsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowProfileMenuPage()
         {
             OwnerMainWindow.MainFrame.Content = new ProfileMenuPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
 
         public void ShowForumsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ForumsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
     }
 }
