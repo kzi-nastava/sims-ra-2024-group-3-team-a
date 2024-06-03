@@ -36,62 +36,65 @@
 
         <Label HorizontalAlignment="Center" Foreground="#d4ff00" FontWeight="Bold" Grid.Row="1" Content="{Binding Path=AccommodationDTO.Name}" FontSize="25"/>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Location: "/>
-            <Grid Grid.Row="0" Grid.Column="1">
+        <GroupBox Grid.Row="2" Header="Details" Foreground="#d4ff00" FontSize="21">
+            <GroupBox.Background>
+                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+            </GroupBox.Background>
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Foreground="#d4ff00" Content="{Binding Path = AccommodationDTO.PlaceDTO.City}"/>
-                <Label Grid.Column="1" Foreground="#d4ff00" Content=" ,"></Label>
-                <Label Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = AccommodationDTO.PlaceDTO.Country}"/>
+                <Label FontSize="19" Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Location: "/>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label FontSize="19"  Grid.Column="0" Foreground="#d4ff00" Content="{Binding Path = AccommodationDTO.PlaceDTO.City}"/>
+                    <Label FontSize="19" Grid.Column="1" Foreground="#d4ff00" Content=" ,"></Label>
+                    <Label FontSize="19" Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = AccommodationDTO.PlaceDTO.Country}"/>
+                </Grid>
+
+                <Label FontSize="19" Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Type: "/>
+                <Label FontSize="19" Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.Type}"></Label>
+
+                <Label FontSize="19" Grid.Row="2" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: "/>
+                <Label FontSize="19" Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.Capacity}"></Label>
+
+                <Label FontSize="19" Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: "/>
+                <Label FontSize="19" Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.MinDaysReservation}"></Label>
+
+                <Label FontSize="19" Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: "/>
+                <Label FontSize="19" Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.CancellationPeriod}"></Label>
             </Grid>
+        </GroupBox>
 
-            <Label Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Type: "/>
-            <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.Type}"></Label>
-
-            <Label Grid.Row="2" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: "/>
-            <Label Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.Capacity}"></Label>
-
-            <Label Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: "/>
-            <Label Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.MinDaysReservation}"></Label>
-
-            <Label Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: "/>
-            <Label Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.CancellationPeriod}"></Label>
-        </Grid>
-
-        <ScrollViewer Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <ItemsControl ItemsSource="{Binding AccommodationDTO.Images}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="12,0,12,0">
-                            <Image Source="{Binding}" Height="250" Width="250"></Image>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <GroupBox Grid.Row="3" Header="Images" Foreground="#d4ff00" FontSize="21">
+            <GroupBox.Background>
+                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+            </GroupBox.Background>
+            <Grid>
+                <Image Source="{Binding Path=SelectedImage}" Height="250" Width="250" HorizontalAlignment="Center"></Image>
+                <Button Background="CadetBlue"  HorizontalAlignment="Right" Height="70" Width="70" Command="{Binding NextImageCommand}">
+                    <Image Source="../../../Resources/Images/Owner/NextArrow.png"></Image>
+                </Button>
+                <Button Background="CadetBlue"  HorizontalAlignment="Left" Height="70" Width="70" Command="{Binding PreviousImageCommand}">
+                    <Image Source="../../../Resources/Images/Owner/PreviousArrow.png"></Image>
+                </Button>
+            </Grid>
+        </GroupBox>
 
         <Button Grid.Row="4" Command="{Binding ShowAddAccommodationRenovationPageCommand}" Margin="125,7,125,7" Background="CadetBlue" Foreground="#d4ff00">
             <StackPanel Orientation="Horizontal">
@@ -101,8 +104,11 @@
         </Button>
 
         <Label Margin="0,25,0,0" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Content="YEARLY STATISTICS" FontSize="20"/>
-        <Button Background="CadetBlue" Grid.Row="5" Margin="0,20,50,0" Height="55" Width="55" HorizontalAlignment="Right" Command="{Binding GenerateReportCommand}">
-            <Image Source="..\..\..\Resources\Images\Owner\printer.png"></Image>
+        <Button Background="CadetBlue" Grid.Row="5" Margin="0,20,10,0" Height="55" Width="100" HorizontalAlignment="Right" Command="{Binding GenerateReportCommand}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="..\..\..\Resources\Images\Owner\printer.png"></Image>
+                <Label VerticalAlignment="Center" Content="PRINT" FontSize="15" Foreground="#d4ff00"/>
+            </StackPanel>
         </Button>
 
         <StackPanel Grid.Row="6">
@@ -141,10 +147,26 @@
                 </ListView.ItemTemplate>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <RotateTransform x:Name="rotateTransform" Angle="0"/>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Path=Value.IsMostOccupied}" Value="True">
-                                <Setter Property="BorderBrush" Value="Red"/>
-                                <Setter Property="BorderThickness" Value="5"/>
+                                <Setter Property="Background" Value="OrangeRed"/>
+                                <Setter Property="ToolTip" Value="This item is the most occupied!"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
+                                                <LinearDoubleKeyFrame Value="5" KeyTime="0:0:2" />
+                                                <LinearDoubleKeyFrame Value="-5" KeyTime="0:0:4" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

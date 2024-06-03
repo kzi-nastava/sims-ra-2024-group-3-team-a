@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace BookingApp.ViewModel.Owner
 {
-    public class MyReviewNotRatedViewModel : ViewModel
+    public class MyReviewNotRatedViewModel : Validation.ValidationBase
     {
         private AccommodationReservationService _accommodationReservationService;
         private AccommodationReservationDTO _accommodationReservationDTO;
@@ -30,7 +30,7 @@ namespace BookingApp.ViewModel.Owner
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             _accommodationReservationService = new AccommodationReservationService(accommodationReservationRepository, accommodationRepository, userRepository);
 
-            _accommodationReservationDTO = reservation;
+            _accommodationReservationDTO = new AccommodationReservationDTO(reservation);
 
             _goBackCommand = new RelayCommand(GoBack);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
@@ -98,8 +98,33 @@ namespace BookingApp.ViewModel.Owner
         }
         private void Rate()
         {
-            _accommodationReservationService.Update(_accommodationReservationDTO.ToAccommodationReservation());
-            OwnerMainWindow.MainFrame.Content = new ReviewsPage();
+            Validate1();
+
+            if(IsValid)
+            {
+                _accommodationReservationService.Update(_accommodationReservationDTO.ToAccommodationReservation());
+                OwnerMainWindow.MainFrame.Content = new ReviewsPage();
+            }
+        }
+
+        protected override void ValidateSelf1()
+        {
+            if (!int.TryParse(_accommodationReservationDTO.RatingDTO.OwnerCleannessRating.ToString(), out int OwnerCleannessRating) || OwnerCleannessRating <= 0)
+            {
+                ValidationErrors["OwnerCleannessRating"] = "You didn't rate Guest's cleanliness";
+            }
+
+            if (!int.TryParse(_accommodationReservationDTO.RatingDTO.OwnerRulesRespectRating.ToString(), out int OwnerRulesRespectRating) || OwnerRulesRespectRating <= 0)
+            {
+                ValidationErrors["OwnerRulesRespectRating"] = "You didn't rate Guest's rules respect";
+            }
+
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+
+        protected override void ValidateSelf2()
+        {
+            throw new NotImplementedException();
         }
     }
 }

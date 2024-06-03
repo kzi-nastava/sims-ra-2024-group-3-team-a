@@ -11,12 +11,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookingApp.ViewModel.Owner
 {
-    public class AddAccommodationViewModel : ViewModel
+    public class AddAccommodationViewModel : Validation.ValidationBase
     {
         private AccommodationDTO _accommodationDTO;
         private AccommodationService _accommodationService;  
@@ -71,6 +72,7 @@ namespace BookingApp.ViewModel.Owner
             set
             {
                 _accommodationDTO = value;
+
                 OnPropertyChanged();
             }
         }
@@ -161,9 +163,13 @@ namespace BookingApp.ViewModel.Owner
         {
             _accommodationDTO.Images = _images.ToList();
 
-            _accommodationService.Save(_accommodationDTO.ToAccommodation());
+            Validate1();
 
-            OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInOwner);
+            if(IsValid)
+            {
+                OwnerMainWindow.MainFrame.Content = new AccommodationsPage(_loggedInOwner);
+                _accommodationService.Save(_accommodationDTO.ToAccommodation());
+            } 
         }
         private void AddImages()
         {
@@ -193,6 +199,57 @@ namespace BookingApp.ViewModel.Owner
             {
                 Images.Remove(imagePath);
             }
+        }
+
+        protected override void ValidateSelf1()
+        {
+            if (string.IsNullOrWhiteSpace(_accommodationDTO.Name))
+            {
+                ValidationErrors["Name"] = "Name is required.";
+            }
+
+            if (string.IsNullOrWhiteSpace(_accommodationDTO.PlaceDTO.Country))
+            {
+                ValidationErrors["Country"] = "Country is required.";
+            }
+            else if(!Regex.IsMatch(_accommodationDTO.PlaceDTO.Country, @"^[a-zA-Z]+$"))
+            {
+                ValidationErrors["Country"] = "Country must contain only letters.";
+
+            }
+
+            if (string.IsNullOrWhiteSpace(_accommodationDTO.PlaceDTO.City))
+            {
+                ValidationErrors["City"] = "Country is required.";
+            }
+            else if (!Regex.IsMatch(_accommodationDTO.PlaceDTO.City, @"^[a-zA-Z]+$"))
+            {
+                ValidationErrors["City"] = "Country must contain only letters.";
+
+            }
+
+            if (!int.TryParse(_accommodationDTO.Capacity.ToString(), out int capacity) || capacity <= 0)
+            {
+                ValidationErrors["Capacity"] = "Enter a valid capacity number.";
+            }
+
+            if (!int.TryParse(_accommodationDTO.MinDaysReservation.ToString(), out int minDays) || minDays <= 0)
+            {
+                ValidationErrors["MinDaysReservation"] = "Enter a valid minimal days reservation number.";
+            }
+
+            if (!int.TryParse(_accommodationDTO.CancellationPeriod.ToString(), out int cancel) || cancel < 0)
+            {
+                ValidationErrors["CancellationPeriod"] = "Enter a valid cancellation period number.";
+            }
+
+
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+
+        protected override void ValidateSelf2()
+        {
+            throw new NotImplementedException();
         }
     }
 }

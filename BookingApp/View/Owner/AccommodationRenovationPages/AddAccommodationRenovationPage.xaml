@@ -81,17 +81,28 @@
             <DatePicker SelectedDate="{Binding FromDate}" Grid.Row="0" Grid.Column="0" Height="25" Margin="101,20,0,20"/>
             <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Content="-" Foreground="#d4ff00" FontSize="25"></Label>
             <DatePicker SelectedDate="{Binding ToDate}" Grid.Row="0" Grid.Column="2" Height="25" HorizontalAlignment="Left" />
-            <Label HorizontalAlignment="Center" Grid.Row="1" Content="Duration (days): " Foreground="#d4ff00" FontSize="15" Grid.RowSpan="3"/>
-            <TextBox Text="{Binding Length}" Grid.Row="1" Grid.ColumnSpan="3" Height="25" Margin="165,1,38,1"/>
+
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding ValidationErrors[Dates], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+
+            <Label HorizontalAlignment="Center" Grid.Row="2" Content="Duration (days): " Foreground="#d4ff00" FontSize="15" Grid.RowSpan="3"/>
+            <TextBox Text="{Binding Length}" Grid.Row="2" Grid.ColumnSpan="3" Height="25" Margin="165,1,38,1">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate />
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding ValidationErrors[Length], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
         </Grid>
 
         <Grid Grid.Row="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Content="Select available starting date " Foreground="#d4ff00" FontSize="15" Grid.RowSpan="3"></Label>
+            <Label Grid.Row="0"  Content="Select available starting date " HorizontalAlignment="Center" Foreground="#d4ff00" FontSize="15" Grid.RowSpan="3"></Label>
             <ComboBox SelectedItem="{Binding Path=AccommodationRenovationDTO.BeginDate}" Grid.Row="1" Margin="120,0,120,0" ItemsSource="{Binding AvailableDates}"></ComboBox>
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding ValidationErrors[ChoosenDate], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
         </Grid>
 
         <TextBox HorizontalScrollBarVisibility="Auto" Style="{StaticResource WaterMarkStyle}" Tag="Description" TextWrapping="Wrap"  Margin="25" Grid.Row="5" Background="White" Text="{Binding Path=AccommodationRenovationDTO.Description}" Cursor="IBeam"></TextBox>

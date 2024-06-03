@@ -18,6 +18,7 @@
   <ItemGroup>
     <None Remove="Resources\Images\accommodations.png" />
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\addNew.png" />
     <None Remove="Resources\Images\AppLogo.png" />
     <None Remove="Resources\Images\back.png" />
     <None Remove="Resources\Images\delete.png" />
@@ -27,6 +28,7 @@
     <None Remove="Resources\Images\Guide\question.jpg" />
     <None Remove="Resources\Images\Guide\refresh.png" />
     <None Remove="Resources\Images\Guide\star.png" />
+    <None Remove="Resources\Images\help.png" />
     <None Remove="Resources\Images\Icons\AppLogo.ico" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
@@ -37,17 +39,25 @@
     <None Remove="Resources\Images\Owner\Beach.png" />
     <None Remove="Resources\Images\Owner\Cottage.jpg" />
     <None Remove="Resources\Images\Owner\Cottage.png" />
+    <None Remove="Resources\Images\Owner\Etno.jpg" />
     <None Remove="Resources\Images\Owner\forums.png" />
     <None Remove="Resources\Images\Owner\forums1.png" />
     <None Remove="Resources\Images\Owner\Hotel.jpg" />
     <None Remove="Resources\Images\Owner\Hotel.png" />
     <None Remove="Resources\Images\Owner\menu.png" />
+    <None Remove="Resources\Images\Owner\NextArrow.png" />
     <None Remove="Resources\Images\Owner\notification.png" />
     <None Remove="Resources\Images\Owner\OwnerBackground.jpg" />
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
+    <None Remove="Resources\Images\Owner\PreviousArrow.png" />
     <None Remove="Resources\Images\Owner\printer.png" />
     <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\Owner\reportFlag.png" />
+    <None Remove="Resources\Images\Owner\settings.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOff.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOff1.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOn.png" />
+    <None Remove="Resources\Images\Owner\ToggleButtonOn1.png" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
     <None Remove="Resources\Images\Tourist\athens1.png" />
@@ -100,6 +110,36 @@
     <None Remove="Resources\Images\Tourist\voucher.png" />
     <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
+    <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp1.png" />
+    <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp2.png" />
+    <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp3.png" />
+    <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp4.png" />
+    <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp5.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Accommodations.png" />
+    <None Remove="Resources\Images\WizardAndHelp\AccommodationsNotification.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ForumHelp1.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ForumHelp2.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ForumHelp3.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ForumHelp4.png" />
+    <None Remove="Resources\Images\WizardAndHelp\InboxHelp1.png" />
+    <None Remove="Resources\Images\WizardAndHelp\InboxHelp2.png" />
+    <None Remove="Resources\Images\WizardAndHelp\InboxHelp3.png" />
+    <None Remove="Resources\Images\WizardAndHelp\RenovationHelp1.png" />
+    <None Remove="Resources\Images\WizardAndHelp\RenovationHelp2.png" />
+    <None Remove="Resources\Images\WizardAndHelp\RenovationHelp3.png" />
+    <None Remove="Resources\Images\WizardAndHelp\RenovationHelp4.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ReviewHelp1.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ReviewHelp2.png" />
+    <None Remove="Resources\Images\WizardAndHelp\ReviewHelp3.png" />
+    <None Remove="Resources\Images\WizardAndHelp\SideMenu.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard1.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard2.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard3.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard4.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard5.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard6.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard7.png" />
+    <None Remove="Resources\Images\WizardAndHelp\Wizard8.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -107,12 +147,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\addNew.png" />
     <Resource Include="Resources\Images\Guide\graystar.png" />
     <Resource Include="Resources\Images\Guide\refresh.png" />
+    <Resource Include="Resources\Images\help.png" />
+    <Resource Include="Resources\Images\Owner\Etno.jpg" />
     <Resource Include="Resources\Images\Owner\forums.png" />
     <Resource Include="Resources\Images\Owner\forums1.png" />
+    <Resource Include="Resources\Images\Owner\NextArrow.png" />
+    <Resource Include="Resources\Images\Owner\PreviousArrow.png" />
     <Resource Include="Resources\Images\Owner\printer.png" />
     <Resource Include="Resources\Images\Owner\reportFlag.png" />
+    <Resource Include="Resources\Images\Owner\settings.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOff.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOff1.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOn.png" />
+    <Resource Include="Resources\Images\Owner\ToggleButtonOn1.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
     <Resource Include="Resources\Images\Tourist\gift.png" />
@@ -200,6 +250,36 @@
     <Resource Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp1.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp2.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp3.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp4.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp5.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Accommodations.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\AccommodationsNotification.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ForumHelp1.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ForumHelp2.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ForumHelp3.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ForumHelp4.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\InboxHelp1.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\InboxHelp2.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\InboxHelp3.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\RenovationHelp1.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\RenovationHelp2.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\RenovationHelp3.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\RenovationHelp4.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ReviewHelp1.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ReviewHelp2.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\ReviewHelp3.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\SideMenu.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard1.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard2.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard3.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard4.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard5.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard6.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard7.png" />
+    <Resource Include="Resources\Images\WizardAndHelp\Wizard8.png" />
   </ItemGroup>
 
   <ItemGroup>
