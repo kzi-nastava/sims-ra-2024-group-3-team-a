@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
-        Title="TrackTourWindow" Height="500" Width="1035">
+        Title="TrackTourWindow" Height="550" Width="1035">
     <Window.Resources>
         <local:ReachedStatusToBrushConverter x:Key="ReachedStatusToBrushConverter"/>
         <Style TargetType="Button">
@@ -14,6 +14,19 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+
+        <KeyBinding Key="R"  Modifiers="Ctrl"  Command="{Binding ShowTourReservationWindowCommand}"   />
+        <KeyBinding Key="F1"  Command="{Binding ShowTouristMainWindowCommand}" />
+        <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
+        <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
+        <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
+        <KeyBinding Key="F9"  Command="{Binding  LogOutCommand}" />
+        <KeyBinding Key="C" Command="{Binding CloseWindowCommand}"/>
+        <KeyBinding Key="L" Modifiers="Ctrl" Command="{Binding ScrollLeftCommand}"/>
+        <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding ScrollRightCommand}"/>
+    </Window.InputBindings>
     <Grid Background="#edebfc">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,8 +38,8 @@
         <Grid  Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="Auto"/>
+           
+               
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -151,17 +164,19 @@
                         <ColumnDefinition Width="420"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-
+                    <StackPanel Margin="5,30,5,5">
                     <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
 
                     </Button>
-                    <ScrollViewer Name="scrollViewer"
+                        <TextBlock Margin="5,0,0,0" Text="(Ctrl+L)" FontSize="9"></TextBlock>
+                    </StackPanel>
+                    <ScrollViewer Focusable="False" Name="scrollViewer"
                       VerticalScrollBarVisibility="Disabled"
                       HorizontalScrollBarVisibility="Hidden"
                       Loaded="ScrollViewer_Loaded"
                       Grid.Column="1">
 
-                        <ItemsControl Background="White" ItemsSource="{Binding KeyPoints}">
+                        <ItemsControl Focusable="False" Background="White" ItemsSource="{Binding KeyPoints}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -170,16 +185,19 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button  Content="{Binding Path=Name}"  IsHitTestVisible="False" Background="{Binding Path=IsCurrent, Converter={StaticResource ReachedStatusToBrushConverter}}" Width="130" Height="130" >
+                                    <Button Focusable="False" Content="{Binding Path=Name}"  IsHitTestVisible="False" Background="{Binding Path=IsCurrent, Converter={StaticResource ReachedStatusToBrushConverter}}" Width="130" Height="130" >
 
                                     </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
+                    <StackPanel Grid.Column="2" Margin="5,30,5,5">
                     <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}"  Height="50" Width="30" Margin="5">
-
+                        
                     </Button>
+                        <TextBlock Margin="5,0,0,0" Text="(Ctrl+R)" FontSize="9"></TextBlock>
+                    </StackPanel>
 
                 </Grid>
             </Border>
