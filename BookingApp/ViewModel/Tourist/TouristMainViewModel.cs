@@ -28,6 +28,7 @@ namespace BookingApp.ViewModel.Tourist
         private TourService _tourService {  get; set; }
         private TourReservationService _tourReservationService { get; set; }
         private MessageService _messageService { get; set; }
+        private UserService _userService { get; set; }
         private ComplexTourRequestService _complexTourRequestService { get; set; }
         private OrdinaryTourRequestService _ordinaryTourRequestService { get; set; }
         private VoucherService _voucherService { get; set; }
@@ -51,7 +52,7 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _showTourRequestsCommand;
         private RelayCommand _resetSearchParametersCommand;
         private RelayCommand _showSettingsWindowCommand;
-
+        public RelayCommand OpenDropDownComboboxCommand { get; private set; }
         public TouristMainViewModel(UserDTO loggedInUser)
         {
             _message = new Message();
@@ -76,7 +77,7 @@ namespace BookingApp.ViewModel.Tourist
             _ordinaryTourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _complexTourRequestService = new ComplexTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, ordinaryTourRequestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository, complexTourRequestRepository);
             _voucherService = new VoucherService(voucherRepository);
-            List<TourDTO> tours = _tourService.GetAll().Select(tours => new TourDTO(tours)).ToList();
+            List<TourDTO> tours = _tourService.GetAllForTourist().Select(tours => new TourDTO(tours)).ToList();
        
             _toursDTO = new ObservableCollection<TourDTO>(tours);
             _filteredToursDTO = _toursDTO;
@@ -101,7 +102,10 @@ namespace BookingApp.ViewModel.Tourist
             _complexTourRequestService.CheckForInvalidComplexTourRequests(_userDTO.Id);
             _tourService.FindCandidatesForVoucher(_userDTO.Id);
             _voucherService.DeleteExpiredVouchers(_userDTO.Id);
-            
+            _userService = new UserService(userRepository);
+            OpenDropDownComboboxCommand = new RelayCommand(OpenCombobox);
+
+
         }
 
         public TourDTO TourDTO
@@ -446,7 +450,19 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
-      
+        private bool _isDropDownComboboxOpenCommand;
+        public bool IsDropDownComboboxOpenCommand
+        {
+            get
+            {
+                return _isDropDownComboboxOpenCommand;
+            }
+            set
+            {
+                _isDropDownComboboxOpenCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void Search()
         {
@@ -567,6 +583,10 @@ namespace BookingApp.ViewModel.Tourist
         {
             IsOpen = true;
         }
+        private void OpenCombobox()
+        {
+            IsDropDownComboboxOpenCommand = true;
+        }
 
         public void ClosePopUp()
         {
@@ -578,6 +598,14 @@ namespace BookingApp.ViewModel.Tourist
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             TouristMainWindow.GetInstance().Close();
+        }
+        public bool isSuperGuide(int id)
+        {
+            User guide = new User();
+            guide = _userService.GetById(id);
+
+            return guide.IsSuper;
+            
         }
     }
 }

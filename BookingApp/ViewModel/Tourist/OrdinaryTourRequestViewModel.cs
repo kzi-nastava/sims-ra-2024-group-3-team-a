@@ -52,7 +52,9 @@ namespace BookingApp.ViewModel.Tourist
         public RelayCommand LostFocusEndDateCommand { get; private set; }
         private LocationDTO _locationDTO;
         public Action CloseAction { get; set; }
-
+        public RelayCommand OpenDatePickerCommand { get; private set; }
+        public RelayCommand OpenDatePickerFinalCommand { get; private set; }
+        public RelayCommand OpenDropDownComboboxCommand { get; private set; }
         public OrdinaryTourRequestViewModel(UserDTO loggedInUser, int complexTourRequestId)
         {
             _userDTO = loggedInUser;
@@ -82,7 +84,9 @@ namespace BookingApp.ViewModel.Tourist
             LostFocusBeginDateCommand = new RelayCommand(OnLostFocusBeginDate);
             LostFocusEndDateCommand = new RelayCommand(OnLostFocusEndDate);
             _validateSelf2Command = new RelayCommand(ValidateSelf2);
-
+            OpenDatePickerCommand = new RelayCommand(OpenDatePicker);
+            OpenDatePickerFinalCommand = new RelayCommand(OpenDatePicker);
+            OpenDropDownComboboxCommand = new RelayCommand(OpenCombobox);
         }
 
         public OrdinaryTourRequestDTO OrdinaryTourRequestDTO
@@ -197,6 +201,8 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+
+       
         public IEnumerable<Languages> Languages
         {
             get
@@ -399,6 +405,53 @@ namespace BookingApp.ViewModel.Tourist
                     OnPropertyChanged(nameof(UserEndDateInput));
                 }
             }
+        }
+        private bool _isDatePickerFinalOpen;
+        public bool IsDatePickerFinalOpen
+        {
+            get { return _isDatePickerFinalOpen; }
+            set {
+                if (_isDatePickerFinalOpen != value)
+                {
+                    _isDatePickerFinalOpen = value;
+                    OnPropertyChanged(nameof(IsDatePickerFinalOpen));
+                }
+            }
+        }
+        private bool _isDropDownComboboxOpenCommand;
+        public bool IsDropDownComboboxOpenCommand
+        {
+            get
+            {
+                return _isDropDownComboboxOpenCommand;
+            }
+            set
+            {
+                _isDropDownComboboxOpenCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _isDatePickerOpen;
+        public bool IsDatePickerOpen
+        {
+            get { return _isDatePickerOpen; }
+            set
+            {
+                if (_isDatePickerOpen != value)
+                {
+                    _isDatePickerOpen = value;
+                    OnPropertyChanged(nameof(IsDatePickerOpen));
+                }
+            }
+        }
+
+        private void OpenDatePicker()
+        {
+            IsDatePickerOpen = true;
+        }
+        private void OpenCombobox()
+        {
+            IsDropDownComboboxOpenCommand = true;
         }
 
         private void OnLostFocusBeginDate()

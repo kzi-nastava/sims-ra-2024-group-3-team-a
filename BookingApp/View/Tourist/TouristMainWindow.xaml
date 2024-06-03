@@ -48,6 +48,7 @@
         <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
         <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
         <KeyBinding Key="R"  Modifiers="Ctrl" Command="{Binding ResetSearchParametersCommand}" />
+        <KeyBinding Command="{Binding OpenDropDownComboboxCommand}" Key="O" Modifiers="Control"/>
     </Window.InputBindings>
 
     <Grid Background="{DynamicResource Background}">
@@ -161,7 +162,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Margin="12,5,5,5" Grid.Row="0" FontWeight="Bold" Text="Country:" Foreground="Black" Grid.Column="0"></TextBlock>
+                <TextBlock Margin="12,5,5,5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Country:"  Grid.Column="0"></TextBlock>
                 <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}" Grid.Column="1">City:</TextBlock>
                 <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"   Grid.Column="2">Duration:</TextBlock>
                 <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"  Grid.Column="3">Language:</TextBlock>
@@ -183,9 +184,9 @@
 
 
                 <TextBox Margin="12,5,5,5" Grid.Row="1" Grid.Column="0"   x:Name="searchCountryTextBox" Width="200" Foreground="{DynamicResource Text}" Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource Text}" x:Name="searchCityTextBox" Width="200"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="2" Foreground="{DynamicResource Text}"  x:Name="searchDurationTextBox" Width="80"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3" Foreground="{DynamicResource Text}" IsEditable="True"  x:Name="languageComboBox" Width="130"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchLanguageInput}">
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="200"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"   x:Name="searchDurationTextBox" Width="80"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3"  IsEditable="True"  x:Name="languageComboBox" Width="130" IsDropDownOpen="{Binding IsDropDownComboboxOpenCommand}"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" SelectedItem="{Binding SearchLanguageInput}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" />
@@ -227,9 +228,18 @@
                         <StackPanel Background="#fcfcf2" Width="490"  Orientation="Horizontal"  Margin ="30,10,30,10">
                             <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
                             <StackPanel Margin="30,0,0,0">
+                                <StackPanel.Resources>
+                                   
+                                </StackPanel.Resources>
+
                                 <DockPanel>
 
                                     <TextBlock FontWeight="Bold" Foreground="{DynamicResource Button}" FontSize="15" Text="{Binding Name}"  />
+                                    <!--<Image Margin="150,0,0,0" Source="../../Resources/Images/Tourist/star.png" >
+                                        <Image.Visibility>
+                                            <Binding Path="GuideId" Converter="{StaticResource GuideIdToSuperGuideConverter}" ConverterParameter="TrueToVisible" />
+                                        </Image.Visibility>
+                                    </Image>-->
                                 </DockPanel>
                                 <DockPanel Margin="0,10,0,0">
                                     <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Location: "  FontSize="12"/>

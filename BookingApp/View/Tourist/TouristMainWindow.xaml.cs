@@ -10,6 +10,7 @@ using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -201,5 +202,30 @@ namespace BookingApp.View
         {
             AppTheme.ChangeTheme(new Uri("Themes/DarkTheme.xaml", UriKind.Relative));
         }
+        
+    }
+    
+}
+public class GuideIdToSuperGuideConverter : IValueConverter
+{
+    private TouristMainViewModel _viewModel;
+
+    public GuideIdToSuperGuideConverter(TouristMainViewModel viewModel)
+    {
+        _viewModel = viewModel;
+    }
+
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        int guideId = (int)value;
+        bool isSuperGuide = _viewModel.isSuperGuide(guideId);
+        return isSuperGuide;
+    }
+
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

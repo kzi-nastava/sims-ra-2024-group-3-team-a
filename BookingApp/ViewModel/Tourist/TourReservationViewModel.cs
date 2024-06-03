@@ -2,6 +2,8 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Reports.Owner;
+using BookingApp.Reports.Tourist;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
@@ -29,6 +31,7 @@ namespace BookingApp.ViewModel.Tourist
         private VoucherDTO _voucherDTO;
         private Voucher voucher;
         private VoucherService _voucherService;
+        private KeyPointService _keyPointService ;
         private ObservableCollection<VoucherDTO> _vouchersDTO;
         public  ObservableCollection<TouristDTO> _touristsDTO;
         private TouristDTO _selectedTouristDTO = null;
@@ -39,6 +42,8 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _useVoucherCommand;
         private RelayCommand _closeWindowCommand;
         private RelayCommand _showTouristMainWindowCommand;
+   
+        private Dictionary<int, TourReservationDTO> _tourReservationDTOForReport;
         public Action CloseAction { get; set; }
         public TourReservationViewModel(TourReservationService tourReservationService,TourDTO tourDTO, UserDTO loggedInUser)
         {
@@ -58,12 +63,15 @@ namespace BookingApp.ViewModel.Tourist
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            IKeyPointRepository keyPointRepository = Injector.CreateInstance<IKeyPointRepository>();
 
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _voucherService = new VoucherService(voucherRepository);
-           
-         
-         
+            _tourReservationDTOForReport =  new Dictionary<int, TourReservationDTO>();
+            _keyPointService = new KeyPointService(keyPointRepository);
+            _isVoucherUsed = false;
+
+
 
             _voucherService.UpdateHeader();
             _voucherService.UpdateVouchers();
@@ -78,6 +86,7 @@ namespace BookingApp.ViewModel.Tourist
             _closeWindowCommand = new RelayCommand(CloseWindow);
             _touristsDTO.Add(new TouristDTO("Milena","Mima", 22));
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
+            _exportToPDFCommand = new RelayCommand(GenerateReport);
 
         }
         public TourDTO TourDTO
@@ -152,6 +161,16 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        private bool _isVoucherUsed;
+        public bool IsVoucherUsed
+        {
+            get { return _isVoucherUsed; }
+            set
+            {
+                _isVoucherUsed = value;
+                OnPropertyChanged();
+            }
+        }
         private bool _isConfirmButtonEnabled;
         public bool IsConfirmButtonEnabled
         {
@@ -159,6 +178,17 @@ namespace BookingApp.ViewModel.Tourist
             set
             {
                 _isConfirmButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _exportToPDFCommand;
+        public RelayCommand ExportToPDFCommand
+        {
+            get { return _exportToPDFCommand; }
+            set
+            {
+                _exportToPDFCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -281,7 +311,18 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand ExportToPdfFile
+        {
+            get
+            {
+                return _showTouristMainWindowCommand;
+            }
+            set
+            {
+                _showTouristMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void AddTourist()
         {
@@ -296,7 +337,7 @@ namespace BookingApp.ViewModel.Tourist
                
                 }
 
-               // _touristDTO.Age = 0;   
+                _touristDTO.Age = 0;   
         }
         public void RemoveTourist()
         {
@@ -326,6 +367,7 @@ namespace BookingApp.ViewModel.Tourist
             }
             else
             {
+                _isVoucherUsed = true;
                 _voucherDTO.IsUsed = true;
                 voucher = _voucherService.GetById(_voucherDTO.Id);
                 voucher.TourId = _tourDTO.Id;
@@ -404,6 +446,19 @@ namespace BookingApp.ViewModel.Tourist
 
             };
 
+        }
+
+        public List<KeyPoint> GetKeyPoints()
+        {
+            List<KeyPoint > keyPoints = new List<KeyPoint>();
+            return _keyPointService.GetKeyPointsForTour(_tourDTO.ToTourAllParam());
+        }
+        private void GenerateReport()
+        {
+            List<KeyPoint> keyPoints = new List<KeyPoint>();
+            keyPoints = GetKeyPoints();
+            TourReservationReport tourReservationReport = new TourReservationReport();
+            tourReservationReport.GenerateReport(_tourReservationDTO,_tourDTO, keyPoints, _touristsDTO, _isVoucherUsed);
         }
         public void CloseWindow()
         {

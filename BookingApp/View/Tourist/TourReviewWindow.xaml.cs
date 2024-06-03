@@ -64,9 +64,11 @@ namespace BookingApp.View.Tourist
                 e.Handled = true;
             }
         }
+
+       
     }
 
-   
+
 
     public class RadioBoolToIntConverter : IValueConverter
     {
