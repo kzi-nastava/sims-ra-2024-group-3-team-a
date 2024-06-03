@@ -77,7 +77,7 @@ namespace BookingApp.View
                         }
                         case UserRole.Guest:
                         {
-                            GuestMainWindow guestMainWindow = new GuestMainWindow(user);
+                            GuestMainViewWindow guestMainWindow = new GuestMainViewWindow(user);
                             guestMainWindow.Show();
                             Close();
                             break;

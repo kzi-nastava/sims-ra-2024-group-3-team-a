@@ -13,6 +13,7 @@ namespace BookingApp.Model
     {
         public int Id { get; set; }
         public Location Location { get; set; }
+        public int ForumCreatorId { get; set; }
         public Boolean SeenByOwner { get; set; }
         public Boolean IsVeryImportant { get; set; }
         public Boolean IsClosed { get; set; }
@@ -22,10 +23,11 @@ namespace BookingApp.Model
             Location = new Location();
         }
 
-        public Forum(int id, Location location, Boolean seenByOwner, Boolean isVeryImportant, Boolean isClosed)
+        public Forum(int id, Location location,int forumCreatorId, Boolean seenByOwner, Boolean isVeryImportant, Boolean isClosed)
         {
             Id = id;
             Location = location;
+            ForumCreatorId = forumCreatorId;
             SeenByOwner = seenByOwner;
             IsVeryImportant = isVeryImportant;
             IsClosed = isClosed;
@@ -33,7 +35,7 @@ namespace BookingApp.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Location.City, Location.Country, SeenByOwner.ToString(), IsVeryImportant.ToString(), IsClosed.ToString() };
+            string[] csvValues = { Id.ToString(), Location.City, Location.Country, ForumCreatorId.ToString(), SeenByOwner.ToString(), IsVeryImportant.ToString(), IsClosed.ToString() };
             return csvValues;
         }
 
@@ -42,8 +44,9 @@ namespace BookingApp.Model
             Id = Convert.ToInt32(values[0]);
             Location.City = values[1];
             Location.Country = values[2];
-            SeenByOwner = Convert.ToBoolean(values[3]);
-            IsVeryImportant = Convert.ToBoolean(values[4]);
+            ForumCreatorId = Convert.ToInt32(values[3]);
+            SeenByOwner = Convert.ToBoolean(values[4]);
+            IsVeryImportant = Convert.ToBoolean(values[5]);
         }
     }
 }

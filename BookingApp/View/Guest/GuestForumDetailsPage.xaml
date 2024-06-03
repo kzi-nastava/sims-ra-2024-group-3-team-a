@@ -1,0 +1,162 @@
+﻿<Page x:Class="BookingApp.View.Guest.GuestForumDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookingApp.View.Guest"
+      mc:Ignorable="d" 
+      d:DesignHeight="550" d:DesignWidth="800"
+      Title="GuestForumDetailsPage">
+
+    <Page.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:LocationConverter x:Key="LocationConverter"/>
+        <local:AccommodationIdToNameConverter x:Key="AccommodationIdToNameConverter"/>
+        <local:AccommodationIdToLocationConverter x:Key="AccommodationIdToLocationConverter"/>
+        <local:AccommodationIdToImageConverter x:Key="AccommodationIdToImageConverter"/>
+        <local:AccommodationReservationIdToNameConverter x:Key="AccommodationReservationIdToNameConverter"/>
+        <Style x:Key="WaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Background="AntiqueWhite">
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,3,0,0" VerticalAlignment="Top" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Top"
+                           Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <local:PostTypeToHeaderConverter x:Key="PostTypeToHeaderConverter"/>
+        <Style x:Key="YesNoToggleSwitchStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border" CornerRadius="15" BorderBrush="#FFD6D6D6" BorderThickness="1" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Rectangle x:Name="rectBackground" Fill="White" RadiusX="15" RadiusY="15"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Ellipse x:Name="thumb" Width="30" Height="30" Fill="#FFD6D6D6" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="rectBackground" Property="Fill" Value="LightGreen"/>
+                                <Setter TargetName="thumb" Property="Fill" Value="Green"/>
+                                <Setter TargetName="thumb" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Content" Value="Yes"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="rectBackground" Property="Fill" Value="#FFEEEEEE"/>
+                                <Setter TargetName="thumb" Property="Fill" Value="Red"/>
+                                <Setter TargetName="thumb" Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="Content" Value="No"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Accommodations Toolbar -->
+        <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+            <Grid Background="Transparent" Margin="3,3,3,3">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00" Margin="111,-1,0,0">BookingApp</Label>
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
+                    <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
+                </Button>
+            </Grid>
+        </Border>
+        <Label Content="Forum" Grid.Row="1" Grid.ColumnSpan="2" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="28" Margin="30,25, 0, 0" FontWeight="DemiBold"></Label>
+        <!-- Scrollable ListView -->
+        <Button Grid.Row="2" Grid.Column="0" Command="{Binding LockForumCommand}" Content="Lock Forum" Width="120" ></Button>
+        <!--Lista Komentara-->
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Background="Transparent">
+            <ListView x:Name="myReviewsList" ItemsSource="{Binding PostsDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <GroupBox Header="{Binding Converter={StaticResource PostTypeToHeaderConverter}}" Foreground="#d4ff00" FontSize="21">
+                            <GroupBox.Background>
+                                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                            </GroupBox.Background>
+                            <StackPanel Orientation="Vertical" Width="700">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Foreground="#d4ff00" FontSize="21">
+                                        <TextBlock Text="{Binding Path=Text}" TextWrapping="Wrap" />
+                                    </Label>
+                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <Label Content="Reports: " Foreground="#d4ff00"></Label>
+                                        <Label Content="{Binding Reports}" Foreground="#d4ff00"></Label>
+                                    </StackPanel>
+                                    <!--
+                                    <Button Grid.Column="1" Background="Transparent" BorderBrush="Transparent"  Margin="0,20,0,0" Command="{Binding DataContext.ReportPostCommand, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" CommandParameter="{Binding}">
+                                        <Button.Content>
+                                            <Image Source="../../../Resources/Images/Owner/reportFlag.png" Width="40" Height="20"/>
+                                        </Button.Content>
+                                    </Button>
+                                    -->
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Type}" Value="SentByGuestWhoWasNotOnLocation">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Type}" Value="SentByOwner">
+                                                    <Setter Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Type}" Value="SentByGuestWhoWasOnLocation">
+                                                    <Setter Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+        <TextBox HorizontalScrollBarVisibility="Auto" Style="{StaticResource WaterMarkStyle}" Tag="Reply" TextWrapping="Wrap"  Margin="25" Grid.Row="4" Grid.ColumnSpan="2" Background="White" Text="{Binding Path=NewPostDTO.Text}" Cursor="IBeam"></TextBox>
+        <Button Grid.Row="5" Command="{Binding PostCommand}" Width="100" Height="40" VerticalAlignment="Top" Background="CadetBlue" Foreground="#d4ff00">
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="POST" FontSize="15" Foreground="#d4ff00"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Page>

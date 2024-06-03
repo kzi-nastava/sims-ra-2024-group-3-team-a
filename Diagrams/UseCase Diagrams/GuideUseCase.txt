@@ -1,0 +1,68 @@
+PRIHVATANJE ZAHTJEVA ZA SLOZENE TURE
+- preduslovi: Vodic je prijavljen. 
+- posljedica: Zahtjevi su prihvaceni.
+1. Vodic otvara prozor sa zahtjevima za ture.
+2. Vodic bira opciju slozenih zahtjeva.
+3. Sistem izlistava postojece zahtjeve.
+4. [ tacka prosirenja : Vodic prihvata dio slozene ture]
+5. [ukljuci : Sistem obavjestava turistu da je zahtjev prihvacen]
+6. Vodic zatvara prozor sa zahtjevima [alternativni tok A]
+7. Slucaj koriscenja se zavrsava
+
+ALTERNATIVNI TOK A:  Vodic bira da nastavi sa prihvatanjem zahtjeva 
+ 1. vraca se na tacku 4.
+
+*Tacka prosirenja: Vodic prihvata dio slozene ture
+-preduslovi: Postoje zahtjevi za slozene ture.Vodic nije ranije prihvatio neki dio ture na postojecim zahtjevima.
+- posljedica:  Zahtjev je prihvacen.
+1. Vodic bira opciju PRIHVATI 
+2. Vodicu se izlistavaju moguci datumi [alternativni tok A]
+3. Vodic prihvata jedan od datuma [ alternativni tok B]
+4. Prihvatanje dijela zahtjeva se zavrsava 
+
+ALTERNATIVNI TOK A: Ne postoji datumi koji odgovaraju zahtjevu a u kojima je vodic slobodan
+ 1.Prihvatanje dijela zahtjeva se zavrsava 
+
+ALTERNATIVNI TOK B : Vodic bira da ne prihvati dio ture
+ 1. Prihvatanje dijela zahtjeva se zavrsava 
+
+*Sistem obavjestava turistu da je zahtjev prihvacen
+1. Sistem salje obavjestenje turisti.
+
+
+SUPERVODIC
+-preduslovi:Vodic nije dao otkaz.
+-posljedica: Vodi postaje supervodic
+1.Vodic se uloguje u aplikaciju
+2. Sistem provjerava da li ulogovani vodic ispunjava uslove za status supervodica**[alternativni tok a]
+3. Vodic odbija titulu supervodica koja se prikazuje na njegovom ekranu  [ alternativni tok d]
+
+ALTERNATIVNI TOK A: Turista vec ima ulogu supervodica
+1.Sistem provjerava da li  je proslo godina dana od dobijanja statusa supervodica.
+        2. Sistem provjerava da li turista ispunjava uslove za zadrzavanje statusa.[alternativni tok b]
+3.Supervodic zadrzava titulu koja se prikazuje na njegovom ekranu[alternativni tok c]
+4.Slucaj koriscenja se zadrazava
+ 
+ALTERNATIVNI TOK C: Supervodic nije uspunio uslove
+1.Supervodic gubi titulu
+2. Slucaj koriscenja se zavrsava
+ 
+ALTERNATIVNI TOK B: Nije proslo godinu dana od dobijanja statusa supervodica
+1.Slucaj koriscenja se zavrsava
+
+ALTERNATIVNI TOK D:Vodic nije ispunio uslove
+1.Slucaj koriscenja se zavrsava
+
+**Uslovi za status supervodica: Vodic ima bar 20 tura na odredjenom jeziku poslednjih godinu dana i prosjek ocjena na njima je veci od 4.0.
+
+OTKAZ
+-preduslovi:Vodic  je prijavljen.
+-posljedica: Vodic daje otkaz i brise se iz sistema.
+1.Vodic bira dugme otkaz
+2.[ ukljuci :Sistem turistima dodjeljuje po jedan vaučer za svaku turu koju su zakazali kod njega]
+3.Sistem brise turistu.
+4. Slucaj koriscenja se zavrsava
+
+*Sistem   turistima dodjeljuje  vaucer:
+1.Sistem  otkazuje  unapred zakazane ture ovog vodiča 
+2.Sistem  turistima dodjeljuje po jedan vaučer za svaku turu koju su zakazali kod njega

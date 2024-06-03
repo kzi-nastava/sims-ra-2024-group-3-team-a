@@ -1,6 +1,4 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Repository;
 using BookingApp.ViewModel.Guest;
 using System;
 using System.Collections.Generic;
@@ -10,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,26 +19,23 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Guest
 {
     /// <summary>
-    /// Interaction logic for ReservationDetailsPage.xaml
+    /// Interaction logic for MakeReservationPage.xaml
     /// </summary>
-    public partial class ReservationDetailsPage : Page
+    public partial class MakeReservationPage : Page
     {
-        public static ReservationDetailsPage Instance;
-        public ReservationDetailsPage(AccommodationDTO accommodationDTO, UserDTO userDTO, DateOnly begin, DateOnly end)
+        MakeReservationViewModel _makeReservationViewModel;
+        public static MakeReservationPage Instance;
+        public MakeReservationPage(AccommodationDTO selectedAccommodationDTO, UserDTO loggedInGuest, DateTime selectedBeginDate, DateTime selectedEndDate, int daysToStay)
         {
             InitializeComponent();
-            DataContext = new GuestReservationDetailsViewModel(accommodationDTO, userDTO, begin, end);
-            //ToggleSwitch.GetBindingExpression(VisibilityProperty).UpdateTarget();
-            //ToggleSwitch.Visibility = GuestReservationDetailsViewModel.IsSuper ? Visibility.Visible : Visibility.Collapsed;
-            
-            if (Instance == null)
+            _makeReservationViewModel = new MakeReservationViewModel(selectedAccommodationDTO, loggedInGuest, selectedBeginDate, selectedEndDate, daysToStay);
+            DataContext = _makeReservationViewModel;
+            if(Instance == null )
             {
                 Instance = this;
             }
-           // Instance.ToggleSwitch.GetBindingExpression(VisibilityProperty).UpdateTarget();
         }
     }
-    /*
     public class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -60,5 +54,4 @@ namespace BookingApp.View.Guest
             throw new NotImplementedException("Converting from Visibility to Boolean is not supported.");
         }
     }
-    */
 }

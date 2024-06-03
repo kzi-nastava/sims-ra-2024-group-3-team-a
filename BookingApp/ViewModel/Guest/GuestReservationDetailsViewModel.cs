@@ -27,6 +27,7 @@ namespace BookingApp.ViewModel.Guest
         private AccommodationReservationService _accommodationReservationService;
         private SuperGuestService _superGuestService;
         private RelayCommand _newReservationCommand;
+        private RelayCommand _showSideMenuCommand;
 
         public GuestReservationDetailsViewModel(AccommodationDTO accommodationDTO, UserDTO userDTO, DateOnly begin, DateOnly end)
         {
@@ -43,6 +44,7 @@ namespace BookingApp.ViewModel.Guest
             _selectedBeginDate = begin;
             _selectedEndDate = end;
             _newReservationCommand = new RelayCommand(NewReservation);
+            _showSideMenuCommand = new RelayCommand(ShowSideMenu);
 
             if((_superGuestService.GetByUserId(userDTO.Id) == null) || _superGuestService.GetByUserId(userDTO.Id).Points == 0)
             {
@@ -120,6 +122,26 @@ namespace BookingApp.ViewModel.Guest
                 _newReservationCommand = value;
                 OnPropertyChanged();
             }
+        }
+        public RelayCommand ShowSideMenuCommand
+        {
+            get
+            {
+                return _showSideMenuCommand;
+            }
+            set
+            {
+                _showSideMenuCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public void ShowSideMenu()
+        {
+            GuestMainViewWindow.SideMenuFrame.Content = new GuestSideMenuPage();
+        }
+        public void CloseSideMenu()
+        {
+            GuestMainViewWindow.SideMenuFrame.Content = null;
         }
     }
 }

@@ -2,7 +2,6 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
-using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Guest;
@@ -16,7 +15,7 @@ using System.Windows;
 
 namespace BookingApp.ViewModel.Guest
 {
-    public class MakeReservationViewModel: ViewModel
+    public class PickDatesAnywhereAnytimeViewModel : ViewModel
     {
         private List<AccommodationReservationDTO> _accommodationReservationsDTO;
         private AccommodationDTO _selectedAccommodationDTO;
@@ -35,7 +34,7 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _newReservationCommand;
 
 
-        public MakeReservationViewModel(AccommodationDTO selectedAccommodationDTO, UserDTO loggedInGuest, DateTime selectedBeginDate, DateTime selectedEndDate, int daysToStay)
+        public PickDatesAnywhereAnytimeViewModel(AccommodationDTO selectedAccommodationDTO, UserDTO loggedInGuest, DateTime selectedBeginDate, DateTime selectedEndDate, int daysToStay)
         {
             isSuper = true;
             _userDTO = loggedInGuest;
@@ -46,6 +45,11 @@ namespace BookingApp.ViewModel.Guest
             SelectedAccommodationDTO = _selectedAccommodationDTO;
             _accommodationDTO = selectedAccommodationDTO;
 
+            //MakeReservationPage.Instance.DaysToStayTextBox.Text = DaysToStay.ToString();
+            //AnywhereAnytimePage.Instance.datePickerBegin.Text = _selectedBeginDate.ToString();
+            //AnywhereAnytimePage.Instance.datePickerEnd.Text = _selectedEndDate.ToString();
+            //AnywhereAnytimePage.Instance. = _selectedEndDate.ToString();
+
             IAccommodationReservationRepository accommodationReservationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
             IAccommodationRepository accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
@@ -55,18 +59,16 @@ namespace BookingApp.ViewModel.Guest
             _superGuestService = new SuperGuestService(superGuestRepository);
 
             _freeDates = new ObservableCollection<AccommodationReservationDTO>();
-            
+
             _searchDatesCommand = new RelayCommand(SearchAvailableDates);
             _showReservationDetailsPageCommand = new RelayCommand(ShowReservationDetailsPage);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _newReservationCommand = new RelayCommand(NewReservation);
             _accommodationReservationsDTO = new List<AccommodationReservationDTO>();
             _accommodationReservationsDTO = _accommodationReservationService.GetAllByAccommodationId(_selectedAccommodationDTO.Id).Where(c => c.Canceled == false).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
-
             if ((_superGuestService.GetByUserId(_userDTO.Id) == null) || _superGuestService.GetByUserId(_userDTO.Id).Points == 0)
             {
                 IsSuper = false;
-
             }
             else
             {
@@ -136,7 +138,7 @@ namespace BookingApp.ViewModel.Guest
 
         private void SearchAvailableDates()
         {
-            int spanIncrement = FindAvailableDatesPage.Instance.DaysToStayTextBox.Text != null ? Int32.Parse(FindAvailableDatesPage.Instance.DaysToStayTextBox.Text) : Int32.Parse(AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text);
+            int spanIncrement = AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text != null ? Int32.Parse(AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text) : Int32.Parse(AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text);
             int increment = 0;
             while (true)
             {
@@ -151,18 +153,18 @@ namespace BookingApp.ViewModel.Guest
         {
             _freeDates.Clear();
 
-            DateTime? date = FindAvailableDatesPage.Instance.datePickerBegin.SelectedDate;
-            if (date.HasValue)
-            {
-                _selectedBeginDate = new DateOnly(date.Value.Year, date.Value.Month, date.Value.Day);
-            }
+            //DateTime? date = AnywhereAnytimePage.Instance.datePickerBegin.SelectedDate;
+            //if (date.HasValue)
+            //{
+                //_selectedBeginDate = new DateOnly(date.Value.Year, date.Value.Month, date.Value.Day);
+            //}
             _selectedBeginDate = _selectedBeginDate.AddDays(-timeSpanIncrement);
 
-            DateTime? dateEnd = FindAvailableDatesPage.Instance.datePickerEnd.SelectedDate;
-            if (dateEnd.HasValue)
-            {
-                _selectedEndDate = new DateOnly(dateEnd.Value.Year, dateEnd.Value.Month, dateEnd.Value.Day);
-            }
+            //DateTime? dateEnd = AnywhereAnytimePage.Instance.datePickerEnd.SelectedDate;
+            //if (dateEnd.HasValue)
+            //{
+             //   _selectedEndDate = new DateOnly(dateEnd.Value.Year, dateEnd.Value.Month, dateEnd.Value.Day);
+            //}
             _selectedEndDate = _selectedEndDate.AddDays(timeSpanIncrement);
 
             if (_selectedEndDate < _selectedBeginDate)
@@ -172,7 +174,7 @@ namespace BookingApp.ViewModel.Guest
                 return true;
             }
 
-            DaysToStay = Int32.Parse(FindAvailableDatesPage.Instance.DaysToStayTextBox.Text);
+            DaysToStay = Int32.Parse(AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text);
 
             if (DaysToStay < _accommodationDTO.MinDaysReservation)
             {
@@ -243,7 +245,7 @@ namespace BookingApp.ViewModel.Guest
                     return;
                 }
                 Review rating = new Review();
-                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, SelectedDates.BeginDate, SelectedDates.EndDate,false, usedPoint, rating);
+                AccommodationReservation acc = new AccommodationReservation(0, _userDTO.Id, _accommodationDTO.Id, SelectedDates.BeginDate, SelectedDates.EndDate, false, usedPoint, rating);
                 _accommodationReservationService.Save(acc);
                 MessageBox.Show("Reservation successful!");
                 if (UsedPoint)
@@ -298,7 +300,7 @@ namespace BookingApp.ViewModel.Guest
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<AccommodationReservationDTO> FreeDates 
+        public ObservableCollection<AccommodationReservationDTO> FreeDates
         {
             get
             {
@@ -368,5 +370,5 @@ namespace BookingApp.ViewModel.Guest
         }
 
     }
-    
 }
+
