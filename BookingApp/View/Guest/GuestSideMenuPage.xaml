@@ -51,14 +51,14 @@
                     </StackPanel>
                 </Button>
 
-                <Button Command="{Binding ShowRenovationsPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding ShowForumCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\Owner/renovation.png" Height="50" Width="50" />
                         <Label Content="Forum" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 
-                <Button Command="{Binding ShowRenovationsPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Button Command="{Binding ShowAnywhereAnytimePageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\Owner/renovation.png" Height="50" Width="50" />
                         <Label Content="Anywhere, anytime" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>

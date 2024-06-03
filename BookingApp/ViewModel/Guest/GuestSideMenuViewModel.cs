@@ -20,16 +20,20 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _showInboxPageCommand;
         private RelayCommand _logOutCommand;
         private RelayCommand _showProfileMenuPageCommand;
+        private RelayCommand _showAnywhereAnytimePageCommand;
+        private RelayCommand _showForumCommand;
 
         public GuestSideMenuViewModel()
         {
             _closeSideMenuCommand = new RelayCommand(CloseSideMenu);
             _showAccommodationsPageCommand = new RelayCommand(ShowAccommodationsPage);
             _showReviewsPageCommand = new RelayCommand(ShowReviewsPage);
+            _showForumCommand = new RelayCommand(ShowForum);
             _showInboxPageCommand = new RelayCommand(ShowInboxPage);
             _logOutCommand = new RelayCommand(LogOut);
             _showProfileMenuPageCommand = new RelayCommand(ShowProfileMenuPage);
             _showReservationsPageCommand = new RelayCommand(ShowReservationsPage);
+            _showAnywhereAnytimePageCommand = new RelayCommand(ShowAnywhereAnytimePage);
         }
 
         public RelayCommand CloseSideMenuCommand
@@ -41,6 +45,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _closeSideMenuCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowForumCommand
+        {
+            get
+            {
+                return _showForumCommand;
+            }
+            set
+            {
+                _showForumCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -116,6 +132,18 @@ namespace BookingApp.ViewModel.Guest
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowAnywhereAnytimePageCommand
+        {
+            get
+            {
+                return _showAnywhereAnytimePageCommand;
+            }
+            set
+            {
+                _showAnywhereAnytimePageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void CloseSideMenu()
         {
@@ -129,6 +157,10 @@ namespace BookingApp.ViewModel.Guest
         {
             GuestMainViewWindow.MainFrame.Content = new ReviewsPage();
         }
+        public void ShowForum()
+        {
+            GuestMainViewWindow.MainFrame.Content = new GuestForumPage(GuestMainViewWindow.LoggedInGuest);
+        }
         public void ShowReservationsPage()
         {
             GuestMainViewWindow.MainFrame.Content = new MyReservationsPage(GuestMainViewWindow.LoggedInGuest);
@@ -136,6 +168,10 @@ namespace BookingApp.ViewModel.Guest
         public void ShowInboxPage()
         {
             GuestMainViewWindow.MainFrame.Content = new GuestInboxPage();
+        }
+        public void ShowAnywhereAnytimePage()
+        {
+            GuestMainViewWindow.MainFrame.Content = new AnywhereAnytimePage();
         }
         private void LogOut()
         {
