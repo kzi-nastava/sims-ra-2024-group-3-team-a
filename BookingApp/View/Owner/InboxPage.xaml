@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:BookingApp.View.Owner"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="750" d:DesignWidth="430"
       Title="InboxPage">
 
     <Grid>
@@ -14,6 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Inbox Toolbar-->
@@ -26,8 +27,26 @@
             </Grid>
         </Border>
 
+        <Border CornerRadius="10" BorderThickness="0" Background="CadetBlue" Width="40" Height="40" Margin="13,13,0,0" Grid.Row="1" HorizontalAlignment="Left">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=OwnerSettings.HelpOn}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=OwnerSettings.HelpOn}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Button Command="{Binding ShowInboxHelpCommand}" Width="40" Height="40" BorderThickness="0" Background="Transparent">
+                <Image Source="../../Resources/Images/help.png" />
+            </Button>
+        </Border>
+
         <!--Messages list-->
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="2">
             <ListView x:Name="listViewInbox" ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedMessageDTO}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

@@ -20,6 +20,8 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _showAddAccommodationRenovationPageCommand;
         private RelayCommand _generateReportCommand;
+        private RelayCommand _nextImageCommand;
+        private RelayCommand _previousImageCommand;
 
         private AccommodationDTO _accommodationDTO;
         private int _year;
@@ -33,6 +35,9 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
 
         private int[] _months = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
+        private List<string> _images;
+        private string _selectedImage;
+
         public AccommodationStatisticsMonthsViewModel(AccommodationDTO accommodationDTO, int year)
         {
             IAccommodationReservationRepository accommodationResrvationRepository = Injector.CreateInstance<IAccommodationReservationRepository>();
@@ -45,14 +50,31 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _showAddAccommodationRenovationPageCommand = new RelayCommand(ShowAddAccommodationRenovationPage);
             _generateReportCommand = new RelayCommand(GenerateReport);
+            _nextImageCommand = new RelayCommand(NextImage);
+            _previousImageCommand = new RelayCommand(PreviousImage);
 
             _accommodationStatisticsDTO = new Dictionary<string, AccommodationStatisticsDTO>();
             _accommodationStatisticsDTOForReport = new Dictionary<int, AccommodationStatisticsDTO>();
+
+            _images = accommodationDTO.Images;
+            _selectedImage = _images[0];
 
             _mostOccupiedMonth = _accommodationStatisticsService.GetMostOccupiedMonth(_accommodationDTO.Id, _year, _months);
             SetStatistics();
         }
 
+        public string SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
+        }
         public Dictionary<string, AccommodationStatisticsDTO> AccommodationStatisticsDTO
         {
             get
@@ -136,6 +158,30 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
                 OnPropertyChanged();
             }
         }
+        public RelayCommand NextImageCommand
+        {
+            get
+            {
+                return _nextImageCommand;
+            }
+            set
+            {
+                _nextImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand PreviousImageCommand
+        {
+            get
+            {
+                return _previousImageCommand;
+            }
+            set
+            {
+                _previousImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void SetStatistics()
         {
@@ -207,6 +253,32 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private void GoBack()
         {
             OwnerMainWindow.MainFrame.GoBack();
+        }
+
+        private void NextImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == _images.Count - 1)
+            {
+                SelectedImage = _images[0];
+            }
+            else
+            {
+                SelectedImage = _images[index + 1];
+            }
+        }
+
+        private void PreviousImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == 0)
+            {
+                SelectedImage = _images[_images.Count - 1];
+            }
+            else
+            {
+                SelectedImage = _images[index - 1];
+            }
         }
     }
 }

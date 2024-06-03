@@ -69,7 +69,7 @@ namespace BookingApp.DTO
 
         public override string ToString()
         {
-            return City + " " + Country; 
+            return City + ", " + Country; 
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

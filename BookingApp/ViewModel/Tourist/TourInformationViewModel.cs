@@ -198,6 +198,7 @@ namespace BookingApp.ViewModel.Tourist
         }
 
         private void ScrollRight(object obj)
+        
         {
 
            _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset+150);

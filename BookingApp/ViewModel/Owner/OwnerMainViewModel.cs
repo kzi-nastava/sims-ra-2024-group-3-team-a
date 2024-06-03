@@ -3,6 +3,7 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Owner;
+using BookingApp.View.Owner.WizardAndHelp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,6 +33,7 @@ namespace BookingApp.ViewModel.Owner
             _userService = new UserService(userRepository);
 
             OwnerMainWindow.LoggedInOwner = new UserDTO(_accommodationReservationService.SetSuperOwner(_loggedInOwner.ToUser()));
+
             UpdateFinishedReservations();
         }
 

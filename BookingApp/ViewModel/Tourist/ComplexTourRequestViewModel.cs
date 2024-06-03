@@ -133,15 +133,31 @@ namespace BookingApp.ViewModel.Tourist
         }
         public void ConfirmRequest()
         {
-            if(OrdinaryTourRequestsDTO.Count==0)
+            if(OrdinaryTourRequestsDTO.Count<=1)
             {
                 MessageBox.Show("Complex tour is made of two or more ordinary tours!");
+                AllowClose = false;
             }
-
-            MessageBox.Show("Complex tour succesfully created");
+            else
+            {
+                AllowClose = true;
+                MessageBox.Show("Complex tour succesfully created");
+                CloseAction();
+            }
+           
 
         }
+        private bool _allowClose = true;
 
+        public bool AllowClose
+        {
+            get { return _allowClose; }
+            set
+            {
+                _allowClose = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         public void CloseWindow()
@@ -156,7 +172,7 @@ namespace BookingApp.ViewModel.Tourist
             }
 
             _complexTourRequestService.Delete(complexTourRequest);
-
+            AllowClose = true;
             CloseAction();
         }
     }
