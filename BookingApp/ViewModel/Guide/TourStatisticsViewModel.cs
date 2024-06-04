@@ -4,6 +4,7 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
+using BookingApp.View;
 using BookingApp.View.Guide;
 using BookingApp.View.Owner;
 using System;
@@ -20,18 +21,24 @@ namespace BookingApp.ViewModel.Guide
     {
         
         private TourDTO _mostVisitedTourDTO;
+        private UserDTO _userDTO;
         private TourDTO _selectedTourDTO = null;
         private TourReservationService _tourReservationService;
         private TourService _tourService;
         private RelayCommand _showTouristsStatistcsCommand;
         private RelayCommand _showMostVisitedByYearCommand;
+        private RelayCommand _showTourReviewsCommand;
+        private RelayCommand _showAllToursCommand;
+        private RelayCommand _addNewTourCommand;
+        private RelayCommand _showMainWindowCommand;
+        private RelayCommand _logoutCommand;
         private int _chosenYear;
 
         public static ObservableCollection<TourDTO> _finishedToursDTO { get; set; }
 
         public TourStatisticsViewModel(UserDTO user)
         {
-
+            _userDTO = user;
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
@@ -62,6 +69,40 @@ namespace BookingApp.ViewModel.Guide
             }
             _showTouristsStatistcsCommand = new RelayCommand(ShowTouristStatistics);
             _showMostVisitedByYearCommand = new RelayCommand(ShowMostVisitedByYear);
+            _showTourReviewsCommand = new RelayCommand(ShowTourReviews);
+            _showMainWindowCommand = new RelayCommand(ShowMainWindow);
+            _showAllToursCommand = new RelayCommand(ShowAllTours);
+            _addNewTourCommand = new RelayCommand(AddNewTour);
+            _logoutCommand = new RelayCommand(Logout);
+        }
+        public RelayCommand ShowMainWindowCommand
+        {
+            get { return _showMainWindowCommand; }
+            set
+            {
+                _showMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowMainWindow()
+        {
+            GuideMainWindow mainWindow = new GuideMainWindow(_userDTO.ToUser());
+            mainWindow.Show();
+            TourStatisticsWindow.GetInstance().Close();
+        }
+        public RelayCommand AddNewTourCommand
+        {
+            get { return _addNewTourCommand; }
+            set
+            {
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_userDTO);
+            addTour.Show();
         }
         public TourDTO SelectedTourDTO
         {
@@ -81,6 +122,22 @@ namespace BookingApp.ViewModel.Guide
                 years = value;
                 OnPropertyChanged();
             }
+        }
+        public RelayCommand ShowAllToursCommand
+        {
+            get { return _showAllToursCommand; }
+            set
+            {
+                _showAllToursCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowAllTours()
+        {
+            AllToursWindow allToursView = new AllToursWindow(_userDTO);
+
+            allToursView.Show();
+            TourStatisticsWindow.GetInstance().Close();
         }
         private string chosenYear;
         public string ChosenYear
@@ -150,6 +207,15 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowTourReviewsCommand
+        {
+            get { return _showTourReviewsCommand; }
+            set
+            {
+                _showTourReviewsCommand = value;
+                OnPropertyChanged();
+            }
+        }
         private void ShowTouristStatistics()
         {
             if (_selectedTourDTO == null)
@@ -159,11 +225,36 @@ namespace BookingApp.ViewModel.Guide
             var selectedTour = _selectedTourDTO as TourDTO;
             if (_tourReservationService.GetJoinedTourists(selectedTour.ToTourAllParam()).Count() == 0)
             {
-                MessageBox.Show("There are no joined tourists on this tour", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Nijedan turista nije prisustvovao ovoj turi", "Obavjestenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             TouristStatisticsWindow touristStatisticsWindow = new TouristStatisticsWindow(selectedTour);
             touristStatisticsWindow.Show();
+        }
+        private void ShowTourReviews()
+        {
+            if (_selectedTourDTO == null)
+            {
+                return;
+            }
+            var selectedTour = _selectedTourDTO as TourDTO;
+            TourReviewsReadonlyWindow touristReviewsWindow = new TourReviewsReadonlyWindow(selectedTour);
+            touristReviewsWindow.Show();
+        }
+        public RelayCommand LogoutCommand
+        {
+            get { return _logoutCommand; }
+            set
+            {
+                _logoutCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Logout()
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            TourStatisticsWindow.GetInstance().Close();
         }
     }
 }

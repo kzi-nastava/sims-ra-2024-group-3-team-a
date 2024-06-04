@@ -1,11 +1,7 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Repository;
 using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,21 +17,15 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Guide
 {
     /// <summary>
-    /// Interaction logic for TourStatisticsWindow.xaml
+    /// Interaction logic for RequestDetailsWindow.xaml
     /// </summary>
-    public partial class TourStatisticsWindow : Window
+    public partial class RequestDetailsWindow : Window
     {
-        public static TourStatisticsWindow Instance;
-        public TourStatisticsWindow(UserDTO user)
+        public RequestDetailsWindow(OrdinaryTourRequestDTO requestDTO, UserDTO user)
         {
             InitializeComponent();
-            DataContext = new TourStatisticsViewModel(user);
-            Instance = this;
+            DataContext = new RequestDetailsViewModel(requestDTO, user);
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-        }
-        public static TourStatisticsWindow GetInstance()
-        {
-            return Instance;
         }
     }
 }

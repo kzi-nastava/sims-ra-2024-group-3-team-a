@@ -6,6 +6,30 @@
         xmlns:local="clr-namespace:BookingApp.View.Guide"
         mc:Ignorable="d"
         Title="" Height="200" Width="200"  ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="OvalButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="AntiqueWhite"
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="SaddleBRown"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
     <Grid Background="AntiqueWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -24,13 +48,13 @@
         <Grid Grid.ColumnSpan="5">
             <TextBlock HorizontalAlignment="Center" FontStyle="Italic"  >Odaberite termin ture</TextBlock>
         </Grid>
-        <ComboBox Height="20" IsEditable="True" Foreground="Black"  Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding BeginDates ,StringFormat='{}{0:dd/MM/yyyy}', UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Begin}">
+        <ComboBox Height="20" IsEditable="True" Foreground="Black" VerticalAlignment="Bottom" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding BeginDates ,StringFormat='{}{0:dd/MM/yyyy}', UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Begin}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button Content="POTVRDI" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Height="30" Command="{Binding AcceptTourRequestCommand}"></Button>
+        <Button Content="POTVRDI" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Height="30" Style="{StaticResource OvalButtonStyle}"  Command="{Binding AcceptTourRequestCommand}"></Button>
     </Grid>
 </Window>

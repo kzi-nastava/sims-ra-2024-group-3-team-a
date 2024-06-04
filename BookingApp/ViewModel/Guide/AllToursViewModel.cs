@@ -27,10 +27,10 @@ namespace BookingApp.ViewModel.Guide
         private readonly TourReservationService _tourReservationService;
         private TourDTO _selectedTourDTO = null;
         private TourDTO _mostVisitedTourDTO;
-        private RelayCommand _showAddTourWindowCommand; 
         private RelayCommand _showTourDetailsCommand; 
         private RelayCommand _showTourStatisticsCommand; 
-        private RelayCommand _logoutCommand; 
+        private RelayCommand _logoutCommand;
+        private RelayCommand _addNewTourCommand;
         private RelayCommand _showMainWindowCommand; 
         private RelayCommand _cancelTourCommand;
         private UserDTO _loggedGuide;
@@ -49,10 +49,10 @@ namespace BookingApp.ViewModel.Guide
             List<TourDTO> toursDTO = _tourService.GetUpcoming(guide.ToUser()).Select(tour => new TourDTO(tour)).ToList();
             _allToursDTO = new ObservableCollection<TourDTO>(toursDTO);
             _finishedToursDTO = new ObservableCollection<TourDTO>(toursFinishedDTO);
-            _showAddTourWindowCommand = new RelayCommand(ShowAddTourWindow);
             _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
             _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
             _cancelTourCommand = new RelayCommand(CancelTour);
+            _addNewTourCommand = new RelayCommand(AddNewTour);
             _showMainWindowCommand = new RelayCommand(ShowMainWindow);
             _logoutCommand = new RelayCommand(Logout);
             if (_tourService.GetMostVisitedTour() != null)
@@ -80,6 +80,20 @@ namespace BookingApp.ViewModel.Guide
             details.Show();
 
         }
+        public RelayCommand AddNewTourCommand
+        {
+            get { return _addNewTourCommand; }
+            set
+            {
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_loggedGuide);
+            addTour.Show();
+        }
         public RelayCommand ShowTourStatisticsCommand
         {
             get { return _showTourStatisticsCommand; }
@@ -93,6 +107,7 @@ namespace BookingApp.ViewModel.Guide
         {
             TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_loggedGuide);
             tourStatistics.Show();
+            AllToursWindow.GetInstance().Close();
         }
         public ObservableCollection<TourDTO> AllToursDTO
         {
@@ -139,20 +154,6 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        public RelayCommand ShowAddTourWindowCommand
-        {
-            get { return _showAddTourWindowCommand; }
-            set
-            {
-                _showAddTourWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
-        private void ShowAddTourWindow()
-        {
-            AddTourWindow addTourWindow = new AddTourWindow(_loggedGuide);
-            addTourWindow.Show();
-        }
         public RelayCommand ShowMainWindowCommand
         {
             get { return _showMainWindowCommand; }
@@ -192,11 +193,11 @@ namespace BookingApp.ViewModel.Guide
                 selectedTour.CurrentKeyPoint = "canceled";
                 _tourService.Update(selectedTour.ToTourAllParam());
                 _allToursDTO.Remove(selectedTour);
-                MessageBox.Show("Tour has been successfully canceled", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Tour uspješno otkazana", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("Tour cannot be canceled as it is less than 48 hours away from its beginning time. ", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Tura ne može biti otkazana jer ima manje od 48 sati do početka ture. ", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         public RelayCommand LogoutCommand

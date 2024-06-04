@@ -6,7 +6,31 @@
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
         Title="Sve ture" Height="611" Width="980"  ResizeMode="CanResize">
+    <Window.Resources>
+        <Style x:Key="OvalButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="AntiqueWhite"
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="SaddleBRown"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
 
+        </Style>
+
+    </Window.Resources>
     <Grid Background="AntiqueWhite">
 
         <Grid.RowDefinitions>
@@ -29,9 +53,13 @@
         </Grid.ColumnDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="6" >
             <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
-            <MenuItem Header="Pomoć"/>
-            <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}" />
-            <MenuItem Header="Otkaz" />
+            <MenuItem Header="Pomoć">
+                <MenuItem Header="Prečice"/>
+                <MenuItem Header="Video tutorijal"/>
+                <MenuItem Header="Upute"/>
+            </MenuItem>
+            <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}"/>
+            <MenuItem Header="Sve ture" />
             <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -172,9 +200,9 @@
                 </ListView>
             </TabItem>
         </TabControl>
-        <Button Content="Napravi novu turu" Command="{Binding ShowAddTourWindowCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="3"/>
-        <Button Content="Otkaži turu" Command="{Binding CancelTourCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="4"/>
-        <Button Content="Statistike tura" Command="{Binding ShowTourStatisticsCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="5"/>
+        <Button Content="Napravi novu turu"   Style="{StaticResource OvalButtonStyle}" Command="{Binding ShowAddTourWindowCommand}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="3"/>
+        <Button Content="Otkaži turu" Command="{Binding CancelTourCommand}"    Style="{StaticResource OvalButtonStyle}" VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="4"/>
+        <Button Content="Statistike tura" Command="{Binding ShowTourStatisticsCommand}"   Style="{StaticResource OvalButtonStyle}"  VerticalAlignment="Center" Height="29" Grid.Row="2" Grid.Column="5"/>
         <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" >
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" >
@@ -210,8 +238,9 @@
 
     </Grid>
     <Window.InputBindings>
-        <KeyBinding Key="N" Modifiers="Control" Command="{Binding ShowAddTourWindowCommand}" />
         <KeyBinding Key="X" Modifiers="Control" Command="{Binding CancelTourCommand}" />
-        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" /> 
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding ShowTourRequestCommand}" />
     </Window.InputBindings>
 </Window>

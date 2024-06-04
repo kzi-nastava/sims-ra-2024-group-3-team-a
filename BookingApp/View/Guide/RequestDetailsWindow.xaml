@@ -1,0 +1,38 @@
+﻿<Window x:Class="BookingApp.View.Guide.RequestDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Guide"
+        mc:Ignorable="d"
+        Title="" Height="250" Width="280">
+    <Grid Background="AntiqueWhite">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid >
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="LEft"  FontSize="15"  Content="LISTA TURISTA :"  FontStretch="Medium" Height="27" VerticalAlignment="Top" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <ScrollViewer>
+                <DataGrid IsReadOnly="True" ItemsSource="{Binding Path=Request.TouristsDTO}"  AutoGenerateColumns="False" Background="AntiqueWhite"  Foreground="SaddleBrown" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="IME" Width="*" Binding="{Binding Path=Name}"/>
+                        <DataGridTextColumn Header="PREZIME" Width="*" Binding="{Binding Path=Surname}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="2" >
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="LEft"  FontSize="15"  Content="OPIS :"  FontStretch="Medium" Height="27" VerticalAlignment="Top" />
+        </Grid>
+        <Border BorderBrush="SaddleBrown" Grid.Row="3" >
+            <ScrollViewer Margin="9" >
+                <TextBlock Text="{Binding Path=Request.Description}" TextWrapping="Wrap" Margin="4"  FontSize="13" ></TextBlock>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>

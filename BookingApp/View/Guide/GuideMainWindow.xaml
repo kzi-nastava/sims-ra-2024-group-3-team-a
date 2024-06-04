@@ -7,8 +7,30 @@
         xmlns:local="clr-namespace:BookingApp.View"
         mc:Ignorable="d"
         Title="Početna stranica" Height="611" Width="980"  ResizeMode="CanResize">
-    
-
+    <Window.Resources>
+        <Style x:Key="OvalButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="AntiqueWhite"
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="SaddleBRown"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+           
+        </Style>
+    </Window.Resources>
     <Grid Background="AntiqueWhite" RenderTransformOrigin="0.5,0.5">
         <Grid.RenderTransform>
             <TransformGroup>
@@ -37,21 +59,13 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.ColumnSpan="7" Grid.Row="0">
             <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7">
-                <MenuItem Header="Pomoć" />
-                <MenuItem Header="Prečice" >
-                    <MenuItem    Header="Napravi novu turu (CTRL+N)" Command="{Binding AddNewTourCommand}"  >
-
-                    </MenuItem>
-                    <MenuItem  Header="Prikazi  sve ture(CTRL + T)" Command="{Binding ShowAllToursCommand}" >
-
-                    </MenuItem>
-
-                    <MenuItem    Header="Statistika tura(CTRL+S)" Command="{Binding ShowTourStatisticsCommand}" >
-
-                    </MenuItem>
+                <MenuItem Header="Pomoć">
+                    <MenuItem Header="Prečice" Command="{Binding ShortcutsCommand}"/>
+                    <MenuItem Header="Video tutorijal"/>
+                    <MenuItem Header="Upute" Command="{Binding HelpCommand}"/>
                 </MenuItem>
-
-                <MenuItem Header="Otkaz"  />
+                <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}" />
+                <MenuItem Header="Sve ture" Command="{Binding ShowAllToursCommand}" />
                 <MenuItem Header="Odjava" Command="{Binding LogoutCommand}" />
             </Menu>
     </Grid>
@@ -60,7 +74,7 @@
         </Grid>
         <Grid Grid.Row="1" Grid.Column="6" Height="45" >
             <StackPanel Orientation="Horizontal">
-                <Button Width="20" Height="20" Command="{Binding Helps}">
+                <Button Width="20" Height="20" Command="{Binding HelpCommand}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid>
@@ -137,8 +151,8 @@
                                         <DockPanel >
                                             <TextBlock Text="LOKACIJA: " />
                                                     <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.City}" />
-                                                    <TextBlock FontWeight="Bold" Text=", "/>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
+                                                    <TextBlock FontWeight="Bold" Text=","/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="50"/>
                                                 </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="BROJ TURISTA: " />
@@ -181,16 +195,16 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="1" >
-                <Button Content="NAPRAVI NOVU TURU" Command="{Binding AddNewTourCommand}"  VerticalAlignment="Top" Height="50" Margin="5"   />
+                <Button Content="NAPRAVI NOVU TURU" Command="{Binding AddNewTourCommand}" Style="{StaticResource OvalButtonStyle}" VerticalAlignment="Top" Height="50" Margin="5"   />
             </Grid>
             <Grid Grid.Row="2" >
-                <Button Content="ZAHTJEVI ZA TURE" Command="{Binding ShowTourRequestCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
+                <Button Content="ZAHTJEVI ZA TURE" Command="{Binding ShowTourRequestCommand}"  VerticalAlignment="Top" Style="{StaticResource OvalButtonStyle}" Height="50" Margin="5"  />
             </Grid>
             <Grid Grid.Row="3" >
-                <Button Content="PRIKAŽI SVE TURE" Command="{Binding ShowAllToursCommand}"   VerticalAlignment="Top" Height="50" Margin="5"/>
+                <Button Content="PRIKAŽI SVE TURE" Command="{Binding ShowAllToursCommand}"   VerticalAlignment="Top" Style="{StaticResource OvalButtonStyle}" Height="50" Margin="5"/>
             </Grid>
             <Grid Grid.Row="4" >
-                <Button Content="STATISTIKA TURA" Command="{Binding ShowTourStatisticsCommand}"   VerticalAlignment="Top" Height="50" Width="100" Margin="5" />
+                <Button Content="STATISTIKA TURA" Command="{Binding ShowTourStatisticsCommand}"   VerticalAlignment="Top" Style="{StaticResource OvalButtonStyle}" Height="50" Width="100" Margin="5" />
             </Grid>
             <Grid Grid.Row="5" >
                 <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan"  Height="130">
@@ -229,7 +243,7 @@
                 </Border>
             </Grid>
             <Grid Grid.Row="7">
-                <Button Content="OTKAZ" Command="{Binding QuitCommand}"  VerticalAlignment="Top" Height="50" Margin="5"  />
+                <Button Content="OTKAZ" Command="{Binding QuitCommand}" Style="{StaticResource OvalButtonStyle}"  VerticalAlignment="Top" Height="50" Margin="5"  />
             </Grid>
         </Grid>
         <Grid Grid.Row="8" Grid.Column="5">
@@ -238,7 +252,7 @@
     </Grid>
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
-        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding ShowTourRequestCommand}" />
         <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
     </Window.InputBindings>

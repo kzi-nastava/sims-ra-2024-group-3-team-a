@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:BookingApp.View.Guide"
         mc:Ignorable="d"
         Title="Detalji recenzije" Height="450" Width="550">
@@ -17,33 +19,55 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Label FontWeight="ExtraBlack" HorizontalAlignment="Left"  FontSize="25"  Content="RECENZIJA"  FontStretch="Medium" />
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" >
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="25"  Content="RECENZIJA"  FontStretch="Medium" />
         </Grid>
-        <Grid Grid.Row="1" Grid.Column="0">
-            <StackPanel Orientation="Vertical">
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Vertical" >
                 <DockPanel>
-                    <TextBlock FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"   Text="{Binding Path=TouristDTO.Name}"></TextBlock>
+                    <TextBlock FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"   Text="Turista: "></TextBlock>
+                    <TextBlock FontSize="15" FontWeight="Bold"   Text="{Binding Path=TouristDTO.Name}"></TextBlock>
                     <TextBlock FontSize="15" FontWeight="Bold"  Text=" "></TextBlock>
                     <TextBlock FontSize="15" FontWeight="Bold"  Text="{Binding Path=TouristDTO.Surname}"></TextBlock>
                 </DockPanel>
-                <TextBlock FontSize="15" FontWeight="Bold" HorizontalAlignment="LEft" Text="{Binding Path=TourDTO.Name}"></TextBlock>
                 <DockPanel>
-                    <TextBlock FontSize="15" HorizontalAlignment="Left" Text="Ocjena znanja vodica:"></TextBlock>
+                    <TextBlock FontSize="15" FontWeight="Bold" HorizontalAlignment="LEft" Text="Tura:"></TextBlock>
+                    <TextBlock FontSize="15" FontWeight="Bold"  Text="{Binding Path=TourDTO.Name}"></TextBlock>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Center">
+                    <TextBlock FontSize="15"  Text="Ocjena znanja vodica:"></TextBlock>
                     <TextBlock FontSize="15"  Text=" "></TextBlock>
                     <TextBlock FontSize="15"  Text="{Binding Path=Review.GuideKnowledgeRating}"></TextBlock>
                 </DockPanel>
-                <DockPanel>
-                    <TextBlock FontSize="15" HorizontalAlignment="Left" Text="Ocjena jezika vodica:"></TextBlock>
+                <DockPanel HorizontalAlignment="Center">
+                    <TextBlock FontSize="15"  Text="Ocjena jezika vodica:"></TextBlock>
                     <TextBlock FontSize="15"  Text=" "></TextBlock>
                     <TextBlock FontSize="15"  Text="{Binding Path=Review. GuideLanguageRating}"></TextBlock>
                 </DockPanel>
-                <DockPanel>
-                    <TextBlock FontSize="15" HorizontalAlignment="Left" Text="Ocjena zanimljivosti ture:"></TextBlock>
+                <DockPanel HorizontalAlignment="Center" >
+                    <TextBlock FontSize="15" Text="Ocjena zanimljivosti ture:"></TextBlock>
                     <TextBlock FontSize="15" Text=" "></TextBlock>
                     <TextBlock FontSize="15"  Text="{Binding Path=Review.TourEntertainmentRating}"></TextBlock>
                 </DockPanel>
             </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <DockPanel HorizontalAlignment="Right">
+                <TextBlock FontSize="15" HorizontalAlignment="Right" >
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="Validna">
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Review.IsNotValid}" Value="True">
+                                    <Setter Property="Text" Value="Nije Validna"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            
+            </DockPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="2" Height="140">
             <Grid.ColumnDefinitions>
@@ -51,14 +75,18 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="3">
+            <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Margin="3">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ScrollLeftCommand}" CommandParameter="{Binding ElementName=scrollViewer}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
             <ScrollViewer Grid.Column="1" Name="scrollViewer"
-                      VerticalScrollBarVisibility="Disabled"
-                      HorizontalScrollBarVisibility="Hidden"
-                      >
-                <ItemsControl x:Name="imageListView"    Background="AntiqueWhite"  ItemsSource="{Binding Review.Images}">
-                    <ItemsControl.ItemsPanel >
+                          VerticalScrollBarVisibility="Disabled"
+                          HorizontalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="imageListView" Background="AntiqueWhite" ItemsSource="{Binding Review.Images}">
+                    <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
@@ -66,13 +94,18 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="Black" Margin="5 0 5 0" BorderThickness="1">
-                                <Image Width="140" Margin="1" Height="140" Stretch="UniformToFill" Source="{Binding}"/>
+                                <Image Width="120" Margin="1" Height="120" Stretch="UniformToFill" Source="{Binding}"/>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
+            <Button Grid.Column="2" FontFamily="Marlett" Content="4" HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="30" Margin="5">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ScrollRightCommand}" CommandParameter="{Binding ElementName=scrollViewer}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
         </Grid>
         <Grid Grid.Row="3" Grid.ColumnSpan="2">
@@ -80,10 +113,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="110"/>
             </Grid.RowDefinitions>
-            <Label FontWeight="ExtraBlack" HorizontalAlignment="Left"  FontSize="15"  Content="KOMENTARI :"  FontStretch="Medium" />
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Left"  FontSize="15"  Content="KOMENTAR :"  FontStretch="Medium" />
             <Grid Grid.Row="1" >
-                <ScrollViewer Margin="15">
-                    <TextBlock Text="{Binding Path=Review.Comment}" TextWrapping="Wrap" ></TextBlock>
+                <ScrollViewer Margin="20">
+                    <TextBlock Text="{Binding Path=Review.Comment}" TextWrapping="Wrap" Margin="5" ></TextBlock>
                 </ScrollViewer>
             </Grid>
         </Grid>

@@ -58,16 +58,22 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        private void ScrollRight(object obj)
+        private void ScrollLeft(object parameter)
         {
-
-            _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset + 150);
+            if (parameter is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - 150);
+            }
         }
-        private void ScrollLeft(object obj)
+
+        private void ScrollRight(object parameter)
         {
-
-            _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset - 150);
+            if (parameter is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset + 150);
+            }
         }
+
         public TourReviewDTO Review
         {
             get { return _review; }

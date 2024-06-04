@@ -25,7 +25,9 @@ namespace BookingApp.ViewModel.Guide
         private KeyPointService _keyPointService;
         private RelayCommand _showMainWindowCommand;
         private RelayCommand _showTourStatisticsCommand;
+        private RelayCommand _addNewTourCommand;
         private RelayCommand _logoutCommand;
+        private RelayCommand _showTourRequestsCommand;
         private RelayCommand _showAllToursCommand;
         private UserDTO _loggedGuide;
         private string _points;
@@ -47,12 +49,13 @@ namespace BookingApp.ViewModel.Guide
             _points = "";
             foreach (var keypoint in keypointsDTO)
             {
-                _points += keypoint.Name + ", ";
+                _points += "- " + keypoint.Name + "\n";
             }
             _showAllToursCommand = new RelayCommand(ShowAllTours);
+            _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
             _logoutCommand = new RelayCommand(Logout);
+            _showTourRequestsCommand = new RelayCommand(ShowTourRequest);
             _showMainWindowCommand = new RelayCommand(ShowMainWindow);
-            _points = _points.Remove(_points.Length - 2);
         }
         public UserDTO User
         {
@@ -72,6 +75,21 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowMainWindowCommand
+        {
+            get { return _showMainWindowCommand; }
+            set
+            {
+                _showMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowMainWindow()
+        {
+            GuideMainWindow mainWindow = new GuideMainWindow(_loggedGuide.ToUser());
+            mainWindow.Show();
+            TourDetailsWindow.GetInstance().Close();
+        }
         public TourDTO Tour
         {
             get { return _tourDTO; }
@@ -80,6 +98,35 @@ namespace BookingApp.ViewModel.Guide
                 _tourDTO = value;
                 OnPropertyChanged();
             }
+        }
+        public RelayCommand ShowTourRequestCommand
+        {
+            get { return _showTourRequestsCommand; }
+            set
+            {
+                _showTourRequestsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourRequest()
+        {
+            TourRequestWindow requests = new TourRequestWindow(_loggedGuide);
+            requests.Show();
+
+        }
+        public RelayCommand AddNewTourCommand
+        {
+            get { return _addNewTourCommand; }
+            set
+            {
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_loggedGuide);
+            addTour.Show();
         }
         public RelayCommand ShowTourStatisticsCommand
         {
@@ -95,21 +142,6 @@ namespace BookingApp.ViewModel.Guide
         {
             TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_loggedGuide);
             tourStatistics.Show();
-        }
-        public RelayCommand ShowMainWindowCommand
-        {
-            get { return _showMainWindowCommand; }
-            set
-            {
-                _showMainWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
-        private void ShowMainWindow()
-        {
-            GuideMainWindow mainWindow = new GuideMainWindow(_loggedGuide.ToUser());
-            mainWindow.Show();
-            TourDetailsWindow.GetInstance().Close();
         }
         public RelayCommand ShowAllToursCommand
         {

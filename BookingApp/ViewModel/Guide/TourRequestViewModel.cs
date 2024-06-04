@@ -33,9 +33,16 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _resetSearchParametersCommand;
         private RelayCommand _cancelTourRequestCommand;
         private RelayCommand _acceptTourRequestCommand;
+        private RelayCommand _logoutCommand;
+        private RelayCommand _showMainWindowCommand;
+        private RelayCommand _showAllToursCommand;
+        private RelayCommand _requestDetailsCommand;
         private RelayCommand _acceptComplexTourRequestCommand;
         private Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> _dictionary;
+        private Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> _filteredDictionary;
         private RelayCommand _showTourRequestStatisticsCommand;
+        private RelayCommand _showTourStatisticsCommand;
+        private RelayCommand _addNewTourCommand;
         public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> keyValuePairs { get; set; }
         public TourRequestViewModel(UserDTO user)
         {
@@ -60,12 +67,19 @@ namespace BookingApp.ViewModel.Guide
             List<ComplexTourRequestDTO> complexDTO = _complexRequestService.GetAll().Select(request => new ComplexTourRequestDTO(request)).ToList();
             _complexRequestsDTO = new ObservableCollection<ComplexTourRequestDTO>(complexDTO);
             _filteredRequestsDTO = _requestsDTO;
+
             _searchCommand = new RelayCommand(Search);
             _resetSearchParametersCommand = new RelayCommand(ResetSearchParameters);
             _cancelTourRequestCommand = new RelayCommand(CancelTourRequest);
             _acceptTourRequestCommand = new RelayCommand(AcceptTourRequest);
+            _requestDetailsCommand = new RelayCommand(RequestDetails);
             _acceptComplexTourRequestCommand = new RelayCommand(AcceptComplexTourRequest);
             _showTourRequestStatisticsCommand = new RelayCommand(ShowTourRequestStatistic);
+            _showTourStatisticsCommand = new RelayCommand(ShowTourStatistics);
+            _showAllToursCommand = new RelayCommand(ShowAllTours);
+            _logoutCommand = new RelayCommand(Logout);
+           _addNewTourCommand = new RelayCommand(AddNewTour);
+            _showMainWindowCommand = new RelayCommand(ShowMainWindow);
             keyValuePairs = new Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>>();
             foreach (OrdinaryTourRequest requestOrdinary in _tourRequestService.GetAll())
             {
@@ -75,7 +89,22 @@ namespace BookingApp.ViewModel.Guide
                 
             }
             _dictionary = MakeDictionary();
-          
+            _filteredDictionary = _dictionary;
+
+        }
+        public RelayCommand AddNewTourCommand
+        {
+            get { return _addNewTourCommand; }
+            set
+            {
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_userDTO);
+            addTour.Show();
         }
         public ObservableCollection<OrdinaryTourRequestDTO> RequestsDTO
         {
@@ -85,6 +114,37 @@ namespace BookingApp.ViewModel.Guide
                 _requestsDTO = value;
                 OnPropertyChanged();
             }
+        }
+        public RelayCommand ShowMainWindowCommand
+        {
+            get { return _showMainWindowCommand; }
+            set
+            {
+                _showMainWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowMainWindow()
+        {
+            GuideMainWindow mainWindow = new GuideMainWindow(_userDTO.ToUser());
+            mainWindow.Show();
+            TourRequestWindow.GetInstance().Close();
+        }
+        public RelayCommand ShowAllToursCommand
+        {
+            get { return _showAllToursCommand; }
+            set
+            {
+                _showAllToursCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowAllTours()
+        {
+            AllToursWindow allToursView = new AllToursWindow(_userDTO);
+
+            allToursView.Show();
+            TourRequestWindow.GetInstance().Close();
         }
         public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> MakeDictionary()
         {
@@ -111,13 +171,8 @@ namespace BookingApp.ViewModel.Guide
                 }
                 complexPartsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(complexTourParts);
                 keyValuePairs.Add(new ComplexTourRequestDTO(c), complexPartsDTO);
-
-
             }
-
             return keyValuePairs;
-
-
         }
         public ObservableCollection<ComplexTourRequestDTO> ComplexRequestsDTO
         {
@@ -128,6 +183,20 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowTourStatisticsCommand
+        {
+            get { return _showTourStatisticsCommand; }
+            set
+            {
+                _showTourStatisticsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourStatistics()
+        {
+            TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_userDTO);
+            tourStatistics.Show();
+        }
         public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> Dictionary
         {
             get
@@ -137,6 +206,18 @@ namespace BookingApp.ViewModel.Guide
             set
             {
                 _dictionary = value;
+                OnPropertyChanged();
+            }
+        }
+        public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> FilteredDictionary
+        {
+            get
+            {
+                return _filteredDictionary;
+            }
+            set
+            {
+                _filteredDictionary = value;
                 OnPropertyChanged();
             }
         }
@@ -201,6 +282,18 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        public RelayCommand RequestDetailsCommand
+        {
+            get
+            {
+                return _requestDetailsCommand;
+            }
+            set
+            {
+                _requestDetailsCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public RelayCommand AcceptComplexTourRequestCommand
         {
             get
@@ -241,7 +334,13 @@ namespace BookingApp.ViewModel.Guide
             AcceptTourWindow acceptWindow = new AcceptTourWindow(requestDTO, _userDTO);
             acceptWindow.Show();
         }
- 
+        private void RequestDetails(object parameter)
+        {
+            OrdinaryTourRequestDTO requestDTO = parameter as OrdinaryTourRequestDTO;
+            RequestDetailsWindow detailsWindow = new RequestDetailsWindow(requestDTO, _userDTO);
+            detailsWindow.Show();
+        }
+
         private string _searchCountryInput = String.Empty;
         public string SearchCountryInput
         {
@@ -342,7 +441,19 @@ namespace BookingApp.ViewModel.Guide
                     ((SearchBeginDateInput == default || SearchEndDateInput == default) || (request.BeginDate >= SearchBeginDateInput && request.BeginDate < SearchEndDateInput && request.EndDate <= SearchEndDateInput && request.EndDate > SearchBeginDateInput)) &&
                     (string.IsNullOrEmpty(SearchTouristNumberInput) || request.NumberOfTourists.ToString().Contains(SearchTouristNumberInput))
                 ).ToList();
+            var filteredDictionary = _dictionary
+            .Where(kv =>
+                kv.Value.Any(request =>
+                    (string.IsNullOrEmpty(SearchCityInput) || request.LocationDTO.City.Contains(SearchCityInput)) &&
+                    (string.IsNullOrEmpty(SearchCountryInput) || request.LocationDTO.Country.Contains(SearchCountryInput)) &&
+                    (string.IsNullOrEmpty(SearchLanguageInput) || request.Language.ToString().ToLower().Contains(SearchLanguageInput.ToLower())) &&
+                    ((SearchBeginDateInput == default || SearchEndDateInput == default) || (request.BeginDate >= SearchBeginDateInput && request.BeginDate < SearchEndDateInput && request.EndDate <= SearchEndDateInput && request.EndDate > SearchBeginDateInput)) &&
+                    (string.IsNullOrEmpty(SearchTouristNumberInput) || request.NumberOfTourists.ToString().Contains(SearchTouristNumberInput))
+                )
+            )
+            .ToDictionary(kv => kv.Key, kv => kv.Value);
 
+            FilteredDictionary = filteredDictionary;
             FilteredRequestsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(filteredRequests);
         }
 
@@ -379,6 +490,22 @@ namespace BookingApp.ViewModel.Guide
             Search();
 
         }
+        public RelayCommand LogoutCommand
+        {
+            get { return _logoutCommand; }
+            set
+            {
+                _logoutCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Logout()
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            TourRequestWindow.GetInstance().Close();
+        }
+
 
     }
 }

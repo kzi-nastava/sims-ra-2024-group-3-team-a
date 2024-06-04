@@ -25,6 +25,7 @@ namespace BookingApp.View.Guide
         public MostWantedLocation( UserDTO user)
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             _defaultBrushBorder = textBoxName.BorderBrush.Clone();
             DataContext = new MostWantedLocationViewModel(user);
         }

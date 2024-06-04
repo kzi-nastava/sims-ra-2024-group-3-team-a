@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:BookingApp.View.Guide"
-        Title="" Height="400" Width="500" ResizeMode="NoResize">
+        Title="" Height="380" Width="550" ResizeMode="NoResize">
     <Grid  Background="AntiqueWhite" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -14,15 +14,16 @@
             <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="STATISTIKA O TURISTIMA"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
                 <TextBlock Text="{Binding Tour.Name}" FontSize="20" HorizontalAlignment="Center" Margin="50"></TextBlock>
         </Grid>
-        <Grid Grid.Row="2">
-            <DataGrid x:Name="dataGridTour" IsReadOnly="True" ItemsSource="{Binding TouristsDTO}"  AutoGenerateColumns="False" Background="AntiqueWhite"  Foreground="SaddleBrown" >
+        <Grid Grid.Row="2" >
+            <ScrollViewer>
+            <DataGrid x:Name="dataGridTour"  IsReadOnly="True" ItemsSource="{Binding TouristsDTO}"  AutoGenerateColumns="False" Background="AntiqueWhite"  Foreground="SaddleBrown" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="IME" Width="*" Binding="{Binding Path=Name}"/>
                     <DataGridTextColumn Header="PREZIME" Width="*" Binding="{Binding Path=Surname}"/>
-                    <DataGridTextColumn Header="GODINE" Width="*" Binding="{Binding  Path=Age}"/>
-                    <DataGridTextColumn Header="TAČKA PRIKLJUČIVANJA" Width="*" Binding="{Binding Path=JoiningKeyPoint}"/>
-                </DataGrid.Columns>
+                        <DataGridTextColumn Header="GODINE" Width="*" Binding="{Binding  Path=Age}"/>
+                    </DataGrid.Columns>
             </DataGrid>
+            </ScrollViewer>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
