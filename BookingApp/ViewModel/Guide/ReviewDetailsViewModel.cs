@@ -6,50 +6,77 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BookingApp.ViewModel.Guide
 {
     public class ReviewDetailsViewModel : ViewModel
     {
-        private readonly TouristDTO _touristDTO;
+        private TouristDTO _touristDTO;
+        private TourDTO _tourDTO;
         private readonly TouristService _touristService;
-        private RelayCommand _markAsInvalidCommand;
-        private ObservableCollection<TourReviewDTO> _reviews { get; set; }
+        private readonly TourService _tourService;
+        private TourReviewDTO _review;
+        private ScrollViewer _scrollViewer;
+        public RelayCommand ScrollLeftCommand { get; }
+        public RelayCommand ScrollRightCommand { get; }
 
         public ReviewDetailsViewModel(TouristDTO touristDTO)
         {
             _touristDTO = touristDTO;
-
+            
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
+            IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
+            ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
+            ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
+            IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
+            ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
+            IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _touristService = new TouristService(touristRepository);
-
-            Reviews = new ObservableCollection<TourReviewDTO>();
-            Reviews.Add(_touristDTO.Review);
-            _markAsInvalidCommand = new RelayCommand(MarkAsInvalid);
+            _tourService = new TourService(tourRepository, userRepository,touristRepository,tourReservationRepository,tourReviewRepository,voucherRepository);
+            _tourDTO = new TourDTO (_tourService.GetById(_touristDTO.Review.TourId));
+            _review = _touristDTO.Review;
+            ScrollLeftCommand = new RelayCommand(ScrollLeft);
+            ScrollRightCommand = new RelayCommand(ScrollRight);
         }
-        public RelayCommand MarkAsInvalidCommand
+
+        public TourDTO TourDTO
         {
-            get { return _markAsInvalidCommand; }
+            get { return _tourDTO; }
             set
             {
-                _markAsInvalidCommand = value;
+                _tourDTO = value;
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<TourReviewDTO> Reviews
+        public TouristDTO TouristDTO
         {
-            get { return _reviews; }
+            get { return _touristDTO; }
             set
             {
-                _reviews = value;
+                _touristDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ScrollRight(object obj)
+        {
+
+            _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset + 150);
+        }
+        private void ScrollLeft(object obj)
+        {
+
+            _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset - 150);
+        }
+        public TourReviewDTO Review
+        {
+            get { return _review; }
+            set
+            {
+                _review = value;
                 OnPropertyChanged();
             }
         }
 
-        public void MarkAsInvalid()
-        {
-            _touristDTO.Review.IsNotValid = "nije validna";
-            _touristService.Update(_touristDTO.ToTourist());
-        }
     }
 }

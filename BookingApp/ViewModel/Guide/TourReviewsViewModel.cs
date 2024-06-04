@@ -16,6 +16,8 @@ using BookingApp.Commands;
 using System.Windows.Input;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Repository.Interfaces;
+using System.ComponentModel;
+using System.Reflection.Metadata;
 
 namespace BookingApp.ViewModel.Guide
 {
@@ -23,7 +25,11 @@ namespace BookingApp.ViewModel.Guide
     {
         private TourDTO _tourDTO;
         private TourReservationService _tourReservationService;
+        private TourReviewService _tourReviewService;
+        private TouristService _touristService;
         private RelayCommand _showReviewDetailsCommand;
+        private RelayCommand _markAsInvalidCommand;
+        private RelayCommand _markAsValidCommand;
         private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
         public TourReviewsViewModel(TourDTO tour)
         {
@@ -35,9 +41,13 @@ namespace BookingApp.ViewModel.Guide
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
+            _tourReviewService = new TourReviewService(tourReviewRepository);
+            _touristService = new TouristService(touristRepository);
             List<TouristDTO> touristsDTO = _tourReservationService.GetJoinedTourists(_tourDTO.ToTourAllParam()).Select(tourist => new TouristDTO(tourist)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             _showReviewDetailsCommand = new RelayCommand(ShowReviewDetails);
+            _markAsInvalidCommand = new RelayCommand(MarkAsInvalid);
+            _markAsValidCommand = new RelayCommand(MarkAsValid);
         }
         public ObservableCollection<TouristDTO> TouristsDTO
         {
@@ -45,6 +55,15 @@ namespace BookingApp.ViewModel.Guide
             set
             {
                 _touristsDTO = value;
+                OnPropertyChanged();
+            }
+        }
+        public TourDTO Tour
+        {
+            get { return _tourDTO; }
+            set
+            {
+                _tourDTO = value;
                 OnPropertyChanged();
             }
         }
@@ -56,6 +75,53 @@ namespace BookingApp.ViewModel.Guide
                 _showReviewDetailsCommand = value;
                 OnPropertyChanged();
             }
+        }
+        public RelayCommand MarkAsInvalidCommand
+        {
+            get { return _markAsInvalidCommand; }
+            set
+            {
+                _markAsInvalidCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand MarkAsValidCommand
+        {
+            get { return _markAsValidCommand; }
+            set
+            {
+                _markAsValidCommand = value;
+                OnPropertyChanged();
+            }
+        }
+       /* public void MarkAsInvalid(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            if (checkBox != null)
+            {
+                TouristDTO tourist = checkBox.DataContext as TouristDTO;
+                if (tourist != null)
+                {
+                    tourist.Review.IsNotValid = true;
+                    _touristService.Update(tourist.ToTourist());
+                    _tourReviewService.Update(tourist.Review.ToTourReview());
+                }
+            }
+        }*/
+
+        public void MarkAsValid(object parameter)
+        {
+            TouristDTO tourist = parameter as TouristDTO;
+            tourist.Review.IsNotValid = false;
+            _touristService.Update(tourist.ToTourist());
+            _tourReviewService.Update(tourist.Review.ToTourReview());
+        }
+        public void MarkAsInvalid(object parameter)
+        {
+            TouristDTO tourist = parameter as TouristDTO;
+           tourist.Review.IsNotValid = true;
+            _touristService.Update(tourist.ToTourist());
+            _tourReviewService.Update(tourist.Review.ToTourReview());
         }
         private void ShowReviewDetails(object parameter)
         {

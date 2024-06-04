@@ -129,8 +129,8 @@ namespace BookingApp.DTO
             }
         }
 
-        private string isNotValid;
-        public string IsNotValid
+        private Boolean isNotValid;
+        public Boolean IsNotValid
         {
             get { return isNotValid; }
             set

@@ -5,66 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Guide"
         mc:Ignorable="d"
-        Title="ReviewDetailsWindow" Height="450" Width="800">
-    <Grid>
+        Title="Detalji recenzije" Height="450" Width="550">
+    <Grid Background="AntiqueWhite">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <TextBlock FontSize="40">DETALJI RECENZIJE</TextBlock>
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Left"  FontSize="25"  Content="RECENZIJA"  FontStretch="Medium" />
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="1">
-            <Button Content="Mark as invalid"  HorizontalAlignment="center" Command="{Binding MarkAsInvalidCommand}"/>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <StackPanel Orientation="Vertical">
+                <DockPanel>
+                    <TextBlock FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"   Text="{Binding Path=TouristDTO.Name}"></TextBlock>
+                    <TextBlock FontSize="15" FontWeight="Bold"  Text=" "></TextBlock>
+                    <TextBlock FontSize="15" FontWeight="Bold"  Text="{Binding Path=TouristDTO.Surname}"></TextBlock>
+                </DockPanel>
+                <TextBlock FontSize="15" FontWeight="Bold" HorizontalAlignment="LEft" Text="{Binding Path=TourDTO.Name}"></TextBlock>
+                <DockPanel>
+                    <TextBlock FontSize="15" HorizontalAlignment="Left" Text="Ocjena znanja vodica:"></TextBlock>
+                    <TextBlock FontSize="15"  Text=" "></TextBlock>
+                    <TextBlock FontSize="15"  Text="{Binding Path=Review.GuideKnowledgeRating}"></TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock FontSize="15" HorizontalAlignment="Left" Text="Ocjena jezika vodica:"></TextBlock>
+                    <TextBlock FontSize="15"  Text=" "></TextBlock>
+                    <TextBlock FontSize="15"  Text="{Binding Path=Review. GuideLanguageRating}"></TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock FontSize="15" HorizontalAlignment="Left" Text="Ocjena zanimljivosti ture:"></TextBlock>
+                    <TextBlock FontSize="15" Text=" "></TextBlock>
+                    <TextBlock FontSize="15"  Text="{Binding Path=Review.TourEntertainmentRating}"></TextBlock>
+                </DockPanel>
+            </StackPanel>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="0">
-            <TextBlock FontSize="20" HorizontalAlignment="Center">Guide language:</TextBlock>
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" Height="140">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="3">
+            </Button>
+            <ScrollViewer Grid.Column="1" Name="scrollViewer"
+                      VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Hidden"
+                      >
+                <ItemsControl x:Name="imageListView"    Background="AntiqueWhite"  ItemsSource="{Binding Review.Images}">
+                    <ItemsControl.ItemsPanel >
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black" Margin="5 0 5 0" BorderThickness="1">
+                                <Image Width="140" Margin="1" Height="140" Stretch="UniformToFill" Source="{Binding}"/>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
+            </Button>
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="0">
-            <TextBlock  FontSize="20" HorizontalAlignment="Center">Guide knowledge:</TextBlock>
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="110"/>
+            </Grid.RowDefinitions>
+            <Label FontWeight="ExtraBlack" HorizontalAlignment="Left"  FontSize="15"  Content="KOMENTARI :"  FontStretch="Medium" />
+            <Grid Grid.Row="1" >
+                <ScrollViewer Margin="15">
+                    <TextBlock Text="{Binding Path=Review.Comment}" TextWrapping="Wrap" ></TextBlock>
+                </ScrollViewer>
+            </Grid>
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="0">
-            <TextBlock  FontSize="20" HorizontalAlignment="Center">Tour entertainment:</TextBlock>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="0">
-            <TextBlock FontSize="20" HorizontalAlignment="Center">Comment:</TextBlock>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="0">
-            <TextBlock FontSize="20" HorizontalAlignment="Center">Photos:</TextBlock>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="2">
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].GuideLanguageRating}"></TextBlock>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="2">
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].GuideKnowledgeRating}"></TextBlock>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="2">
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].TourEntertainmentRating}"></TextBlock>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="2">
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="{Binding Path=Reviews[0].Comment}"></TextBlock>
-        </Grid>
-        <ItemsControl Grid.Row="7" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Reviews[0].Images}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Image Source="{Binding}" Width="100" Height="100"></Image>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
     </Grid>
 </Window>

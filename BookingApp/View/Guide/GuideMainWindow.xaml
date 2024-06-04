@@ -126,9 +126,9 @@
                         <DockPanel>
                         <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="15,15,25,10">
                             <StackPanel Margin="10,0,10,10">
-                                <StackPanel Height="26">
-                                        <Viewbox Width="150" Height="26" >
-                                        <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Name}"  FontStretch="Medium"/>
+                                <StackPanel Height="20">
+                                        <Viewbox Width="150" Height="20"  >
+                                        <TextBlock FontWeight="ExtraBlack" Height="20" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Name}"  FontStretch="Medium"/>
                                     </Viewbox>
                                 </StackPanel>
                                 <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
@@ -155,7 +155,7 @@
                                         </StackPanel>
                                     </Border>
                             </StackPanel>
-                            <Border BorderThickness="1" BorderBrush="SaddleBrown" Margin="15,10,3,10">
+                            <Border BorderThickness="1" BorderBrush="SaddleBrown" Margin="15,10,3,10" Height="80" Width="112">
                                 <Image Source="{Binding Path=Images[0]}" Height="80" Width="112" Stretch="Fill" />
                             </Border>
                         </StackPanel>
