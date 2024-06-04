@@ -50,28 +50,27 @@
             <ListView x:Name="listViewInbox" ItemsSource="{Binding MessagesDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedMessageDTO}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Black" BorderThickness="5">
+                        <GroupBox Header="{Binding Path=Sender}" Foreground="#d4ff00" FontSize="24">
+                            <GroupBox.Style>
+                                <Style TargetType="GroupBox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsRead}" Value="True">
+                                            <Setter Property="Background" Value="Gray"/>
+                                            <Setter Property="Opacity" Value="0.84"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsRead}" Value="False">
+                                            <Setter Property="Background" Value="CadetBlue "/>
+                                            <Setter Property="Opacity" Value="0.84"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </GroupBox.Style>
                             <StackPanel Orientation="Vertical" Width="390">
-                                <StackPanel.Style>
-                                    <Style TargetType="StackPanel">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsRead}" Value="True">
-                                                <Setter Property="Background" Value="Gray"/>
-                                                <Setter Property="Opacity" Value="0.84"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsRead}" Value="False">
-                                                <Setter Property="Background" Value="CadetBlue "/>
-                                                <Setter Property="Opacity" Value="0.84"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=Sender}" FontSize="20" FontWeight="Bold" Foreground="White" Margin="10,10,10,10"/>
-                                    <TextBlock Text="{Binding Path=Header}" FontSize="20" FontWeight="Bold" Foreground="White" Margin="10,10,10,10"/>
+                                    <TextBlock Text="{Binding Path=Header}" FontSize="20" FontWeight="Bold" Foreground="#d4ff00" Margin="10,10,10,10"/>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
+                        </GroupBox>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

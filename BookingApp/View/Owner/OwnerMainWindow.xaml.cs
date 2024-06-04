@@ -73,9 +73,7 @@ namespace BookingApp.View.Owner
             if(Instance == null)
             {
                 Instance = this;
-            }
-
-            
+            }       
         }
 
         public static OwnerMainWindow GetInstance()

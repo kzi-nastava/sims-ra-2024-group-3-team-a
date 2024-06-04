@@ -113,6 +113,36 @@
 
         <StackPanel Grid.Row="6">
             <ListView ItemsSource="{Binding AccommodationStatisticsDTO}" SelectedValue="{Binding SelectedYear}" SelectedValuePath="Key" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="AnimatedBrush" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Background" Value="{StaticResource AnimatedBrush}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Value.IsMostOccupied}" Value="True">
+                                <Setter Property="ToolTip" Value="This item is the most occupied!"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="0.9" To="1" Duration="0:0:1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" From="0.9" To="1" Duration="0:0:1"/>
+                                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" From="Red" To="DarkOrange" Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <GroupBox Header="{Binding Key}" Foreground="#d4ff00" FontSize="21">
@@ -145,32 +175,6 @@
                         </GroupBox>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="RenderTransform">
-                            <Setter.Value>
-                                <RotateTransform x:Name="rotateTransform" Angle="0"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=Value.IsMostOccupied}" Value="True">
-                                <Setter Property="Background" Value="OrangeRed"/>
-                                <Setter Property="ToolTip" Value="This item is the most occupied!"/>
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
-                                                <LinearDoubleKeyFrame Value="5" KeyTime="0:0:2" />
-                                                <LinearDoubleKeyFrame Value="-5" KeyTime="0:0:4" />
-                                            </DoubleAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListView.ItemContainerStyle>
             </ListView>
         </StackPanel>
     </Grid>

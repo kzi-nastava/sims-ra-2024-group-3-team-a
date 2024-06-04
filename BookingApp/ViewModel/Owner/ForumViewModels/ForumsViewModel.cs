@@ -117,6 +117,7 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
         private void ShowForumDetailsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ForumDetailsPage(SelectedForumDTO, _loggedInUser);
+            _selectedForumDTO = null;
         }
 
         private void ShowForumHelp()

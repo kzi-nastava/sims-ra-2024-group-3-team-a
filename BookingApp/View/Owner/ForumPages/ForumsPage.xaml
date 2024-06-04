@@ -48,29 +48,36 @@
         <!--Lista Foruma-->
         <StackPanel Grid.Row="2" Background="Transparent">
             <ListView x:Name="myReviewsList" ItemsSource="{Binding ForumsDTO}" SelectedItem="{Binding SelectedForumDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="AnimatedBrush" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="{StaticResource AnimatedBrush}"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsVeryImportant}" Value="True">
+                                <Setter Property="ToolTip" Value="This item is very important!"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" From="Red" To="DarkOrange" Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <GroupBox Header="{Binding Path=LocationDTOHeader}" Foreground="#d4ff00" FontSize="21">
-                            <GroupBox.Style>
-                                <Style TargetType="GroupBox">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=IsVeryImportant}" Value="True">
-                                            <Setter Property="BorderBrush" Value="Red"/>
-                                            <Setter Property="BorderThickness" Value="2"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </GroupBox.Style>
+                        <GroupBox Width="415" Header="{Binding Path=LocationDTOHeader}" Foreground="#d4ff00" FontSize="21">
                             <GroupBox.Background>
                                 <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
                             </GroupBox.Background>
-                            <StackPanel Orientation="Vertical" Width="390">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Foreground="#d4ff00" FontSize="21">
-                                        <TextBlock Text="{Binding Path=LastPostString}" TextWrapping="Wrap" />
-                                    </Label>
-                                </StackPanel>
-                            </StackPanel>
+                            <TextBlock Text="{Binding Path=LastPostString}" Foreground="#d4ff00" FontSize="21" TextWrapping="Wrap" />
                         </GroupBox>
                     </DataTemplate>
                 </ListView.ItemTemplate>

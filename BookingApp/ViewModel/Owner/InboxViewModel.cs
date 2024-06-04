@@ -143,17 +143,7 @@ namespace BookingApp.ViewModel.Owner
                 OwnerMainWindow.MainFrame.Content = new RequestDetailsPage(selectedItem);
                 _selectedMessageDTO = null;
             }
-            else if(selectedItem.Type == MessageType.NewReviewNotification)
-            {
-                OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
-                _selectedMessageDTO = null;
-            }
-            else if (selectedItem.Type == MessageType.ForumOpened)
-            {
-                OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
-                _selectedMessageDTO = null;
-            }
-            else if (selectedItem.Type == MessageType.GoodLocationReccomendation || selectedItem.Type == MessageType.BadLocationReccomendation)
+            else 
             {
                 OwnerMainWindow.MainFrame.Content = new NewReviewDetailsPage(selectedItem);
                 _selectedMessageDTO = null;
