@@ -51,6 +51,7 @@
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
     <None Remove="Resources\Images\Owner\PreviousArrow.png" />
     <None Remove="Resources\Images\Owner\printer.png" />
+    <None Remove="Resources\Images\Owner\profile.png" />
     <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\Owner\reportFlag.png" />
     <None Remove="Resources\Images\Owner\settings.png" />
@@ -157,6 +158,7 @@
     <Resource Include="Resources\Images\Owner\NextArrow.png" />
     <Resource Include="Resources\Images\Owner\PreviousArrow.png" />
     <Resource Include="Resources\Images\Owner\printer.png" />
+    <Resource Include="Resources\Images\Owner\profile.png" />
     <Resource Include="Resources\Images\Owner\reportFlag.png" />
     <Resource Include="Resources\Images\Owner\settings.png" />
     <Resource Include="Resources\Images\Owner\ToggleButtonOff.png" />
@@ -288,6 +290,7 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     <PackageReference Include="System.IO" Version="4.3.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />

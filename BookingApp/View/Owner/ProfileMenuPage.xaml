@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--Profile Toolbar-->
         <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
@@ -26,21 +27,26 @@
             </Grid>
         </Border>
 
-        <Label Grid.Row="1">
-            <Label.Style>
-                <Style TargetType="Label">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=OwnerDTO.IsSuper}" Value="True">
-                            <Setter Property="Background" Value="CadetBlue "/>
-                            <Setter Property="Content" Value="Logged In Owner is Super-Owner"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=OwnerDTO.IsSuper}" Value="False">
-                            <Setter Property="Background" Value="CadetBlue "/>
-                            <Setter Property="Content" Value="Logged In Owner is normal Owner"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
+        <!--Profile Details-->
+        <StackPanel Grid.Row="1" Margin="20">
+            <Image Source="../../Resources/Images/Owner/profile.png" Width="150" Height="150" HorizontalAlignment="Center"/>
+            <Label Content="{Binding Path=OwnerDTO.Username}" FontSize="24" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"/>
+            <Label Grid.Row="1">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=OwnerDTO.IsSuper}" Value="True">
+                                <Setter Property="Background" Value="CadetBlue "/>
+                                <Setter Property="Content" Value="Role: Super-Owner"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=OwnerDTO.IsSuper}" Value="False">
+                                <Setter Property="Background" Value="CadetBlue "/>
+                                <Setter Property="Content" Value="Role: Normal Owner"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+        </StackPanel>
     </Grid>
 </Page>

@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--Inbox Toolbar-->
         <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
@@ -29,12 +29,13 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0"  Margin="25,25,25,25" TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Text="{Binding Path=MessageDTO.Content}"/>
-        </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <GroupBox Header="{Binding Path=MessageDTO.Sender, StringFormat='FROM: {0}'}" Foreground="#d4ff00" FontSize="21">
+                <GroupBox.Background>
+                    <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                </GroupBox.Background>
+                <TextBlock TextWrapping="Wrap" Foreground="#d4ff00" FontSize="15" Text="{Binding Path=MessageDTO.Content}"/>
+            </GroupBox>
+        </ScrollViewer>
     </Grid>
 </Page>
