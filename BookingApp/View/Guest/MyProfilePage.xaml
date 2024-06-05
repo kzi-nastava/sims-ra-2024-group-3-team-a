@@ -96,9 +96,22 @@
         </Border>
         <Label Content="My Profile" Grid.Row="1" Grid.ColumnSpan="2" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="28" Margin="30,25, 0, 0" FontWeight="DemiBold"></Label>
         <!-- Scrollable ListView -->
-        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" Margin="0,50,0,0">
-            <Image Name="ProfilePicture" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center" Source="../../Resources/Images/Owner/menu.png" />
-            <Label Content="" Grid.Row="1" Grid.ColumnSpan="2" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="28" Margin="30,25, 0, 0" FontWeight="DemiBold"></Label>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" Margin="0,20,0,0" Background="CadetBlue">
+            <Image Name="ProfilePicture" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center" Source="../../Resources/Images/profile.png" />
+            <Label Content="{Binding LoggedInGuest.Username}" Grid.Row="1" Grid.ColumnSpan="2" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="28" Margin="30,25, 0, 0" FontWeight="DemiBold"></Label>
+            <Label Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Foreground="#d4ff00"
+               FontSize="20" Margin="30,5,0,0" FontWeight="DemiBold">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Content" Value="Basic Guest"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LoggedInGuest.IsSuper}" Value="True">
+                                <Setter Property="Content" Value="★SUPER GUEST★"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
             <Label Content="My Rating: " Grid.Row="1" Grid.ColumnSpan="2" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="28" Margin="30,25, 0, 0" FontWeight="DemiBold"></Label>
 
 

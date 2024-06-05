@@ -35,6 +35,10 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _newReservationCommand;
         private RelayCommand _searchAccommodationsCommand;
+        private RelayCommand _increaseButtonCapacityCommand;
+        private RelayCommand _decreaseButtonCapacityCommand;
+        private RelayCommand _increaseButtonMinDaysCommand;
+        private RelayCommand _decreaseButtonMinDaysCommand;
 
 
 
@@ -66,6 +70,10 @@ namespace BookingApp.ViewModel.Guest
             _showReservationDetailsPageCommand = new RelayCommand(ShowReservationDetailsPage);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _searchAccommodationsCommand = new RelayCommand(SearchAccommodations);
+            _increaseButtonCapacityCommand = new RelayCommand(IncreaseButtonCapacity);
+            _decreaseButtonCapacityCommand = new RelayCommand(DecreaseButtonCapacity);
+            _increaseButtonMinDaysCommand = new RelayCommand(IncreaseButtonMinDays);
+            _decreaseButtonMinDaysCommand = new RelayCommand(DecreaseButtonMinDays);
 
             _accommodationReservationsDTO = new List<AccommodationReservationDTO>();
             _accommodationReservationsDTO = _accommodationReservationService.GetAllByAccommodationId(_accommodationDTO.Id).Where(c => c.Canceled == false).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
@@ -402,6 +410,83 @@ namespace BookingApp.ViewModel.Guest
         public void CloseSideMenu()
         {
             GuestMainViewWindow.SideMenuFrame.Content = null;
+        }
+        public RelayCommand IncreaseButtonCapacityCommand
+        {
+            get
+            {
+                return _increaseButtonCapacityCommand;
+            }
+            set
+            {
+                _increaseButtonCapacityCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand DecreaseButtonCapacityCommand
+        {
+            get
+            {
+                return _decreaseButtonCapacityCommand;
+            }
+            set
+            {
+                _decreaseButtonCapacityCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand IncreaseButtonMinDaysCommand
+        {
+            get
+            {
+                return _increaseButtonMinDaysCommand;
+            }
+            set
+            {
+                _increaseButtonMinDaysCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand DecreaseButtonMinDaysCommand
+        {
+            get
+            {
+                return _decreaseButtonMinDaysCommand;
+            }
+            set
+            {
+                _decreaseButtonMinDaysCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void IncreaseButtonCapacity()
+        {
+            if (int.TryParse(AnywhereAnytimePage.Instance.searchCapacityAnywhereTextBox.Text, out int value))
+            {
+                AnywhereAnytimePage.Instance.searchCapacityAnywhereTextBox.Text = (value + 1).ToString();
+            }
+        }
+        private void DecreaseButtonCapacity()
+        {
+            if (int.TryParse(AnywhereAnytimePage.Instance.searchCapacityAnywhereTextBox.Text, out int value))
+            {
+                AnywhereAnytimePage.Instance.searchCapacityAnywhereTextBox.Text = (value - 1).ToString();
+            }
+        }
+
+        private void IncreaseButtonMinDays()
+        {
+            if (int.TryParse(AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text, out int value))
+            {
+                AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text = (value + 1).ToString();
+            }
+        }
+        private void DecreaseButtonMinDays()
+        {
+            if (int.TryParse(AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text, out int value))
+            {
+                AnywhereAnytimePage.Instance.searchMinDaysAnywhereTextBox.Text = (value - 1).ToString();
+            }
         }
     }
 }

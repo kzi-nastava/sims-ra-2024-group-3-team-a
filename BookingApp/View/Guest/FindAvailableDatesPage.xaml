@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:BookingApp.View.Guest"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -11,7 +12,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="470"></ColumnDefinition>
             
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -30,7 +31,7 @@
         </Border>
 
         
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid Grid.Row="1" Grid.Column="1" Background="CadetBlue">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -65,40 +66,59 @@
                     <RowDefinition Height="Auto"/>
                     
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Location: "/>
-                <Label Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.City}"/>
-            <Label Grid.Column="1" Foreground="#d4ff00" Content=", "></Label>
-            <Label Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.Country}"/>
+                <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Name: " FontSize="18" Margin="0,30,0,0"/>
+                <Label Grid.Row="0" Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.Name}" Margin="0,30,0,0" FontSize="18"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Location: " FontSize="18"/>
+                <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.City}" FontSize="18"/>
+                <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content=", " FontSize="18"></Label>
+                <Label Grid.Row="1" Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.Country}" FontSize="18"/>
         </Grid>
+            <GroupBox Grid.Row="2" Header="Images" Foreground="#d4ff00" FontSize="18">
+                <GroupBox.Background>
+                    <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                </GroupBox.Background>
+                <Grid>
+                    <Image Source="{Binding Path=SelectedImage}" Height="250" Width="250" HorizontalAlignment="Center"></Image>
+                    <Button Background="CadetBlue"  HorizontalAlignment="Right" Height="40" Width="40" Command="{Binding NextImageCommand}">
+                        <Image Source="../../Resources/Images/arrowRight.png"></Image>
+                    </Button>
+                    <Button Background="CadetBlue"  HorizontalAlignment="Left" Height="40" Width="40" Command="{Binding PreviousImageCommand}">
+                        <Image Source="../../Resources/Images/arrowLeft.png"></Image>
+                    </Button>
+                </Grid>
+            </GroupBox>
 
-        <Label Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Type: "/>
-        <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Type}"></Label>
+            <Label Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Type: " FontSize="18"/>
+            <Label Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Type}" FontSize="18"></Label>
 
-        <Label Grid.Row="2" Grid.Column="0" Foreground="#d4ff00" Content="Description: "/>
-        <Label Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}"></Label>
-            
-        <Label Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: "/>
-        <Label Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}"></Label>
-        
-        <Label Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: "/>
-        <Label Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.MinDaysReservation}"></Label>
+            <Label Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="Description: " FontSize="18"/>
+            <Label Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}" FontSize="18"></Label>
 
-        <Label Grid.Row="5" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: "/>
-        <Label Grid.Row="5" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.CancellationPeriod}"></Label>
+            <Label Grid.Row="5" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: " FontSize="18"/>
+            <Label Grid.Row="5" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}" FontSize="18"></Label>
+
+            <Label Grid.Row="6" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: " FontSize="18"/>
+            <Label Grid.Row="6" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.MinDaysReservation}" FontSize="18"></Label>
+
+            <Label Grid.Row="7" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: " FontSize="18"/>
+            <Label Grid.Row="7" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.CancellationPeriod}" FontSize="18"></Label>
     </Grid>
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="2">
-            <Label Content="Find available dates"></Label>
-            <Label Content="From:"></Label>
+            <Label Content="Find available dates" Foreground="#d4ff00" FontSize="32"></Label>
+            <Label Content="From:" Foreground="#d4ff00"></Label>
             <DatePicker Width="105" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerBegin" SelectedDate = "{Binding SelectedBeginDate, Mode=TwoWay}" />
-            
-            <Label Content="To:"></Label>
-            <DatePicker Width="105" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerEnd" SelectedDate = "{Binding SelectedEndDate, Mode=TwoWay}" />
-            <Label Content="Days staying: "></Label>
-            <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="100"  Text="{Binding DaysToStay}" ></TextBox>
-            <Button Width="100" Grid.Row="0" Grid.Column="3" Command="{Binding SearchDatesCommand}">Search for dates!</Button>
 
-            <Button Content="Search" Width="100"></Button>
+            <Label Content="To:" Foreground="#d4ff00"></Label>
+            <DatePicker Width="105" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerEnd"  SelectedDate = "{Binding SelectedEndDate, Mode=TwoWay}" />
+            <Label Content="Days staying: " Foreground="#d4ff00"></Label>
+            
+            <xctk:IntegerUpDown Minimum="0" x:Name="DaysToStayTextBox" Text="{Binding DaysToStay, UpdateSourceTrigger=PropertyChanged}" Width="50" />
+<!--
+            <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="100"  Text="{Binding DaysToStay}" ></TextBox>
+            -->
+            <Button Width="100" Grid.Row="0" Grid.Column="3" Command="{Binding SearchDatesCommand}">Search for dates!</Button>
         </StackPanel>
     </Grid>
 </Page>
