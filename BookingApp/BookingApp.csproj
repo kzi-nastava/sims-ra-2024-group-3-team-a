@@ -20,18 +20,41 @@
     <None Remove="Resources\Images\add.png" />
     <None Remove="Resources\Images\addNew.png" />
     <None Remove="Resources\Images\AppLogo.png" />
+    <None Remove="Resources\Images\arrowLeft.png" />
+    <None Remove="Resources\Images\arrowRight.png" />
     <None Remove="Resources\Images\back.png" />
+    <None Remove="Resources\Images\delete.jpg" />
     <None Remove="Resources\Images\delete.png" />
+    <None Remove="Resources\Images\dvor.jpg" />
+    <None Remove="Resources\Images\dvor2.jpg" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\Guide\Angelo.jpg" />
+    <None Remove="Resources\Images\Guide\Bec.jpg" />
+    <None Remove="Resources\Images\Guide\Bijeljina.jpg" />
+    <None Remove="Resources\Images\Guide\Bunar.jpg" />
     <None Remove="Resources\Images\Guide\eye.png" />
+    <None Remove="Resources\Images\Guide\Fontana.jpg" />
+    <None Remove="Resources\Images\Guide\foro-romano.jpg" />
     <None Remove="Resources\Images\Guide\graystar.png" />
     <None Remove="Resources\Images\Guide\question.jpg" />
     <None Remove="Resources\Images\Guide\refresh.png" />
+    <None Remove="Resources\Images\Guide\Rim.jpg" />
+    <None Remove="Resources\Images\Guide\Rome.jpg" />
+    <None Remove="Resources\Images\Guide\Stanisici.jpg" />
     <None Remove="Resources\Images\Guide\star.png" />
     <None Remove="Resources\Images\help.png" />
+    <None Remove="Resources\Images\Guide\Trevi.jpg" />
+    <None Remove="Resources\Images\Guide\Vatikan.jpg" />
+    <None Remove="Resources\Images\Guide\Vienna.jpg" />
     <None Remove="Resources\Images\Icons\AppLogo.ico" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
+    <None Remove="Resources\Images\jajce.jpg" />
+    <None Remove="Resources\Images\jajce2.jpg" />
+    <None Remove="Resources\Images\konak.jpg" />
+    <None Remove="Resources\Images\konak2.jpg" />
+    <None Remove="Resources\Images\konak3.jpg" />
+    <None Remove="Resources\Images\line-chart.png" />
     <None Remove="Resources\Images\logout.png" />
     <None Remove="Resources\Images\Owner\AccommodationPicture1.jpg" />
     <None Remove="Resources\Images\Owner\AccommodationPicture1.png" />
@@ -51,6 +74,7 @@
     <None Remove="Resources\Images\Owner\OwnerBackground.png" />
     <None Remove="Resources\Images\Owner\PreviousArrow.png" />
     <None Remove="Resources\Images\Owner\printer.png" />
+    <None Remove="Resources\Images\Owner\profile.png" />
     <None Remove="Resources\Images\Owner\renovation.png" />
     <None Remove="Resources\Images\Owner\reportFlag.png" />
     <None Remove="Resources\Images\Owner\settings.png" />
@@ -58,8 +82,10 @@
     <None Remove="Resources\Images\Owner\ToggleButtonOff1.png" />
     <None Remove="Resources\Images\Owner\ToggleButtonOn.png" />
     <None Remove="Resources\Images\Owner\ToggleButtonOn1.png" />
+    <None Remove="Resources\Images\paris1.jpg" />
     <None Remove="Resources\Images\profile.png" />
     <None Remove="Resources\Images\star_icon.png" />
+    <None Remove="Resources\Images\suitcase.png" />
     <None Remove="Resources\Images\Tourist\athens1.png" />
     <None Remove="Resources\Images\Tourist\athens2.png" />
     <None Remove="Resources\Images\Tourist\athens3.png" />
@@ -110,6 +136,10 @@
     <None Remove="Resources\Images\Tourist\voucher.png" />
     <None Remove="Resources\Images\users.png" />
     <None Remove="Resources\Images\view.png" />
+    <None Remove="Resources\Images\vilaSoko.jpg" />
+    <None Remove="Resources\Images\vilaSoko02.jpg" />
+    <None Remove="Resources\Images\visegrad.jpg" />
+    <None Remove="Resources\Images\visegrad01.jpg" />
     <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp1.png" />
     <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp2.png" />
     <None Remove="Resources\Images\WizardAndHelp\AccommodationHelp3.png" />
@@ -148,21 +178,50 @@
 
   <ItemGroup>
     <Resource Include="Resources\Images\addNew.png" />
+    <Resource Include="Resources\Images\dvor2.jpg" />
+    <Resource Include="Resources\Images\dvor.jpg" />
+    <Resource Include="Resources\Images\delete.jpg" />
+    <Resource Include="Resources\Images\arrowRight.png" />
+    <Resource Include="Resources\Images\arrowLeft.png" />
+    <Resource Include="Resources\Images\Guide\Bec.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Guide\Angelo.jpg" />
+    <Resource Include="Resources\Images\Guide\Bijeljina.jpg" />
+    <Resource Include="Resources\Images\Guide\Bunar.jpg" />
+    <Resource Include="Resources\Images\Guide\Fontana.jpg" />
+    <Resource Include="Resources\Images\Guide\foro-romano.jpg" />
     <Resource Include="Resources\Images\Guide\graystar.png" />
     <Resource Include="Resources\Images\Guide\refresh.png" />
     <Resource Include="Resources\Images\help.png" />
+    <Resource Include="Resources\Images\jajce.jpg" />
+    <Resource Include="Resources\Images\jajce2.jpg" />
+    <Resource Include="Resources\Images\konak.jpg" />
+    <Resource Include="Resources\Images\konak2.jpg" />
+    <Resource Include="Resources\Images\konak3.jpg" />
+    <Resource Include="Resources\Images\line-chart.png" />
     <Resource Include="Resources\Images\Owner\Etno.jpg" />
+    <Resource Include="Resources\Images\Guide\Rim.jpg" />
+    <Resource Include="Resources\Images\Guide\Rome.jpg" />
+    <Resource Include="Resources\Images\Guide\Stanisici.jpg" />
+    <Resource Include="Resources\Images\Guide\Trevi.jpg" />
+    <Resource Include="Resources\Images\Guide\Vatikan.jpg" />
+    <Resource Include="Resources\Images\Guide\Vienna.jpg" />
     <Resource Include="Resources\Images\Owner\forums.png" />
     <Resource Include="Resources\Images\Owner\forums1.png" />
     <Resource Include="Resources\Images\Owner\NextArrow.png" />
     <Resource Include="Resources\Images\Owner\PreviousArrow.png" />
     <Resource Include="Resources\Images\Owner\printer.png" />
+    <Resource Include="Resources\Images\Owner\profile.png" />
     <Resource Include="Resources\Images\Owner\reportFlag.png" />
     <Resource Include="Resources\Images\Owner\settings.png" />
     <Resource Include="Resources\Images\Owner\ToggleButtonOff.png" />
     <Resource Include="Resources\Images\Owner\ToggleButtonOff1.png" />
     <Resource Include="Resources\Images\Owner\ToggleButtonOn.png" />
     <Resource Include="Resources\Images\Owner\ToggleButtonOn1.png" />
+    <Resource Include="Resources\Images\paris1.jpg" />
+    <Resource Include="Resources\Images\suitcase.png" />
     <Resource Include="Resources\Images\Tourist\edit.png" />
     <Resource Include="Resources\Images\Tourist\email.png" />
     <Resource Include="Resources\Images\Tourist\gift.png" />
@@ -250,6 +309,10 @@
     <Resource Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\vilaSoko.jpg" />
+    <Resource Include="Resources\Images\vilaSoko02.jpg" />
+    <Resource Include="Resources\Images\visegrad.jpg" />
+    <Resource Include="Resources\Images\visegrad01.jpg" />
     <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp1.png" />
     <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp2.png" />
     <Resource Include="Resources\Images\WizardAndHelp\AccommodationHelp3.png" />
@@ -286,10 +349,14 @@
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="12.17.0" />
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
+    <PackageReference Include="itext7" Version="8.0.4" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.4" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
   </ItemGroup>
 

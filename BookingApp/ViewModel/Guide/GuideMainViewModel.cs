@@ -36,8 +36,10 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourDetailsCommand;
         private RelayCommand _showTourRequestCommand;
         private RelayCommand _addNewTourCommand;
+        private RelayCommand _shortcuts;
         private RelayCommand _logoutCommand;
         private RelayCommand _quitCommand;
+        private RelayCommand _help;
         private RelayCommand _showLanguagesCommand;
         public GuideMainViewModel(User guide)
         {
@@ -65,6 +67,8 @@ namespace BookingApp.ViewModel.Guide
             _addNewTourCommand = new RelayCommand(AddNewTour);
             _logoutCommand = new RelayCommand(Logout);
             _quitCommand = new RelayCommand(Quit);
+            _help = new RelayCommand(Help);
+            _shortcuts = new RelayCommand(Shortcuts);
             _showLanguagesCommand = new RelayCommand(ShowLanguages);
             if (_tourService.GetMostVisitedTour() != null)
             {
@@ -143,6 +147,32 @@ namespace BookingApp.ViewModel.Guide
             AddTourWindow addTour = new AddTourWindow(_loggedInGuide);
             addTour.Show();
         }
+        public RelayCommand HelpCommand
+        {
+            get { return _help; }
+            set
+            {
+                _help = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Help()
+        {
+            MessageBox.Show("Ukoliko ste u toku prethodne godine ostvarili prosječnu ocjenu na turama veću od 4.0 na određenom jeziku i uz to održali bar 20 tura na tom jeziku- dobijate titulu supervodiča. Kada ova titula dobije boju, to je znak da posjedujete titulu. Ukoliko je siva i onemogućena za klik- nemate titulu supervodiča", "Uputstvo", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        public RelayCommand ShortcutsCommand
+        {
+            get { return _shortcuts; }
+            set
+            {
+                _shortcuts = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Shortcuts()
+        {
+            MessageBox.Show("CTRL + N    Dodaj novu turu\nCTRL + Z     Zahtjevi za ture\nCTRL + T     Prikaz svih tura\nCTRL + S     Statistika tura ", "Prečice", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         public RelayCommand BorderClickedCommand
         {
             get { return _borderClickedCommand; }
@@ -186,19 +216,20 @@ namespace BookingApp.ViewModel.Guide
             {
                 if (_doesActiveTourExist == true && _selectedTourDTO.IsActive != true)
                 {
-                    MessageBox.Show("Another tour has already started", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Druga tura je već započela", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
                 ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist, _loggedInGuide);
+       
                 tourDetailsWindow.Show();
                 _tourService.Update(_selectedTourDTO.ToTourAllParam());
-                GuideMainWindow.GetInstance().Close();
+                GuideMainWindow.GetInstance().Close();          
 
             }
             else
             {
-                MessageBox.Show("This tour has already finished", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Ova tura je već završena", "Obavještenje", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         public RelayCommand ShowAllToursCommand
@@ -259,6 +290,7 @@ namespace BookingApp.ViewModel.Guide
         {
             TourRequestWindow requests = new TourRequestWindow(_loggedInGuide);
             requests.Show();
+            GuideMainWindow.GetInstance().Close();
 
         }
         public RelayCommand ShowLanguagesCommand

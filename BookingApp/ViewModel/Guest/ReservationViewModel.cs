@@ -13,14 +13,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BookingApp.ViewModel.Guest
 {
     public class ReservationViewModel: ViewModel
     {
         private AccommodationReservationDTO _selectedReservation;
-        private DateTime _selectedNewBeginDate;
-        private DateTime _selectedNewEndDate;
+        private DateTime _selectedNewBeginDate = DateTime.Today;
+        private DateTime _selectedNewEndDate = DateTime.Today;
         private List<string> _images;
 
         public static ObservableCollection<AccommodationReservationDTO> _myReservations { get; set; }
@@ -66,7 +67,7 @@ namespace BookingApp.ViewModel.Guest
             //_requestChangeCommand = new RelayCommand(RequestChange);
             _submitRequestCommand = new RelayCommand(SubmitRequest);
             _cancelReservationCommand = new RelayCommand(CancelReservation);
-            //_renovationRatingCommand = new RelayCommand(ChangeRating);
+            _renovationRatingCommand = new RelayCommand(ChangeRating);
             _showRequestDateChangePageCommand = new RelayCommand(ShowRequestDateChangePage);
             _showDateChangeRequestsPageCommand = new RelayCommand(ShowDateChangeRequestsPage);          
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);          
@@ -106,6 +107,59 @@ namespace BookingApp.ViewModel.Guest
                 else
                 {
                     MessageBox.Show($"Too late to cancel. Cancelation period is {selectedAccommodation.CancellationPeriod} days!");
+                }
+            }
+        }
+        private void ChangeRating(object parameter)
+        {
+            if (parameter is string ratingString && int.TryParse(ratingString, out int rating))
+            {
+                SelectedRating = rating;
+            }
+        }
+        private void UpdateRecommendation()
+        {
+            // Update your recommendation logic here based on `SelectedRating`
+            switch (SelectedRating)
+            {
+                case 1:
+                    RecommendationText = "All is ok, some minor improvements needed only.";
+                    //PastReservationPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    //GuestReservationsPage.Instance.lblRecommendation.Content = "All is ok, some minor improvements needed only.";
+                    break;
+                case 2:
+                    RecommendationText = "Minor wear and tear observed.";
+                    //PastReservationPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    //GuestReservationsPage.Instance.lblRecommendation.Content = "All is ok, some minor improvements needed only.";
+                    break;
+                case 3:
+                    RecommendationText = "Moderate renovation may be required.";
+                    //PastReservationPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+                case 4:
+                    RecommendationText = "Major improvements needed soon.";
+                    //PastReservationPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+                case 5:
+                    RecommendationText = "Accommodation needs to be renovated ASAP.";
+                    //PastReservationPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+                default:
+                    RecommendationText = "Unknown rating.";
+                    //PastReservationPage.Instance.lblRecommendation.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                    break;
+            }
+        }
+        private string _recommendationText;
+        public string RecommendationText
+        {
+            get => _recommendationText;
+            set
+            {
+                if (_recommendationText != value)
+                {
+                    _recommendationText = value;
+                    OnPropertyChanged(nameof(RecommendationText));
                 }
             }
         }
@@ -236,7 +290,7 @@ namespace BookingApp.ViewModel.Guest
                 {
                     _selectedRating = value;
                     OnPropertyChanged(nameof(SelectedRating));
-                    //UpdateRecommendation();
+                    UpdateRecommendation();
                 }
             }
         }

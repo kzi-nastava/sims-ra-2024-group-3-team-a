@@ -8,6 +8,31 @@
         xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
         mc:Ignorable="d"
         Title="Napravi novu turu" Height="610" Width="573"  ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="OvalButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="AntiqueWhite"
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="SaddleBRown"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
     <Grid Background="AntiqueWhite">
         <Grid x:Name="gridInput">
             <Grid.ColumnDefinitions>
@@ -71,19 +96,19 @@ HorizontalContentAlignment="Center"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="SubmitButton" Content="NAPRAVI" Command="{Binding SubmitCommand}" Grid.Column="1"
+                <Button x:Name="SubmitButton" Content="NAPRAVI" Style="{StaticResource OvalButtonStyle}" Command="{Binding SubmitCommand}" Grid.Column="1"
                  Background="SaddleBrown"/>
             </Grid>
             <TextBox x:Name="textBoxName" Grid.Column="1" Grid.Row="1" Margin="10"
                  Text="{Binding TourDTO.Name, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged" />
             <TextBlock x:Name="GradTextBox" Grid.Column="1" Grid.Row="3" Margin="10"
                  Text="{Binding MostWantedLocationDTO.City}"/>
-            <TextBlock  Text="{Binding  MostWantedLocationDTO.Country}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="1"/>
+            <TextBlock  Text="{Binding  MostWantedLocationDTO.Country}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10" Grid.ColumnSpan="1"/>
            
             <TextBox x:Name="OpisTextBox" Grid.Column="1" Grid.Row="5" Margin="10" 
                   Text="{Binding TourDTO.Description, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
 
-            <ComboBox x:Name="comboBoxType" ItemsSource="{Binding Languages}"  SelectedItem="{Binding TourDTO.Language}" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="1"/>
+            <ComboBox x:Name="comboBoxType" ItemsSource="{Binding Languages}"  SelectedItem="{Binding TourDTO.Language}" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="10" Grid.ColumnSpan="1"/>
 
             <TextBox x:Name="MaxTouristTextBox" Grid.Column="1" Grid.Row="6" Width="40" HorizontalAlignment="Left" Margin="10"
           Text="{Binding TourDTO.MaxTouristNumber,UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
@@ -102,7 +127,7 @@ HorizontalContentAlignment="Center"/>
 
 
                     <xctk:DateTimePicker  Value="{Binding SelectedDate}" x:Name="datePicker" Margin="10" Text="{Binding BeginingTime,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" />
-                    <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Content="+" Command="{Binding AddDateCommand}"/>
+                    <Button x:Name="ButtonAddDate" Grid.Column="1" Width="40" Style="{StaticResource OvalButtonStyle}" Content="+" Command="{Binding AddDateCommand}"/>
                     <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dates}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -120,7 +145,7 @@ HorizontalContentAlignment="Center"/>
 
             <TextBox x:Name="textBoxDuration" Grid.Column="1" Grid.Row="9" Width="40" HorizontalAlignment="Left" Margin="10"
          Text="{Binding TourDTO.Duration,UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
-            <Button Grid.Row ="10" BorderThickness="2" Grid.Column="1 " BorderBrush="Black" Width="200"  Height="30" FontWeight="Bold" Background="SaddleBrown" Command="{Binding AddImagesCommand}"  >Dodaj fotografije</Button>
+            <Button Grid.Row ="10" BorderThickness="2" Grid.Column="1 " Style="{StaticResource OvalButtonStyle}" BorderBrush="Black" Width="200"  Height="30" FontWeight="Bold" Background="SaddleBrown" Command="{Binding AddImagesCommand}"  >Dodaj fotografije</Button>
 
             <Border Grid.Row="11" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="Black" Margin="0,0,0,5">
                 <ListView Grid.Row="10" x:Name="imageListView" MaxHeight="120" MaxWidth="300" SelectedItem="{Binding SelectedImage}" ItemsSource="{Binding ImagePreviews}" >

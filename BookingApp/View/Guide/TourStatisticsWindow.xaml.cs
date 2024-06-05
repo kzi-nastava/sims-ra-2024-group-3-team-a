@@ -25,10 +25,17 @@ namespace BookingApp.View.Guide
     /// </summary>
     public partial class TourStatisticsWindow : Window
     {
+        public static TourStatisticsWindow Instance;
         public TourStatisticsWindow(UserDTO user)
         {
             InitializeComponent();
             DataContext = new TourStatisticsViewModel(user);
+            Instance = this;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+        }
+        public static TourStatisticsWindow GetInstance()
+        {
+            return Instance;
         }
     }
 }

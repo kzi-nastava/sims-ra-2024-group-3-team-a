@@ -37,6 +37,8 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _logoutCommand;
         private RelayCommand _showTourDetailsCommand;
         private RelayCommand _showAllToursCommand;
+        private RelayCommand _showTourRequestCommand;
+        private RelayCommand _addNewTourCommand;
         private TourDTO _tourDTO;
         private UserDTO _loggedGuide;
         private int _counter = 0;
@@ -46,6 +48,7 @@ namespace BookingApp.ViewModel.Guide
         {
             _tourDTO = tour;
             _loggedGuide= guide;
+            
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -55,6 +58,8 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _tourDTO.IsActive = true;
+            _tourService.Update(_tourDTO.ToTourAllParam());
             UserService userService = new UserService(userRepository);
             _userDTO = new UserDTO(userService.GetById(_tourDTO.GuideId));
             List<TouristDTO> touristsDTO = _tourReservationService.GetReservationTourists(tour.ToTourAllParam()).Select(t => new TouristDTO(t)).ToList();
@@ -62,6 +67,8 @@ namespace BookingApp.ViewModel.Guide
             _markPointCommand = new RelayCommand(MarkPoint);
             _showTourReviewsWindowCommand = new RelayCommand(ShowTourReviewsWindow);
             _cancelTourCommand = new RelayCommand(CancelTour);
+            _addNewTourCommand = new RelayCommand(AddNewTour);
+            _showTourRequestCommand = new RelayCommand(ShowTourRequest);
             _showTourDetailsCommand = new RelayCommand(ShowTourDetails);
             _touristJoiningPointCommand = new RelayCommand(TouristJoiningPoint);
             _showAllToursCommand = new RelayCommand(ShowAllTours);
@@ -308,6 +315,35 @@ namespace BookingApp.ViewModel.Guide
                 ShowMainWindow();
                 ActiveTourWindow.GetInstance().Close();
             }
+        }
+        public RelayCommand ShowTourRequestCommand
+        {
+            get { return _showTourRequestCommand; }
+            set
+            {
+                _showTourRequestCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTourRequest()
+        {
+            TourRequestWindow requests = new TourRequestWindow(_userDTO);
+            requests.Show();
+
+        }
+        public RelayCommand AddNewTourCommand
+        {
+            get { return _addNewTourCommand; }
+            set
+            {
+                _addNewTourCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void AddNewTour()
+        {
+            AddTourWindow addTour = new AddTourWindow(_userDTO);
+            addTour.Show();
         }
         public RelayCommand LogoutCommand
         {

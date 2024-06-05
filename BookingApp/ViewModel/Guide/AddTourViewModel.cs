@@ -1,4 +1,4 @@
-using BookingApp.Commands;
+﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model.Enums;
@@ -38,6 +38,7 @@ namespace BookingApp.ViewModel.Guide
         private DateTime _selectedDate;
         private RelayCommand _addDateCommand;
         private RelayCommand _submitCommand;
+        private RelayCommand _help;
         private string _keyPointString;
         private TourDTO _tourDTO;
         private List<string> _images;
@@ -63,10 +64,24 @@ namespace BookingApp.ViewModel.Guide
             _submitCommand = new RelayCommand(Submit);
             _dates = new ObservableCollection<DateTime> ();
             _addDateCommand = new RelayCommand(AddDate);
+            _help = new RelayCommand(Help);
             _submitCommand = new RelayCommand(Submit);
             _addImagesCommand = new RelayCommand(AddImages);
             _removeImageCommand = new RelayCommand(RemoveImage);
             countries = new List<string> { "Austrija","BiH", "Crna Gora","Francuska","Hrvatska","Italija", "Makedonija","Madjarska","Njemacka", "Srbija", "Slovenija", "Spanija" };
+        }
+        public RelayCommand HelpCommand
+        {
+            get { return _help; }
+            set
+            {
+                _help = value;
+                OnPropertyChanged();
+            }
+        }
+        private void Help()
+        {
+            MessageBox.Show("Željene ključne tačke navodite putem zareza", "Uputstvo", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         public TourDTO TourDTO
         {
@@ -272,14 +287,39 @@ namespace BookingApp.ViewModel.Guide
         }
         private void SetKeyPoints(string[] keyPoints)
         {
+            int count = 0;
             foreach (var keyPoint in keyPoints)
             {
-                KeyPointDTO newPoint = new KeyPointDTO();
-                newPoint.Name = keyPoint;
-                newPoint.TourId = _tourDTO.Id;
-                newPoint.IsCurrent = false;
-                newPoint.HasPassed = false;
-                _keyPointService.Save(newPoint.ToKeyPoint());
+                if (count == 0)
+                {
+                    KeyPointDTO newPoint = new KeyPointDTO();
+                    newPoint.Name = keyPoint;
+                    newPoint.TourId = _tourDTO.Id;
+                    newPoint.IsCurrent = false;
+                    newPoint.HasPassed = false;
+                    newPoint.Type = KeyPointsType.Begining;
+                    _keyPointService.Save(newPoint.ToKeyPoint());
+                }else if (count!= keyPoints.Length - 1)
+                {
+                     KeyPointDTO newPoint = new KeyPointDTO();
+                    newPoint.Name = keyPoint;
+                    newPoint.TourId = _tourDTO.Id;
+                    newPoint.IsCurrent = false;
+                    newPoint.HasPassed = false;
+                    newPoint.Type = KeyPointsType.Middle;
+                    _keyPointService.Save(newPoint.ToKeyPoint());
+                }
+                else
+                {
+                    KeyPointDTO newPoint = new KeyPointDTO();
+                    newPoint.Name = keyPoint;
+                    newPoint.TourId = _tourDTO.Id;
+                    newPoint.IsCurrent = false;
+                    newPoint.HasPassed = false;
+                    newPoint.Type = KeyPointsType.Ending;
+                    _keyPointService.Save(newPoint.ToKeyPoint());
+                }
+                count++;
             }
         }
     }

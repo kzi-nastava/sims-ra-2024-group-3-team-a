@@ -22,7 +22,6 @@ namespace BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels
         private AccommodationStatisticsService _accommodationStatisticsService;
         private AccommodationDTO _accommodationDTO;
         private Dictionary<int, AccommodationStatisticsDTO> _accommodationStatisticsDTO;
-        private ScrollViewer _scrollViewer;
 
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;

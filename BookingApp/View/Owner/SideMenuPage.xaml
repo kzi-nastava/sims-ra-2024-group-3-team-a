@@ -7,7 +7,23 @@
       mc:Ignorable="d"
       d:DesignHeight="750" d:DesignWidth="286"
       Title="SideMenuPage">
-    <Border BorderThickness="3" Background="CadetBlue" BorderBrush="#517a7b" CornerRadius="30,0,0,30">
+    <Page.Resources>
+        <Storyboard x:Key="SlideInStoryboard">
+            <DoubleAnimation Storyboard.TargetName="SlideTransform"
+                             Storyboard.TargetProperty="X"
+                             From="290" To="0" Duration="0:0:0.5"/>
+        </Storyboard>
+        <Storyboard x:Key="SlideOutStoryboard" Completed="SlideOutStoryboard_Completed">
+            <DoubleAnimation Storyboard.TargetName="SlideTransform"
+                             Storyboard.TargetProperty="X"
+                             From="0" To="290" Duration="0:0:0.5"/>
+        </Storyboard>
+    </Page.Resources>
+    <Page.RenderTransform>
+        <TranslateTransform x:Name="SlideTransform" X="290"/>
+    </Page.RenderTransform>
+
+    <Border BorderThickness="3" Background="CadetBlue" BorderBrush="#517a7b" CornerRadius="30,0,0,30" Loaded="Page_Loaded">
         <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -43,13 +59,6 @@
                     </StackPanel>
                 </Button>
 
-                <Button Command="{Binding ShowProfileMenuPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="..\..\Resources\Images\profile.png" Height="50" Width="50" />
-                        <Label Content="Profile" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    </StackPanel>
-                </Button>
-
                 <Button Command="{Binding ShowRenovationsPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\Owner/renovation.png" Height="50" Width="50" />
@@ -61,6 +70,13 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="..\..\Resources\Images\Owner/forums1.png" Height="50" Width="50" />
                         <Label Content="Forums" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding ShowProfileMenuPageCommand}" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\..\Resources\Images\profile.png" Height="50" Width="50" />
+                        <Label Content="Profile" FontSize="20" Foreground="#d4ff00" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>
 

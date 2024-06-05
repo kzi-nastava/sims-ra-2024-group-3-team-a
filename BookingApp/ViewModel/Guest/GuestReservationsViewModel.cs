@@ -2,10 +2,14 @@
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
+using BookingApp.Reports.Guest;
+using BookingApp.Reports.Owner;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
 using BookingApp.View.Guest;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -48,9 +52,14 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _submitRequestCommand;
         private RelayCommand _cancelReservationCommand;
         private RelayCommand _renovationRatingCommand;
+        private RelayCommand _generateReportCommand;
+        private RelayCommand _showChartPageCommand;
         
         private int _selectedRating;
 
+        public SeriesCollection StatusSeriesCollection { get; set; }
+        public SeriesCollection AccommodationSeriesCollection { get; set; }
+        private Func<double, string> _yAxisLabelFormatter;
 
         public GuestReservationsViewModel(UserDTO loggedInGuest) 
         {
@@ -68,6 +77,8 @@ namespace BookingApp.ViewModel.Guest
 
             _myChangeRequests = new ObservableCollection<AccommodationReservationChangeRequestDTO>();
 
+            _yAxisLabelFormatter = value => value.ToString("N0");
+
             _addImagesCommand = new RelayCommand(AddImages);
             _rateOwnerCommand = new RelayCommand(RateOwner);
             _submitRateOwnerCommand = new RelayCommand(SubmitRateOwner);
@@ -76,7 +87,11 @@ namespace BookingApp.ViewModel.Guest
             _cancelReservationCommand = new RelayCommand(CancelReservation);
             _renovationRatingCommand = new RelayCommand(ChangeRating);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _generateReportCommand = new RelayCommand(GenerateReport);
+            _showChartPageCommand = new RelayCommand(ShowChartPage);
+            InitializeCharts();
             UpdateMyReservations();
+            
         }
 
         public void UpdateMyReservations()
@@ -88,8 +103,53 @@ namespace BookingApp.ViewModel.Guest
             List<AccommodationReservationChangeRequestDTO> MyRequestsList = _accommodationReservationChangeRequestService.GetAllByGuestId(_loggedInGuest.Id).Select(request => new AccommodationReservationChangeRequestDTO(request)).ToList();
             _myChangeRequests = new ObservableCollection<AccommodationReservationChangeRequestDTO>(MyRequestsList);
             MyChangeRequestsDTO = _myChangeRequests;
+            UpdateCharts();
+        }
+        private void InitializeCharts()
+        {
+            StatusSeriesCollection = new SeriesCollection();
+            AccommodationSeriesCollection = new SeriesCollection();
         }
 
+        private void UpdateCharts()
+        {
+            UpdateStatusChart();
+            UpdateAccommodationChart();
+        }
+
+        private void UpdateStatusChart()
+        {
+            var statusGroups = _myReservations.GroupBy(r => r.Canceled)
+                                              .Select(g => new { Canceled = g.Key, Count = g.Count() })
+                                              .ToList();
+
+            StatusSeriesCollection.Clear();
+            foreach (var statusGroup in statusGroups)
+            {
+                StatusSeriesCollection.Add(new PieSeries
+                {
+                    Title = statusGroup.Canceled.ToString(),
+                    Values = new ChartValues<int> { statusGroup.Count }
+                });
+            }
+        }
+
+        private void UpdateAccommodationChart()
+        {
+            var accommodationGroups = _myReservations.GroupBy(r => r.AccommodationId)
+                                                     .Select(g => new { AccommodationId = g.Key, Count = g.Count() })
+                                                     .ToList();
+
+            AccommodationSeriesCollection.Clear();
+            foreach (var accommodationGroup in accommodationGroups)
+            {
+                AccommodationSeriesCollection.Add(new ColumnSeries
+                {
+                    Title = accommodationGroup.AccommodationId.ToString(),
+                    Values = new ChartValues<int> { accommodationGroup.Count }
+                });
+            }
+        }
         private void CancelReservation()
         {
             if (_selectedReservation == null)
@@ -201,6 +261,17 @@ namespace BookingApp.ViewModel.Guest
                 }
             }
         }
+        private void ShowChartPage()
+        {
+            GuestMainViewWindow.MainFrame.Content = new ChartPage();
+        }
+        private void GenerateReport()
+        {
+            //AccommodationStatisticsReport accommodationStatisticsReport = new AccommodationStatisticsReport();
+            //accommodationStatisticsReport.GenerateReport(_accommodationStatisticsDTO, _accommodationDTO);
+            MyReservationsReport myReservationsReport = new MyReservationsReport();
+            myReservationsReport.GenerateReport(_loggedInGuest, _myReservations);
+        }
 
         private void ShowReservationDetails() 
         {
@@ -241,7 +312,15 @@ namespace BookingApp.ViewModel.Guest
                     break;
             }
         }
-
+        public Func<double, string> YAxisLabelFormatter
+        {
+            get => _yAxisLabelFormatter;
+            set
+            {
+                _yAxisLabelFormatter = value;
+                OnPropertyChanged(nameof(YAxisLabelFormatter));
+            }
+        }
         public ObservableCollection<AccommodationReservationDTO> MyReservationsDTO
         {
             get
@@ -279,7 +358,18 @@ namespace BookingApp.ViewModel.Guest
                 OnPropertyChanged();
             }
         }
-
+        public UserDTO LoggedInGuest
+        {
+            get
+            {
+                return _loggedInGuest;
+            }
+            set
+            {
+                _loggedInGuest = value;
+                OnPropertyChanged();
+            }
+        }
         public bool IsFrameRateVisible
         {
             get
@@ -356,6 +446,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _selectedNewEndDate = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowChartPageCommand
+        {
+            get
+            {
+                return _showChartPageCommand;
+            }
+            set
+            {
+                _showChartPageCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -447,7 +549,18 @@ namespace BookingApp.ViewModel.Guest
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand GenerateReportCommand
+        {
+            get
+            {
+                return _generateReportCommand;
+            }
+            set
+            {
+                _generateReportCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public int SelectedRating
         {
             get => _selectedRating;

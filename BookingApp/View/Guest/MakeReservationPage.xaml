@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:BookingApp.View.Guest"
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="800"
@@ -91,7 +92,7 @@
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="470"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -107,7 +108,7 @@
                 </Button>
             </Grid>
         </Border>
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid Grid.Row="1" Grid.Column="0" Background="CadetBlue">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -125,7 +126,7 @@
                 <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0">
+            <Grid Grid.Row="0" Grid.Column="0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -142,26 +143,43 @@
                     <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Location: "/>
-                <Label Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.City}"/>
-                <Label Grid.Column="1" Foreground="#d4ff00" Content=", "></Label>
-                <Label Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.Country}"/>
+                <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Name: " FontSize="18" Margin="0,30,0,0"/>
+                <Label Grid.Row="0" Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.Name}" Margin="0,30,0,0" FontSize="18"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Location: " FontSize="18"/>
+                <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.City}" FontSize="18"/>
+                <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content=", " FontSize="18"></Label>
+                <Label Grid.Row="1" Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.Country}" FontSize="18"/>
             </Grid>
+            <GroupBox Grid.Row="2" Header="Images" Foreground="#d4ff00" FontSize="18">
+                <GroupBox.Background>
+                    <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                </GroupBox.Background>
+                <Grid>
+                    <Image Source="{Binding Path=SelectedImage}" Height="250" Width="250" HorizontalAlignment="Center"></Image>
+                    <Button Background="CadetBlue"  HorizontalAlignment="Right" Height="40" Width="40" Command="{Binding NextImageCommand}">
+                        <Image Source="../../Resources/Images/arrowRight.png"></Image>
+                    </Button>
+                    <Button Background="CadetBlue"  HorizontalAlignment="Left" Height="40" Width="40" Command="{Binding PreviousImageCommand}">
+                        <Image Source="../../Resources/Images/arrowLeft.png"></Image>
+                    </Button>
+                </Grid>
+            </GroupBox>
 
-            <Label Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Type: "/>
-            <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Type}"></Label>
+            <Label Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Type: " FontSize="18"/>
+            <Label Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Type}" FontSize="18"></Label>
 
-            <Label Grid.Row="2" Grid.Column="0" Foreground="#d4ff00" Content="Description: "/>
-            <Label Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}"></Label>
+            <Label Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="Description: " FontSize="18"/>
+            <Label Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}" FontSize="18"></Label>
 
-            <Label Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: "/>
-            <Label Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}"></Label>
+            <Label Grid.Row="5" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: " FontSize="18"/>
+            <Label Grid.Row="5" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}" FontSize="18"></Label>
 
-            <Label Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: "/>
-            <Label Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.MinDaysReservation}"></Label>
+            <Label Grid.Row="6" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: " FontSize="18"/>
+            <Label Grid.Row="6" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.MinDaysReservation}" FontSize="18"></Label>
 
-            <Label Grid.Row="5" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: "/>
-            <Label Grid.Row="5" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.CancellationPeriod}"></Label>
+            <Label Grid.Row="7" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: " FontSize="18"/>
+            <Label Grid.Row="7" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.CancellationPeriod}" FontSize="18"></Label>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
@@ -208,7 +226,9 @@
             </DataGrid>
             <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10">
                 <Label Foreground="#d4ff00" Content="Number of guests: " />
-                <TextBox x:Name="GuestNumberTextBox" Text="{Binding NumberOfGuests}" />
+                <xctk:IntegerUpDown Minimum="0" x:Name="GuestNumberTextBox" Text="{Binding NumberOfGuests, UpdateSourceTrigger=PropertyChanged}" Width="50" />
+<!--
+                <TextBox x:Name="GuestNumberTextBox" Text="{Binding NumberOfGuests}" />-->
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="10">
                 <Label Foreground="#d4ff00" Content="Use voucher for discount: " />

@@ -12,11 +12,30 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style x:Key="OvalButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="AntiqueWhite"
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="SaddleBRown"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
     </Window.Resources>
-    <Window.InputBindings>
-        <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
-        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
-    </Window.InputBindings>
     <Border BorderThickness="0" >
         <Grid Background="AntiqueWhite" >
             <Grid.RowDefinitions>
@@ -37,10 +56,13 @@
             </Grid.ColumnDefinitions>
             <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="5" >
                 <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
-                <MenuItem Header="Pomoć"/>
+                <MenuItem Header="Pomoć">
+                    <MenuItem Header="Prečice"/>
+                    <MenuItem Header="Video tutorijal"/>
+                    <MenuItem Header="Upute"/>
+                </MenuItem>
                 <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}"/>
                 <MenuItem Header="Sve ture" Command="{Binding ShowAllToursCommand}"/>
-                <MenuItem Header="Otkaz"/>
                 <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
             </Menu>
             <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -106,8 +128,8 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-
-            <DataGrid ItemsSource="{Binding Tourists}"  Margin="0" AutoGenerateColumns="False" CanUserAddRows="False"  Grid.Row="5"  Grid.ColumnSpan="4" Visibility="Visible" >
+            <ScrollViewer Grid.Row="5"  Grid.ColumnSpan="4">
+            <DataGrid ItemsSource="{Binding Tourists}"  Background="AntiqueWhite" Margin="0" AutoGenerateColumns="False" CanUserAddRows="False"   Visibility="Visible" >
 
                 <DataGrid.Columns >
                     <DataGridTextColumn Header="Ime" Width="*" Binding="{Binding Path=Name}" IsReadOnly="True" />
@@ -116,27 +138,29 @@
                     <DataGridTemplateColumn Header="Pridruži turi" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="PRIDRUŽI" Background="Tan" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
+                                <Button Content="PRIDRUŽI" Background="Tan"  Style="{StaticResource OvalButtonStyle}" Command="{Binding Path=DataContext.TouristJoiningPointCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
 
             </DataGrid>
-            <Button  Command="{Binding ShowTourDetailsCommand}" VerticalAlignment="Top" Height="40" Grid.Row="5" Margin="10,0,10,0" Grid.Column="5">
+            </ScrollViewer>
+            <Button  Command="{Binding ShowTourDetailsCommand}" Style="{StaticResource OvalButtonStyle}"  VerticalAlignment="Top" Height="40" Grid.Row="5" Margin="10,0,10,0" Grid.Column="5">
             <TextBlock TextAlignment="Center">
         Dodatne informacije
         <LineBreak/>
               o turi
             </TextBlock>
             </Button>
-            <Button Content="Završi turu"  Command="{Binding CancelTourCommand}" VerticalAlignment="Top" Height="40" Margin="10,50,10,0" Grid.Row="5" Grid.Column="5"/>
-            <Grid Grid.Row="6" Grid.Column="3">
-                <TextBlock>Vodič:</TextBlock>
-                <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
-            </Grid>
-            
+            <Button Content="Završi turu"  Command="{Binding CancelTourCommand}"  Style="{StaticResource OvalButtonStyle}"  VerticalAlignment="Top" Height="40" Margin="10,50,10,0" Grid.Row="5" Grid.Column="5"/>
         </Grid>
     </Border>
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding ShowTourRequestCommand}" />
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
+    </Window.InputBindings>
 
 </Window>

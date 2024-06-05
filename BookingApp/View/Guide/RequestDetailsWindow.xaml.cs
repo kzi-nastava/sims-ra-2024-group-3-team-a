@@ -1,10 +1,7 @@
 ﻿using BookingApp.DTO;
-using BookingApp.Model;
-using BookingApp.Repository;
 using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,15 +17,15 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Guide
 {
     /// <summary>
-    /// Interaction logic for MostVisitedTourWindow.xaml
+    /// Interaction logic for RequestDetailsWindow.xaml
     /// </summary>
-    public partial class MostVisitedTourWindow : Window
+    public partial class RequestDetailsWindow : Window
     {
-        public MostVisitedTourWindow(int year)
+        public RequestDetailsWindow(OrdinaryTourRequestDTO requestDTO, UserDTO user)
         {
             InitializeComponent();
-            DataContext = new MostVisitedTourViewModel(year);
+            DataContext = new RequestDetailsViewModel(requestDTO, user);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
-       
     }
 }

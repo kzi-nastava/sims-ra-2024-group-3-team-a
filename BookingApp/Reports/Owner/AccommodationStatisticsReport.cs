@@ -212,54 +212,43 @@ namespace BookingApp.Reports.Owner
                 thirdPage.Elements.Add(renovationRecommendations);
 
                 //tabela
-                Table2 table = new Table2(-30, 380, 700, 800);
+                Table2 table = new Table2(-30, 380, 504, 800); 
                 table.CellDefault.Border.Color = RgbColor.LightBlue;
                 table.CellDefault.Border.LineStyle = LineStyle.Solid;
-                table.CellDefault.Padding.Value = 3.0f;
+                table.CellDefault.Padding.Value = 5.0f; 
 
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-
-                Row2 tableHeader = table.Rows.Add(20, Font.HelveticaBold, 14, RgbColor.Black, RgbColor.Gray);
+                for (int i = 0; i < 5; i++)
+                {
+                    table.Columns.Add((float)100.8); 
+                }
+ 
+                Row2 tableHeader = table.Rows.Add(25, Font.HelveticaBold, 16, RgbColor.White, RgbColor.DarkBlue);
                 tableHeader.CellDefault.Align = TextAlign.Center;
                 tableHeader.CellDefault.VAlign = VAlign.Center;
-                tableHeader.Cells.Add("Yearly accommodation statistics in table for " + accommodation.Name + " from 2022 to 2025").ColumnSpan = 5;
+                tableHeader.Cells.Add("Yearly Accommodation Statistics for " + accommodation.Name + " (2022-2025)").ColumnSpan = 5;
 
-                Row2 headerContent = table.Rows.Add(Font.HelveticaBoldOblique, 12);
+                Row2 headerContent = table.Rows.Add(20, Font.HelveticaBoldOblique, 12, RgbColor.White, RgbColor.Gray);
                 headerContent.CellDefault.Align = TextAlign.Center;
-
                 headerContent.Cells.Add("Year");
                 headerContent.Cells.Add("Reservations");
                 headerContent.Cells.Add("Cancellations");
-                headerContent.Cells.Add("Date change requests");
-                headerContent.Cells.Add("Renovation reccomendations");
-
-                Row2 tableContent;
+                headerContent.Cells.Add("Date Change Requests");
+                headerContent.Cells.Add("Renovation Recommendations");
 
                 for (int year = 2022; year <= 2025; year++)
                 {
-                    AccommodationStatisticsDTO accommodationStatistics = null;
-                    if (_accommodationStatisticsDTO.TryGetValue(year, out AccommodationStatisticsDTO item))
-                    {
-                        accommodationStatistics = item;
-                    }
-                    else
-                    {
-                        accommodationStatistics = new AccommodationStatisticsDTO();
-                    }
+                    AccommodationStatisticsDTO accommodationStatistics = _accommodationStatisticsDTO.TryGetValue(year, out AccommodationStatisticsDTO item) ? item : new AccommodationStatisticsDTO();
 
-                    tableContent = table.Rows.Add(10);
-                    tableContent.Cells.Add(new FormattedTextArea(year.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.Reservations.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.Cancellations.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.AccommodationReservationChanges.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.AccommodationRenovationRecommendations.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
+                    Row2 tableContent = table.Rows.Add(15, Font.Helvetica, 12, RgbColor.Black, year % 2 == 0 ? RgbColor.LightSlateGray : RgbColor.White);
+                    tableContent.Cells.Add(year.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.Reservations.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.Cancellations.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.AccommodationReservationChanges.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.AccommodationRenovationRecommendations.ToString());
                 }
 
                 thirdPage.Elements.Add(table);
+
 
                 string reportPath = "../../../../Reports/Owner/Yearly-Report-for-" + accommodation.Name.Replace(" ", "-") + "-" + DateTime.Now.ToString("dd.MM.yyyy.HH.mm") + ".pdf";
                 document.Draw(reportPath);
@@ -453,55 +442,43 @@ namespace BookingApp.Reports.Owner
                 renovationRecommendations.AutoLayout = true;
                 thirdPage.Elements.Add(renovationRecommendations);
 
-                //tabela
+                // Table
                 Page forthPage = new Page();
                 document.Pages.Add(forthPage);
 
-                Table2 table = new Table2(-30, 0, 700, 800);
+                Table2 table = new Table2(-30, 0, 504, 800);
                 table.CellDefault.Border.Color = RgbColor.LightBlue;
                 table.CellDefault.Border.LineStyle = LineStyle.Solid;
-                table.CellDefault.Padding.Value = 3.0f;
+                table.CellDefault.Padding.Value = 5.0f;
 
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-                table.Columns.Add(100);
-                table.Columns.Add(100);
+                for (int i = 0; i < 5; i++)
+                {
+                    table.Columns.Add((float)100.8);
+                }
 
-                Row2 tableHeader = table.Rows.Add(20, Font.HelveticaBold, 14, RgbColor.Black, RgbColor.Gray);
+                Row2 tableHeader = table.Rows.Add(25, Font.HelveticaBold, 16, RgbColor.White, RgbColor.DarkBlue);
                 tableHeader.CellDefault.Align = TextAlign.Center;
                 tableHeader.CellDefault.VAlign = VAlign.Center;
                 tableHeader.Cells.Add("Monthly accommodation statistics in table for " + accommodation.Name + " from year: " + yearForMonthReport.ToString()).ColumnSpan = 5;
 
-                Row2 headerContent = table.Rows.Add(20, Font.HelveticaBoldOblique, 12);
+                Row2 headerContent = table.Rows.Add(20, Font.HelveticaBoldOblique, 12, RgbColor.White, RgbColor.Gray);
                 headerContent.CellDefault.Align = TextAlign.Center;
-
                 headerContent.Cells.Add("Month");
                 headerContent.Cells.Add("Reservations");
                 headerContent.Cells.Add("Cancellations");
-                headerContent.Cells.Add("Date change requests");
-                headerContent.Cells.Add("Renovation reccomendations");
-
-                Row2 tableContent;
+                headerContent.Cells.Add("Date Change Requests");
+                headerContent.Cells.Add("Renovation Recommendations");
 
                 for (int month = 1; month <= 12; month++)
                 {
-                    AccommodationStatisticsDTO accommodationStatistics = null;
-                    if (_accommodationStatisticsDTO.TryGetValue(month, out AccommodationStatisticsDTO item))
-                    {
-                        accommodationStatistics = item;
-                    }
-                    else
-                    {
-                        accommodationStatistics = new AccommodationStatisticsDTO();
-                    }
+                    AccommodationStatisticsDTO accommodationStatistics = _accommodationStatisticsDTO.TryGetValue(month, out AccommodationStatisticsDTO item) ? item : new AccommodationStatisticsDTO();
 
-                    tableContent = table.Rows.Add(10);
-                    tableContent.Cells.Add(new FormattedTextArea(new DateTime(yearForMonthReport, month, 1).ToString("MMM"), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.Reservations.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.Cancellations.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.AccommodationReservationChanges.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
-                    tableContent.Cells.Add(new FormattedTextArea(accommodationStatistics.AccommodationRenovationRecommendations.ToString(), 0, 0, 140, 50, FontFamily.Helvetica, 12, false));
+                    Row2 tableContent = table.Rows.Add(15, Font.Helvetica, 12, RgbColor.Black, month % 2 == 0 ? RgbColor.LightSlateGray : RgbColor.White);
+                    tableContent.Cells.Add(new DateTime(yearForMonthReport, month, 1).ToString("MMM"));
+                    tableContent.Cells.Add(accommodationStatistics.Reservations.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.Cancellations.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.AccommodationReservationChanges.ToString());
+                    tableContent.Cells.Add(accommodationStatistics.AccommodationRenovationRecommendations.ToString());
                 }
 
                 forthPage.Elements.Add(table);

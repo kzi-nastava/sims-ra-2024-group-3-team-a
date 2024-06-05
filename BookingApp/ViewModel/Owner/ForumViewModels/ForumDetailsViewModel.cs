@@ -64,9 +64,6 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
 
                 _postsDTO.Add(new PostDTO(_postService.Save(_newPostDTO.ToPost())));
                 _newPostDTO.Text = String.Empty;
-
-                List<PostDTO> postsList = _postService.GetPostsForForum(_selectedForumDTO.ToForum()).Select(post => new PostDTO(post)).ToList();
-                _postsDTO = new ObservableCollection<PostDTO>(postsList);
             }  
         }
 
@@ -172,7 +169,7 @@ namespace BookingApp.ViewModel.Owner.ForumViewModels
 
         private void GoBack()
         {
-            OwnerMainWindow.MainFrame.GoBack();
+            OwnerMainWindow.MainFrame.Content = new ForumsPage(_loggedInUser);
         }
     }
 }

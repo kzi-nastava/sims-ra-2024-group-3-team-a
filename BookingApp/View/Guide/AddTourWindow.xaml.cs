@@ -34,6 +34,7 @@ namespace BookingApp.View
         {
             InitializeComponent();
             _defaultBrushBorder = textBoxName.BorderBrush.Clone();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             DataContext = new AddTourViewModel(guide); 
             if (Instance == null)
             {

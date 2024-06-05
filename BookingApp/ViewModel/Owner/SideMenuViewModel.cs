@@ -9,6 +9,7 @@ using System.Windows;
 using BookingApp.Commands;
 using BookingApp.View.Owner.AccommodationRenovationPages;
 using BookingApp.View.Owner.ForumPages;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace BookingApp.ViewModel.Owner
 {
@@ -149,8 +150,7 @@ namespace BookingApp.ViewModel.Owner
 
         public void CloseSideMenu()
         {
-            OwnerMainWindow.SideMenuFrame.Content = null;
-            OwnerMainWindow.SideMenuFrame.Content = null;
+            Messenger.Default.Send(new NotificationMessage("CloseSideMenu"));
         }
         public void ShowAccommodationsPage()
         {

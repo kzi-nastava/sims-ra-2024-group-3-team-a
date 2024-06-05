@@ -150,7 +150,6 @@ namespace BookingApp.ViewModel.Guide
                 _messageService.Save(message.ToMessage());
                 TourRequestWindow.GetInstance().Close();
                 TourRequestWindow window = new TourRequestWindow(_userDTO);
-               // window.TabControl.SelectedIndex = 1;
                 window.Show();
                 window.TabControl.SelectedIndex = 1;
                 AcceptComplexTourWindow.GetInstance().Close();
