@@ -29,6 +29,8 @@ namespace BookingApp.View.Tourist
             InitializeComponent();
             _createTourRequestViewModel = new CreateTourRequestViewModel(loggedInUser);
             DataContext = _createTourRequestViewModel;
+            if (_createTourRequestViewModel.CloseAction == null)
+                _createTourRequestViewModel.CloseAction = new Action(this.Close);
         }
     }
 }

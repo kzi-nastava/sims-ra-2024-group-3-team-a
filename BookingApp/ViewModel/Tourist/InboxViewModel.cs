@@ -1,4 +1,5 @@
-﻿using BookingApp.DTO;
+﻿using BookingApp.Commands;
+using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
 using BookingApp.Model;
 using BookingApp.Repository.Interfaces;
@@ -22,6 +23,19 @@ namespace BookingApp.ViewModel.Tourist
         private ObservableCollection<MessageDTO> _messageDTO;
         private MessageDTO _selectedMessageDTO = null;
         private UserDTO _userDTO;
+        private RelayCommand _showMessageCommand;
+   
+        private RelayCommand _showMyToursWindowCommand;
+        private RelayCommand _showInboxWindowCommand;
+        private RelayCommand _showFinishedToursWindowCommand;
+        private RelayCommand _showVoucherWindowCommand;
+        private RelayCommand _showAppropriateWindowCommand;
+     
+        private RelayCommand _showOrindaryTourRequestWindow;
+      
+        private RelayCommand _showTourRequestsCommand;
+        public Action CloseAction { get; set; }
+        private RelayCommand _closeWindowCommand;
         public InboxViewModel(UserDTO loggedInUser)
         {
 
@@ -42,7 +56,8 @@ namespace BookingApp.ViewModel.Tourist
             _userDTO = loggedInUser;
             List<MessageDTO> messages = _messageService.GetByOwner(loggedInUser.Id).Select(message => new MessageDTO(message)).ToList();
             _messageDTO = new ObservableCollection<MessageDTO>(messages);
-
+            _showMessageCommand = new RelayCommand(ShowMessageDetailsWindow);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
         }
 
         public ObservableCollection<MessageDTO> MessagesDTO 
@@ -68,22 +83,135 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _selectedMessageDTO= value; 
                 OnPropertyChanged();
-                ShowMessageDetailsWindow();
+                
             }
         }
-        private void ShowMessageDetailsWindow()
+        public RelayCommand ShowMessageCommand
         {
-            if (_selectedMessageDTO == null)
+            get
+            {
+                return _showMessageCommand;
+            }
+            set
+            {
+                _showMessageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowMyToursWindowCommand
+        {
+            get
+            {
+                return _showMyToursWindowCommand;
+            }
+            set
+            {
+                _showMyToursWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowFinishedToursWindowCommand
+        {
+            get
+            {
+                return _showFinishedToursWindowCommand;
+            }
+            set
+            {
+                _showFinishedToursWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowTourRequestsCommand
+        {
+            get
+            {
+                return _showTourRequestsCommand;
+            }
+            set
+            {
+                _showTourRequestsCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public RelayCommand ShowVoucherWindowCommand
+        {
+            get
+            {
+                return _showVoucherWindowCommand;
+            }
+            set
+            {
+                _showVoucherWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowAppropriateWindowCommand
+        {
+            get
+            {
+                return _showAppropriateWindowCommand;
+            }
+            set
+            {
+                _showAppropriateWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ShowOrindaryTourRequestWindowCommand
+        {
+            get
+            {
+                return _showOrindaryTourRequestWindow;
+            }
+            set
+            {
+                _showOrindaryTourRequestWindow = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowInboxWindowCommand
+        {
+            get
+            {
+                return _showInboxWindowCommand;
+            }
+            set
+            {
+                _showInboxWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowMessageDetailsWindow(object parameter)
+        {
+            var selectedItem = parameter as MessageDTO;
+            if (selectedItem == null)
             {
                 return;
             }
 
-            var selectedItem = _selectedMessageDTO as MessageDTO;
+
             selectedItem.IsRead = true;
             _messageService.Update(selectedItem.ToMessage());
 
-           
-          
+
+        
            
             
           
@@ -107,5 +235,13 @@ namespace BookingApp.ViewModel.Tourist
                 ordinaryTourRequestInfoWindow.ShowDialog();
             }
         }
+        public void CloseWindow()
+        {
+
+
+            CloseAction();
+        }
+
+
     }
 }

@@ -25,19 +25,16 @@ namespace BookingApp.View.Tourist
         public OrdinaryTourRequestWindow(UserDTO loggedInUser, int complexTourRequestId)
         {
             InitializeComponent();
-
+            
             _ordinaryTourRequestViewModel = new OrdinaryTourRequestViewModel(loggedInUser, complexTourRequestId);
             DataContext = _ordinaryTourRequestViewModel;
+            if (_ordinaryTourRequestViewModel.CloseAction == null)
+                _ordinaryTourRequestViewModel.CloseAction = new Action(this.Close);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
-      /*  private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.D)
-            {
-                datePicker.IsDropDownOpen = true;
-                e.Handled = true; // Prevent other handlers from receiving the event
-            }
-        }*/
+     
+        }
 
     }
 }

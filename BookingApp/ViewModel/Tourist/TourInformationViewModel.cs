@@ -41,6 +41,8 @@ namespace BookingApp.ViewModel.Tourist
         public RelayCommand ScrollRightCommand { get; }
         public Action CloseAction { get; set; }
 
+        private App app;
+        private string _currentLanguage;
         public TourInformationViewModel(TourDTO tourDTO, UserDTO loggedInUser)
         {
            _tourDTO = tourDTO;
@@ -67,7 +69,8 @@ namespace BookingApp.ViewModel.Tourist
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
             ScrollLeftCommand = new RelayCommand(ScrollLeft);
             ScrollRightCommand = new RelayCommand(ScrollRight);
-         
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
         }
         public TourDTO TourDTO
         {
@@ -114,7 +117,7 @@ namespace BookingApp.ViewModel.Tourist
        
         private string GetKeyPointsAsString()
         {
-            // Extract names of keypoints and join them into a single string
+          
             var keyPointNames = KeyPointsDTO.Select(kp => kp.Name.Trim());
             return string.Join(" - ", keyPointNames);
         }
@@ -217,7 +220,24 @@ namespace BookingApp.ViewModel.Tourist
 
         public void ShowTourReservationWindow()
         {
-
+            foreach(TourReservation tourReservation in _tourReservationService.GetAllForUser(_userDTO.ToUser().Id))
+            {
+                if (tourReservation.TourId == _tourDTO.Id)
+                {
+                    if (_currentLanguage.Equals("en-US"))
+                    {
+                        MessageBox.Show("You allready have reservation for this tour!");
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vec imate rezervaciju za ovu turu");
+                        return;
+                    }
+                   
+                }
+            }
+           
 
             TourReservationWindow tourReservationWindow = new TourReservationWindow(_tourReservationService, _tourDTO, _userDTO);
             tourReservationWindow.Owner = Application.Current.MainWindow;

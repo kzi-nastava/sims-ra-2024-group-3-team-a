@@ -91,7 +91,6 @@ namespace BookingApp.Reports.Tourist
             locationInfo += "Language:" + " " + tourDTO.Language.ToString() + "\n\n";
             locationInfo += "Maximum number of tourists:" + " " + tourDTO.MaxTouristNumber.ToString() + "\n\n";
             locationInfo += "Current capacity:" + " " + tourDTO.CurrentCapacity.ToString() + "\n\n";
-            locationInfo += "Guide:" + " " + "Neko Nekic" + "\n\n";
 
           
 

@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        xmlns:ns="clr-namespace:BookingApp.Localization"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         
@@ -19,14 +20,14 @@
         <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
         <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
         <KeyBinding Key="F9"  Command="{Binding  LogOutCommand}" />
-        <KeyBinding Key="C" Command="{Binding CloseWindowCommand}"/>
+        <KeyBinding Key="Esc" Command="{Binding CloseWindowCommand}"/>
         <KeyBinding Key="L" Modifiers="Ctrl" Command="{Binding ScrollLeftCommand}"/>
         <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding ScrollRightCommand}"/>
     </Window.InputBindings>
-    
- 
 
-    <Grid Background="#edebfc">
+
+
+    <Grid Background="{DynamicResource Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -34,80 +35,14 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Click="LightThemeClick" />
+                <MenuItem Click="DarkThemeClick" />
+            </ContextMenu>
+        </Grid.ContextMenu>
 
-
-        <Menu DockPanel.Dock="Top" BorderThickness="1" >
-
-
-            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="13"  FontWeight="Bold">
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/home.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-
-            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/trekking-16.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/map.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/edit.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/star.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/gift.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/email.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-            </MenuItem>
-
-
-
-            <MenuItem x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
-                <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
-                </MenuItem.Icon>
-
-                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-
-                </MenuItem>
-                <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-
-        </Menu>
+       
 
         <Grid Grid.Row="1" Margin="10,0,0,0"   >
             <Grid.ColumnDefinitions>
@@ -120,20 +55,20 @@
             </Grid.ColumnDefinitions>
 
             <DockPanel>
-            <TextBlock Grid.Column="0" FontSize="25" FontWeight="Heavy" Text="Tour:" Margin="20,20,0,10" ></TextBlock>
-            <TextBlock  FontSize="25" Text="{Binding TourDTO.Name}" Margin="5,20,0,10"  />
+            <TextBlock Grid.Column="0" FontSize="25" FontWeight="Heavy" Text="{ns:Loc Tour}" Margin="20,20,0,10" ></TextBlock>
+                <TextBlock  FontSize="25" Foreground="{DynamicResource Button}" Text="{Binding TourDTO.Name}" Margin="5,20,0,10"  />
             </DockPanel>
 
         </Grid>
         <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30">-->
-        <Grid Margin="30,5,20,0" Grid.Row="2">
+        <Grid Margin="16,5,20,0" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="880"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="5,30,5,5">
-            <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
+                <Button FontWeight="Bold"  Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" Background="{DynamicResource CancelButton}" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
                   
             </Button>
                 <TextBlock Margin="5,0,0,0" Text="(Ctrl+L)" FontSize="9"></TextBlock>
@@ -144,7 +79,7 @@
                       HorizontalScrollBarVisibility="Hidden"
                       Loaded="ImageListView_Loaded">
 
-                <ItemsControl Focusable="False" x:Name="imageListView"    Background="#fcfcf2"  ItemsSource="{Binding ImagesCollection}">
+                <ItemsControl Focusable="False" x:Name="imageListView"    Background="{DynamicResource Background}"  ItemsSource="{Binding ImagesCollection}">
                             
                             <ItemsControl.ItemsPanel >
                                 <ItemsPanelTemplate>
@@ -162,7 +97,7 @@
 
                     </ScrollViewer>
             <StackPanel Grid.Column="2"  Margin="5,30,5,5">
-            <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
+                <Button FontWeight="Bold"  FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" Background="{DynamicResource CancelButton}" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
 
             </Button>
                 <TextBlock Margin="5,0,0,0" Text="(Ctrl+R)" FontSize="9"></TextBlock>
@@ -190,8 +125,8 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Text="Information:"  Foreground="#d470a2" FontWeight="ExtraBlack" FontSize="15" Margin="75,10,10,0"/>
-                <Border Grid.Row="1" BorderBrush="LightGray" Background="Beige" CornerRadius="8"  Height="130" Width="300" Margin="75,0,0,0" BorderThickness="1">
+                <TextBlock Grid.Row="0" Text="{ns:Loc Information:}"  Foreground="{DynamicResource Button}" FontWeight="Bold" FontSize="15" Margin="75,10,10,0"/>
+                <Border Grid.Row="1" BorderBrush="{DynamicResource Border}" Background="{DynamicResource Card}" CornerRadius="8"  Height="130" Width="300" Margin="75,0,0,0" BorderThickness="1">
                     <Grid Grid.Row="1">
 
                         <Grid.ColumnDefinitions>
@@ -214,53 +149,26 @@
 
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Row="0" Margin="10,10,0,5" >
-                            <TextBlock Grid.Row="0" FontWeight="Bold"  Grid.Column="0"  Text="Location: "  />
+                            <TextBlock Grid.Row="0" FontWeight="Bold"  Grid.Column="0"  Text="{ns:Loc Location:}" />
                             <TextBlock Grid.Row="0"   Text="{Binding TourDTO.LocationDTO}"  />
                         </DockPanel>
                         <DockPanel Grid.Row="1" Margin="10,0,0,5">
-                            <TextBlock  FontWeight="Bold"  Grid.Column="0"  Text="Language: "  />
+                            <TextBlock  FontWeight="Bold"  Grid.Column="0"  Text="{ns:Loc Language:}"/>
                             <TextBlock Grid.Row="1"  Text="{Binding TourDTO.Language}"  />
                         </DockPanel>
                         <DockPanel Grid.Row="2" Margin="10,0,0,5">
-                            <TextBlock Grid.Row="2" FontWeight="Bold"  Grid.Column="0"  Text="Date: "  />
+                            <TextBlock Grid.Row="2" FontWeight="Bold"  Grid.Column="0"  Text="{ns:Loc Date:}"/>
                             <TextBlock Grid.Row="2"  Text="{Binding TourDTO.BeginingTime}"  />
                         </DockPanel>
                         <DockPanel Grid.Row="3" Margin="10,0,0,5">
-                            <TextBlock Grid.Row="3" FontWeight="Bold"  Grid.Column="0"  Text="Duration: " />
+                            <TextBlock Grid.Row="3" FontWeight="Bold"  Grid.Column="0"  Text="{ns:Loc Duration:}" />
                             <TextBlock Grid.Row="3"   Text="{Binding TourDTO.Duration}"  />
                         </DockPanel>
                         <DockPanel Grid.Row="4" Margin="10,0,0,5">
-                            <TextBlock Grid.Row="4" FontWeight="Bold"  Grid.Column="0"  Text="Maximum tourist number: "  />
+                            <TextBlock Grid.Row="4" FontWeight="Bold"  Grid.Column="0"  Text="{ns:Loc Max Tourists:}"  />
                             <TextBlock Grid.Row="4"    Text="{Binding TourDTO.MaxTouristNumber}"  />
 
                         </DockPanel>
-
-
-
-
-
-
-
-
-                        <!--<Border BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"  Grid.Row="6" Grid.Column="0"  BorderThickness="1">
-                            <ScrollViewer HorizontalScrollBarVisibility="Hidden"  VerticalScrollBarVisibility="Hidden" >
-                                <ListView Height="85" Width="100"  Background="#fcfcf2" ItemsSource="{Binding KeyPointsDTO}">
-                                  
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-
-                                            <Border Padding="0.5,0.5,0.5,0.5" Margin="1,0,1,0" BorderBrush="LightGray" BorderThickness="1">
-                                                <StackPanel >
-                                                    <TextBlock Background="Beige" Text="{Binding Name}"></TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </ScrollViewer>
-                        </Border>-->
-
-
 
                     </Grid>
                 </Border>
@@ -274,9 +182,9 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"  Foreground="#d470a2" FontWeight="ExtraBlack" FontSize="15"  Grid.Column="0" Margin="30,5,0,0" Text="Check points: " Grid.ColumnSpan="3"/>
-               
-                <Border BorderBrush="LightGray" Background="Beige" Margin="30,0,0,0" CornerRadius="8" Grid.Row="1">
+                <TextBlock Grid.Row="0"  Foreground="{DynamicResource Button}" FontWeight="Bold" FontSize="15"  Grid.Column="0" Margin="30,5,0,0" Text="{ns:Loc KeyPoints:}" Grid.ColumnSpan="3"/>
+
+                <Border BorderBrush="{DynamicResource Border}" Background="{DynamicResource Card}" Margin="30,0,0,0" CornerRadius="8" Grid.Row="1">
                     <ScrollViewer Grid.Row="1" >
                         <ItemsControl  ItemsSource="{Binding KeyPointsDTO}" Height="130" >
                         <ItemsControl.ItemTemplate>
@@ -285,7 +193,7 @@
                                     <StackPanel >
                                         <DockPanel>
                                             <TextBlock Text="*"></TextBlock>
-                                            <TextBlock Background="Beige" Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Background="{DynamicResource Card}" Text="{Binding Name}"></TextBlock>
                                         </DockPanel>
 
                                     </StackPanel>
@@ -307,38 +215,14 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Description:" Foreground="#d470a2"  FontWeight="ExtraBold" Margin="100,3,0,2" FontSize="15" />
-                <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="130" Width="300" IsReadOnly="True"   BorderBrush="LightGray" Background="Beige" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}" Grid.RowSpan="4" Margin="100,22,10,0" />
-                <!--<Border BorderBrush="HotPink"  Grid.Row="2"    Grid.Column="1" Width="380"  Height="80" BorderThickness="1" Margin="0,5,0,0">
-                    <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Visible" >
-               
-                    <ItemsControl Margin="10"   ItemsSource="{Binding KeyPointsDTO}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-
-                                <Border BorderBrush="Black" BorderThickness="1">
-                                    <StackPanel >
-                                        <TextBlock Text="{Binding Name}"></TextBlock>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                
-                </ScrollViewer>
-                </Border>-->
-
+                <TextBlock Grid.Row="0" Text="{ns:Loc Description:}" Foreground="{DynamicResource Button}"  FontWeight="Bold" Margin="100,3,0,2" FontSize="15" />
+                <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="130" Width="300" IsReadOnly="True"   BorderBrush="{DynamicResource Border}" Background="{DynamicResource Card}" HorizontalScrollBarVisibility="Auto" Text="{Binding TourDTO.Description}" Grid.RowSpan="4" Margin="100,22,10,0" />
             </Grid>
 
         </Grid>
-     
-        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20,5,10,0" Background="#fa8ec4" HorizontalAlignment="Left" Height="25" Width="150" Command="{Binding ShowTourReservationWindowCommand}" Content="Make reservation" ></Button>
-        <Button Grid.Row="4" Margin="0,5,30,0" Background="Beige" HorizontalAlignment="Right" Height="25" Width="150" Command="{Binding CloseWindowCommand}" Content="Cancel" />
+
+        <Button Grid.Row="4" FontWeight="Bold"  Grid.ColumnSpan="2" Margin="20,5,10,0" Background="{DynamicResource ConfirmButton}" HorizontalAlignment="Left" Height="40" Width="110" Command="{Binding ShowTourReservationWindowCommand}" Content="{ns:Loc Make Reservation}" ></Button>
+        <Button Grid.Row="4" FontWeight="Bold"  Margin="0,5,30,0" Background="{DynamicResource CancelButton}" HorizontalAlignment="Right" Height="40" Width="110" Command="{Binding CloseWindowCommand}" Content="{ns:Loc Cancel}" />
 
 
     </Grid>

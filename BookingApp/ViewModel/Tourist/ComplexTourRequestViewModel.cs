@@ -34,6 +34,8 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _openOrdinaryTourRequestWindowCommand;
         private RelayCommand _confirmRequestCommand;
         public Action CloseAction { get; set; }
+        private App app;
+        private string _currentLanguage;
         private ComplexTourRequest complexTourRequest { get; set; }
 
         public ComplexTourRequestViewModel(UserDTO loggedInUser)
@@ -61,6 +63,8 @@ namespace BookingApp.ViewModel.Tourist
             _openOrdinaryTourRequestWindowCommand = new RelayCommand(OpenOrdinaryTourRequestWindow);
             _confirmRequestCommand = new RelayCommand(ConfirmRequest);
             _closeWindowCommand = new RelayCommand(CloseWindow);
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
         }
 
         public ObservableCollection<OrdinaryTourRequestDTO> OrdinaryTourRequestsDTO
@@ -117,6 +121,7 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
+
         public void OpenOrdinaryTourRequestWindow()
         {
            OrdinaryTourRequestWindow ordinaryTourRequestWindow = new OrdinaryTourRequestWindow(_userDTO, complexTourRequest.Id);
@@ -135,14 +140,33 @@ namespace BookingApp.ViewModel.Tourist
         {
             if(OrdinaryTourRequestsDTO.Count<=1)
             {
-                MessageBox.Show("Complex tour is made of two or more ordinary tours!");
-                AllowClose = false;
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("Complex tour is made of two or more ordinary tours. Add more tours or press Cancel");
+                    AllowClose = false;
+                }
+                else
+                {
+                    MessageBox.Show("Kompleksna tura se satoji od minimum dvije obicne ture. Dodajte jos tura ili pritisnite Cancel");
+                    AllowClose = false;
+                }
+                    
             }
             else
             {
-                AllowClose = true;
-                MessageBox.Show("Complex tour succesfully created");
-                CloseAction();
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    AllowClose = true;
+                    MessageBox.Show("Complex tour succesfully created");
+                    CloseAction();
+                }
+                else
+                {
+                    AllowClose = true;
+                    MessageBox.Show("Kompleksna tura uspjesno kreirana");
+                    CloseAction();
+                }
+                   
             }
            
 

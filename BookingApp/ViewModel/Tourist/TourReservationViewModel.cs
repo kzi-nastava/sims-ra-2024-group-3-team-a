@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -32,6 +33,7 @@ namespace BookingApp.ViewModel.Tourist
         private Voucher voucher;
         private VoucherService _voucherService;
         private KeyPointService _keyPointService ;
+        private UserService _userService ;
         private ObservableCollection<VoucherDTO> _vouchersDTO;
         public  ObservableCollection<TouristDTO> _touristsDTO;
         private TouristDTO _selectedTouristDTO = null;
@@ -42,7 +44,7 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _useVoucherCommand;
         private RelayCommand _closeWindowCommand;
         private RelayCommand _showTouristMainWindowCommand;
-   
+        private string _currentLanguage;
         private Dictionary<int, TourReservationDTO> _tourReservationDTOForReport;
         public Action CloseAction { get; set; }
         public TourReservationViewModel(TourReservationService tourReservationService,TourDTO tourDTO, UserDTO loggedInUser)
@@ -54,8 +56,7 @@ namespace BookingApp.ViewModel.Tourist
             _tourReservationDTO = new TourReservationDTO();
             voucher = new Voucher();
            
-            // _keyPoints = new List<KeyPointDTO>();
-            //  List<KeyPointDTO> keypoints = 
+          
 
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourReservationRepository tourReservationRepository = Injector.CreateInstance<ITourReservationRepository>();
@@ -64,11 +65,12 @@ namespace BookingApp.ViewModel.Tourist
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IKeyPointRepository keyPointRepository = Injector.CreateInstance<IKeyPointRepository>();
-
+            
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _voucherService = new VoucherService(voucherRepository);
             _tourReservationDTOForReport =  new Dictionary<int, TourReservationDTO>();
             _keyPointService = new KeyPointService(keyPointRepository);
+            _userService = new UserService(userRepository);
             _isVoucherUsed = false;
 
 
@@ -84,10 +86,11 @@ namespace BookingApp.ViewModel.Tourist
             _useVoucherCommand = new RelayCommand(UseVoucher);
             IsAddButtonEnabled = tourDTO.CurrentCapacity > 0;
             _closeWindowCommand = new RelayCommand(CloseWindow);
-            _touristsDTO.Add(new TouristDTO("Milena","Mima", 22));
+            FinUserInfo(_userDTO);
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
             _exportToPDFCommand = new RelayCommand(GenerateReport);
-
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
         }
         public TourDTO TourDTO
         {
@@ -363,8 +366,16 @@ namespace BookingApp.ViewModel.Tourist
 
             if(_tourReservationService.IsVoucherUsed(_tourDTO.ToTourAllParam()))
             {
-                MessageBox.Show("Voucher allready used!");
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("Voucher allready used!");
+                }
+                else
+                {
+                    MessageBox.Show("Vaucer je vec iskoristen!");
+                }
             }
+            
             else
             {
                 _isVoucherUsed = true;
@@ -372,7 +383,15 @@ namespace BookingApp.ViewModel.Tourist
                 voucher = _voucherService.GetById(_voucherDTO.Id);
                 voucher.TourId = _tourDTO.Id;
                 _voucherService.Update(voucher);
-                MessageBox.Show("Voucher used!");
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("Voucher used!");
+                }
+                else
+                {
+                    MessageBox.Show("Vaucer iskoristen!");
+                }
+                  
 
             }
            
@@ -380,11 +399,12 @@ namespace BookingApp.ViewModel.Tourist
         public void ConfirmTourReservation()
         {
            
-            
-                _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
-                _tourReservationDTO.TourId = _tourDTO.Id;
-                _tourReservationDTO.UserId = _userDTO.Id;
-                _tourReservationDTO.NumberOfTourists = _tourReservationDTO.TouristsDTO.Count();
+                if(_touristsDTO.Count!=0)
+                {
+                    _tourReservationDTO.TouristsDTO = _touristsDTO.ToList();
+                    _tourReservationDTO.TourId = _tourDTO.Id;
+                    _tourReservationDTO.UserId = _userDTO.Id;
+                    _tourReservationDTO.NumberOfTourists = _tourReservationDTO.TouristsDTO.Count();
 
                 _tourReservationService.Save(_tourReservationDTO.ToTourReservation());
 
@@ -392,11 +412,35 @@ namespace BookingApp.ViewModel.Tourist
                 {
                     _voucherService.Delete(voucher);
                 }
+                    if(_currentLanguage.Equals("en-US"))
+                    {
+                        MessageBox.Show("Successfully added reservation!");
+                        CloseWindow();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Uspjesno dodata rezervacija!");
+                        CloseWindow();
+                    }
+                    
+                }
+            else
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("Reservation not added.You didn't add any tourist!");
+                    CloseWindow();
+                }
+                else
+                {
+                    MessageBox.Show("Rezervacija nije dodata. Niste unijeli ni jednog turistu!");
+                    CloseWindow();
+                }
 
-                MessageBox.Show("Successfully added reservation!");
-            
+            }
 
-            
+
+
         }
         public void ShowTouristMainWindow()
         {
@@ -412,18 +456,68 @@ namespace BookingApp.ViewModel.Tourist
         {
             if (string.IsNullOrWhiteSpace(_touristDTO.Name))
             {
-                ValidationErrors["Name"] = "First name is required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Name"] = "First name is required.";
+                }
+                else
+                {
+                    ValidationErrors["Name"] = "Ime je obavezno.";
+                }
+
+                
+            }
+            else if (!Regex.IsMatch(_touristDTO.Name, @"^[a-zA-Z]+$"))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Name"] = "Name must contain only letters.";
+                }
+                else
+                {
+                    ValidationErrors["Name"] = "Ime moze sadrzati samo slova.";
+                }
+                
+
             }
 
             if (string.IsNullOrWhiteSpace(_touristDTO.Surname))
             {
-                ValidationErrors["Surname"] = "Last name is required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Surname"] = "Surname is required.";
+                }
+                else
+                {
+                    ValidationErrors["Surname"] = "Prezime je obavezno.";
+                }
+              
             }
-
-            int age;
-            if (!int.TryParse(_touristDTO.Age.ToString(), out age) || age==0)
+            else if (!Regex.IsMatch(_touristDTO.Surname, @"^[a-zA-Z]+$"))
             {
-                ValidationErrors["Age"] = "Enter a valid age number.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Surname"] = "Surname must contain only letters.";
+                }
+                else
+                {
+                    ValidationErrors["Surname"] = "Prezima moze sadrzati samo slova.";
+                }
+
+            }
+           
+            int age;
+            if (!int.TryParse(_touristDTO.Age.ToString(), out age) || age<=0)
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Age"] = "Enter a valid age number.";
+                }
+                else
+                {
+                    ValidationErrors["Age"] = "Broj godina nije validan";
+                }
+               
             }
             
 
@@ -433,9 +527,7 @@ namespace BookingApp.ViewModel.Tourist
         }
         protected override void ValidateSelf2()
         {
-           
-
-            OnPropertyChanged(nameof(ValidationErrors));
+            throw new NotImplementedException();
         }
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -463,6 +555,20 @@ namespace BookingApp.ViewModel.Tourist
         public void CloseWindow()
         {
             CloseAction();
+        }
+        public void FinUserInfo(UserDTO loggedInUser)
+        {
+            TouristProfile profile = new TouristProfile();
+            profile = _userService.GetTouristProfileById(loggedInUser.Id);
+            if(profile!=null)
+            {
+                _touristDTO.Surname = profile.Surname;
+                _touristDTO.Name = profile.Name;
+                _touristDTO.Age = profile.Age;
+                _touristsDTO.Add(new TouristDTO(_touristDTO));
+                _tourDTO.CurrentCapacity--;
+            }
+           
         }
     }
 }

@@ -14,6 +14,7 @@ namespace BookingApp.Service
     public class UserService
     {
         private IUserRepository _userRepository;
+        private ITouristProfileRepository _touristProfileRepository = Injector.CreateInstance<ITouristProfileRepository>();
         private IAccommodationRepository _accommodationRepository = Injector.CreateInstance<IAccommodationRepository>();
         private readonly Serializer<User> _serializer = new Serializer<User>();
         public UserService(IUserRepository userRepository) 
@@ -77,5 +78,19 @@ namespace BookingApp.Service
             List<User> uniqueUsers = users.GroupBy(user => user.Id).Select(group => group.First()).ToList();
             return uniqueUsers;
         }
+        public TouristProfile GetTouristProfileById(int id)
+        {
+        
+            TouristProfile tourist = new TouristProfile();
+            foreach(TouristProfile touristProfile in _touristProfileRepository.GetAll())
+            {
+                if(touristProfile.UserId == id)
+                {
+                    return touristProfile;
+                }
+            }
+            return null;
+        }
+        
     }
 }

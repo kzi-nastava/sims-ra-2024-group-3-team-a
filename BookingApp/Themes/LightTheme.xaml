@@ -5,4 +5,10 @@
     <SolidColorBrush Color="#fcfcf2" x:Key="Card"/>
     <SolidColorBrush Color="#f7459e" x:Key="Button"/>
     <SolidColorBrush Color="White" x:Key="ButtonText"/>
+    <SolidColorBrush Color="#edebfc" x:Key="Menu"/>
+    <SolidColorBrush Color="LightGray" x:Key="Border"/>
+    <SolidColorBrush Color="White" x:Key="DataGrid"/>
+    <SolidColorBrush Color="White" x:Key="ButtonStyle"/>
+    <SolidColorBrush Color="#fcfcf2" x:Key="CancelButton"/>
+    <SolidColorBrush Color="#f7459e" x:Key="ConfirmButton"/>
 </ResourceDictionary>
