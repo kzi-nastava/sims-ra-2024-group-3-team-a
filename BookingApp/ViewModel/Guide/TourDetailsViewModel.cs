@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BookingApp.ViewModel.Guide
 {
@@ -31,6 +32,8 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showAllToursCommand;
         private UserDTO _loggedGuide;
         private string _points;
+        public RelayCommand ScrollLeftCommand { get; }
+        public RelayCommand ScrollRightCommand { get; }
 
         public TourDetailsViewModel(TourDTO tourDTO, UserDTO guide)
         {
@@ -56,6 +59,8 @@ namespace BookingApp.ViewModel.Guide
             _logoutCommand = new RelayCommand(Logout);
             _showTourRequestsCommand = new RelayCommand(ShowTourRequest);
             _showMainWindowCommand = new RelayCommand(ShowMainWindow);
+            ScrollLeftCommand = new RelayCommand(ScrollLeft);
+            ScrollRightCommand = new RelayCommand(ScrollRight);
         }
         public UserDTO User
         {
@@ -168,6 +173,22 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
+        private void ScrollLeft(object parameter)
+        {
+            if (parameter is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - 150);
+            }
+        }
+
+        private void ScrollRight(object parameter)
+        {
+            if (parameter is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset + 150);
+            }
+        }
+
         private void Logout()
         {
             SignInForm signInForm = new SignInForm();

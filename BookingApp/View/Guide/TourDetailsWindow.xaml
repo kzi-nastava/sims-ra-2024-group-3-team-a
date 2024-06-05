@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookingApp.View.Guide"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Tura" Height="611" Width="980" ResizeMode="NoResize">
+        Title="Tura" Height="580" Width="940" ResizeMode="NoResize">
     <Grid Background="AntiqueWhite">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -159,7 +159,7 @@
                         <ScrollViewer Grid.Column="1" Name="scrollViewer"
                           VerticalScrollBarVisibility="Disabled"
                           HorizontalScrollBarVisibility="Auto">
-                            <ItemsControl x:Name="imageListView" Background="AntiqueWhite" ItemsSource="{Binding Review.Images}">
+                            <ItemsControl x:Name="imageListView" Background="AntiqueWhite" ItemsSource="{Binding Tour.Images}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>

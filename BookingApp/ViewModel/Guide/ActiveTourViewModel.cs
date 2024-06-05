@@ -48,6 +48,7 @@ namespace BookingApp.ViewModel.Guide
         {
             _tourDTO = tour;
             _loggedGuide= guide;
+            
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IKeyPointRepository keyPointsRepository = Injector.CreateInstance<IKeyPointRepository>();
@@ -57,6 +58,8 @@ namespace BookingApp.ViewModel.Guide
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
+            _tourDTO.IsActive = true;
+            _tourService.Update(_tourDTO.ToTourAllParam());
             UserService userService = new UserService(userRepository);
             _userDTO = new UserDTO(userService.GetById(_tourDTO.GuideId));
             List<TouristDTO> touristsDTO = _tourReservationService.GetReservationTourists(tour.ToTourAllParam()).Select(t => new TouristDTO(t)).ToList();

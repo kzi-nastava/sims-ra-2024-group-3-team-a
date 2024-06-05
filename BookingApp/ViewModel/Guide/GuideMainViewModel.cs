@@ -221,9 +221,10 @@ namespace BookingApp.ViewModel.Guide
                 }
 
                 ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist, _loggedInGuide);
+       
                 tourDetailsWindow.Show();
                 _tourService.Update(_selectedTourDTO.ToTourAllParam());
-                GuideMainWindow.GetInstance().Close();
+                GuideMainWindow.GetInstance().Close();          
 
             }
             else

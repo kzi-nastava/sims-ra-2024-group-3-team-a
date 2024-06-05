@@ -90,6 +90,10 @@ namespace BookingApp.ViewModel.Guide
             }
             _dictionary = MakeDictionary();
             _filteredDictionary = _dictionary;
+            _searchEndDateInput = DateTime.Now;
+            _searchBeginDateInput = DateTime.Now;
+
+
 
         }
         public RelayCommand AddNewTourCommand
@@ -410,7 +414,7 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-        private DateTime _searchEndDateInput = default ;
+        private DateTime _searchEndDateInput = DateTime.Now ;
         public DateTime SearchEndDateInput
         {
             get
@@ -485,8 +489,8 @@ namespace BookingApp.ViewModel.Guide
             SearchTouristNumberInput = string.Empty;
             TourRequestWindow.GetInstance().datePicker.SelectedDate = null;
             TourRequestWindow.GetInstance().datePicker2.SelectedDate = null;
-            SearchEndDateInput = default;
-            SearchBeginDateInput = default;
+            SearchEndDateInput = DateTime.Now;
+            SearchBeginDateInput = DateTime.Now;
             Search();
 
         }
