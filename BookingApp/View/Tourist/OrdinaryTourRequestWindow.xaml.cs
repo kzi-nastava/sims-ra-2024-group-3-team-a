@@ -34,7 +34,7 @@ namespace BookingApp.View.Tourist
         }
 
      
-        }
+        
 
     }
 }
