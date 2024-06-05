@@ -287,14 +287,39 @@ namespace BookingApp.ViewModel.Guide
         }
         private void SetKeyPoints(string[] keyPoints)
         {
+            int count = 0;
             foreach (var keyPoint in keyPoints)
             {
-                KeyPointDTO newPoint = new KeyPointDTO();
-                newPoint.Name = keyPoint;
-                newPoint.TourId = _tourDTO.Id;
-                newPoint.IsCurrent = false;
-                newPoint.HasPassed = false;
-                _keyPointService.Save(newPoint.ToKeyPoint());
+                if (count == 0)
+                {
+                    KeyPointDTO newPoint = new KeyPointDTO();
+                    newPoint.Name = keyPoint;
+                    newPoint.TourId = _tourDTO.Id;
+                    newPoint.IsCurrent = false;
+                    newPoint.HasPassed = false;
+                    newPoint.Type = KeyPointsType.Begining;
+                    _keyPointService.Save(newPoint.ToKeyPoint());
+                }else if (count!= keyPoints.Length - 1)
+                {
+                     KeyPointDTO newPoint = new KeyPointDTO();
+                    newPoint.Name = keyPoint;
+                    newPoint.TourId = _tourDTO.Id;
+                    newPoint.IsCurrent = false;
+                    newPoint.HasPassed = false;
+                    newPoint.Type = KeyPointsType.Middle;
+                    _keyPointService.Save(newPoint.ToKeyPoint());
+                }
+                else
+                {
+                    KeyPointDTO newPoint = new KeyPointDTO();
+                    newPoint.Name = keyPoint;
+                    newPoint.TourId = _tourDTO.Id;
+                    newPoint.IsCurrent = false;
+                    newPoint.HasPassed = false;
+                    newPoint.Type = KeyPointsType.Ending;
+                    _keyPointService.Save(newPoint.ToKeyPoint());
+                }
+                count++;
             }
         }
     }
