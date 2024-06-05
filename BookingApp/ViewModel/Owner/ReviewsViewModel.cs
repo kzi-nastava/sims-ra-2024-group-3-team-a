@@ -43,7 +43,7 @@ namespace BookingApp.ViewModel.Owner
             _accommodationReservationService = new AccommodationReservationService(_accommodationReservationRepository, accommodationRepository, userRepository);
             _ownerSettingsService = new OwnerSettingsService(ownerSettingsRepository);
 
-            List<AccommodationReservationDTO> finishedAccommodationReservationsList = _accommodationReservationService.GetFinishedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
+            List<AccommodationReservationDTO> finishedAccommodationReservationsList = _accommodationReservationService.GetFinishedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).OrderBy(ar => ar.RatingDTO.OwnerRulesRespectRating).ToList();
             _finishedAccommodationReservationsDTO = new ObservableCollection<AccommodationReservationDTO>(finishedAccommodationReservationsList);
 
             List<AccommodationReservationDTO> _userReviewedAccommodationReservationsList = _accommodationReservationService.GetUserAndOwnerReviewedAccommodationReservations(loggedInUser.ToUser()).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();

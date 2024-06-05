@@ -75,7 +75,7 @@
                     <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="3" Grid.Column="1" Content="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerCleannessRating, Converter={StaticResource RatingToStarsConverter}}"/>
 
                     <Label FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Content="Rules:"/>
-                    <Label HorizontalAlignment="Left" FontSize="15" Grid.Row="4" Grid.Column="1" Content="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
+                    <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="4" Grid.Column="1" Content="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerRulesRespectRating, Converter={StaticResource RatingToStarsConverter}}"/>
 
                     <Label FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Comment:</Label>
                     <TextBlock TextWrapping="Wrap" Background="CadetBlue" Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="15" Grid.Row="5" Grid.Column="1" Text="{Binding Path=AccommodationReservationDTO.RatingDTO.OwnerComment}"/>
