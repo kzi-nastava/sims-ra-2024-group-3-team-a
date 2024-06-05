@@ -86,7 +86,7 @@ namespace BookingApp.Service
         public int CountRejectedOrdinaryTourRequestsForSpecificYear(int userId, int year)
         {
             return GetAllForUser(userId)
-          .Count(request => request.Status == TourRequestStatus.Accepted &&
+          .Count(request => request.Status == TourRequestStatus.Rejected &&
                             request.BeginDate.Year == year);
         }
         public int CountOrdinaryTourRequestsbyLanguage(int userId,string language)

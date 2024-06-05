@@ -1,4 +1,5 @@
 ﻿using BookingApp.DTO;
+using BookingApp.ViewModel.Owner;
 using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,9 @@ namespace BookingApp.View.Tourist
             _tourRequestsViewModel = new TourRequestsViewModel(loggedInUser);
             InitializeComponent();
             DataContext = _tourRequestsViewModel;
+            if (_tourRequestsViewModel.CloseAction == null)
+                _tourRequestsViewModel.CloseAction = new Action(this.Close);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
         }
 

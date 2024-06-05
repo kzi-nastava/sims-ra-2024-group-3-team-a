@@ -28,6 +28,8 @@ namespace BookingApp.View.Tourist
             InitializeComponent();
             _ordinaryTourRequestInfoViewModel = new OrdinaryTourRequestInfoViewModel(ordinaryTourRequestDTO);
             DataContext = _ordinaryTourRequestInfoViewModel;
+            if (_ordinaryTourRequestInfoViewModel.CloseAction == null)
+                _ordinaryTourRequestInfoViewModel.CloseAction = new Action(this.Close);
         }
     }
 }

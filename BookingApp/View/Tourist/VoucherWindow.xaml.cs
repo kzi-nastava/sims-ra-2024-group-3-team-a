@@ -30,8 +30,10 @@ namespace BookingApp.View.Tourist
             _voucherViewModel = new VoucherViewModel(loggedInUser);
 
             DataContext = _voucherViewModel;
-
-            //voucherListView.Focus();
+            if (_voucherViewModel.CloseAction == null)
+                _voucherViewModel.CloseAction = new Action(this.Close);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            
         }
     }
 }

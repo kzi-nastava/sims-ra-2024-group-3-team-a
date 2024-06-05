@@ -13,8 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +25,7 @@ using Xceed.Wpf.AvalonDock.Layout;
 
 namespace BookingApp.ViewModel.Tourist
 {
-    public class TouristMainViewModel:ViewModel
+    public class TouristMainViewModel:Validation.ValidationBase
     {
         private TourService _tourService {  get; set; }
         private TourReservationService _tourReservationService { get; set; }
@@ -52,7 +54,12 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _showTourRequestsCommand;
         private RelayCommand _resetSearchParametersCommand;
         private RelayCommand _showSettingsWindowCommand;
+        private RelayCommand _closeWindowCommand;
+        private App app;
+        private string _currentLanguage;
+        public Action CloseAction { get; set; }
         public RelayCommand OpenDropDownComboboxCommand { get; private set; }
+        public RelayCommand OpenSugmenuCommand { get; private set; }
         public TouristMainViewModel(UserDTO loggedInUser)
         {
             _message = new Message();
@@ -104,8 +111,12 @@ namespace BookingApp.ViewModel.Tourist
             _voucherService.DeleteExpiredVouchers(_userDTO.Id);
             _userService = new UserService(userRepository);
             OpenDropDownComboboxCommand = new RelayCommand(OpenCombobox);
-
-
+            OpenSugmenuCommand = new RelayCommand(OpenSubmenu);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
+            app = (App)System.Windows.Application.Current;
+            app.ChangeLanguage("en-US");
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
         }
 
         public TourDTO TourDTO
@@ -210,7 +221,18 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public RelayCommand SearchCommand
         {
             get
@@ -466,17 +488,31 @@ namespace BookingApp.ViewModel.Tourist
 
         private void Search()
         {
+            Validate1();
+            if(IsValid)
+            {
+                if(Regex.IsMatch(SearchDurationInput, @"^\d+\.0$"))
+                {
+                    if (double.TryParse(SearchDurationInput, out double durationDouble))
+                    {
+                       
+                        int durationInt = (int)durationDouble;
+                        SearchDurationInput = durationInt.ToString();
+                    }
+                    
+                }
+                var filtered = _toursDTO.Where(t =>
+                (t.Duration.ToString().Equals(SearchDurationInput) || SearchDurationInput.Equals(string.Empty))
+                && t.Language.ToString().ToLower().Contains(SearchLanguageInput.ToString().ToLower())
+                && t.LocationDTO.Country.ToLower().Contains(SearchCountryInput.ToLower())
+                && t.LocationDTO.City.ToLower().Contains(SearchCityInput.ToLower())
+                && t.MaxTouristNumber.ToString().Contains(SearchMaxTouristNumberInput.ToLower())
+            );
+
+                FilteredToursDTO = new ObservableCollection<TourDTO>(filtered);
+            }
+
             
-
-             var filtered = _toursDTO.Where(t =>
-                 (t.Duration.ToString().Equals(SearchDurationInput) || SearchDurationInput.Equals(string.Empty))
-                 && t.Language.ToString().ToLower().Contains(SearchLanguageInput.ToString().ToLower())
-                 && t.LocationDTO.Country.ToLower().Contains(SearchCountryInput.ToLower())
-                 && t.LocationDTO.City.ToLower().Contains(SearchCityInput.ToLower())
-                 && t.MaxTouristNumber.ToString().Contains(SearchMaxTouristNumberInput.ToLower())
-             );
-
-            FilteredToursDTO = new ObservableCollection<TourDTO>(filtered);
         }
 
         private void ResetSearchParameters()
@@ -525,7 +561,7 @@ namespace BookingApp.ViewModel.Tourist
 
         public void ShowMyToursWindow()
         {
-            MyToursWindow myToursWindow = new MyToursWindow();
+            MyToursWindow myToursWindow = new MyToursWindow(_userDTO);
             myToursWindow.ShowDialog();
         }
 
@@ -547,10 +583,7 @@ namespace BookingApp.ViewModel.Tourist
         }
         public void ShowOrindaryTourRequestWindow()
         {
-           /*OrdinaryTourRequestWindow ordinaryTourRequestWindow = new OrdinaryTourRequestWindow( _userDTO,-1);
-           ordinaryTourRequestWindow.ShowDialog();*/
-          /* ComplexTourRequestWindow complexTourRequestWindow = new ComplexTourRequestWindow(_userDTO);
-            complexTourRequestWindow.ShowDialog();*/
+          
           CreateTourRequestWindow createTourRequestWindow = new CreateTourRequestWindow(_userDTO);
            createTourRequestWindow.ShowDialog();
         }
@@ -579,6 +612,66 @@ namespace BookingApp.ViewModel.Tourist
 
             IsOpen = false;
         }
+
+        protected override void ValidateSelf1()
+        {
+            
+            if (!Regex.IsMatch(_searchCountryInput, @"^[a-zA-Z]+$") && !string.IsNullOrEmpty(_searchCountryInput))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Country"] = "Contry can contains only latters.";
+                }
+                else
+                {
+                    ValidationErrors["Country"] = "Drzava moze sadrzati samo slova.";
+                }
+                    
+            }
+            if (!Regex.IsMatch(_searchCityInput, @"^[a-zA-Z]+$")&& !string.IsNullOrEmpty(_searchCityInput))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["City"] = "City can contains only latters.";
+                }
+                else
+                {
+                    ValidationErrors["City"] = "Grad moze sadrzati samo slova";
+                }
+              
+            }
+            if(!Regex.IsMatch(_searchMaxTouristNumberInput, @"^\d*$") && !string.IsNullOrEmpty(_searchMaxTouristNumberInput))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["MaxTourists"] = "Number of tourists contains only integer numbers.";
+                }
+                else
+                {
+                    ValidationErrors["MaxTourists"] = "Broj turista moze biti samo cio broj.";
+                }
+                   
+            }
+            if (!Regex.IsMatch(_searchDurationInput, @"^\d+(\.\d+)?$") && !string.IsNullOrEmpty(_searchDurationInput))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Duration"] = "Wrong format of number.";
+                }
+                else
+                {
+                    ValidationErrors["Duration"] = "Pogresan format broja.";
+                }
+            }
+
+        }
+        protected override void ValidateSelf2()
+        {
+            throw new NotImplementedException();
+
+        }
+
+
         public void OpenPopUp()
         {
             IsOpen = true;
@@ -606,6 +699,27 @@ namespace BookingApp.ViewModel.Tourist
 
             return guide.IsSuper;
             
+        }
+        private bool _isSubmenuOpenCommand;
+        public bool IsSubmenuOpenCommand
+        {
+            get
+            {
+                return _isSubmenuOpenCommand;
+            }
+            set
+            {
+                _isSubmenuOpenCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void OpenSubmenu()
+        {
+            IsSubmenuOpenCommand = true;
+        }
+        public void CloseWindow()
+        {
+            CloseAction();
         }
     }
 }

@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:BookingApp.View"
         xmlns:navigation ="clr-namespace:BookingApp.View.Navigation"
+        xmlns:local="clr-namespace:BookingApp.View"
+        xmlns:ns="clr-namespace:BookingApp.Localization"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
     
@@ -36,23 +37,29 @@
                 </Setter.Value>
             </Setter>
         </Style>
-      
+
     </Window.Resources>
 
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SearchCommand}" />
         <KeyBinding Key="F1"  />
         <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F3"  Command="{Binding  ShowTourRequestsCommand}" />
+        <KeyBinding Key="F4"  Command="{Binding  ShowOrindaryTourRequestWindowCommand}" />
         <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
         <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
         <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
         <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
+        <KeyBinding Key="F9"  Command="{Binding  OpenSugmenuCommand}" />
+        <KeyBinding Key="F10"  Command="{Binding  ShowSettingsWindowCommand}" />
         <KeyBinding Key="R"  Modifiers="Ctrl" Command="{Binding ResetSearchParametersCommand}" />
+        <KeyBinding Key="Esc"   Command="{Binding CloseWindowCommand}" />
+        <KeyBinding Key="C" Modifiers="Ctrl"  Command="{Binding ClosePopUpCommand}" />
         <KeyBinding Command="{Binding OpenDropDownComboboxCommand}" Key="O" Modifiers="Control"/>
     </Window.InputBindings>
 
     <Grid Background="{DynamicResource Background}">
-        
+
 
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -65,41 +72,41 @@
                 <MenuItem Click="DarkThemeClick" />
             </ContextMenu>
         </Grid.ContextMenu>
-        <Menu DockPanel.Dock="Top" BorderThickness="1" >
+        <Menu Background="{DynamicResource Menu}" DockPanel.Dock="Top" BorderThickness="1" >
 
 
-            <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="13"  FontWeight="Bold">
+            <MenuItem x:Name="Home" Focusable="True" Header="{ns:Loc Home(F1)}" Foreground="Black" FontSize="13"  FontWeight="Bold">
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/home.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
             </MenuItem>
 
-            <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
+            <MenuItem x:Name="MyTours" Focusable="True" Header="{ns:Loc My Tours(F2)}"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/trekking-16.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
+            <MenuItem x:Name="TourRequests" Focusable="True" Header="{ns:Loc Tour Requests(F3)}" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/map.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
+            <MenuItem x:Name="CreateRequest" Focusable="True" Header="{ns:Loc Create Request(F4)}" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/edit.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
+            <MenuItem x:Name="RateTour" Focusable="True" Header="{ns:Loc Rate Tour(F5)}" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/star.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
+            <MenuItem x:Name="Vouchers" Focusable="True" Header="{ns:Loc Vouchers(F6)}" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/gift.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
+            <MenuItem x:Name="Inbox" Focusable="True" Header="{ns:Loc Inbox(F7)}" Margin="90,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/email.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
@@ -107,33 +114,25 @@
 
 
 
-            <MenuItem x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
+            <MenuItem IsSubmenuOpen="{Binding IsSubmenuOpenCommand}" x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
                 <MenuItem.Icon>
                     <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
 
-                <MenuItem  x:Name="Settings" Focusable="True" Command="{Binding ShowSettingsWindowCommand}" Header="Settings" Foreground="Black" >
+                <MenuItem  x:Name="Settings" Background="{DynamicResource Background}" Focusable="True" Command="{Binding ShowSettingsWindowCommand}" Header="{ns:Loc Settings}" Foreground="Black" >
                     <MenuItem.Icon>
                         <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
                     </MenuItem.Icon>
 
                 </MenuItem>
-                <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
+
+                <MenuItem  x:Name="Logout" Background="{DynamicResource Background}" Focusable="True" Header="{ns:Loc LogOut(F8)}" Foreground="Black" Command="{Binding LogOutCommand}">
                     <MenuItem.Icon>
                         <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+             
             </MenuItem>
 
         </Menu>
@@ -141,13 +140,13 @@
             <Border Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
                 <StackPanel Margin="10">
                     <Image Source="..\..\Resources\Images\Owner\notification.png" Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <TextBlock Text="You have new message!" HorizontalAlignment="Center" Margin="5" />
-                    <Button Content="Close" HorizontalAlignment="Center" Margin="5" Command="{Binding ClosePopUpCommand}" />
+                    <TextBlock Text="{ns:Loc You have new message!}" HorizontalAlignment="Center" Margin="5" />
+                    <Button Content="{ns:Loc Close(Ctrl+C)}" HorizontalAlignment="Center" Margin="5" Command="{Binding ClosePopUpCommand}" />
                 </StackPanel>
             </Border>
         </Popup>
-        <Border Margin="10,10,10,0" Grid.Row="1" BorderBrush="#fa8ec4" CornerRadius="8" BorderThickness="3" Padding="10" >
-            <Grid Grid.Row="0"  Background="{DynamicResource Card}" KeyboardNavigation.TabNavigation="Cycle" x:Name="myGrid">
+        <Border Margin="10,10,10,0" Grid.Row="1" BorderBrush="{DynamicResource Button}" CornerRadius="8" BorderThickness="3" Padding="10" >
+            <Grid Grid.Row="0"  Background="{DynamicResource Card}" KeyboardNavigation.TabNavigation="Cycle" x:Name="myGrid" Margin="-2,0,2,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
@@ -162,17 +161,17 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Margin="12,5,5,5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Country:"  Grid.Column="0"></TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}" Grid.Column="1">City:</TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"   Grid.Column="2">Duration:</TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"  Grid.Column="3">Language:</TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"   Grid.Column="4">Number of people:</TextBlock>
+                <TextBlock Margin="12,5,5,5" Grid.Row="0" FontWeight="Bold" Text="{ns:Loc Country:}"    Grid.Column="0"></TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Text="{ns:Loc City:}"  Grid.Column="1"></TextBlock>
+                <TextBlock Margin="7,7,3,3" Grid.Row="0" FontWeight="Bold" Text="{ns:Loc Duration:}"  Grid.Column="2"/>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Text="{ns:Loc Language:}"  Grid.Column="3"></TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold"  Text="{ns:Loc Number of people}"  Grid.Column="4"></TextBlock>
 
 
-                <Button x:Name="refreshButton" Grid.Row="0" Grid.Column="5"  BorderBrush="{DynamicResource Text}" Background="Transparent" Width="70" Margin="35,0,150,32"    Command="{Binding ResetSearchParametersCommand}" Grid.RowSpan="2">
+                <Button x:Name="refreshButton" Grid.Row="0" Grid.Column="4"  BorderBrush="{DynamicResource Text}" Background="{DynamicResource CancelButton}" Width="70" Margin="149,5,186,37" Height="20"   Command="{Binding ResetSearchParametersCommand}" Grid.RowSpan="2" Grid.ColumnSpan="2">
                     <DockPanel>
                         <Image Source="../../Resources/Images/Tourist/refresh-2-16.png" Width="16" Height="14" />
-                        <TextBlock Foreground="Black" Width="39">Refresh</TextBlock>
+                        <TextBlock Foreground="Black" Text="{ns:Loc Refresh}" Width="39"></TextBlock>
 
                     </DockPanel>
 
@@ -180,36 +179,50 @@
 
 
 
-                <TextBlock Margin="110,15,75,32" Grid.Column="5" Grid.Row="0" FontSize="8" Text="(Ctrl+R)" Width="70" Grid.RowSpan="2"  />
+                <TextBlock Margin="0,11,185,10" Grid.Column="5" Grid.Row="1" FontSize="8" Text="(Ctrl+R)" Width="70"  />
 
-
-                <TextBox Margin="12,5,5,5" Grid.Row="1" Grid.Column="0"   x:Name="searchCountryTextBox" Width="200" Foreground="{DynamicResource Text}" Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="200"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"   x:Name="searchDurationTextBox" Width="80"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3"  IsEditable="True"  x:Name="languageComboBox" Width="130" IsDropDownOpen="{Binding IsDropDownComboboxOpenCommand}"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" SelectedItem="{Binding SearchLanguageInput}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <xctk:IntegerUpDown Foreground="{DynamicResource Text}" Margin="5,5,10,5" Grid.Row="1" Grid.Column="4" Width="130"  x:Name="searcmaxTouristNumberTextBox"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
-                <Button Margin="36,5,149,5" Grid.Row="1" Grid.Column="5" BorderBrush="Black"  Background="{DynamicResource Button}"  x:Name="buttonSearch" Content="Search" Foreground="{DynamicResource ButtonText}" Width="70" Command="{Binding SearchCommand}"  IsEnabled="True"/>
-                <TextBlock Margin="30,15,-5,0" Grid.Row="1" Grid.Column="5" Text="(Press Enter)" FontSize="8"  Width="70" Grid.ColumnSpan="2" />
+                <StackPanel Grid.Row="1" Grid.Column="0">
+                    <TextBox Margin="12,5,5,5" Grid.Row="1" Grid.Column="0"   x:Name="searchCountryTextBox" Width="200"  Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                    <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Country],Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }" Foreground="{DynamicResource Button}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="200"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                    <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[City],Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }" Foreground="{DynamicResource Button}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="2">
+                    <TextBox Margin="5" Grid.Row="1" Grid.Column="2"   x:Name="searchDurationTextBox"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Duration],Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }" Foreground="{DynamicResource Button}"/>
+                </StackPanel>
+                <StackPanel Margin="5,5,5,21"   Grid.Column="3" Grid.Row="1"  >
+                    <ComboBox  Grid.Column="3" IsEditable="True"  x:Name="languageComboBox" Width="100" IsDropDownOpen="{Binding IsDropDownComboboxOpenCommand}"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" SelectedItem="{Binding SearchLanguageInput}" Grid.Row="1">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock FontSize="10" Text="(Ctrl+O)"></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="4">
+                    <xctk:IntegerUpDown Foreground="{DynamicResource Text}" Margin="5,5,10,5" Grid.Row="1" Grid.Column="4" Width="130"  x:Name="searcmaxTouristNumberTextBox"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
+                    <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[MaxTourists],Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }" Foreground="{DynamicResource Button}"/>
+                </StackPanel >
+                <Button Margin="0,15,185,11" Grid.Row="1" Grid.Column="5" BorderBrush="Black"  Background="{DynamicResource Button}"  x:Name="buttonSearch" Content="{ns:Loc Search}" Height="20" Width="70" Command="{Binding SearchCommand}"  IsEnabled="True"/>
+                <TextBlock Margin="0,41,185,-26" Grid.Row="1" Grid.Column="5" Text="{ns:Loc (Press Enter)}" FontSize="8"  Width="70" />
 
 
             </Grid>
         </Border>
 
-        <ListView x:Name="listViewTours" 
+        <ListView  x:Name="listViewTours" 
                   Focusable="True"
-                 
+          KeyboardNavigation.TabNavigation="Continue"   
           Background="Transparent"
           ItemsSource="{Binding FilteredToursDTO}" 
           SelectedItem="{Binding SelectedTourDTO}"  
           BorderBrush="Transparent" 
           BorderThickness="0" 
-          MouseDoubleClick="ListViewTours_MouseDoubleClick"
+          
           Margin="5,10,0,0"
           Height="450" 
                   
@@ -224,12 +237,12 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate >
                 <DataTemplate >
-                    <Border BorderThickness="2" BorderBrush="LightGray" Width="490" Background="#fcfcf2" CornerRadius="8" >
-                        <StackPanel Background="#fcfcf2" Width="490"  Orientation="Horizontal"  Margin ="30,10,30,10">
+                    <Border BorderThickness="2" BorderBrush="LightGray" Width="490" Background="{DynamicResource Card}" CornerRadius="8" >
+                        <StackPanel Background="{DynamicResource Card}" Width="490"  Orientation="Horizontal"  Margin ="30,10,30,10">
                             <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
-                            <StackPanel Margin="30,0,0,0">
+                            <StackPanel Background="{DynamicResource Card}" Margin="30,0,0,0">
                                 <StackPanel.Resources>
-                                   
+
                                 </StackPanel.Resources>
 
                                 <DockPanel>
@@ -242,19 +255,24 @@
                                     </Image>-->
                                 </DockPanel>
                                 <DockPanel Margin="0,10,0,0">
-                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Location: "  FontSize="12"/>
-                                    <TextBlock  FontSize="12" Foreground="{DynamicResource Text}" Text="{Binding LocationDTO}" />
+                                    <TextBlock FontWeight="Bold"  Text="{ns:Loc Location:}"  FontSize="12"/>
+                                    <TextBlock  FontSize="12"  Text="{Binding LocationDTO}"/>
+                                </DockPanel>
+                                <DockPanel >
+                                    <TextBlock  FontSize="12" FontWeight="Bold" Text="{ns:Loc Language:}" />
+                                    <TextBlock   FontSize="12" FontWeight="Normal" Text="{Binding Language}" />
+                                    <!--<Button Content="Rate tour" Width="70" Height="30" HorizontalAlignment="Center" Margin="50,0,0,0" />-->
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Date: " FontSize="12" />
-                                    <TextBlock   FontSize="12" Foreground="{DynamicResource Text}" Text="{Binding BeginingTime}" />
+                                    <TextBlock FontWeight="Bold"  Text="{ns:Loc Date:}" FontSize="12" />
+                                    <TextBlock   FontSize="12"  Text="{Binding BeginingTime}" />
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Current capacity: "  FontSize="12"/>
-                                    <TextBlock  FontSize="12" Foreground="{DynamicResource Text}" Text="{Binding CurrentCapacity}" />
+                                    <TextBlock FontWeight="Bold"  Text="{ns:Loc Current capacity:}"  FontSize="12"/>
+                                    <TextBlock  FontSize="12"  Text="{Binding CurrentCapacity}"/>
                                 </DockPanel>
                                 <DockPanel Margin="33,10,0,0">
-                                    <TextBlock Text="(Press enter for more info)" Foreground="{DynamicResource Text}"  FontSize="11"/>
+                                    <TextBlock Text="{ns:Loc (Press enter for more info)}"  FontSize="11"/>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>

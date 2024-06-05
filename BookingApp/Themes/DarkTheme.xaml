@@ -4,5 +4,11 @@
     <SolidColorBrush Color="White" x:Key="Text"/>
     <SolidColorBrush Color="#FA58B6" x:Key="Card"/>
     <SolidColorBrush Color="#D6D5A8" x:Key="Button"/>
-    <SolidColorBrush Color="#D6D5A8" x:Key="ButtonText"/>
+    <SolidColorBrush Color="Black" x:Key="ButtonText"/>
+    <SolidColorBrush Color="#7A0BC0" x:Key="Menu"/>
+    <SolidColorBrush Color="#D6D5A8" x:Key="Border"/>
+    <SolidColorBrush Color="#D6D5A8" x:Key="DataGrid"/>
+    <SolidColorBrush Color="Black" x:Key="ButtonStyle"/>
+    <SolidColorBrush Color="#D6D5A8" x:Key="CancelButton"/>
+    <SolidColorBrush Color="#F5D2E6" x:Key="ConfirmButton"/>
 </ResourceDictionary>

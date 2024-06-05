@@ -33,7 +33,9 @@ namespace BookingApp.View.Tourist
             _inboxViewModel = new InboxViewModel(loggedInUser);
 
             DataContext = _inboxViewModel;
-            
+            inboxListView.Focus();
+            if (_inboxViewModel.CloseAction == null)
+                _inboxViewModel.CloseAction = new Action(this.Close);
         }
     }
 }

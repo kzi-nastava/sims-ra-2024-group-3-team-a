@@ -18,10 +18,11 @@ using BookingApp.Repository.Interfaces;
 using BookingApp.InjectorNameSpace;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace BookingApp.ViewModel.Tourist
 {
-    public class TourReviewViewModel : ViewModel
+    public class TourReviewViewModel : Validation.ValidationBase
     { 
         private TourReviewService _tourReviewService { get; set; }
 
@@ -47,7 +48,8 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _removeImageCommand;
         private RelayCommand _closeWindowCommand;
         private RelayCommand _showTouristMainWindowCommand;
-
+        private App app;
+        private string _currentLanguage;
         public Action CloseAction { get; set; }
         private List<BitmapImage> _imagePreviews;
         public ObservableCollection<BitmapImage> imagesCollection;
@@ -62,14 +64,11 @@ namespace BookingApp.ViewModel.Tourist
             _tourReviewDTO = new TourReviewDTO();
             _rateTourCommand =  new RelayCommand(RateTour);
             _addImagesCommand = new RelayCommand(AddImages);
-          
-            _showFinishedToursWindowCommand = new RelayCommand(ShowFinishedToursWindow);
-            _showMyToursWindowCommand = new RelayCommand(ShowMyToursWindow);
-            _showVoucherWindowCommand = new RelayCommand(ShowVoucherWindow);
-            _showInboxWindowCommand = new RelayCommand(ShowinboxWindow);
-            _removeImageCommand = new RelayCommand(RemoveImage);
             _closeWindowCommand = new RelayCommand(CloseWindow);
-            _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
+
+
         }
 
         public TourDTO TourDTO
@@ -162,57 +161,11 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
-        public RelayCommand ShowMyToursWindowCommand
-        {
-            get
-            {
-                return _showMyToursWindowCommand;
-            }
-            set
-            {
-                _showMyToursWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
+      
+        
 
-        public RelayCommand ShowInboxWindowCommand
-        {
-            get
-            {
-                return _showInboxWindowCommand;
-            }
-            set
-            {
-                _showInboxWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public RelayCommand ShowFinishedToursWindowCommand
-        {
-            get
-            {
-                return _showFinishedToursWindowCommand;
-            }
-            set
-            {
-                _showFinishedToursWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public RelayCommand ShowVoucherWindowCommand
-        {
-            get
-            {
-                return _showVoucherWindowCommand;
-            }
-            set
-            {
-                _showVoucherWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
+      
+       
         public RelayCommand RemoveImageCommand
         {
             get
@@ -237,26 +190,97 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-        public RelayCommand ShowTouristMainWindowCommand
+       
+
+
+        protected override void ValidateSelf1()
         {
-            get
+
+            if (!int.TryParse(_tourReviewDTO.GuideKnowledgeRating.ToString(), out int GuideKnowledgeRating) || GuideKnowledgeRating <= 0)
             {
-                return _showTouristMainWindowCommand;
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["GuideKnowledgeRating"] = "You didn't rate Guide's knowledge";
+                }
+                else
+                {
+                    ValidationErrors["GuideKnowledgeRating"] = "Niste ocijenili vodicevo znanje";
+                }
+                
             }
-            set
+
+            if (!int.TryParse(_tourReviewDTO.GuideLanguageRating.ToString(), out int GuideLanguageRating) || GuideLanguageRating <= 0)
             {
-                _showTouristMainWindowCommand = value;
-                OnPropertyChanged();
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["GuideLanguageRating"] = "You didn't rate Guide's language knowledge";
+                }
+                else
+                {
+                    ValidationErrors["GuideLanguageRating"] = "Niste ocijenili vodicev jezik";
+                }
+                   
             }
+            if (!int.TryParse(_tourReviewDTO.TourEntertainmentRating.ToString(), out int TourEntertainmentRating) || TourEntertainmentRating <= 0)
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["TourEntertainmentRating"] = "You didn't rate Tour's entertainment";
+                }
+                else
+                {
+                    ValidationErrors["TourEntertainmentRating"] = "Niste ocijenili zanimljivost ture";
+                }
+                   
+            }
+            if(string.IsNullOrWhiteSpace(_tourReviewDTO.Comment))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Comment"] = "Please leave a comment";
+                }
+                else
+                {
+                    ValidationErrors["Comment"] = "Molimo vas unesite komentar";
+                }
+                   
+            }
+
+
+
+
+
+
+            OnPropertyChanged(nameof(ValidationErrors));
         }
+
+        protected override void ValidateSelf2()
+        {
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+
         public void RateTour()
         {
-            _tourReviewDTO.TourId = _tourDTO.Id;
-            _tourReviewDTO.TouristId = _userDTO.Id;
-            _tourReviewDTO.Images = _images;
-            _tourReviewService.Save(_tourReviewDTO.ToTourReview());
-            MessageBox.Show("Tour is rated!");
-            CloseAction();
+            Validate1();
+            if(IsValid)
+            {
+                _tourReviewDTO.TourId = _tourDTO.Id;
+                _tourReviewDTO.TouristId = _userDTO.Id;
+                _tourReviewDTO.Images = _images;
+                _tourReviewService.Save(_tourReviewDTO.ToTourReview());
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("Tour is rated!");
+                    CloseAction();
+                }
+                else
+                {
+                    MessageBox.Show("Tura je ocijenjena!");
+                    CloseAction();
+                }
+                    
+            }
+            
         }
 
         public void AddImages()
@@ -290,40 +314,10 @@ namespace BookingApp.ViewModel.Tourist
             ImagePreviews?.Remove(selectedItem);
 
         }
-        public void ShowFinishedToursWindow()
-        {
-            FinishedToursWindow finishedToursWindow = new FinishedToursWindow(_userDTO);
-            finishedToursWindow.Owner = Application.Current.MainWindow;
-           
-            finishedToursWindow.ShowDialog();
-        }
+      
 
-        public void ShowMyToursWindow()
-        {
-            MyToursWindow myToursWindow = new MyToursWindow();
-            myToursWindow.ShowDialog();
-        }
-
-        public void ShowVoucherWindow()
-        {
-            VoucherWindow voucherWindow = new VoucherWindow(_userDTO);
-            voucherWindow.ShowDialog();
-        }
-
-        public void ShowinboxWindow()
-        {
-            InboxWindow inboxWindow = new InboxWindow(_userDTO);
-            inboxWindow.ShowDialog();
-        }
-        public void ShowTouristMainWindow()
-        {
-
-
-            TouristMainWindow touristMainWindow = new TouristMainWindow(_userDTO.ToUser());
-            touristMainWindow.ShowDialog();
-
-
-        }
+        
+       
 
         public void CloseWindow()
         {

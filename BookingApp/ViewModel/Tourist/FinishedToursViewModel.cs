@@ -30,6 +30,8 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _showTourReviewWindowCommand;
         private RelayCommand _closeWindowCommand;
         private RelayCommand _showTouristMainWindowCommand;
+        private App app;
+        private string _currentLanguage;
         public Action CloseAction { get; set; }
 
         public FinishedToursViewModel(UserDTO loggedInUser)
@@ -44,11 +46,13 @@ namespace BookingApp.ViewModel.Tourist
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _tourReviewService = new TourReviewService(tourReviewRepository);
             _userDTO = loggedInUser;
-            List<TourDTO> finishedTours = _tourService.GetFinishedTours().Select(finishedTours => new TourDTO(finishedTours)).ToList();
+            List<TourDTO> finishedTours = _tourService.GetAllFinishedToursForUser(loggedInUser.Id).Select(finishedTours => new TourDTO(finishedTours)).ToList();
             _finishedTourDTO = new ObservableCollection<TourDTO>(finishedTours);
             _showTourReviewWindowCommand = new RelayCommand(ShowTourReviewWindow);
             _closeWindowCommand = new RelayCommand(CloseWindow);
             _showTouristMainWindowCommand = new RelayCommand(ShowTouristMainWindow);
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
         }
 
         public ObservableCollection<TourDTO> FinishedToursDTO
@@ -117,19 +121,26 @@ namespace BookingApp.ViewModel.Tourist
             }
         }
 
-        public void ShowTourReviewWindow()
+        public void ShowTourReviewWindow(object parameter)
         {
-
-            if (_selectedTourDTO == null)
+            var selectedItem = parameter as TourDTO;
+            if (selectedItem == null)
             {
                 return;
             }
 
-            var selectedItem = _selectedTourDTO as TourDTO;
+             
 
             if(_tourReviewService.IsTourRated(selectedItem.ToTourAllParam(), _userDTO.ToUser()))
             {
-                MessageBox.Show("This tour is allready rated!");
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("This tour is allready rated!");
+                }
+                 else
+                {
+                    MessageBox.Show("Ova tura je vec ocijenjena!");
+                }
             }
             else
             {

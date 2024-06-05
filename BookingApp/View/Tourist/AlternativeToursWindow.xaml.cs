@@ -31,7 +31,27 @@ namespace BookingApp.View.Tourist
 
             _alternativeToursViewModel = new AlternativeToursViewModel(tourDTO, userDTO);   
             DataContext = _alternativeToursViewModel;
+            if (_alternativeToursViewModel.CloseAction == null)
+                _alternativeToursViewModel.CloseAction = new Action(this.Close);
+            this.PreviewKeyDown += ListView_PreviewKeyDown;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+           
         }
-      
+        private void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+            {
+
+                if (buttonSearch.IsFocused)
+                {
+
+                    listViewTours.Focus();
+                    e.Handled = true;
+                }
+
+
+            }
+        }
+
     }
 }
