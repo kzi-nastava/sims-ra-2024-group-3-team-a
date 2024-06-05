@@ -4,6 +4,8 @@ using BookingApp.InjectorNameSpace;
 using BookingApp.Repository;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
+using LiveCharts;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,7 +37,42 @@ namespace BookingApp.ViewModel.Guide
             List<TouristDTO> touristsDTO = _tourReservationService.GetJoinedTourists(_tourDTO.ToTourAllParam()).Select(tourist => new TouristDTO(tourist)).ToList();
             _touristsDTO = new ObservableCollection<TouristDTO>(touristsDTO);
             CountAgeGroups(touristsDTO);
+            InitializeAgeGroupCounts();
         }
+        public SeriesCollection AgeGroupCounts { get; set; }
+
+        private void InitializeAgeGroupCounts()
+        {
+            AgeGroupCounts = new SeriesCollection
+    {
+        new ColumnSeries
+        {
+            Title = "Ispod 18",
+            Values = new ChartValues<int> { UnderageCounter }
+        },
+        new ColumnSeries
+        {
+            Title = "18 - 50",
+            Values = new ChartValues<int> { MiddleGroupCounter }
+        },
+        new ColumnSeries
+        {
+            Title = "Preko 50",
+            Values = new ChartValues<int> { OverFiftyCounter }
+        }
+    };
+        }
+        public TourDTO Tour
+        {
+            get { return _tourDTO; }
+            set
+            {
+                _tourDTO = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public ObservableCollection<TouristDTO> TouristsDTO
         {
             get { return _touristsDTO; }

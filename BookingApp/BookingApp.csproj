@@ -23,12 +23,24 @@
     <None Remove="Resources\Images\back.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\Guide\Angelo.jpg" />
+    <None Remove="Resources\Images\Guide\Bec.jpg" />
+    <None Remove="Resources\Images\Guide\Bijeljina.jpg" />
+    <None Remove="Resources\Images\Guide\Bunar.jpg" />
     <None Remove="Resources\Images\Guide\eye.png" />
+    <None Remove="Resources\Images\Guide\Fontana.jpg" />
+    <None Remove="Resources\Images\Guide\foro-romano.jpg" />
     <None Remove="Resources\Images\Guide\graystar.png" />
     <None Remove="Resources\Images\Guide\question.jpg" />
     <None Remove="Resources\Images\Guide\refresh.png" />
+    <None Remove="Resources\Images\Guide\Rim.jpg" />
+    <None Remove="Resources\Images\Guide\Rome.jpg" />
+    <None Remove="Resources\Images\Guide\Stanisici.jpg" />
     <None Remove="Resources\Images\Guide\star.png" />
     <None Remove="Resources\Images\help.png" />
+    <None Remove="Resources\Images\Guide\Trevi.jpg" />
+    <None Remove="Resources\Images\Guide\Vatikan.jpg" />
+    <None Remove="Resources\Images\Guide\Vienna.jpg" />
     <None Remove="Resources\Images\Icons\AppLogo.ico" />
     <None Remove="Resources\Images\inbox.png" />
     <None Remove="Resources\Images\inbox_alert.png" />
@@ -149,10 +161,25 @@
 
   <ItemGroup>
     <Resource Include="Resources\Images\addNew.png" />
+    <Resource Include="Resources\Images\Guide\Bec.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Guide\Angelo.jpg" />
+    <Resource Include="Resources\Images\Guide\Bijeljina.jpg" />
+    <Resource Include="Resources\Images\Guide\Bunar.jpg" />
+    <Resource Include="Resources\Images\Guide\Fontana.jpg" />
+    <Resource Include="Resources\Images\Guide\foro-romano.jpg" />
     <Resource Include="Resources\Images\Guide\graystar.png" />
     <Resource Include="Resources\Images\Guide\refresh.png" />
     <Resource Include="Resources\Images\help.png" />
     <Resource Include="Resources\Images\Owner\Etno.jpg" />
+    <Resource Include="Resources\Images\Guide\Rim.jpg" />
+    <Resource Include="Resources\Images\Guide\Rome.jpg" />
+    <Resource Include="Resources\Images\Guide\Stanisici.jpg" />
+    <Resource Include="Resources\Images\Guide\Trevi.jpg" />
+    <Resource Include="Resources\Images\Guide\Vatikan.jpg" />
+    <Resource Include="Resources\Images\Guide\Vienna.jpg" />
     <Resource Include="Resources\Images\Owner\forums.png" />
     <Resource Include="Resources\Images\Owner\forums1.png" />
     <Resource Include="Resources\Images\Owner\NextArrow.png" />
@@ -288,11 +315,14 @@
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="12.17.0" />
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
+    <PackageReference Include="itext7" Version="8.0.4" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.4" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
   </ItemGroup>
 

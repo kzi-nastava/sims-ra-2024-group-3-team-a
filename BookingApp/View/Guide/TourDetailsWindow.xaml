@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookingApp.View.Guide"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Tura" Height="611" Width="980">
-    <Grid Background="Tan">
+        Title="Tura" Height="580" Width="940" ResizeMode="NoResize">
+    <Grid Background="AntiqueWhite">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -19,15 +20,17 @@
             <RowDefinition Height="100"></RowDefinition>
             <RowDefinition Height="150"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="2" >
             <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
-            <MenuItem Header="Pomoć"/>
+            <MenuItem Header="Pomoć">
+                <MenuItem Header="Prečice"/>
+                <MenuItem Header="Video tutorijal"/>
+                <MenuItem Header="Upute"/>
+            </MenuItem>
             <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}"/>
             <MenuItem Header="Sve ture" Command="{Binding ShowAllToursCommand}"/>
-            <MenuItem Header="Otkaz"/>
             <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
         </Menu>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -35,13 +38,6 @@
                 <ColumnDefinition Width="37*"/>
                 <ColumnDefinition Width="229*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
-                    <Hyperlink Command="{Binding ShowMainWindowCommand}">
-                        <Run Text="Početna "/>
-                    </Hyperlink> > <Hyperlink Command="{Binding ShowAllToursCommand}">
-                        <Run Text="Sve ture "/>
-                    </Hyperlink> > Tura
-            </TextBlock>
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Height="45">
             <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="{Binding Tour.Name}"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
@@ -71,12 +67,12 @@
 
                         </Style>
                     </Grid.Resources>
-                    <Border Grid.Column="0" />
-                    <TextBlock Grid.Column="1" Text="Informacije" />
-                    <Border Grid.Column="2" />
+                    <Border Grid.Column="0" BorderBrush="SaddleBrown" />
+                    <TextBlock Grid.Column="1" Text="Informacije" FontWeight="ExtraBlack" />
+                    <Border Grid.Column="2"  BorderBrush="SaddleBrown" />
                 </Grid>
-                <Border BorderBrush="Black" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
-                    <StackPanel Margin="18">
+                <Border BorderBrush="SaddleBrown" BorderThickness="5,0,5,5" Grid.ColumnSpan="2" >
+                    <StackPanel Margin="25"  >
                         <DockPanel Margin="5">
                             <TextBlock Text="LOKACIJA: "  FontSize="16"/>
                             <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Tour.LocationDTO}" TextWrapping="Wrap"  MaxWidth="80"/>
@@ -107,7 +103,9 @@
                         </DockPanel>
                         <DockPanel Margin="5">
                             <TextBlock Text="KLJUČNE TAČKE: " FontSize="16" />
-                            <TextBlock FontWeight="Bold" Text="{Binding Points}" FontSize="16" TextWrapping="Wrap"/>
+                            <ScrollViewer Height="110">
+                            <TextBlock FontWeight="Bold" Text="{Binding Points}" TextWrapping="Wrap"  Margin="8" FontSize="15" />
+                            </ScrollViewer>
                         </DockPanel>
                     </StackPanel>
                 </Border>
@@ -140,25 +138,50 @@
 
                         </Style>
                     </Grid.Resources>
-                    <Border Grid.Column="0" />
-                    <TextBlock Grid.Column="1" Text="Fotografije" />
-                    <Border Grid.Column="2" />
+                    <Border Grid.Column="0" BorderBrush="SaddleBrown" />
+                    <TextBlock Grid.Column="1" Text="Fotografije"  FontWeight="ExtraBlack"/>
+                    <Border Grid.Column="2" BorderBrush="SaddleBrown" />
                 </Grid>
-                <Border BorderBrush="Black" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
-                    <ListView  x:Name="imageListView" Height="100"  ItemsSource="{Binding Path=Tour.Images}" Margin="20" >
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <Image  Source="{Binding}" Width="90" Height="81" Margin="5,5,5,0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="3"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                <Border BorderBrush="SaddleBrown" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
+                    <Grid Margin="29">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition  Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Margin="3">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding ScrollLeftCommand}" CommandParameter="{Binding ElementName=scrollViewer}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <ScrollViewer Grid.Column="1" Name="scrollViewer"
+                          VerticalScrollBarVisibility="Disabled"
+                          HorizontalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="imageListView" Background="AntiqueWhite" ItemsSource="{Binding Tour.Images}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" Margin="5 0 5 0" BorderThickness="1">
+                                        <Image Width="120" Margin="1" Height="120" Stretch="UniformToFill" Source="{Binding}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                        <Button Grid.Column="2" FontFamily="Marlett" Content="4" HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="30" Margin="5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding ScrollRightCommand}" CommandParameter="{Binding ElementName=scrollViewer}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
                 </Border>
 
             </Grid>
@@ -189,26 +212,22 @@
 
                         </Style>
                     </Grid.Resources>
-                    <Border Grid.Column="0" />
-                    <TextBlock Grid.Column="1" Text="Opis" />
-                    <Border Grid.Column="2" />
+                    <Border Grid.Column="0" BorderBrush="SaddleBrown" />
+                    <TextBlock Grid.Column="1" Text="Opis" FontWeight="ExtraBlack" />
+                    <Border Grid.Column="2" BorderBrush="SaddleBrown" />
                 </Grid>
-                <Border BorderBrush="Black" BorderThickness="5,0,5,5" Grid.ColumnSpan="2">
-                    <StackPanel Margin="20">
-                    <TextBlock FontSize="17" TextWrapping="Wrap" Text="{Binding Path=Tour.Description}"></TextBlock>
-                    </StackPanel>
+                <Border BorderBrush="SaddleBrown" BorderThickness="5,0,5,5" Grid.ColumnSpan="2" Height="150">
+                    <ScrollViewer Margin="20" >
+                        <TextBlock Text="{Binding Path=Tour.Description}" TextWrapping="Wrap" Margin="5"  FontSize="17" ></TextBlock>
+                    </ScrollViewer>
                 </Border>
 
             </Grid>
         </Grid>
-        <Grid Grid.Row="8" Grid.Column="2">
-            <DockPanel HorizontalAlignment="Right">
-            <TextBlock>Vodič:</TextBlock>
-            <TextBlock Text="{Binding Path= User.Username}" ></TextBlock>
-            </DockPanel>
-        </Grid>
     </Grid>
     <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding ShowTourRequestCommand}" />
         <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding ShowTourStatisticsCommand}" />
     </Window.InputBindings>

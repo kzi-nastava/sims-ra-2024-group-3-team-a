@@ -30,7 +30,7 @@ namespace BookingApp.Model
 
         public  List<string> Images { get; set; }
 
-        public string IsNotValid { get; set; }
+        public Boolean IsNotValid { get; set; }
 
 
         public TourReview()
@@ -38,7 +38,7 @@ namespace BookingApp.Model
             Images = new List<string>();
         }
 
-        public TourReview(int id, int touristId, int tourId, int guideKnowledgeRating, int guideLanguageRating, int tourEntertainmentRating, string comment,string isValid, List<string> images)
+        public TourReview(int id, int touristId, int tourId, int guideKnowledgeRating, int guideLanguageRating, int tourEntertainmentRating, string comment,Boolean isValid, List<string> images)
         {
             Id = id;
             TouristId = touristId;
@@ -56,12 +56,12 @@ namespace BookingApp.Model
             if (Images != null)
             {
                 string images = string.Join("|", Images);
-                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(), TourEntertainmentRating.ToString(), Comment, IsNotValid,  images };
+                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(), TourEntertainmentRating.ToString(), Comment, IsNotValid.ToString(),  images };
                 return csvValues;
             }
             else
             {
-                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(),TourEntertainmentRating.ToString(), Comment, IsNotValid };
+                string[] csvValues = { Id.ToString(), TourId.ToString(), TouristId.ToString(), GuideKnowledgeRating.ToString(), GuideLanguageRating.ToString(),TourEntertainmentRating.ToString(), Comment, IsNotValid.ToString() };
                 return csvValues;
             }
         }
@@ -74,7 +74,7 @@ namespace BookingApp.Model
             GuideLanguageRating = Convert.ToInt32(values[4]);
             TourEntertainmentRating = Convert.ToInt32(values[5]);
             Comment = values[6];
-            IsNotValid = values[7];
+            IsNotValid = Convert.ToBoolean(values[7]);
 
             Images = new List<string>();
             for (int i = 8; i < values.Length; i++)

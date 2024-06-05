@@ -85,13 +85,13 @@ namespace BookingApp.Model
             {
                 string images = string.Join("|", Review.Images);
                 string[] csvValues = { Id.ToString(), Name, Surname, Age.ToString(), JoiningKeyPoint, Review.Id.ToString(), Review.TourId.ToString(),Review.TouristId.ToString(), Review.GuideLanguageRating.ToString(), Review.GuideKnowledgeRating.ToString(),
-            Review.TourEntertainmentRating.ToString(), Review.Comment, Review.IsNotValid, images};
+            Review.TourEntertainmentRating.ToString(), Review.Comment, Review.IsNotValid.ToString(), images};
                 return csvValues;
             }
             else
             {
                 string[] csvValues = { Id.ToString(), Name, Surname, Age.ToString(), JoiningKeyPoint, Review.Id.ToString(), Review.TourId.ToString(),Review.TouristId.ToString(), Review.GuideLanguageRating.ToString(), Review.GuideKnowledgeRating.ToString(),
-            Review.TourEntertainmentRating.ToString(), Review.Comment, Review.IsNotValid};
+            Review.TourEntertainmentRating.ToString(), Review.Comment, Review.IsNotValid.ToString()};
                 return csvValues;
             }
         }
@@ -112,7 +112,7 @@ namespace BookingApp.Model
                 Review.GuideKnowledgeRating = Convert.ToInt32(values[9]);
                 Review.TourEntertainmentRating = Convert.ToInt32(values[10]);
                 Review.Comment = values[11];
-                Review.IsNotValid = values[12];
+                Review.IsNotValid = Convert.ToBoolean(values[12]);
                 for (int i = 13; i < values.Length; i++)
                 {
                     Review.Images.Add(values[i]);

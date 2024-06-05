@@ -10,6 +10,7 @@ namespace BookingApp.View.Guide
         {
             InitializeComponent();
             DataContext = new ReviewDetailsViewModel(touristDTO);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen; 
         }
     }
 }

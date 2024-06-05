@@ -21,7 +21,7 @@ using System.Reflection.Metadata;
 
 namespace BookingApp.ViewModel.Guide
 {
-    class TourReviewsViewModel : ViewModel
+    class TourReviewsReadOnlyViewModel : ViewModel
     {
         private TourDTO _tourDTO;
         private TourReservationService _tourReservationService;
@@ -31,7 +31,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _markAsInvalidCommand;
         private RelayCommand _markAsValidCommand;
         private ObservableCollection<TouristDTO> _touristsDTO { get; set; }
-        public TourReviewsViewModel(TourDTO tour)
+        public TourReviewsReadOnlyViewModel(TourDTO tour)
         {
             _tourDTO = tour;
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
@@ -94,20 +94,20 @@ namespace BookingApp.ViewModel.Guide
                 OnPropertyChanged();
             }
         }
-       /* public void MarkAsInvalid(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            if (checkBox != null)
-            {
-                TouristDTO tourist = checkBox.DataContext as TouristDTO;
-                if (tourist != null)
-                {
-                    tourist.Review.IsNotValid = true;
-                    _touristService.Update(tourist.ToTourist());
-                    _tourReviewService.Update(tourist.Review.ToTourReview());
-                }
-            }
-        }*/
+        /* public void MarkAsInvalid(object sender, RoutedEventArgs e)
+         {
+             CheckBox checkBox = sender as CheckBox;
+             if (checkBox != null)
+             {
+                 TouristDTO tourist = checkBox.DataContext as TouristDTO;
+                 if (tourist != null)
+                 {
+                     tourist.Review.IsNotValid = true;
+                     _touristService.Update(tourist.ToTourist());
+                     _tourReviewService.Update(tourist.Review.ToTourReview());
+                 }
+             }
+         }*/
 
         public void MarkAsValid(object parameter)
         {
@@ -119,7 +119,7 @@ namespace BookingApp.ViewModel.Guide
         public void MarkAsInvalid(object parameter)
         {
             TouristDTO tourist = parameter as TouristDTO;
-           tourist.Review.IsNotValid = true;
+            tourist.Review.IsNotValid = true;
             _touristService.Update(tourist.ToTourist());
             _tourReviewService.Update(tourist.Review.ToTourReview());
         }

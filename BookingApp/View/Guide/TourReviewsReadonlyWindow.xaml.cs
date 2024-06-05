@@ -5,6 +5,8 @@ using BookingApp.ViewModel.Guide;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,14 +22,14 @@ namespace BookingApp.View.Guide
 {
 
     /// <summary>
-    /// Interaction logic for TouristStatisticsWindow.xaml
+    /// Interaction logic for TourReviewsReadonlyWindow.xaml
     /// </summary>
-    public partial class TouristStatisticsWindow : Window
+    public partial class TourReviewsReadonlyWindow : Window
     {
-        public TouristStatisticsWindow(TourDTO tourDTO)
+        public TourReviewsReadonlyWindow(TourDTO tourDTO)
         {
             InitializeComponent();
-            DataContext = new TouristStatisticsViewModel(tourDTO);
+            DataContext = new TourReviewsReadOnlyViewModel( tourDTO);
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
     }
