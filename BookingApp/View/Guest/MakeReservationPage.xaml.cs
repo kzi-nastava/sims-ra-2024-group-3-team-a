@@ -36,6 +36,7 @@ namespace BookingApp.View.Guest
             }
         }
     }
+    
     public class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -54,4 +55,5 @@ namespace BookingApp.View.Guest
             throw new NotImplementedException("Converting from Visibility to Boolean is not supported.");
         }
     }
+    
 }

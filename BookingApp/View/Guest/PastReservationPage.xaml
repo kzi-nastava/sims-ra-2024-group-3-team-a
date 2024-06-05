@@ -4,12 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookingApp.View.Guest"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="800"
       Title="PastReservationPage">
 
     <Page.Resources>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="IntToBoolConverter"/>
         <local:LocationConverter x:Key="LocationConverter"/>
         <local:AccommodationIdToNameConverter x:Key="AccommodationIdToNameConverter"/>
         <local:AccommodationIdToLocationConverter x:Key="AccommodationIdToLocationConverter"/>
@@ -45,7 +47,7 @@
         <Button Grid.Row="2" Grid.Column="2" Width="140" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,20, 0, 0" Content="Date change requests" Command="{Binding ShowDateChangeRequestsPageCommand}"></Button>
 
         <Border BorderBrush="Black" BorderThickness="2" Grid.Row="3" Grid.ColumnSpan="3" Margin="0,15, 0, 0">
-            <StackPanel Orientation="Horizontal" Width="670" Height="305">
+            <StackPanel Orientation="Horizontal" Width="670" Height="505">
                 <StackPanel.Background>
                     <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
                 </StackPanel.Background>
@@ -57,13 +59,52 @@
                 </StackPanel>
                 <StackPanel Margin="50,0,0,0" >
                     <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Rate Accommodation cleanliness:"/>
+                    <xctk:IntegerUpDown Minimum="1" Maximum="5"  x:Name="cleanlinessTextBox" Text="{Binding SelectedReservation.RatingDTO.GuestCleanlinessRating, UpdateSourceTrigger=PropertyChanged}" Width="50" />
+                    <!--
                     <TextBox Width="105" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" x:Name="cleanlinessTextBox" Text="{Binding SelectedReservation.RatingDTO.GuestCleanlinessRating}"/>
-                    
+                    -->
                     <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Rate owner hospitality"/>
+                    <!--
                     <TextBox Text="{Binding SelectedReservation.RatingDTO.GuestHospitalityRating}" Width="105" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" x:Name="ownerCorrectnessTextBox" />
+                       -->
+                    <xctk:IntegerUpDown Minimum="1" Maximum="5"  x:Name="ownerCorectnessTextBox" Text="{Binding SelectedReservation.RatingDTO.GuestHospitalityRating, UpdateSourceTrigger=PropertyChanged}" Width="50" />
 
                     <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Additional comment"/>
                     <TextBox Text="{Binding SelectedReservation.RatingDTO.GuestComment}" Width="150" Height="60" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" x:Name="CommentForOwnerTextBox" />
+                    <Button Width="100" Grid.Row="2" Grid.Column="2" Command="{Binding AddImagesCommand}" HorizontalAlignment="Left">Add images</Button>
+                    <!-- fix bug
+                    <Label Content="Renovation Recommendation" FontSize="16" FontWeight="Bold" Margin="10" Grid.Row="0" Foreground="#d4ff00"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="40, 0, 0, 0" Grid.Row="1">
+                        <RadioButton Content="1" GroupName="Rating"
+Command="{Binding RenovationRatingCommand}"
+CommandParameter="1" 
+IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='1'}"/>
+                        <RadioButton Content="2" GroupName="Rating"
+Command="{Binding RenovationRatingCommand}"
+CommandParameter="2" 
+IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='2'}"/>
+                        <RadioButton Content="3" GroupName="Rating"
+Command="{Binding RenovationRatingCommand}"
+CommandParameter="3"
+IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='3'}"/>
+                        <RadioButton Content="4" GroupName="Rating"
+Command="{Binding RenovationRatingCommand}"
+CommandParameter="4" 
+IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='4'}"/>
+                        <RadioButton Content="5" GroupName="Rating"
+Command="{Binding RenovationRatingCommand}"
+CommandParameter="5"
+IsChecked="{Binding SelectedReservation.RatingDTO.GuestRenovationRating, Converter={StaticResource IntToBoolConverter}, ConverterParameter='5'}"/>
+                    </StackPanel>
+                    <Label x:Name="lblRecommendation" Margin="10" Grid.Row="2" HorizontalAlignment="Center" Content="{Binding RecommendationText}"/>
+                    <Label Content="Additional comment: " Margin="30" Grid.Row="3"></Label>
+                    <TextBox TextWrapping="Wrap" Grid.Row="3" Width="140" Height="60"
+    AcceptsReturn="True"
+    Text="{Binding SelectedReservation.RatingDTO.GuestRenovationComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    VerticalScrollBarVisibility="Auto"
+    HorizontalScrollBarVisibility="Auto"
+    Margin="10"/>
+-->
                     <Button Width="120" Height="30" HorizontalAlignment="Left" Content="Submit"  Margin="0,20,0,0" Command="{Binding SubmitRateOwnerCommand}"></Button>
                 
                 </StackPanel>

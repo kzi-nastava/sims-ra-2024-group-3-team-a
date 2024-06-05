@@ -1,5 +1,5 @@
-﻿using BookingApp.DTO;
-using BookingApp.ViewModel.Guest;
+﻿using BookingApp.ViewModel.Guest;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +18,32 @@ using System.Windows.Shapes;
 namespace BookingApp.View.Guest
 {
     /// <summary>
-    /// Interaction logic for MyProfilePage.xaml
+    /// Interaction logic for ChartPage.xaml
     /// </summary>
-    public partial class MyProfilePage : Page
+    public partial class ChartPage : Page
     {
-        public static MyProfilePage Instance;
         public static GuestReservationsViewModel _guestReservationsViewModel;
-        public UserDTO User = GuestMainViewWindow.LoggedInGuest;
-        public MyProfilePage()
+        public ChartPage()
         {
             InitializeComponent();
             _guestReservationsViewModel = new GuestReservationsViewModel(GuestMainViewWindow.LoggedInGuest);
             DataContext = _guestReservationsViewModel;
-            if(Instance == null)
+
+            var yAxis = new Axis
             {
-                Instance = this;
-            }
+                Title = "Number of Reservations",
+                Foreground = System.Windows.Media.Brushes.Yellow,
+                FontSize = 15,
+                LabelFormatter = value => value.ToString("N0"),
+                Separator = new LiveCharts.Wpf.Separator
+                {
+                    Step = 1,
+                    IsEnabled = true
+                }
+            };
+
+            accommodationChart.AxisY.Clear();
+            accommodationChart.AxisY.Add(yAxis);
         }
     }
 }
