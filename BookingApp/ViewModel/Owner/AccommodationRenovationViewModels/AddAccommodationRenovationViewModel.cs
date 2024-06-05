@@ -10,11 +10,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
 {
-    public class AddAccommodationRenovationViewModel : ViewModel
+    public class AddAccommodationRenovationViewModel : Validation.ValidationBase
     {
         private RelayCommand _goBackCommand;
         private RelayCommand _showSideMenuCommand;
@@ -39,7 +40,7 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
             _accommodationRenovationDTO.AccommodationId = accommodationDTO.Id;
 
             _fromDate = DateTime.Now;
-            _toDate = DateTime.Now;
+            _toDate = _fromDate;
 
             _accommodationDTO = accommodationDTO;
             _availableDates = new ObservableCollection<DateTime>();
@@ -163,18 +164,56 @@ namespace BookingApp.ViewModel.Owner.AccommodationRenovationViewModels
 
         public void ConfirmAccommodationRenovation()
         {
-            _accommodationRenovationDTO.EndDate = _accommodationRenovationDTO.BeginDate.AddDays(_length);
-            _accommodationRenovationService.Save(_accommodationRenovationDTO.ToAccommodationRenovation());
-            OwnerMainWindow.MainFrame.GoBack();
+            Validate1();
+
+            if(IsValid)
+            {
+                _accommodationRenovationDTO.EndDate = _accommodationRenovationDTO.BeginDate.AddDays(_length);
+                _accommodationRenovationService.Save(_accommodationRenovationDTO.ToAccommodationRenovation());
+                OwnerMainWindow.MainFrame.GoBack();
+            } 
         }
         public void FindAvailableDates()
         {
-            AvailableDates = new ObservableCollection<DateTime>(_accommodationRenovationService.FindAvailableDates(_accommodationDTO.Id, FromDate, ToDate, Length));
+            if(_toDate >= _fromDate)
+            {
+                AvailableDates = new ObservableCollection<DateTime>(_accommodationRenovationService.FindAvailableDates(_accommodationDTO.Id, FromDate, ToDate, Length));
+            }
+            else
+            {
+                AvailableDates = new ObservableCollection<DateTime>();
+            }  
         }
         public void ShowSideMenu()
         {
             OwnerMainWindow.SideMenuFrame.Content = new SideMenuPage();
         }
+
+        protected override void ValidateSelf1()
+        {
+            if(_fromDate >= _toDate)
+            {
+                ValidationErrors["Dates"] = "To Date must be bigger than From Date";
+            }
+
+            if(Length <= 0)
+            {
+                ValidationErrors["Length"] = "Length must be bigger than 0";
+            }
+
+            if (AccommodationRenovationDTO.BeginDate == new DateTime())
+            {
+                ValidationErrors["ChoosenDate"] = "You must choose a date";
+            }
+
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+
+        protected override void ValidateSelf2()
+        {
+            throw new NotImplementedException();
+        }
+
         private void GoBack()
         {
             OwnerMainWindow.MainFrame.GoBack();

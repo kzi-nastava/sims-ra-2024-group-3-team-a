@@ -1,0 +1,104 @@
+﻿<Page x:Class="BookingApp.View.Guest.FindAvailableDatesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookingApp.View.Guest"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FindAvailableDatesPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!-- Accommodations Toolbar -->
+        <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="3" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+            <Grid Background="Transparent" Margin="3,3,3,3">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00" Margin="111,-1,0,0">BookingApp</Label>
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
+                    <Image Name="imageSideMenu" Source="../../Resources/Images/Owner/menu.png" />
+                </Button>
+            </Grid>
+        </Border>
+
+        
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Location: "/>
+                <Label Grid.Column="1" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.City}"/>
+            <Label Grid.Column="1" Foreground="#d4ff00" Content=", "></Label>
+            <Label Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = SelectedAccommodationDTO.PlaceDTO.Country}"/>
+        </Grid>
+
+        <Label Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Type: "/>
+        <Label Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Type}"></Label>
+
+        <Label Grid.Row="2" Grid.Column="0" Foreground="#d4ff00" Content="Description: "/>
+        <Label Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}"></Label>
+            
+        <Label Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: "/>
+        <Label Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.Capacity}"></Label>
+        
+        <Label Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: "/>
+        <Label Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.MinDaysReservation}"></Label>
+
+        <Label Grid.Row="5" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: "/>
+        <Label Grid.Row="5" Grid.Column="1" Foreground="#d4ff00" Content="{Binding SelectedAccommodationDTO.CancellationPeriod}"></Label>
+    </Grid>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="2">
+            <Label Content="Find available dates"></Label>
+            <Label Content="From:"></Label>
+            <DatePicker Width="105" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="datePickerBegin" SelectedDate = "{Binding SelectedBeginDate, Mode=TwoWay}" />
+            
+            <Label Content="To:"></Label>
+            <DatePicker Width="105" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="datePickerEnd" SelectedDate = "{Binding SelectedEndDate, Mode=TwoWay}" />
+            <Label Content="Days staying: "></Label>
+            <TextBox x:Name="DaysToStayTextBox" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="100"  Text="{Binding DaysToStay}" ></TextBox>
+            <Button Width="100" Grid.Row="0" Grid.Column="3" Command="{Binding SearchDatesCommand}">Search for dates!</Button>
+
+            <Button Content="Search" Width="100"></Button>
+        </StackPanel>
+    </Grid>
+</Page>

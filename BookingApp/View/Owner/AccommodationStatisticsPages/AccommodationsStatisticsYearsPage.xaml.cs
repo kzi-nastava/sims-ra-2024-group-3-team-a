@@ -1,5 +1,6 @@
 ﻿using BookingApp.DTO;
 using BookingApp.ViewModel.Owner.AccommodationStatisticsViewModels;
+using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -33,7 +33,8 @@ namespace BookingApp.View.Guest
         {
             InitializeComponent();
             _userDTO = userDTO;
-            DataContext = new MakeReservationViewModel(selectedAccommodationDTO, _userDTO);
+            //DataContext = new MakeReservationViewModel(selectedAccommodationDTO, _userDTO, );
+            DataContext = this;
             if(Instance == null)
             {
                 Instance = this;

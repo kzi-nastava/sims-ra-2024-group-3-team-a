@@ -2,6 +2,7 @@
 using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,14 @@ namespace BookingApp.View.Tourist
             DataContext = complexTourRequestViewModel;
             if (complexTourRequestViewModel.CloseAction == null)
                 complexTourRequestViewModel.CloseAction = new Action(this.Close);
+        }
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            ComplexTourRequestViewModel viewModel = DataContext as ComplexTourRequestViewModel;
+            if (viewModel != null && !viewModel.AllowClose)
+            {
+                e.Cancel = true; 
+            }
         }
     }
 }

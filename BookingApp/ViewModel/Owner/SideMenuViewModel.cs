@@ -9,6 +9,7 @@ using System.Windows;
 using BookingApp.Commands;
 using BookingApp.View.Owner.AccommodationRenovationPages;
 using BookingApp.View.Owner.ForumPages;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace BookingApp.ViewModel.Owner
 {
@@ -22,6 +23,7 @@ namespace BookingApp.ViewModel.Owner
         private RelayCommand _showProfileMenuPageCommand;
         private RelayCommand _showRenovationsPageCommand;
         private RelayCommand _showForumsPageCommand;
+        private RelayCommand _showSettingsPageCommand;
 
         public SideMenuViewModel()
         {
@@ -33,7 +35,9 @@ namespace BookingApp.ViewModel.Owner
             _showProfileMenuPageCommand = new RelayCommand(ShowProfileMenuPage);
             _showRenovationsPageCommand = new RelayCommand(ShowRenovationsPage);
             _showForumsPageCommand = new RelayCommand(ShowForumsPage);
+            _showSettingsPageCommand = new RelayCommand(ShowSettingsPage);
         }
+
 
         public RelayCommand CloseSideMenuCommand
         {
@@ -131,22 +135,37 @@ namespace BookingApp.ViewModel.Owner
                 OnPropertyChanged();
             }
         }
+        public RelayCommand ShowSettingsPageCommand
+        {
+            get
+            {
+                return _showSettingsPageCommand;
+            }
+            set
+            {
+                _showSettingsPageCommand = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void CloseSideMenu()
         {
-            OwnerMainWindow.SideMenuFrame.Content = null;
+            Messenger.Default.Send(new NotificationMessage("CloseSideMenu"));
         }
         public void ShowAccommodationsPage()
         {
             OwnerMainWindow.MainFrame.Content = new AccommodationsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowReviewsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ReviewsPage();
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowInboxPage()
         {
             OwnerMainWindow.MainFrame.Content = new InboxPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         private void LogOut()
         {
@@ -157,15 +176,24 @@ namespace BookingApp.ViewModel.Owner
         public void ShowRenovationsPage()
         {
             OwnerMainWindow.MainFrame.Content = new RenovationsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
         public void ShowProfileMenuPage()
         {
             OwnerMainWindow.MainFrame.Content = new ProfileMenuPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
 
         public void ShowForumsPage()
         {
             OwnerMainWindow.MainFrame.Content = new ForumsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
+        }
+
+        public void ShowSettingsPage()
+        {
+            OwnerMainWindow.MainFrame.Content = new SettingsPage(OwnerMainWindow.LoggedInOwner);
+            OwnerMainWindow.SideMenuFrame.Content = null;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace BookingApp.Service
         {
             List<Post> posts = _postRepository.GetPostsForForum(forum);
 
-            if (posts.Count(post => post.Type == PostType.SentByOwner) >= 10 && posts.Count(post => post.Type == PostType.SentByGuestWhoWasOnLocation) >= 20)
+            if (posts.Count(post => post.Type == PostType.SentByOwner) >= 10 || posts.Count(post => post.Type == PostType.SentByGuestWhoWasOnLocation) >= 20)
             {
                 return true;
             }

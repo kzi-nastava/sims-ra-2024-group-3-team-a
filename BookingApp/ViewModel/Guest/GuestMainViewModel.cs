@@ -21,7 +21,7 @@ namespace BookingApp.ViewModel.Guest
     public class GuestMainViewModel: ViewModel
     {
         private ObservableCollection<AccommodationReservationDTO> _accommodationReservationsDTO;
-        private ObservableCollection<AccommodationDTO> _accommodationsDTO;
+        public static ObservableCollection<AccommodationDTO> _accommodationsDTO;
 
         private AccommodationReservationService _accommodationReservationService;
         private AccommodationService _accommodationService;
@@ -50,6 +50,7 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _showInboxCommand;
         private RelayCommand _showRatingsFromOwnersCommand;
         private RelayCommand _showMyProfileCommand;
+        private RelayCommand _showSideMenuCommand;
         
 
         public GuestMainViewModel(UserDTO loggedInGuest)
@@ -86,6 +87,7 @@ namespace BookingApp.ViewModel.Guest
             _showInboxCommand = new RelayCommand(MyInbox);
             _showRatingsFromOwnersCommand = new RelayCommand(ShowRatingsFromOwnersPage);
             _showMyProfileCommand = new RelayCommand(ShowMyProfilePage);
+            _showSideMenuCommand = new RelayCommand(ShowSideMenu);
 
             GuestMainWindow._userDTO = new UserDTO(_accommodationReservationService.SetSuperGuest(_loggedInGuest.ToUser()));
             IsSuperGuest();
@@ -148,6 +150,10 @@ namespace BookingApp.ViewModel.Guest
             IsFrameMyRequestsVisible = false;
             IsFrameMyInboxVisible = false;
             GuestMainWindow.MainFrame.Visibility = Visibility.Visible;
+        }
+        private void ShowSideMenu()
+        {
+            GuestMainViewWindow.SideMenuFrame.Content = new GuestSideMenuPage();
         }
         private void ShowMyProfilePage()
         {
@@ -220,29 +226,36 @@ namespace BookingApp.ViewModel.Guest
 
         private void SearchAccommodations()
         {
-            string searchNameInput = GuestMainWindow.Instance.searchNameTextBox.Text.ToLower();
-            string searchCountryInput = GuestMainWindow.Instance.searchCountryTextBox.Text.ToLower();
-            string searchCityInput = GuestMainWindow.Instance.searchCityTextBox.Text.ToLower();
-            string searchTypeInput = GuestMainWindow.Instance.searchTypeTextBox.Text.ToLower();
+            string searchNameInput = GuestHomePage.Instance.searchNameTextBox.Text.ToLower();
+            string searchCountryInput = GuestHomePage.Instance.searchCountryTextBox.Text.ToLower();
+            string searchCityInput = GuestHomePage.Instance.searchCityTextBox.Text.ToLower();
+            //string searchTypeInput = GuestHomePage.Instance.searchTypeTextBox.Text.ToLower();
 
-            string searchCapacityInput = GuestMainWindow.Instance.searchCapacityTextBox.Text.ToLower();
-            string searchMinDaysInput = GuestMainWindow.Instance.searchMinDaysTextBox.Text.ToLower();
+            var selectedTypes = new List<string>();
+            if (GuestHomePage.Instance.checkBoxApartment.IsChecked == true)
+                selectedTypes.Add("apartment");
+            if (GuestHomePage.Instance.checkBoxCottage.IsChecked == true)
+                selectedTypes.Add("cottage");
+            if (GuestHomePage.Instance.checkBoxHouse.IsChecked == true)
+                selectedTypes.Add("house");
 
-            string allParams = searchCityInput + searchCountryInput + searchNameInput + searchTypeInput + searchCapacityInput + searchMinDaysInput;
+            string searchCapacityInput = GuestHomePage.Instance.searchCapacityTextBox.Text.ToLower();
+            string searchMinDaysInput = GuestHomePage.Instance.searchMinDaysTextBox.Text.ToLower();
+
+            string allParams = searchCityInput + searchCountryInput + searchNameInput + string.Join("", selectedTypes) + searchCapacityInput + searchMinDaysInput;
 
             var filtered = AccommodationsDTO;
 
             if (allParams.Length == 0 || string.IsNullOrWhiteSpace(allParams))
             {
-                GuestMainWindow.Instance.dataGridAccommodation.ItemsSource = AccommodationsDTO;
+                GuestHomePage.Instance.dataGridAccommodation.ItemsSource = AccommodationsDTO;
             }
 
-            filtered = FilterAccommodations(filtered, searchCountryInput, searchCityInput, searchNameInput, searchTypeInput, searchCapacityInput, searchMinDaysInput);
-
-            GuestMainWindow.Instance.dataGridAccommodation.ItemsSource = filtered;
+            filtered = FilterAccommodations(filtered, searchCountryInput, searchCityInput, searchNameInput, selectedTypes, searchCapacityInput, searchMinDaysInput);
+            GuestHomePage.Instance.dataGridAccommodation.ItemsSource = filtered;
         }
 
-        private ObservableCollection<AccommodationDTO> FilterAccommodations(ObservableCollection<AccommodationDTO> accommodations, string searchCountryInput, string searchCityInput, string searchNameInput, string searchTypeInput, string searchCapacityInput, string searchMinDaysInput)
+        private ObservableCollection<AccommodationDTO> FilterAccommodations(ObservableCollection<AccommodationDTO> accommodations, string searchCountryInput, string searchCityInput, string searchNameInput, List<string> selectedTypes, string searchCapacityInput, string searchMinDaysInput)
         {
             var filtered = new ObservableCollection<AccommodationDTO>();
 
@@ -251,8 +264,10 @@ namespace BookingApp.ViewModel.Guest
 
             foreach (var accommodation in accommodations)
             {
+                bool typeMatches = selectedTypes.Count == 0 || selectedTypes.Contains(accommodation.Type.ToString().ToLower());
+
                 if (accommodation.Name.ToLower().Contains(searchNameInput)
-                    && accommodation.Type.ToString().ToLower().Contains(searchTypeInput)
+                    && typeMatches
                     && accommodation.PlaceDTO.Country.ToLower().Contains(searchCountryInput)
                     && accommodation.PlaceDTO.City.ToLower().Contains(searchCityInput)
                     && (accommodation.Capacity >= CapacityConvert || CapacityConvert == null)
@@ -367,7 +382,14 @@ namespace BookingApp.ViewModel.Guest
             {
                 _selectedAccommodationDTO = value;
                 OnPropertyChanged();
+                ShowFindAvailableDatesPage();
+                _selectedAccommodationDTO = null;
             }
+        }
+
+        private void ShowFindAvailableDatesPage()
+        {
+            GuestMainViewWindow.MainFrame.Content = new FindAvailableDatesPage(SelectedAccommodationDTO, _loggedInGuest);
         }
 
         public RelayCommand LogOutCommand
@@ -379,6 +401,18 @@ namespace BookingApp.ViewModel.Guest
             set
             {
                 _logOutCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowSideMenuCommand
+        {
+            get
+            {
+                return _showSideMenuCommand;
+            }
+            set
+            {
+                _showSideMenuCommand = value;
                 OnPropertyChanged();
             }
         }

@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         mc:Ignorable="d"
+
         Title="OrdinaryTourRequestWindow" Height="500" Width="1035">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenDatePickerCommand}" Key="D" Modifiers="Control"/>
+        <KeyBinding Command="{Binding OpenDatePickerFinalCommand}" Key="F" Modifiers="Control"/>
+        <KeyBinding Command="{Binding OpenDropDownComboboxCommand}" Key="O" Modifiers="Control"/>
+    </Window.InputBindings>
     <Grid  Background="#edebfc">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -127,7 +134,7 @@
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Language:" Margin="10,0,0,10" FontWeight="Medium" FontSize="13"></TextBlock>
                     <StackPanel Grid.Row="0" Grid.Column="1">
                         <TextBox Grid.Row="0" Grid.Column="1" Width="180" Margin="10,5,10,5" Height="20"  Text="{Binding OrdinaryTourRequestDTO.LocationDTO.Country, UpdateSourceTrigger=PropertyChanged}"  FontSize="15" Grid.ColumnSpan="2">
-
+                        
                         </TextBox>
                         <TextBlock Margin="0,0,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[Country], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
                     </StackPanel>
@@ -136,7 +143,7 @@
                         <TextBlock Margin="0,0,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[City], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="1">
-                        <ComboBox  Margin="12,4,8,6" IsEditable="True"  Grid.Row="2" Grid.Column="1" x:Name="languageComboBox"  Height="20"   ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  SelectedItem="{Binding OrdinaryTourRequestDTO.Language}">
+                        <ComboBox  Margin="12,4,8,6" IsEditable="True"  Grid.Row="2" Grid.Column="1" x:Name="languageComboBox"  Height="20" IsDropDownOpen="{Binding IsDropDownComboboxOpenCommand}"   ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  SelectedItem="{Binding OrdinaryTourRequestDTO.Language}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="LostFocus">
                                     <i:InvokeCommandAction Command="{Binding LostFocusCommand}" />
@@ -166,7 +173,11 @@
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="To date:" Margin="10,5" FontWeight="Medium" FontSize="13"></TextBlock>
 
                     <StackPanel  Grid.Row="1" Grid.Column="1">
-                    <DatePicker   Grid.Row="1" Grid.Column="1" Width="140" Margin="10,5"  Height="22" Padding="0" SelectedDate="{Binding OrdinaryTourRequestDTO.BeginDate, Mode=TwoWay}"  FontSize="15">
+
+                        <DatePicker  DisplayDateStart="{x:Static sys:DateTime.Now}" SelectedDate="{Binding Start,ValidatesOnExceptions=False, Mode=OneWayToSource}" IsDropDownOpen="{Binding IsDatePickerOpen}" Grid.Row="1" Grid.Column="1" Width="140" Margin="10,5"  Height="22" Padding="0"   FontSize="15">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate />
+                            </Validation.ErrorTemplate>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="LostFocus">
                                     <i:InvokeCommandAction Command="{Binding LostFocusBeginDateCommand}" />
@@ -176,14 +187,14 @@
                         <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[BeginDate], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="1">
-                    <DatePicker Grid.Row="2" Grid.Column="1" Width="140" Margin="10,5,10,10"  Height="22" Padding="0" SelectedDate="{Binding OrdinaryTourRequestDTO.EndDate, Mode=TwoWay}"  FontSize="15">
+                        <DatePicker x:Name="datePicker" Grid.Row="2" Grid.Column="1" Width="140" Margin="10,5,10,10" IsDropDownOpen="{Binding IsDatePickerFinalOpen}"   Height="22" Padding="0" DisplayDateStart="{Binding Start}" SelectedDate="{Binding End, Mode=OneWayToSource}"  FontSize="15">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="LostFocus">
                                     <i:InvokeCommandAction Command="{Binding LostFocusEndDateCommand}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </DatePicker>
-                        <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[EndDate], UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
+                        <TextBlock Margin="0,2,0,1" FontSize="10" Width="150" Text="{Binding ValidationErrors[EndDate],  UpdateSourceTrigger=PropertyChanged }" Foreground="#f7459e"/>
                     </StackPanel>
                     
                     

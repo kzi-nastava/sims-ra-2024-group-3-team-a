@@ -20,6 +20,7 @@ namespace BookingApp.DTO
         {
             Id = forum.Id;
             LocationDTO = new LocationDTO(forum.Location);
+            ForumCreatorId = forum.ForumCreatorId;
             SeenByOwner = forum.SeenByOwner;
             IsVeryImportant = forum.IsVeryImportant;
             IsClosed = forum.IsClosed;
@@ -29,6 +30,7 @@ namespace BookingApp.DTO
         {
             Id = forumDTO.Id;
             LocationDTO = new LocationDTO(forumDTO.LocationDTO);
+            ForumCreatorId = forumDTO.ForumCreatorId;
             SeenByOwner = forumDTO.SeenByOwner;
             IsVeryImportant = forumDTO.IsVeryImportant;
             IsClosed = forumDTO.IsClosed;
@@ -47,7 +49,19 @@ namespace BookingApp.DTO
                 }
             }
         }
-
+        private int forumCreatorId;
+        public int ForumCreatorId
+        {
+            get { return forumCreatorId; }
+            set
+            {
+                if (value != forumCreatorId)
+                {
+                    forumCreatorId = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         private LocationDTO locationDTO;
         public LocationDTO LocationDTO
         {
@@ -124,7 +138,7 @@ namespace BookingApp.DTO
 
         public Forum ToForum()
         {
-            return new Forum(Id, LocationDTO.ToLocation(), SeenByOwner, IsVeryImportant, IsClosed);
+            return new Forum(Id, LocationDTO.ToLocation(),ForumCreatorId, SeenByOwner, IsVeryImportant, IsClosed);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

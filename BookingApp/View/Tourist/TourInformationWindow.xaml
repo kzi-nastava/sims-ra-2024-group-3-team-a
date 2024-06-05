@@ -20,6 +20,8 @@
         <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
         <KeyBinding Key="F9"  Command="{Binding  LogOutCommand}" />
         <KeyBinding Key="C" Command="{Binding CloseWindowCommand}"/>
+        <KeyBinding Key="L" Modifiers="Ctrl" Command="{Binding ScrollLeftCommand}"/>
+        <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding ScrollRightCommand}"/>
     </Window.InputBindings>
     
  
@@ -130,17 +132,19 @@
                 <ColumnDefinition Width="880"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-
+            <StackPanel Grid.Column="0" Margin="5,30,5,5">
             <Button Grid.Column="0" FontFamily="Marlett" Content="3" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="30" Command="{Binding ScrollLeftCommand}" Margin="5">
                   
-                </Button>
+            </Button>
+                <TextBlock Margin="5,0,0,0" Text="(Ctrl+L)" FontSize="9"></TextBlock>
+            </StackPanel>
              
-                    <ScrollViewer Grid.Column="1" Name="scrollViewer"
+                    <ScrollViewer Focusable="False" Grid.Column="1" Name="scrollViewer"
                       VerticalScrollBarVisibility="Disabled"
                       HorizontalScrollBarVisibility="Hidden"
                       Loaded="ImageListView_Loaded">
 
-                        <ItemsControl x:Name="imageListView"    Background="#fcfcf2"  ItemsSource="{Binding ImagesCollection}">
+                <ItemsControl Focusable="False" x:Name="imageListView"    Background="#fcfcf2"  ItemsSource="{Binding ImagesCollection}">
                             
                             <ItemsControl.ItemsPanel >
                                 <ItemsPanelTemplate>
@@ -157,10 +161,12 @@
                         </ItemsControl>
 
                     </ScrollViewer>
-
+            <StackPanel Grid.Column="2"  Margin="5,30,5,5">
             <Button FontFamily="Marlett" Content="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding ScrollRightCommand}" Height="50" Width="30" Margin="5">
 
-                </Button>
+            </Button>
+                <TextBlock Margin="5,0,0,0" Text="(Ctrl+R)" FontSize="9"></TextBlock>
+            </StackPanel>
           
         </Grid>
 

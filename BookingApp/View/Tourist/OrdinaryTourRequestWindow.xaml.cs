@@ -30,6 +30,14 @@ namespace BookingApp.View.Tourist
             DataContext = _ordinaryTourRequestViewModel;
         }
 
-       
+      /*  private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+            {
+                datePicker.IsDropDownOpen = true;
+                e.Handled = true; // Prevent other handlers from receiving the event
+            }
+        }*/
+
     }
 }

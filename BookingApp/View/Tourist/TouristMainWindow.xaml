@@ -36,6 +36,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+      
     </Window.Resources>
 
     <Window.InputBindings>
@@ -47,17 +48,23 @@
         <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
         <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
         <KeyBinding Key="R"  Modifiers="Ctrl" Command="{Binding ResetSearchParametersCommand}" />
+        <KeyBinding Command="{Binding OpenDropDownComboboxCommand}" Key="O" Modifiers="Control"/>
     </Window.InputBindings>
 
-    <Grid Background="#edebfc">
-
+    <Grid Background="{DynamicResource Background}">
+        
 
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Click="LightThemeClick" />
+                <MenuItem Click="DarkThemeClick" />
+            </ContextMenu>
+        </Grid.ContextMenu>
         <Menu DockPanel.Dock="Top" BorderThickness="1" >
 
 
@@ -105,7 +112,7 @@
                     <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
                 </MenuItem.Icon>
 
-                <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
+                <MenuItem  x:Name="Settings" Focusable="True" Command="{Binding ShowSettingsWindowCommand}" Header="Settings" Foreground="Black" >
                     <MenuItem.Icon>
                         <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
                     </MenuItem.Icon>
@@ -140,7 +147,7 @@
             </Border>
         </Popup>
         <Border Margin="10,10,10,0" Grid.Row="1" BorderBrush="#fa8ec4" CornerRadius="8" BorderThickness="3" Padding="10" >
-            <Grid Grid.Row="0"  Background="#fcfcf2" KeyboardNavigation.TabNavigation="Cycle" x:Name="myGrid">
+            <Grid Grid.Row="0"  Background="{DynamicResource Card}" KeyboardNavigation.TabNavigation="Cycle" x:Name="myGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
@@ -155,14 +162,14 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Margin="12,5,5,5" Grid.Row="0" FontWeight="Bold" Text="Country:" Foreground="Black" Grid.Column="0"></TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Black" Grid.Column="1">City:</TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Black"   Grid.Column="2">Duration:</TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Black"  Grid.Column="3">Language:</TextBlock>
-                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="Black"   Grid.Column="4">Number of people:</TextBlock>
+                <TextBlock Margin="12,5,5,5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Country:"  Grid.Column="0"></TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}" Grid.Column="1">City:</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"   Grid.Column="2">Duration:</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"  Grid.Column="3">Language:</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Foreground="{DynamicResource Text}"   Grid.Column="4">Number of people:</TextBlock>
 
 
-                <Button x:Name="refreshButton" Grid.Row="0" Grid.Column="5"  BorderBrush="Black" Background="Transparent" Width="70" Margin="35,0,150,32"    Command="{Binding ResetSearchParametersCommand}" Grid.RowSpan="2">
+                <Button x:Name="refreshButton" Grid.Row="0" Grid.Column="5"  BorderBrush="{DynamicResource Text}" Background="Transparent" Width="70" Margin="35,0,150,32"    Command="{Binding ResetSearchParametersCommand}" Grid.RowSpan="2">
                     <DockPanel>
                         <Image Source="../../Resources/Images/Tourist/refresh-2-16.png" Width="16" Height="14" />
                         <TextBlock Foreground="Black" Width="39">Refresh</TextBlock>
@@ -176,18 +183,18 @@
                 <TextBlock Margin="110,15,75,32" Grid.Column="5" Grid.Row="0" FontSize="8" Text="(Ctrl+R)" Width="70" Grid.RowSpan="2"  />
 
 
-                <TextBox Margin="12,5,5,5" Grid.Row="1" Grid.Column="0"   x:Name="searchCountryTextBox" Width="200"  Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Margin="12,5,5,5" Grid.Row="1" Grid.Column="0"   x:Name="searchCountryTextBox" Width="200" Foreground="{DynamicResource Text}" Text="{Binding SearchCountryInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                 <TextBox Margin="5" Grid.Row="1" Grid.Column="1"  x:Name="searchCityTextBox" Width="200"   Text="{Binding SearchCityInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"  x:Name="searchDurationTextBox" Width="80"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3" IsEditable="True" Foreground="Black" x:Name="languageComboBox" Width="130"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SearchLanguageInput}">
+                <TextBox Margin="5" Grid.Row="1" Grid.Column="2"   x:Name="searchDurationTextBox" Width="80"  Text="{Binding SearchDurationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox Margin="5" Grid.Row="1" Grid.Column="3"  IsEditable="True"  x:Name="languageComboBox" Width="130" IsDropDownOpen="{Binding IsDropDownComboboxOpenCommand}"  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" SelectedItem="{Binding SearchLanguageInput}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <xctk:IntegerUpDown  Margin="5,5,10,5" Grid.Row="1" Grid.Column="4" Width="130"  x:Name="searcmaxTouristNumberTextBox"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
-                <Button Margin="36,5,149,5" Grid.Row="1" Grid.Column="5" BorderBrush="Black"  Background="#f7459e"  x:Name="buttonSearch" Content="Search" Foreground="White" Width="70" Command="{Binding SearchCommand}"  IsEnabled="True"/>
+                <xctk:IntegerUpDown Foreground="{DynamicResource Text}" Margin="5,5,10,5" Grid.Row="1" Grid.Column="4" Width="130"  x:Name="searcmaxTouristNumberTextBox"  Text="{Binding SearchMaxTouristNumberInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
+                <Button Margin="36,5,149,5" Grid.Row="1" Grid.Column="5" BorderBrush="Black"  Background="{DynamicResource Button}"  x:Name="buttonSearch" Content="Search" Foreground="{DynamicResource ButtonText}" Width="70" Command="{Binding SearchCommand}"  IsEnabled="True"/>
                 <TextBlock Margin="30,15,-5,0" Grid.Row="1" Grid.Column="5" Text="(Press Enter)" FontSize="8"  Width="70" Grid.ColumnSpan="2" />
 
 
@@ -221,24 +228,33 @@
                         <StackPanel Background="#fcfcf2" Width="490"  Orientation="Horizontal"  Margin ="30,10,30,10">
                             <Image Source="{Binding Path=Images[0]}" Height="100" Width="110" Stretch="Fill" />
                             <StackPanel Margin="30,0,0,0">
+                                <StackPanel.Resources>
+                                   
+                                </StackPanel.Resources>
+
                                 <DockPanel>
 
-                                    <TextBlock FontWeight="Bold" Foreground="#f7459e" FontSize="15" Text="{Binding Name}" />
+                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Button}" FontSize="15" Text="{Binding Name}"  />
+                                    <!--<Image Margin="150,0,0,0" Source="../../Resources/Images/Tourist/star.png" >
+                                        <Image.Visibility>
+                                            <Binding Path="GuideId" Converter="{StaticResource GuideIdToSuperGuideConverter}" ConverterParameter="TrueToVisible" />
+                                        </Image.Visibility>
+                                    </Image>-->
                                 </DockPanel>
                                 <DockPanel Margin="0,10,0,0">
-                                    <TextBlock FontWeight="Bold" Text="Location: "  FontSize="12"/>
-                                    <TextBlock  FontSize="12" Text="{Binding LocationDTO}" />
+                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Location: "  FontSize="12"/>
+                                    <TextBlock  FontSize="12" Foreground="{DynamicResource Text}" Text="{Binding LocationDTO}" />
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBlock FontWeight="Bold" Text="Date: " FontSize="12" />
-                                    <TextBlock   FontSize="12" Text="{Binding BeginingTime}" />
+                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Date: " FontSize="12" />
+                                    <TextBlock   FontSize="12" Foreground="{DynamicResource Text}" Text="{Binding BeginingTime}" />
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBlock FontWeight="Bold" Text="Current capacity: "  FontSize="12"/>
-                                    <TextBlock  FontSize="12" Text="{Binding CurrentCapacity}" />
+                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Text}" Text="Current capacity: "  FontSize="12"/>
+                                    <TextBlock  FontSize="12" Foreground="{DynamicResource Text}" Text="{Binding CurrentCapacity}" />
                                 </DockPanel>
                                 <DockPanel Margin="33,10,0,0">
-                                    <TextBlock Text="(Press enter for more info)"  FontSize="11"/>
+                                    <TextBlock Text="(Press enter for more info)" Foreground="{DynamicResource Text}"  FontSize="11"/>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>

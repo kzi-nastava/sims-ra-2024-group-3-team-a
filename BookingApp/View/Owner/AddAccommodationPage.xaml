@@ -33,10 +33,6 @@
         <StackPanel x:Name="stackPanel" Grid.Row="1" Grid.ColumnSpan="2">
             <Label Foreground="#d4ff00" FontSize="27" HorizontalAlignment="Center" FontWeight="Bold" Content="New Accommodation"/>
             <Grid Margin="0,10,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -46,25 +42,91 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Name"/>
-                <TextBox x:Name="textBoxName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationDTO.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Name"/>
+                    <TextBox x:Name="textBoxName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
+                             Text="{Binding Path=AccommodationDTO.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2"  Text="{Binding ValidationErrors[Name], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
 
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Type</Label>
-                <ComboBox x:Name="comboBoxType" ItemsSource="{Binding AccommodationTypes}" SelectedItem="{Binding AccommodationDTO.Type, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Type</Label>
+                    <ComboBox x:Name="comboBoxType" ItemsSource="{Binding AccommodationTypes}" SelectedItem="{Binding AccommodationDTO.Type, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
 
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Capacity</Label>
+                    <TextBox x:Name="textBoxCapacity" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
+                             Text="{Binding Path=AccommodationDTO.Capacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate />
+                        </Validation.ErrorTemplate>
+                    </TextBox>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ValidationErrors[Capacity], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
 
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Capacity</Label>
-                <TextBox x:Name="textBoxCapacity" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationDTO.Capacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Min Days</Label>
+                    <TextBox x:Name="textBoxMinDaysReservation" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
+                             Text="{Binding Path=AccommodationDTO.MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate />
+                        </Validation.ErrorTemplate>
+                    </TextBox>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ValidationErrors[MinDaysReservation], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
 
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center">Min Days</Label>
-                <TextBox x:Name="textBoxMinDaysReservation" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationDTO.MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
-
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center">Cancellation</Label>
-                <TextBox x:Name="textBoxCancellationPeriod" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationDTO.CancellationPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Cancellation</Label>
+                    <TextBox x:Name="textBoxCancellationPeriod" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
+                             Text="{Binding Path=AccommodationDTO.CancellationPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate />
+                        </Validation.ErrorTemplate>
+                    </TextBox>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ValidationErrors[CancellationPeriod], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
             </Grid>
 
             <Label Foreground="#d4ff00" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Content="Place"/>
@@ -78,13 +140,35 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Country"/>
-                <TextBox x:Name="textBoxCountry" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationDTO.PlaceDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Country"/>
+                    <TextBox x:Name="textBoxCountry" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
+                             Text="{Binding Path=AccommodationDTO.PlaceDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ValidationErrors[Country], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
 
-                <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="City"/>
-                <TextBox x:Name="textBoxCity" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
-                         Text="{Binding Path=AccommodationDTO.PlaceDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="textBox_TextChanged"/>
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="CadetBlue" FontSize="15" FontWeight="Bold" Foreground="#d4ff00" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="City"/>
+                    <TextBox x:Name="textBoxCity" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Grid.ColumnSpan="2"
+                             Text="{Binding Path=AccommodationDTO.PlaceDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ValidationErrors[City], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+                </Grid>
 
             </Grid>
 

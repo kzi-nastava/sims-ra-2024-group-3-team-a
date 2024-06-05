@@ -32,7 +32,7 @@ namespace BookingApp.ViewModel.Tourist
         private TouristDTO _selectedTouristDTO = null;
 
         private Languages _selectedLanguage;
-
+        
         private string comboBoxInput { get; set; }
 
         private string beginDateInput { get; set; }
@@ -46,12 +46,15 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _removeTouristCommand;
         private RelayCommand _confirmTourRequestCommand;
         private RelayCommand _closeWindowCommand;
+        private RelayCommand _validateSelf2Command;
         public RelayCommand LostFocusCommand { get; private set; }
         public RelayCommand LostFocusBeginDateCommand { get; private set; }
         public RelayCommand LostFocusEndDateCommand { get; private set; }
         private LocationDTO _locationDTO;
         public Action CloseAction { get; set; }
-
+        public RelayCommand OpenDatePickerCommand { get; private set; }
+        public RelayCommand OpenDatePickerFinalCommand { get; private set; }
+        public RelayCommand OpenDropDownComboboxCommand { get; private set; }
         public OrdinaryTourRequestViewModel(UserDTO loggedInUser, int complexTourRequestId)
         {
             _userDTO = loggedInUser;
@@ -80,7 +83,10 @@ namespace BookingApp.ViewModel.Tourist
             LostFocusCommand = new RelayCommand(OnLostFocus);
             LostFocusBeginDateCommand = new RelayCommand(OnLostFocusBeginDate);
             LostFocusEndDateCommand = new RelayCommand(OnLostFocusEndDate);
-
+            _validateSelf2Command = new RelayCommand(ValidateSelf2);
+            OpenDatePickerCommand = new RelayCommand(OpenDatePicker);
+            OpenDatePickerFinalCommand = new RelayCommand(OpenDatePicker);
+            OpenDropDownComboboxCommand = new RelayCommand(OpenCombobox);
         }
 
         public OrdinaryTourRequestDTO OrdinaryTourRequestDTO
@@ -195,6 +201,8 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+
+       
         public IEnumerable<Languages> Languages
         {
             get
@@ -213,6 +221,26 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        private DateTime _start;
+        public DateTime Start
+        {
+            get { return _start; }
+            set
+            {
+                _start = value;
+                OnPropertyChanged();
+            }
+        }
+        private DateTime _end;
+        public DateTime End
+        {
+            get { return _end; }
+            set
+            {
+                _end = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void ConfirmTourRequest()
         {
@@ -221,6 +249,8 @@ namespace BookingApp.ViewModel.Tourist
             if(IsValid)
             {
                 _ordinaryTourRequestDTO.TouristsDTO = TouristsDTO.ToList();
+                _ordinaryTourRequestDTO.BeginDate = Start;
+                _ordinaryTourRequestDTO.EndDate = End;
                 _ordinaryTourRequestDTO.UserId = _userDTO.Id;
                 _ordinaryTourRequestDTO.NumberOfTourists = TouristsDTO.Count;
                 _ordinaryTourRequestDTO.RequestSentDate = DateTime.Now;
@@ -231,11 +261,30 @@ namespace BookingApp.ViewModel.Tourist
          
             
         }
-
+        public RelayCommand ValidateSelf2Command
+        {
+            get
+            {
+                return _validateSelf2Command;
+            }
+            set
+            {
+                _validateSelf2Command = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void AddTourist()
         {
-            Validate1();
+            if (ValidationErrors["Country"] != "" || ValidationErrors["City"]!="")
+            {
+                Validate12();
+            }
+            else
+            {
+                Validate1();
+            }
+          
             if(IsValid)
             {
                 TouristsDTO.Add(new TouristDTO(_touristDTO));
@@ -295,40 +344,15 @@ namespace BookingApp.ViewModel.Tourist
             {
                 ValidationErrors["BeginDate"] = "Begin date i required.";
             }
-
-            if(_ordinaryTourRequestDTO.BeginDate>_ordinaryTourRequestDTO.EndDate)
-            {
-                ValidationErrors["BeginDate"] = "Incorrect interval: begin date must come before end date";
-            }
-
-            if (string.IsNullOrWhiteSpace(_ordinaryTourRequestDTO.EndDate.ToString()))
-            {
-                ValidationErrors["EndDate"] = "End date i required.";
-            }
-
-            if (_ordinaryTourRequestDTO.BeginDate > _ordinaryTourRequestDTO.EndDate)
-            {
-                ValidationErrors["EndDate"] = "Incorrect interval: end date must come after before date";
-            }
-            Languages selectedLanguage;
+           
+           /* Languages selectedLanguage;
             bool isValidLanguage = Enum.TryParse(comboBoxInput, out selectedLanguage);
 
             if (!isValidLanguage || !Languages.Contains(selectedLanguage))
             {
                 ValidationErrors["Language"] = "Please select one of the options";
-            }
-            DateTime beginDate;
-            bool isValidBeginDate = Enum.TryParse(endDateInput, out beginDate);
-            if (!isValidBeginDate)
-            {
-                ValidationErrors["BeginDate"] = "BeginDate is not in correct format";
-            }
-            DateTime endDate;
-            bool isValidEndDate = Enum.TryParse(endDateInput, out endDate);
-            if (!isValidEndDate)
-            {
-                ValidationErrors["EndDate"] = "EndDate is not in correct format";
-            }
+            }*/
+           
 
 
         }
@@ -381,6 +405,53 @@ namespace BookingApp.ViewModel.Tourist
                     OnPropertyChanged(nameof(UserEndDateInput));
                 }
             }
+        }
+        private bool _isDatePickerFinalOpen;
+        public bool IsDatePickerFinalOpen
+        {
+            get { return _isDatePickerFinalOpen; }
+            set {
+                if (_isDatePickerFinalOpen != value)
+                {
+                    _isDatePickerFinalOpen = value;
+                    OnPropertyChanged(nameof(IsDatePickerFinalOpen));
+                }
+            }
+        }
+        private bool _isDropDownComboboxOpenCommand;
+        public bool IsDropDownComboboxOpenCommand
+        {
+            get
+            {
+                return _isDropDownComboboxOpenCommand;
+            }
+            set
+            {
+                _isDropDownComboboxOpenCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _isDatePickerOpen;
+        public bool IsDatePickerOpen
+        {
+            get { return _isDatePickerOpen; }
+            set
+            {
+                if (_isDatePickerOpen != value)
+                {
+                    _isDatePickerOpen = value;
+                    OnPropertyChanged(nameof(IsDatePickerOpen));
+                }
+            }
+        }
+
+        private void OpenDatePicker()
+        {
+            IsDatePickerOpen = true;
+        }
+        private void OpenCombobox()
+        {
+            IsDropDownComboboxOpenCommand = true;
         }
 
         private void OnLostFocusBeginDate()

@@ -1,0 +1,25 @@
+﻿<Page x:Class="BookingApp.View.Owner.WizardAndHelp.AccommodationHelpPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:BookingApp.View.Owner.WizardAndHelp"
+      mc:Ignorable="d"
+      d:DesignHeight="750" d:DesignWidth="430"
+      Title="AccommodationHelpPage">
+
+    <Grid>
+        <Image Source="{Binding Path=CurrentImage}" Height="750" Width="430"></Image>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,65">
+            <Label FontSize="32" Content="{Binding Path=CurrentIndexForShow}"/>
+            <Label FontSize="32">/</Label>
+            <Label FontSize="32">5</Label>
+        </StackPanel>
+        <Button Background="Transparent" Command="{Binding Path=NextImageCommand}" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="35">
+            <Image Panel.ZIndex="1" Source="../../../Resources/Images/Owner/NextArrow.png" Height="100" Width="100"></Image>
+        </Button>
+        <Button Background="Transparent" Command="{Binding Path=PreviousImageCommand}" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="35">
+            <Image Panel.ZIndex="1" Source="../../../Resources/Images/Owner/PreviousArrow.png" Height="100" Width="100"></Image>
+        </Button>
+    </Grid>
+</Page>

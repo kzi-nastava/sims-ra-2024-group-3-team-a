@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BookingApp.Service
@@ -19,12 +20,14 @@ namespace BookingApp.Service
         private TourReservationService _tourReservationService;
         private MessageRepository _messageRepository;
         private VoucherService _voucherService;
+        private UserService _userService;
 
         public TourService(ITourRepository tourRepository, IUserRepository userRepository, ITouristRepository touristRepository, ITourReservationRepository tourReservationRepository, ITourReviewRepository tourReviewRepository, IVoucherRepository voucherRepository) 
         {
             _tourRepository = tourRepository;
             _tourReservationService = new TourReservationService(tourReservationRepository, userRepository, touristRepository, tourReviewRepository, voucherRepository);
             _voucherService = new VoucherService(voucherRepository);
+            _userService = new UserService(userRepository);
         }
 
         public List<Tour> GetAll() 
@@ -55,10 +58,10 @@ namespace BookingApp.Service
         public void CancelUpcoming(User guide)
         {
             foreach (Tour tour in GetUpcoming(guide))
-            {
+            {              
+                GiveVouchers(tour);
                 tour.CurrentKeyPoint = "canceled";
                 Update(tour);
-                GiveVouchers(tour);
             }
 
         }
@@ -246,7 +249,7 @@ namespace BookingApp.Service
             int i=0;
             for ( i = tourReservationIndex; i < tourReservations.Count; i++)
                 {
-                    if(count!=4)
+                    if(count!=5)
                     {
                         tourists = tourReservations[i].Tourists;
                         if (tourists[0].JoiningKeyPoint != "")
@@ -255,12 +258,13 @@ namespace BookingApp.Service
 
                             tour = FindTourForReservation(tourReservations[i]);
                             tourDate = tour.BeginingTime;
-                            if (tourDate < endDate)
+                            if (tourDate <= endDate)
                             {
                                 count++;
                             }
                             else
                             {
+                                i = i - 1;
                                 return i;
                             }
 
@@ -269,12 +273,18 @@ namespace BookingApp.Service
                     else
                     {
                         MakeVoucher(tour.Id, userId);
-                        return i++;
+                    i = i - 1;
+                    return i;
                     }
                 }
-            MakeVoucher(tour.Id, userId);
-            return i++;
-
+            if(count == 5) 
+            {
+                MakeVoucher(tour.Id, userId);
+                i = i - 1;
+                return i;
+            }
+            i = i - 1;
+            return i;
         }
         public void MakeVoucher(int tourId, int userId)
         {
@@ -294,9 +304,14 @@ namespace BookingApp.Service
         }
         public bool DoesVoucherAllreadyExists(Voucher voucher, int userId)
         {
+           
             foreach(Voucher v in _voucherService.GetAllForUser(userId))
             {
-                if (v.ExpireDate == voucher.ExpireDate)
+                if(_voucherService.GetAllForUser(userId).Count==0)
+                {
+                    return false;
+                }
+                if (v.TourId == voucher.TourId)
                     return true;
             }
             return false;
@@ -321,6 +336,17 @@ namespace BookingApp.Service
             return _tourRepository.GetExistingLanguages();
         }
 
+        public List<Tour> GetAllForTourist()
+        {
+            // Get all tours from the repository
+            List<Tour> allTours = _tourRepository.GetAll();
+            List<User> allUser = _userService.GetAll();
+            // Sort the tours based on whether the guide is super or not
+            List<Tour> sortedTours = allTours
+          .OrderByDescending(tour => allUser.FirstOrDefault(guide => guide.Id == tour.GuideId)?.IsSuper ?? false)
+          .ToList();
+           return sortedTours;
+        }
 
     }
 }

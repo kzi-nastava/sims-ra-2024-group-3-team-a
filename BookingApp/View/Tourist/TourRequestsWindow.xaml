@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
         xmlns:model="clr-namespace:BookingApp.Model.Enums"
         mc:Ignorable="d"
@@ -97,7 +98,7 @@
             </Menu>
         </Grid>
         <TabControl Background="#edebfc" Grid.Row="1" Margin="0,10,0,0" Grid.RowSpan="2" >
-            <TabItem Header="Ordinary Tour Requests">
+            <TabItem Header="Ordinary Tour Requests(Ctrl+Tab)">
 
 
                 <Border  BorderThickness="3" BorderBrush="#fa8ec4" CornerRadius="4" Margin="30,20,30,20">
@@ -118,7 +119,7 @@
                                                             <ColumnDefinition Width="auto"/>
                                                             <ColumnDefinition Width="auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <StackPanel  Width="700"  Orientation="Horizontal"  Margin =" 10,10,0,10" Grid.Column="0">
+                                                        <StackPanel  Width="800"  Orientation="Horizontal"  Margin =" 10,10,0,10" Grid.Column="0">
                                                             <Image Source="../../Resources/Images/Tourist/request.png" Height="100" Width="110" Stretch="Fill" />
                                                             <StackPanel Margin="30,0,0,0">
                                                                 <DockPanel Margin="5">
@@ -151,7 +152,7 @@
                 </Border>
 
             </TabItem>
-            <TabItem  Header="Ordinary Tour Requests Statistics">
+            <TabItem  Header="Ordinary Tour Requests Statistics(Ctrl+Tab)">
                 <Border Background="#edebfc">
                     <Grid Background="#edebfc" >
                         <Grid.ColumnDefinitions>
@@ -310,7 +311,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                    <lvc:CartesianChart Series="{Binding HistogramData}" Width="550" Height="350">
+                                    <lvc:CartesianChart Series="{Binding HistogramData}"  Width="550" LegendLocation="Right" Height="350">
                                         <lvc:CartesianChart.AxisX>
                                             <lvc:Axis Labels="{Binding Labels}" Foreground="Black" FontSize="15"/>
                                         </lvc:CartesianChart.AxisX>
@@ -332,7 +333,7 @@
                                         </Style>
 
                                     </Grid.Style>
-                                    <lvc:CartesianChart Series="{Binding HistogramDataForLocation}" Width="550" Height="350">
+                                    <lvc:CartesianChart Series="{Binding HistogramDataForLocation}" LegendLocation="Right" Width="550" Height="350">
                                         <lvc:CartesianChart.AxisX>
                                             <lvc:Axis Labels="{Binding LocationLabels}" Foreground="Black" FontSize="15"/>
                                         </lvc:CartesianChart.AxisX>
@@ -406,7 +407,7 @@
 
             </TabItem>
 
-            <TabItem Header="Complex Tour Requests">
+            <TabItem Header="Complex Tour Requests(Ctrl+Tab)">
 
 
                 <Border  BorderThickness="3" BorderBrush="#fa8ec4"   CornerRadius="4" Margin="30,20,30,20">
@@ -414,9 +415,9 @@
                         <Grid Grid.Column="0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel Grid.Row="1">
-                                    <ListView x:Name="complexToursView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Dictionary}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                    <ItemsControl x:Name="complexToursView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Dictionary}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                                     
-                                        <ListView.ItemTemplate>
+                                        <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 
                                                 <Border BorderThickness="2" Width="900"   BorderBrush="LightGray" CornerRadius="8" Background="#fcfcf2" Margin="10,10,5,10">
@@ -435,7 +436,7 @@
                                                         <Border Grid.Row="1" BorderThickness="2" Background="White" MaxHeight="300"  BorderBrush="LightGray"  CornerRadius="8" Margin="10,0,10,10">
                                                             <Grid>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
-                                                            <ListView Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxWidth="850"  ItemsSource="{Binding Value}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                                                    <ListView x:Name="smallerListView" SelectedItem="{Binding SelectedTourDTO}"  Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxWidth="850" ItemsSource="{Binding Value}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                                                                 
                                                                 
                                                                 <ListView.ItemsPanel>
@@ -490,8 +491,10 @@
                                                                                                 </DockPanel>
                                                                                 </StackPanel>
                                                                                 </StackPanel>
-                                                                                <Button Grid.Column="1" BorderThickness="2" Background="#fae8f1" FontWeight="Bold" Foreground="Black" Command="{Binding DataContext.ShowOrdinaryTourRequestInfoWindowCommand, RelativeSource={RelativeSource AncestorType=ListView}}" Content="More Info" Margin="0,10,60,10" Width="100" Height="60"/>
-                                                                                <TextBlock Grid.Column="1" Text="(Press Enter)" Margin="0,95,40,10"></TextBlock>
+                                                                                        <Button Grid.Column="1" BorderThickness="2" Background="#fae8f1" FontWeight="Bold" Foreground="Black" Command="{Binding Path=DataContext.ShowOrdinaryTourRequestInfoWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Content="More Info" Margin="0,10,60,10" Width="100" Height="60">
+                                                                                          
+                                                                                        </Button>
+                                                                                        <TextBlock Grid.Column="1" Text="(Press Enter)" Margin="0,95,40,10"></TextBlock>
                                                                             </Grid>
                                                                           
                                                                         </Border>
@@ -509,8 +512,8 @@
                                                 </Border>
                                             
                                             </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
                             </ScrollViewer>
                         </Grid>
