@@ -17,6 +17,9 @@ using BookingApp.View;
 using BookingApp.View.Guide;
 using System.Collections;
 using BookingApp.Model;
+using Microsoft.Win32;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BookingApp.ViewModel.Guide
 {
@@ -43,6 +46,8 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _showTourRequestStatisticsCommand;
         private RelayCommand _showTourStatisticsCommand;
         private RelayCommand _addNewTourCommand;
+        private readonly RequestReportService _reportService;
+        public RelayCommand GenerateReportCommand { get; }
         public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> keyValuePairs { get; set; }
         public TourRequestViewModel(UserDTO user)
         {
@@ -63,7 +68,15 @@ namespace BookingApp.ViewModel.Guide
             _tourRequestService = new OrdinaryTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
             _complexRequestService = new ComplexTourRequestService(accommodationReservationChangeRequestRepository, accommodationReservationRepository, accommodationRepository, requestRepository, tourRepository, messageRepository, touristRepository, userRepository, tourReservationRepository, tourReviewRepository, voucherRepository, complexTourRequestRepository);
             List<OrdinaryTourRequestDTO> requestsDTO = _tourRequestService.GetOnWait().Select(request => new OrdinaryTourRequestDTO(request)).ToList();
-            _requestsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(requestsDTO);
+            List<OrdinaryTourRequestDTO> requests = new List<OrdinaryTourRequestDTO>();
+            foreach (OrdinaryTourRequestDTO r in requestsDTO)
+            {
+                if(r.ComplexTourRequestId == 0 || r.ComplexTourRequestId == -1 || r.ComplexTourRequestId==null)
+                {
+                    requests.Add(r);
+                }
+            }
+            _requestsDTO = new ObservableCollection<OrdinaryTourRequestDTO>(requests);
             List<ComplexTourRequestDTO> complexDTO = _complexRequestService.GetAll().Select(request => new ComplexTourRequestDTO(request)).ToList();
             _complexRequestsDTO = new ObservableCollection<ComplexTourRequestDTO>(complexDTO);
             _filteredRequestsDTO = _requestsDTO;
@@ -92,9 +105,25 @@ namespace BookingApp.ViewModel.Guide
             _filteredDictionary = _dictionary;
             _searchEndDateInput = DateTime.Now;
             _searchBeginDateInput = DateTime.Now;
+            _reportService = new RequestReportService();
+            GenerateReportCommand = new RelayCommand(GenerateReport);
 
 
 
+        }
+        private void GenerateReport()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "PDF Files|*.pdf",
+                Title = "Save Tour Requests Report"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                _reportService.GenerateTourRequestReport(_tourRequestService.GetAll().Select(request => new OrdinaryTourRequestDTO(request)).ToList(), saveFileDialog.FileName);
+                MessageBox.Show("Uspjesno generisan izvestaj!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
         public RelayCommand AddNewTourCommand
         {

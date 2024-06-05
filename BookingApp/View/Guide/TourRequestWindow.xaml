@@ -111,6 +111,7 @@
                 <Image Source="../../Resources/Images/Guide/refresh.png" Width="30" Height="25" />
             </Button>
             <Button x:Name="ButtonSearch" Style="{StaticResource OvalButtonStyle}"   Grid.Column="11" Width="70" Height="20 "  Content="PRETRAŽI" Command="{Binding SearchCommand}" HorizontalAlignment="Center"/>
+            <Button Content="PDF" Command="{Binding GenerateReportCommand}" Style="{StaticResource OvalButtonStyle}" Grid.Row="6"   Width="70" Height="20 " Grid.Column="11"  Background="Beige" VerticalAlignment="Bottom"/>
         </Grid>
         <TabControl x:Name="TabControl" Grid.Row="3" Grid.ColumnSpan="6" Grid.RowSpan="2">
             <TabItem Header="Prosti zahtjevi" >
