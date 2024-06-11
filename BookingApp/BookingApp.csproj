@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Images\Guide\Video\**" />
     <Compile Remove="WPF\**" />
+    <EmbeddedResource Remove="Resources\Images\Guide\Video\**" />
     <EmbeddedResource Remove="WPF\**" />
+    <None Remove="Resources\Images\Guide\Video\**" />
     <None Remove="WPF\**" />
+    <Page Remove="Resources\Images\Guide\Video\**" />
     <Page Remove="WPF\**" />
   </ItemGroup>
 
@@ -315,11 +319,13 @@
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="12.17.0" />
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
+    <PackageReference Include="GleamTech.VideoUltimate" Version="3.8.8" />
     <PackageReference Include="itext7" Version="8.0.4" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.4" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    <PackageReference Include="SharpMp4" Version="0.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     <PackageReference Include="System.IO" Version="4.3.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />

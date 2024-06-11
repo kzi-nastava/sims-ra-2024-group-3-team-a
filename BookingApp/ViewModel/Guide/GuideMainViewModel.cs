@@ -41,6 +41,7 @@ namespace BookingApp.ViewModel.Guide
         private RelayCommand _quitCommand;
         private RelayCommand _help;
         private RelayCommand _showLanguagesCommand;
+        private RelayCommand _showtutCommand;
         public GuideMainViewModel(User guide)
         {
            
@@ -70,6 +71,7 @@ namespace BookingApp.ViewModel.Guide
             _help = new RelayCommand(Help);
             _shortcuts = new RelayCommand(Shortcuts);
             _showLanguagesCommand = new RelayCommand(ShowLanguages);
+            _showtutCommand = new RelayCommand(ShowTut);
             if (_tourService.GetMostVisitedTour() != null)
             {
                 _mostVisitedTourDTO = new TourDTO(_tourService.GetMostVisitedTour());
@@ -206,6 +208,8 @@ namespace BookingApp.ViewModel.Guide
                 }
             }
             _userService.Delete(_loggedInGuide.ToUser());
+            MessageBox.Show("Uspjesno ste dali otkaz", "Obavjestenje", MessageBoxButton.OK, MessageBoxImage.Information);
+
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             GuideMainWindow.GetInstance().Close();
@@ -221,7 +225,7 @@ namespace BookingApp.ViewModel.Guide
                 }
 
                 ActiveTourWindow tourDetailsWindow = new ActiveTourWindow(_selectedTourDTO, _doesActiveTourExist, _loggedInGuide);
-       
+               
                 tourDetailsWindow.Show();
                 _tourService.Update(_selectedTourDTO.ToTourAllParam());
                 GuideMainWindow.GetInstance().Close();          
@@ -247,6 +251,20 @@ namespace BookingApp.ViewModel.Guide
             allToursView.Show();
             GuideMainWindow.GetInstance().Close();
         }
+        public RelayCommand ShowTutCommand
+        {
+            get { return _showtutCommand; }
+            set
+            {
+                _showtutCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void ShowTut()
+        {
+            Tutorijal tut = new Tutorijal();
+            tut.Show();
+        }
         public RelayCommand ShowTourStatisticsCommand
         {
             get { return _showTourStatisticsCommand; }
@@ -260,6 +278,7 @@ namespace BookingApp.ViewModel.Guide
         {
             TourStatisticsWindow tourStatistics = new TourStatisticsWindow(_loggedInGuide);
             tourStatistics.Show();
+            GuideMainWindow.GetInstance().Close();
         }
         public RelayCommand ShowTourDetailsCommand
         {

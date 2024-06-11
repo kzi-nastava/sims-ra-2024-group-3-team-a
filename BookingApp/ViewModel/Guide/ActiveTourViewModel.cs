@@ -119,7 +119,7 @@ namespace BookingApp.ViewModel.Guide
             point.IsCurrent = true;
             point.HasPassed = true;
             _keyPointsService.Update(point.ToKeyPoint());
-            if (point.Type == Model.Enums.KeyPointsType.Ending)
+           /* if (point.Type == Model.Enums.KeyPointsType.Ending)
             {
                 _tourDTO.CurrentKeyPoint = "finished";
                 _tourDTO.IsActive = false;
@@ -129,13 +129,12 @@ namespace BookingApp.ViewModel.Guide
                 {
                     ShowTourReviewsWindow();
                 }
-            }
-            else
-            {
+            }*/
+
                 _tourDTO.CurrentKeyPoint = point.Name;
                 _tourDTO.IsActive = true;
                 _tourService.Update(_tourDTO.ToTourAllParam());
-            }
+
         }
         public RelayCommand ShowTourDetailsCommand
         {
@@ -238,7 +237,7 @@ namespace BookingApp.ViewModel.Guide
             }
             if (selectedTouristDTO.JoiningKeyPoint != string.Empty)
             {
-                MessageBox.Show("This tourist has already joined the tour", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Ovaj turista se vec pridruzio turi", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             

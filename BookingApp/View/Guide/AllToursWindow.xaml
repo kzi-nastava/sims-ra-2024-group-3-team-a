@@ -67,11 +67,11 @@
                 <ColumnDefinition Width="37*"/>
                 <ColumnDefinition Width="229*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
+            <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
                     <Hyperlink Command="{Binding ShowMainWindowCommand}">
                         <Run Text="Početna "/>
                     </Hyperlink> > Sve ture
-            </TextBlock>
+            </TextBlock>-->
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Height="45">
             <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="25"  Content="SVE TURE"  FontStretch="Medium" />
@@ -217,23 +217,8 @@
             
         </Grid>
         <Grid Grid.Row="6" Grid.Column="5">
-           
-            <Button Width="20" Height="20" Command="{Binding Helps}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse Fill="White"/>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Button.Template>
-                <Image Source="/BookingApp;component/Resources/Images/Guide/question.jpg" Width="15" Height="15" Stretch="Uniform"/>
-            </Button>
-            
-        </Grid>
-        <Grid Grid.Row="7" Grid.Column="4">
-            <TextBlock>Vodič:</TextBlock>
-            <TextBlock Text="{Binding Path= User.Username}" TextAlignment="Right"></TextBlock>
+
+
         </Grid>
 
     </Grid>
