@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:BookingApp.View.Guide"
-        Title="" Height="380" Width="550" ResizeMode="NoResize">
+        Title="" Height="450" Width="550" ResizeMode="NoResize">
     <Grid  Background="AntiqueWhite" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Label FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  Content="STATISTIKA O TURISTIMA"  FontStretch="Medium" Height="45" VerticalAlignment="Top" />
-                <TextBlock Text="{Binding Tour.Name}" FontSize="20" HorizontalAlignment="Center" Margin="50"></TextBlock>
+            <TextBlock Text="{Binding Tour.Name}" FontSize="20" HorizontalAlignment="Center" Margin="50"></TextBlock>
         </Grid>
         <Grid Grid.Row="2" >
             <ScrollViewer>

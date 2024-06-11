@@ -13,13 +13,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Grid.ColumnSpan="2" >
-                    <Hyperlink Command="{Binding ShowMainWindowCommand}">
-                        <Run Text="Početna "/>
-                    </Hyperlink> > <Hyperlink Command="{Binding ShowMainWindowCommand}">
-                        <Run Text="Statistika tura "/>
-                    </Hyperlink> > Recenzije
-        </TextBlock>
         <Button Width="20" Height="20" Command="{Binding Helps}" HorizontalAlignment="Right">
             <Button.Template>
                 <ControlTemplate TargetType="Button">

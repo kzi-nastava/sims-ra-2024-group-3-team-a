@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace BookingApp.ViewModel.Guide
 {
-    public class MostWantedLanguageViewModel : ViewModel
+    public class MostWantedLanguageViewModel : Validation.ValidationBase
     {
         private KeyPointService _keyPointService;
         private TourService _tourService;
@@ -242,29 +243,33 @@ namespace BookingApp.ViewModel.Guide
         }
         private void Submit()
         {
-            string[] tourKeyPoints = _keyPointString.Split(',');
 
-            if (tourKeyPoints.Length < 2)
-            {
-                MessageBox.Show("At least two key points needed (beginning and ending)");
-                return;
-            }
             _tourDTO.Images = _images;
             _tourDTO.GuideId = _loggedGuide.Id;
             _tourDTO.Language = _mostWantedLanguage;
+            Validate1();
+
             foreach (var date in _dates)
             {
                 TourDTO tourDTO = new TourDTO(_tourDTO);
                 tourDTO.BeginingTime = date;
                 tourDTO.Images = _images;
-                tourDTO.MadeFromStatistics = true;
                 tourDTO.Language = _mostWantedLanguage;
-                _tourDTO = new TourDTO(_tourService.Save(tourDTO.ToTourFromStatistics()));
-                SetKeyPoints(tourKeyPoints);
-            }
 
-         
+                Validate1();
+
+                if (IsValid)
+                {
+                    string[] tourKeyPoints = _keyPointString.Split(',');
+                    _tourDTO = new TourDTO(_tourService.Save(tourDTO.ToTourAllParam()));
+                    SetKeyPoints(tourKeyPoints);
+                }
+            }
         }
+    
+
+
+    
 
         public Languages MostWantedLanguage
         {
@@ -312,6 +317,56 @@ namespace BookingApp.ViewModel.Guide
                 }
                 count++;
             }
+        }
+        protected override void ValidateSelf1()
+        {
+            if (string.IsNullOrWhiteSpace(_tourDTO.LocationDTO.Country))
+            {
+                ValidationErrors["Country"] = "*Neophodno je unijeti drzavu";
+            }
+
+            if (string.IsNullOrWhiteSpace(_tourDTO.Name))
+            {
+                ValidationErrors["Name"] = "*Neophodno je unijeti ime";
+            }
+            else if (_keyPointString.Split(',').Length < 2)
+            {
+                ValidationErrors["KeyPoints"] = "Neophodno je unijeti bar dvije kljucne tacke";
+            }
+            if (_dates.Count == 0)
+            {
+                ValidationErrors["Date"] = "*Neophodno je unijeti bar jedan datum";
+            }
+
+            if (string.IsNullOrWhiteSpace(_tourDTO.LocationDTO.City))
+            {
+                ValidationErrors["City"] = "*Neophodno je unijeti grad";
+            }
+            else if (!Regex.IsMatch(_tourDTO.LocationDTO.City, @"^[a-zA-Z]+$"))
+            {
+                ValidationErrors["City"] = "*Grad mora sadrzati samo slova";
+
+            }
+            if (!int.TryParse(_tourDTO.MaxTouristNumber.ToString(), out int capacity) || capacity <= 0)
+            {
+                ValidationErrors["MaxTouristNumber"] = "*Unesite validan broj turista";
+            }
+            if (string.IsNullOrWhiteSpace(_keyPointString))
+            {
+                ValidationErrors["KeyPoints"] = "*Neophodno je unijeti kljucne tacke";
+            }
+            if (!int.TryParse(_tourDTO.Duration.ToString(), out int duration) || duration <= 0)
+            {
+                ValidationErrors["Duration"] = "*Unesite validan broj za trajanje";
+            }
+
+
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+
+        protected override void ValidateSelf2()
+        {
+            throw new NotImplementedException();
         }
     }
 }

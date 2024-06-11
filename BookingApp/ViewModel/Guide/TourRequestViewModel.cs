@@ -103,8 +103,6 @@ namespace BookingApp.ViewModel.Guide
             }
             _dictionary = MakeDictionary();
             _filteredDictionary = _dictionary;
-            _searchEndDateInput = DateTime.Now;
-            _searchBeginDateInput = DateTime.Now;
             _reportService = new RequestReportService();
             GenerateReportCommand = new RelayCommand(GenerateReport);
 
@@ -518,8 +516,8 @@ namespace BookingApp.ViewModel.Guide
             SearchTouristNumberInput = string.Empty;
             TourRequestWindow.GetInstance().datePicker.SelectedDate = null;
             TourRequestWindow.GetInstance().datePicker2.SelectedDate = null;
-            SearchEndDateInput = DateTime.Now;
-            SearchBeginDateInput = DateTime.Now;
+            SearchEndDateInput = default;
+            SearchBeginDateInput = default;
             Search();
 
         }

@@ -61,7 +61,7 @@
             <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7">
                 <MenuItem Header="Pomoć">
                     <MenuItem Header="Prečice" Command="{Binding ShortcutsCommand}"/>
-                    <MenuItem Header="Video tutorijal"/>
+                    <MenuItem Header="Video tutorijal" Command="{Binding ShowTutCommand}"/>
                     <MenuItem Header="Upute" Command="{Binding HelpCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Statistike" Command="{Binding ShowTourStatisticsCommand}" />
