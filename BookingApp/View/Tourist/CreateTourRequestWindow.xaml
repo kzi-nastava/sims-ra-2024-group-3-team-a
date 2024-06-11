@@ -1,0 +1,119 @@
+﻿<Window x:Class="BookingApp.View.Tourist.CreateTourRequestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        xmlns:ns="clr-namespace:BookingApp.Localization"
+        mc:Ignorable="d"
+        Title="CreateTourRequestWindow" Height="500" Width="1035">
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SearchCommand}" />
+        <KeyBinding Key="F1"  />
+        <KeyBinding Key="F2"  Command="{Binding  ShowMyToursWindowCommand}" />
+        <KeyBinding Key="F5"  Command="{Binding  ShowFinishedToursWindowCommand}" />
+        <KeyBinding Key="F6"  Command="{Binding  ShowVoucherWindowCommand}" />
+        <KeyBinding Key="F7"  Command="{Binding  ShowInboxWindowCommand}" />
+        <KeyBinding Key="F8"  Command="{Binding  LogOutCommand}" />
+        <KeyBinding Key="R"  Modifiers="Ctrl" Command="{Binding ResetSearchParametersCommand}" />
+        <KeyBinding Key="Esc"   Command="{Binding CloseWindowCommand}"/>
+    </Window.InputBindings>
+    <Grid Background="{DynamicResource Background}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Grid.Row="0" Margin="30,10,0,0" FontSize="30" FontWeight="Bold" Text="{ns:Loc Create Tour Request}"></TextBlock>
+                <TextBlock Margin="250,20,0,0" FontSize="20" Text="{ns:Loc Please choose a type of request You want to make:}"></TextBlock>
+            </StackPanel>
+
+            
+            <Border Padding="10" Grid.Row="3" Margin="30,20,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+
+                    </Grid.RowDefinitions>
+                    
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                          
+                        <Border BorderBrush="{DynamicResource Border}" CornerRadius="2" Width="700" BorderThickness="2" Grid.Row="0" Margin="104,0,131,0">
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Background" Value="{DynamicResource Card}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource Card}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                
+                                <StackPanel Width="700" Orientation="Horizontal" Margin="17,10,73,10" Grid.Column="0">
+                                    <Image Source="../../Resources/Images/Tourist/request.png" Height="100" Width="110" Stretch="Fill" />
+                                    <StackPanel Margin="30,0,0,0">
+                                        <DockPanel Margin="5">
+                                            <TextBlock FontWeight="Bold" Text="{ns:Loc Ordinary tour}" />
+                                        </DockPanel>
+                                        <DockPanel Margin="5">
+                                            
+                                            <!--<Button Content="Rate tour" Width="70" Height="30" HorizontalAlignment="Center" Margin="50,0,0,0" />-->
+                                        </DockPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button  Background="{DynamicResource ConfirmButton}" FontWeight="Bold"  Command="{Binding OpenOrdinaryTourRequestWindowCommand}" Content="{ns:Loc Create}" Margin="532,30,64,31" Width="100" Height="60" />
+                                <TextBlock Text="{ns:Loc (Press Enter to create)}" FontSize="10" Margin="634,73,-534,7" />
+                            </Grid>
+
+                        </Border>
+                        <Border Grid.Row="1" BorderBrush="{DynamicResource Border}"  Background="{DynamicResource Card}" CornerRadius="2" Width="700" BorderThickness="2"  Margin="104,10,131,0">
+                           
+                            <Grid Grid.Row="1">
+                                
+
+                                <StackPanel  Width="700"  Orientation="Horizontal"  Margin ="17,10,73,10" Grid.Column="0">
+                                    <Image Source="../../Resources/Images/Tourist/request.png" Height="100" Width="110" Stretch="Fill" />
+                                    <StackPanel Margin="30,0,0,0">
+                                        <DockPanel Margin="5">
+                                            <TextBlock FontWeight="Bold" Text="{ns:Loc Complex tour}" />
+
+                                        </DockPanel>
+                                        
+
+                                    </StackPanel>
+
+                                </StackPanel>
+                                <Button Background="{DynamicResource ConfirmButton}" FontWeight="Bold"  Command="{Binding OpenComplexTourRequestWindowCommand}" Content="{ns:Loc Create}" Margin="533,27,63,34" Width="100" Height="60"/>
+                                <TextBlock Text="{ns:Loc (Press Enter to create)}" FontSize="10" Margin="634,73,-534,7"/>
+                                <TextBlock Text="{ns:Loc Complex tour is made of two or more ordinary tours}" Margin="162,94,-62,-14"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                   
+                </Grid>
+            </Border>
+
+        </Grid>
+
+
+    </Grid>
+</Window>

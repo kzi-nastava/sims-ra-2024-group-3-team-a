@@ -1,0 +1,68 @@
+UseCase dijagrami
+
+Prikaz i djelimicno prihvacene slozene ture(druga tacka)
+1.Otvaranje prozora sa svim kompleksnim turama 
+-preduslovi: Turista ima nalog i prijavljen je.
+-posljedica: Svi zahtjevi su prikazani.
+-osnovni tok izvrsavanja:
+1.Turista otvara prozor sa svim slozenim zahtjevima za ture
+2.Sistem provjerava da li postoje pocetni dijelovi kompleksne ture koji 48h prije izabranog intervala i oznacava ih kao nevazece, ili aktivne ukoliko su prihvaceni svi dijelovi slozene ture.
+3.Sistem prikazuje informacije o statusu slozenih tura.
+4.Tourista bira obicnu turu cije informacije zeli da vidi
+5.Sistem prikazuje informacije
+6.[Tacka prosirenja: Kreiranje kompleksne ture]
+7.Korisnik izlazi iz prozora sa svim kompleksnim turama
+8.Slucaj koriscenja se zavrsava
+
+Kreiranje kompleksne ture(prva tacka)
+-preduslovi: Turista ima nalog i prijavljen je
+-posljedica: Kompleksna tura je kreirana
+-osnovni tok izvrsavanja:
+1.Turista otvara prozor sa formom za unos podataka za slozenu turu
+2.Sistem prikazuje formu za kompleksne ture
+3.[Ukljuci:Kreiranje obicne ture]
+4.Turista oznacava da je zavrsio sa kreiranjem slozene ture izborom dugmeta "Confirm request"[Alternativan tok B]
+5.Sistem  pita da li je turista siguran da zeli da zavrsi sa popunjavanjem forme
+6.Turista potvrdjuje
+7.Kompleksna tura je kreirana i obavjestava se sistem[Alternativan tok C]
+8.Slucaj koriscenja se zavrsava
+
+*Kreiranje obicne ture
+-preduslov: Turista je vec otvorio formu za pravljenje kompleksne ture
+-posljedica: Obicna tura je kreirana
+-osnovni tok izvrsavanja:
+1.Turista izborom  dugmeta "+" otvara prozor sa formom za kreiranje obicne ture
+2.Sistem prikazuje formu za obicne ture
+3.Turista popunjava formu sa zeljenim podacima 
+4.Turista oznacava da je zavrsio sa popunjavanjem forme izborom dugmeta "Create request"[Alternativan tok A]
+5.Slucaj koriscenja se zavrsava i korisniku se prikazuje forma za kompleksne ture
+-Alternativan tok A
+1.Turista je odlucio da ipak ne zeli da kreira obicnu turu
+2.Sistem pita da li je turista siguran da zeli da otkaze kreiranje obicne ture?
+3.Turista potvrdjuje 
+4.Slucaj koriscenja se zavrsava i korisniku se prikazuje forma za kompleksne ture
+
+
+-Alternativan tok B
+1.Turista je odlucio da ipak ne zeli da kreira slozenu turu
+2.Sistem pita da li je turista siguran da zeli da otkaze kreiranje slozene ture?
+3.Turista potvrdjuje 
+4.Kompleksna tura nije kreirana i slucaj koriscenja se zavrsava
+
+-Alternativan tok C
+1.Sistem je utvrdio da nisu kreirane minimalno dvije obicne ture
+2.Kompleksna tura nije kreirana
+3.Slucaj koriscenja se zavrsava
+
+
+Osvajanje vaucera (treca tacka)
+-preduslov: turista prisustvovao na pet tura u intervalu od godinu dana
+-posljedica: turista dobija vaucer koji traje 6 mjeseci i koji moze iskoristiti kada rezervise turu
+1.Sistem prolazi kroz sve rezervacije turiste
+2.Sistem provjerava da li je turista otisao na pet tura u intervalu od godinu dana
+3.Sistem kreira vaucer i on se dodaje u listu svih vaucera korisnika[Alternativan tok A]
+4.Slucaj koriscenja je zavrsen
+Alternativan tok A:
+1.Sistem je utvrdio da korisnik nije otisao na 5 tura u intervalu od godinu dana
+2.Vaucer se nece kreirati
+3.Slucaj koriscenja je zavrsen

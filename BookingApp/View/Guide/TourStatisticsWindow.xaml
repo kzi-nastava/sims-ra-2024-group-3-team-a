@@ -1,0 +1,217 @@
+﻿<Window x:Class="BookingApp.View.Guide.TourStatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Guide"
+
+        mc:Ignorable="d"
+        Title="Statistika tura" Height="611" Width="980">
+    <Window.Resources>
+        <Style x:Key="OvalButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="AntiqueWhite"
+                            BorderBrush="Black"
+                            BorderThickness="2"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="SaddleBRown"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+    <Grid  Background="AntiqueWhite" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="5" >
+            <MenuItem Header="Početna" Command="{Binding ShowMainWindowCommand}"/>
+            <MenuItem Header="Pomoć">
+                <MenuItem Header="Prečice"/>
+                <MenuItem Header="Video tutorijal"/>
+                <MenuItem Header="Upute"/>
+            </MenuItem>
+            <MenuItem Header="Statistike" />
+            <MenuItem Header="Sve ture" Command="{Binding ShowAllToursCommand}"/>
+            <MenuItem Header="Odjava" Command="{Binding LogoutCommand}"/>
+        </Menu>
+        <Border BorderBrush="SaddleBrown" BorderThickness="3" Padding="20" Grid.RowSpan="2" Grid.Row="1">
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock  Grid.Row="0" Text=" NAJPOSJEĆENIJA TURA : " FontWeight="ExtraBlack" HorizontalAlignment="Center"  FontSize="30"  FontStretch="Medium" Height="45" VerticalAlignment="Top" Margin="-10" />
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" >
+                    <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan" >
+                        <DockPanel>
+                            <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="15,15,25,10">
+                                <StackPanel Margin="10,0,10,10">
+                                    <StackPanel Height="26">
+                                        <Viewbox Width="150" Height="26" >
+                                            <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding MostVisitedTourDTO.Name}"  FontStretch="Medium"/>
+                                        </Viewbox>
+                                    </StackPanel>
+                                    <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Margin="5,20,10,10">
+                                                <DockPanel >
+                                                    <TextBlock Text="LOKACIJA: " />
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=MostVisitedTourDTO.LocationDTO.City}" />
+                                                    <TextBlock FontWeight="Bold" Text=", "/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=MostVisitedTourDTO.LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
+                                                </DockPanel>
+                                                <DockPanel>
+                                                    <TextBlock Text="BROJ TURISTA: " />
+                                                    <TextBlock FontWeight="Bold"  >
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="{Binding Path=MostVisitedTourDTO.TouristsPresent}"></Setter>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Path=MostVisitedTourDTO.TouristsPresent}" Value="0">
+                                                                        <Setter Property="Text" Value=" "></Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </DockPanel>
+                                            </StackPanel>
+                                            <Button DockPanel.Dock="Bottom" Height="20" Width="30" Background="White" HorizontalAlignment="Center"  Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
+                                                <Image  Source="/BookingApp;component/Resources/Images/Guide/eye.png" Width="25" Height="15" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <Border BorderThickness="1" BorderBrush="SaddleBrown" Margin="15,10,3,10">
+                                    <Image Source="{Binding Path=MostVisitedTourDTO.Images[0]}" Height="80" Width="112" Stretch="Fill" />
+                                </Border>
+                            </StackPanel>
+
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+                <Grid Grid.Row="2" Height="32">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1" HorizontalAlignment="Right">Izaberite godinu:</Label>
+                    <ComboBox x:Name="comboBoxYears" Height="32"  Grid.Column="2"  ItemsSource="{Binding Years}" SelectedItem="{Binding ChosenYear}"  VerticalAlignment="Center" Grid.ColumnSpan="1">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Foreground" Value="Brown"/>
+                                <Setter Property="FontWeight" Value="DemiBold"/>
+                                <Setter Property="BorderBrush" Value="Brown"/>
+                                <Setter Property="BorderThickness" Value="3"/>
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                </Grid>
+            </Grid>
+        </Border>
+      
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text=" ZAVRŠENE TURE : " Grid.ColumnSpan="2"  FontWeight="ExtraBlack" HorizontalAlignment="Left"  FontSize="20"  FontStretch="Medium" Height="45" VerticalAlignment="Top"></TextBlock>
+            <ListView x:Name="listViewTours" 
+ Background="Transparent"
+ ItemsSource="{Binding FinishedToursDTO}" 
+ SelectedItem="{Binding SelectedTourDTO}"  
+ BorderBrush="Transparent" 
+ BorderThickness="0" 
+ Margin =" 10,10,10,10"   
+ Grid.ColumnSpan="4"
+ ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="1"
+ VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <Border BorderThickness="2" BorderBrush="SaddleBrown"  Background="Tan" Margin="0,10,5,10" >
+                            <StackPanel Background="Tan" Width="300"  Orientation="Horizontal"  Margin ="15,15,25,10">
+                                <StackPanel Margin="10,0,10,10">
+                                    <StackPanel Height="26">
+                                        <Viewbox Width="150" Height="26" >
+                                            <TextBlock FontWeight="ExtraBlack" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Name}"  FontStretch="Medium"/>
+                                        </Viewbox>
+                                    </StackPanel>
+                                    <Border BorderBrush="SaddleBrown" BorderThickness="1"  Margin="0,2,0,0">
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Margin="5,20,10,10">
+                                                <DockPanel >
+                                                    <TextBlock Text="LOKACIJA: " />
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.City}" />
+                                                    <TextBlock FontWeight="Bold" Text=", "/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding LocationDTO.Country}" TextWrapping="Wrap"  MaxWidth="36"/>
+                                                </DockPanel>
+                                                <DockPanel>
+                                                    <TextBlock Text="BROJ TURISTA: " />
+                                                    <TextBlock FontWeight="Bold"  Text="{Binding TouristsPresent}"/>
+
+                                                </DockPanel>
+                                                <DockPanel>
+                                                    <TextBlock Text="TRAJANJE: " />
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Duration}" />
+                                                </DockPanel>
+                                            </StackPanel>
+                                            <Button DockPanel.Dock="Bottom" Height="20" Width="30" Background="White" HorizontalAlignment="Center" Command="{Binding Path=DataContext.ShowTourDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}">
+                                                <Image  Source="/BookingApp;component/Resources/Images/Guide/eye.png" Width="25" Height="15" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <Border BorderThickness="1" BorderBrush="SaddleBrown" Margin="15,10,3,10">
+                                    <Image Source="{Binding Path=Images[0]}" Height="80" Width="112" Stretch="Fill" />
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Content="Statistika turista" Width="100" Height="40" Grid.Row="1" Style="{StaticResource OvalButtonStyle}" HorizontalAlignment="Right" Margin="10" Grid.Column="5" Command="{Binding ShowTouristStatisticsCommand}" />
+            <Button Content="Recenzije ture" Width="100" Height="40" Grid.Row="1" Style="{StaticResource OvalButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Grid.Column="5" Command="{Binding  ShowTourReviewsCommand }" />
+        </Grid>
+ 
+    </Grid>
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding AddNewTourCommand}" />
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding ShowAllToursCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding ShowTourRequestCommand}" />
+    </Window.InputBindings>
+</Window>

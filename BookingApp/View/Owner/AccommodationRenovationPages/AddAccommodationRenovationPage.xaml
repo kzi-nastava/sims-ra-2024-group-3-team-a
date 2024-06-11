@@ -1,0 +1,116 @@
+﻿<Page x:Class="BookingApp.View.Owner.AccommodationRenovationPages.AddAccommodationRenovationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:local="clr-namespace:BookingApp.View.Owner.AccommodationRenovationPages"
+      mc:Ignorable="d"
+      d:DesignHeight="750" d:DesignWidth="430"
+      Title="AddAccommodationRenovationPage">
+    <Page.Resources>
+        <Style x:Key="WaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Background="AntiqueWhite">
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,3,0,0" VerticalAlignment="Top" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Top"
+                                   Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        <!--Renovations Toolbar-->
+        <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+            <Grid Background="Transparent" Margin="3,3,3,3">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00">RENOVATIONS</Label>
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
+                    <Image Name="imageSideMenu" Source="../../../Resources/Images/Owner/menu.png" />
+                </Button>
+            </Grid>
+        </Border>
+        <Button Command="{Binding GoBackCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40">
+            <Image Name="imageBack" Source="../../../Resources/Images/back.png" />
+        </Button>
+
+        <Label Grid.Row="1" HorizontalAlignment="Center" Foreground="#d4ff00" Content="RENOVATE" FontSize="25"></Label>
+        <Label Grid.Row="2" HorizontalAlignment="Center" Foreground="#d4ff00" Content="{Binding Path=AccommodationDTO.Name}" FontSize="25"></Label>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Starting date: " Foreground="#d4ff00" FontSize="15"></Label>
+            <DatePicker SelectedDate="{Binding FromDate}" Grid.Row="0" Grid.Column="0" Height="25" Margin="101,20,0,20"/>
+            <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Content="-" Foreground="#d4ff00" FontSize="25"></Label>
+            <DatePicker SelectedDate="{Binding ToDate}" Grid.Row="0" Grid.Column="2" Height="25" HorizontalAlignment="Left" />
+
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding ValidationErrors[Dates], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+
+            <Label HorizontalAlignment="Center" Grid.Row="2" Content="Duration (days): " Foreground="#d4ff00" FontSize="15" Grid.RowSpan="3"/>
+            <TextBox Text="{Binding Length}" Grid.Row="2" Grid.ColumnSpan="3" Height="25" Margin="165,1,38,1">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate />
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding ValidationErrors[Length], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"  Content="Select available starting date " HorizontalAlignment="Center" Foreground="#d4ff00" FontSize="15" Grid.RowSpan="3"></Label>
+            <ComboBox SelectedItem="{Binding Path=AccommodationRenovationDTO.BeginDate}" Grid.Row="1" Margin="120,0,120,0" ItemsSource="{Binding AvailableDates}"></ComboBox>
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding ValidationErrors[ChoosenDate], UpdateSourceTrigger=PropertyChanged }" Foreground="red" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <TextBox HorizontalScrollBarVisibility="Auto" Style="{StaticResource WaterMarkStyle}" Tag="Description" TextWrapping="Wrap"  Margin="25" Grid.Row="5" Background="White" Text="{Binding Path=AccommodationRenovationDTO.Description}" Cursor="IBeam"></TextBox>
+
+        <Button Grid.Row="6" Command="{Binding ConfirmAccommodationRenovationCommand}" Margin="125,7,125,7" Background="CadetBlue" Foreground="#d4ff00">
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="CONFIRM" FontSize="15" Foreground="#d4ff00"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Page>

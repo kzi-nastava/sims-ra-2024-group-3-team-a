@@ -1,0 +1,120 @@
+﻿<Window x:Class="BookingApp.View.Tourist.VoucherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookingApp.View.Tourist"
+         xmlns:ns="clr-namespace:BookingApp.Localization"
+        mc:Ignorable="d"
+        Title="VoucherWindow" Height="450" Width="1035">
+    <Window.InputBindings>
+
+
+
+        <KeyBinding Key="Esc" Command="{Binding CloseWindowCommand}"/>
+      
+    </Window.InputBindings>
+    <Grid Background="{DynamicResource Background}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+          
+        </Grid>
+        <Grid Grid.Row="1" >
+            <TextBlock Margin="10,3,0,10" FontWeight="Bold" Text="{ns:Loc Vouchers}" FontSize="30"></TextBlock>
+        </Grid>
+
+        <Border Grid.Row="1" BorderThickness="3" BorderBrush="{DynamicResource Button}" CornerRadius="4" Margin="10,50,10,0">
+            <Grid Background="{DynamicResource Background}" Grid.Row="1">
+
+
+
+                <Grid Grid.Column="0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Grid.Row="1">
+                            <ItemsControl x:Name="finishedToursListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  ItemsSource="{Binding VouchersDTO}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate >
+                                        <Border BorderThickness="2"  BorderBrush="{DynamicResource Border}" CornerRadius="8" Width="315"  Background="{DynamicResource Card}" Margin="10,10,5,10">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel  Width="400"  Orientation="Horizontal"  Margin =" 10,10,5,5" Grid.Column="0">
+                                                    <Image Source="../../Resources/Images/Tourist/voucher.png" Height="80" Width="80" Stretch="Fill" />
+                                                    <StackPanel Margin="10,10,0,0">
+                                                        <TextBlock   FontWeight="Bold" Text="{Binding Header}"/>
+                                                        <DockPanel>
+                                                            <TextBlock  Margin="0.5" FontSize="10" FontWeight="Bold" Text="Expiry date: "/>
+                                                            <TextBlock  Margin="0.5" FontSize="10"  FontWeight="Bold" Text="{ns:Loc ExpireDate}"/>
+                                                        </DockPanel>
+                                                    </StackPanel>
+
+                                                </StackPanel>
+                                                <Button Grid.Column="1" BorderThickness="2" Background="#fae8f1" FontWeight="Bold" Visibility="Hidden" Foreground="Black" Command="{Binding DataContext.ShowTourReviewWindowCommand, RelativeSource={RelativeSource AncestorType=ListView}}" Content="Rate tour" Margin="0,10,60,10" Width="100" Height="60"/>
+                                               
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+        </Border>
+        <TextBlock Margin="30,10" Text="help: use up and down arrows to go throw finished tours, tab to select rate button and key C to close window" Grid.Row="2"/>
+
+        <!--<Grid Grid.Row="1">
+            <TextBlock Margin="30,7,0,353" FontSize="40" Text="Vouchers🎁"></TextBlock>
+        </Grid>
+        <Grid Margin="30,60,30,20" Grid.Row="1">
+        <Border  Grid.Row="2"  BorderThickness="1" BorderBrush="Gray">
+            <Grid Background="White" Width="800" Grid.Row="2">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="272" VerticalAlignment="Bottom">
+            <StackPanel Grid.Row="2">
+                          
+                                <ListView x:Name="voucherListView"  ItemsSource="{Binding VouchersDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                <ListView.ItemTemplate>
+                                   
+                                        <DataTemplate>
+                                        <Border BorderThickness="1" BorderBrush="Black" Width="695" Margin="0,0,0,5">
+
+                                            <StackPanel Orientation="Horizontal" Width="695">
+                                                <Image Source="../../Resources/Images/Tourist/voucher.png" Height="100" Width="100" Stretch="Fill"></Image>
+                                                <Border Padding="10"  BorderBrush="Transparent">
+                                                    <StackPanel Margin="30,20,0,0">
+                                                        <TextBlock   FontWeight="Bold" Text="{Binding Header}"/>
+                                                        <DockPanel>
+                                                            <TextBlock  Margin="0,5"  FontWeight="Bold" Text="Expiry date: "/>
+                                                            <TextBlock  Margin="0,5"  FontWeight="Bold" Text="{Binding ExpireDate}"/>
+                                                        </DockPanel>
+                                                       
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+
+                                        </Border>
+                                    </DataTemplate>
+                                 
+                                </ListView.ItemTemplate>
+            </ListView>
+                           
+                        </StackPanel>
+        </ScrollViewer>
+                
+          </Grid>
+        </Border>
+        </Grid>-->
+    </Grid>
+</Window>

@@ -1,0 +1,102 @@
+@startuml SequenceDiagram AddRenovation
+actor "Owner" as u
+participant "AddAccommodationRenovationViewModel" as arVM
+participant "RenovationDTO" as rDTO
+participant "RenovationService" as service
+participant "AccommodationRenovationRepository" as renovationRepository
+participant "AccommodationReservationRepository" as reservationRepository
+
+u -> arVM: OpenAddAccommodationRenovationPage
+
+u -> arVM: SetFromDate(fromDate)
+activate arVM
+arVM --> u: fromDate
+deactivate arVM
+
+u -> arVM: SetToDate(toDate)
+activate arVM
+arVM --> u: toDate
+deactivate arVM
+
+u -> arVM: SetLength(length)
+activate arVM
+arVM --> u: length
+deactivate arVM
+
+u -> arVM: ChooseAvailableDate
+activate arVM
+arVM -> service: FindAvailableDates(accommodationId, fromDate, toDate, length)
+activate service
+
+service -> reservationRepository: GetAll()
+activate reservationRepository
+reservationRepository --> service: resrevations
+deactivate reservationRepository
+
+loop foreach(reservation in reservations)
+opt reservation.Id = accommodationId
+service -> service: accommodationReservations.Add(reservation)
+activate service
+end
+activate service
+service --> service: accommodationReservations
+deactivate service
+end
+
+service -> service: findNotAvailableDates(accommodationReservations)
+activate service
+loop foreach(reservation in accommodatonReservations)
+loop resrvation.BeginDate to reservation.EndDate
+service -> service: notAvailableDates.Add(reservation.Date)
+end
+end
+service --> service: notAvailableDates
+deactivate service
+
+loop for(date = fromDate; date <= toDate; date.AddDays(1))
+opt !(notAvailableDates.Contains(date))
+service -> service: availableDates.Add(date)
+end
+end
+
+service --> arVM: availableDates
+deactivate service
+
+arVM -> rDTO: setDate(selectedDate)
+activate rDTO
+rDTO --> arVM: renovationDTO
+deactivate rDTO
+
+arVM --> u: renovationDTO
+deactivate arVM
+
+opt isRenovationDTOCorrect
+
+u -> arVM: ConfirmRenovation(renovationDTO)
+activate arVM
+
+arVM -> rDTO: ToAccommodationRenovation()
+activate rDTO
+rDTO --> arVM: renovation
+deactivate rDTO
+
+arVM -> service: Save(renovation)
+activate service
+service -> renovationRepository: Save(renovation)
+
+activate renovationRepository
+renovationRepository -> renovationRepository: NextId()
+activate renovationRepository
+renovationRepository --> renovationRepository: Id
+deactivate renovationRepository
+renovationRepository --> service: renovation
+deactivate renovationRepository
+
+service --> arVM: renovation
+deactivate service
+
+arVM --> u: renovation
+deactivate arVM
+
+end
+@enduml

@@ -1,0 +1,181 @@
+﻿<Page x:Class="BookingApp.View.Owner.AccommodationStatisticsMonthsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:BookingApp.View.Owner"
+      mc:Ignorable="d"
+      d:DesignHeight="750" d:DesignWidth="430"
+      Title="AccommodationStatisticsMonthsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--Accommodations Toolbar-->
+        <Border BorderThickness="1" Grid.Row="0" Background="CadetBlue" BorderBrush="CadetBlue" CornerRadius="30,30,30,30">
+            <Grid Background="Transparent" Margin="3,3,3,3">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#d4ff00">ACCOMMODATIONS</Label>
+                <Button Command="{Binding ShowSideMenuCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonSideMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="40" Height="40">
+                    <Image Name="imageSideMenu" Source="../../../Resources/Images/Owner/menu.png" />
+                </Button>
+            </Grid>
+        </Border>
+        <Button Command="{Binding GoBackCommand}" BorderThickness="0" Background="Transparent" x:Name="buttonBack" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40">
+            <Image Name="imageBack" Source="../../../Resources/Images/back.png" />
+        </Button>
+
+        <Label HorizontalAlignment="Center" Foreground="#d4ff00" FontWeight="Bold" Grid.Row="1" Content="{Binding Path=AccommodationDTO.Name}" FontSize="25"/>
+        <Button Background="CadetBlue" Grid.Row="5" Margin="0,20,5,0" Height="55" Width="100" HorizontalAlignment="Right" Command="{Binding GenerateReportCommand}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="..\..\..\Resources\Images\Owner\printer.png"></Image>
+                <Label VerticalAlignment="Center" Content="PRINT" FontSize="15" Foreground="#d4ff00"/>
+            </StackPanel>
+        </Button>
+
+        <GroupBox Grid.Row="2" Header="Details" Foreground="#d4ff00" FontSize="21">
+            <GroupBox.Background>
+                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+            </GroupBox.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label FontSize="19" Grid.Row="0" Grid.Column="0" Foreground="#d4ff00" Content="Location: "/>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label FontSize="19"  Grid.Column="0" Foreground="#d4ff00" Content="{Binding Path = AccommodationDTO.PlaceDTO.City}"/>
+                    <Label FontSize="19" Grid.Column="1" Foreground="#d4ff00" Content=" ,"></Label>
+                    <Label FontSize="19" Grid.Column="2" Foreground="#d4ff00" Content="{Binding Path = AccommodationDTO.PlaceDTO.Country}"/>
+                </Grid>
+
+                <Label FontSize="19" Grid.Row="1" Grid.Column="0" Foreground="#d4ff00" Content="Type: "/>
+                <Label FontSize="19" Grid.Row="1" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.Type}"></Label>
+
+                <Label FontSize="19" Grid.Row="2" Grid.Column="0" Foreground="#d4ff00" Content="Capacity: "/>
+                <Label FontSize="19" Grid.Row="2" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.Capacity}"></Label>
+
+                <Label FontSize="19" Grid.Row="3" Grid.Column="0" Foreground="#d4ff00" Content="Minimal days to reserve: "/>
+                <Label FontSize="19" Grid.Row="3" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.MinDaysReservation}"></Label>
+
+                <Label FontSize="19" Grid.Row="4" Grid.Column="0" Foreground="#d4ff00" Content="CancellationPeriod: "/>
+                <Label FontSize="19" Grid.Row="4" Grid.Column="1" Foreground="#d4ff00" Content="{Binding AccommodationDTO.CancellationPeriod}"></Label>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="3" Header="Images" Foreground="#d4ff00" FontSize="21">
+            <GroupBox.Background>
+                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+            </GroupBox.Background>
+            <Grid>
+                <Image Source="{Binding Path=SelectedImage}" Height="250" Width="250" HorizontalAlignment="Center"></Image>
+                <Button Background="CadetBlue"  HorizontalAlignment="Right" Height="70" Width="70" Command="{Binding NextImageCommand}">
+                    <Image Source="../../../Resources/Images/Owner/NextArrow.png"></Image>
+                </Button>
+                <Button Background="CadetBlue"  HorizontalAlignment="Left" Height="70" Width="70" Command="{Binding PreviousImageCommand}">
+                    <Image Source="../../../Resources/Images/Owner/PreviousArrow.png"></Image>
+                </Button>
+            </Grid>
+        </GroupBox>
+
+        <Button Grid.Row="4" Command="{Binding ShowAddAccommodationRenovationPageCommand}" Margin="125,7,125,7" Background="CadetBlue" Foreground="#d4ff00">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="..\..\..\Resources\Images\Owner\renovation.png"></Image>
+                <Label VerticalAlignment="Center" Content="RENOVATE" FontSize="15" Foreground="#d4ff00"/>
+            </StackPanel>
+        </Button>
+        <Label Margin="0,25,0,0" Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Content="MONTHLY STATISTICS" FontSize="20"/>
+        <Label Foreground="#d4ff00" HorizontalAlignment="Center" Grid.Row="5" Content="{Binding Year}" FontSize="20"/>
+
+        <StackPanel Grid.Row="6">
+            <ListView ItemsSource="{Binding AccommodationStatisticsDTO}" SelectedValue="{Binding SelectedYear}" SelectedValuePath="Key" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="AnimatedBrush" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Background" Value="{StaticResource AnimatedBrush}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Value.IsMostOccupied}" Value="True">
+                                <Setter Property="ToolTip" Value="This item is the most occupied!"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="0.9" To="1" Duration="0:0:1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" From="0.9" To="1" Duration="0:0:1"/>
+                                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" From="Red" To="DarkOrange" Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <GroupBox Header="{Binding Key}" Foreground="#d4ff00" FontSize="21">
+                            <GroupBox.Background>
+                                <SolidColorBrush Color="CadetBlue" Opacity="0.84"/>
+                            </GroupBox.Background>
+                            <StackPanel Orientation="Horizontal" Width="390">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Reservations: "/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.Reservations}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Cancelled Reservations: "/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.Cancellations}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Reservation Changes: "/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.AccommodationReservationChanges}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Renovation Recommendations: "/>
+                                        <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="{Binding Path=Value.AccommodationRenovationRecommendations}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Page>

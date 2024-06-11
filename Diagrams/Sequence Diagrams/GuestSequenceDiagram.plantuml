@@ -1,0 +1,97 @@
+@startuml GuestSequenceDiagram
+actor Guest
+participant GuestMainViewModel
+participant ReservationDetailsViewModel
+activate Guest
+
+
+Guest -> GuestMainViewModel: OpenGuestManWindow(User loggedUser)
+
+activate GuestMainViewModel
+GuestMainViewModel -> AccommodationReservationService: SetSuperGuest(User loggedUser)
+activate AccommodationReservationService
+AccommodationReservationService -> AccommodationReservationService : GetGuestLastYearAccommodationReservations(User loggedUser)
+activate AccommodationReservationService
+AccommodationReservationService -> AccommodationReservationRepository: GetAllByGuestId(int loggedUser.Id)
+
+activate AccommodationReservationRepository
+loop foreach(reservation in reservations)
+opt (reservation.BeginDate.AddDays(365) > DateOnly.FromDateTime(DateTime.Now)
+AccommodationReservationRepository -> AccommodationReservationRepository: accommodationReservations.Add(reservation)
+end
+end
+AccommodationReservationRepository --> AccommodationReservationService : accommodationReservations.Count()
+deactivate AccommodationReservationRepository
+deactivate AccommodationReservationService
+alt accommodationReservation.Count > 10
+AccommodationReservationService -> AccommodationReservationService: loggedUser.IsSuper = true
+else
+AccommodationReservationService -> AccommodationReservationService: loggedUser.IsSuper = false
+end
+AccommodationReservationService -> UserService: Update(User loggedUser)
+activate UserService
+UserService -> UserRepository : Update(User loggedUser)
+activate UserRepository
+UserRepository --> UserService : loggedUser
+deactivate UserRepository
+UserService --> AccommodationReservationService : loggedUser
+deactivate UserService
+AccommodationReservationService --> GuestMainViewModel : loggedUser
+deactivate AccommodationReservationService
+
+GuestMainViewModel -> GuestMainViewModel : IsSuperGuest()
+activate GuestMainViewModel
+opt loggedUser.IsSuper 
+GuestMainViewModel -> SuperGuestService : GetByUserId(int loggedUser.Id)
+activate SuperGuestService
+alt GetByUserId(int loggedUser.Id) != null
+SuperGuestService -> SuperGuestService: Update(superGuest)
+activate SuperGuestService
+SuperGuestService -> SuperGuestRepository: Update(superGuest)
+activate SuperGuestRepository
+SuperGuestRepository --> SuperGuestService: superGuest
+deactivate SuperGuestRepository
+deactivate SuperGuestService
+else
+SuperGuestService -> SuperGuestService: Save(superGuest)
+activate SuperGuestService
+SuperGuestService -> SuperGuestRepository: Save(superGuest)
+activate SuperGuestRepository
+SuperGuestRepository --> SuperGuestService: superGuest
+deactivate SuperGuestRepository
+deactivate SuperGuestService
+end
+end
+deactivate SuperGuestService
+return IsSUperGuest
+
+
+User -> GuestMainViewModel :MakeNewReservation(int accommodationId, beginDate, endDate, loggedUser)
+GuestMainViewModel -> ReservationDetailsViewModel : NewReservation
+activate ReservationDetailsViewModel
+ReservationDetailsViewModel -> AccommodationReservationService: Save(accommodationReservation)
+activate AccommodationReservationService
+AccommodationReservationService -> AccommodationReservationRepository: Save(accommodationReservation)
+activate AccommodationReservationRepository
+AccommodationReservationRepository --> AccommodationReservationService: accommodationReservation
+deactivate AccommodationReservationRepository
+AccommodationReservationService --> ReservationDetailsViewModel: accommodationReservation
+deactivate AccommodationReservationService
+
+opt accommodationReservation.UsedBonusPoint == true
+ReservationDetailsViewModel -> SuperGuestService: Update(User loggedUser)
+activate SuperGuestService
+SuperGuestService -> SuperGuestRepository: Update(User superGuest)
+activate SuperGuestRepository
+SuperGuestRepository --> SuperGuestService: superGuest
+deactivate SuperGuestRepository
+SuperGuestService --> ReservationDetailsViewModel : loggedUser
+end
+
+deactivate SuperGuestService
+ReservationDetailsViewModel --> GuestMainViewModel : newReservation
+deactivate ReservationDetailsViewModel
+GuestMainViewModel --> User : newReservation
+deactivate GuestMainViewModel
+
+@enduml
