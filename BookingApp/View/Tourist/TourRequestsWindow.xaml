@@ -6,10 +6,17 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:BookingApp.View.Tourist"
+        xmlns:ns="clr-namespace:BookingApp.Localization"
         xmlns:model="clr-namespace:BookingApp.Model.Enums"
         mc:Ignorable="d"
         Title="TourRequestsWindow" Height="600" Width="1035">
-
+    <Window.InputBindings>
+       
+      
+        <KeyBinding Key="Esc"   Command="{Binding CloseWindowCommand}" />
+        <KeyBinding Command="{Binding OpenSugmenuCommand1}" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="{Binding OpenSugmenuCommand2}" Key="P" Modifiers="Control"/>
+    </Window.InputBindings>
     <Window.Resources>
         <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter"/>
     </Window.Resources>
@@ -20,126 +27,85 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            
 
         </Grid.RowDefinitions>
 
         <Grid  Grid.Row="0" >
-            <Menu DockPanel.Dock="Top" BorderThickness="1" >
-
-
-                <MenuItem x:Name="Home" Focusable="True" Header="Home(F1)" Foreground="Black" FontSize="13"  FontWeight="Bold">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/home.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem x:Name="MyTours" Focusable="True" Header="My Tours(F2)"  Foreground="Black"  FontSize="13"  FontWeight="Bold" Command="{Binding ShowMyToursWindowCommand}" >
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/trekking-16.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="TourRequests" Focusable="True" Header="Tour Requests(F3)" Foreground="Black"  FontWeight="Bold" FontSize="13"  Command="{Binding ShowTourRequestsCommand}">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/map.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="CreateRequest" Focusable="True" Header="Create Request(F4)" Foreground="Black" FontWeight="Bold"  FontSize="13"  Command="{Binding ShowOrindaryTourRequestWindowCommand}">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/edit.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="RateTour" Focusable="True" Header="Rate Tour(F5)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowFinishedToursWindowCommand}">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/star.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="Vouchers" Focusable="True" Header="Vouchers(F6)" Foreground="Black"  FontSize="13" FontWeight="Bold"  Command="{Binding ShowVoucherWindowCommand}">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/gift.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="Inbox" Focusable="True" Header="Inbox(F7)" Margin="105,0,0,0" Foreground="Black" FontWeight="Bold"  FontSize="13" Command="{Binding ShowInboxWindowCommand}" >
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/email.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-
-
-                <MenuItem x:Name="More" Header="(F9)" Margin="5,0,0,0" FontWeight="Bold"   FontSize="13">
-                    <MenuItem.Icon>
-                        <Image Source="../../Resources/Images/Tourist/menu.png" Width="16" Height="15"/>
-                    </MenuItem.Icon>
-
-                    <MenuItem  x:Name="Settings" Focusable="True" Header="Settings" Foreground="Black" >
-                        <MenuItem.Icon>
-                            <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
-                        </MenuItem.Icon>
-
-                    </MenuItem>
-                    <MenuItem  x:Name="Profile" Focusable="True" Header="Profile()" Foreground="Black" >
-                        <MenuItem.Icon>
-                            <Image Source="../../Resources/Images/Tourist/settings.png" Width="16" Height="16"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem  x:Name="Logout" Focusable="True" Header="Logout(F8)" Foreground="Black" Command="{Binding LogOutCommand}">
-                        <MenuItem.Icon>
-                            <Image Source="../../Resources/Images/Tourist/logout.png" Width="16" Height="16"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <MenuItem  x:Name="Help" Focusable="True" Header="Help" Foreground="Black">
-                        <MenuItem.Icon>
-                            <Image Source="../../Resources/Images/Tourist/help.png" Width="16" Height="16"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-
-            </Menu>
+           
         </Grid>
-        <TabControl Background="#edebfc" Grid.Row="1" Margin="0,10,0,0" Grid.RowSpan="2" >
-            <TabItem Header="Ordinary Tour Requests(Ctrl+Tab)">
+        <TabControl Background="{DynamicResource Background}" Grid.Row="1" Margin="0,10,0,0" Grid.RowSpan="2" >
+            <TabItem FontWeight="Bold" Background="{DynamicResource Background}"  Header="{ns:Loc Ordinary Tour Requests(Ctrl+Tab)}">
 
 
-                <Border  BorderThickness="3" BorderBrush="#fa8ec4" CornerRadius="4" Margin="30,20,30,20">
+                <Border  BorderThickness="4" BorderBrush="{DynamicResource Button}" CornerRadius="4" Margin="30,20,30,20">
                     <Grid Background="White" Grid.Row="1">
 
 
 
-                        <Grid Grid.Column="0">
+                        <Grid Grid.Column="0" Background="{DynamicResource Background}">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel Grid.Row="1">
-                                    <ListView x:Name="finishedToursListView" ItemsSource="{Binding OrdinaryTourRequestsDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
+                                    <ListView KeyboardNavigation.TabNavigation="Continue" x:Name="finishedToursListView" ItemsSource="{Binding OrdinaryTourRequestsDTO}" SelectedItem="{Binding SelectedTourDTO}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
 
                                         <ListView.ItemTemplate>
                                             <DataTemplate >
-                                                <Border BorderThickness="2" BorderBrush="LightGray" CornerRadius="8" Background="#fcfcf2" Margin="10,10,5,10">
+                                                <Border BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="8" Background="{DynamicResource Card}" Margin="10,10,5,10">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="auto"/>
                                                             <ColumnDefinition Width="auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <StackPanel  Width="800"  Orientation="Horizontal"  Margin =" 10,10,0,10" Grid.Column="0">
+                                                        <StackPanel  Width="720"  Orientation="Horizontal"  Margin =" 10,10,0,10" Grid.Column="0">
                                                             <Image Source="../../Resources/Images/Tourist/request.png" Height="100" Width="110" Stretch="Fill" />
                                                             <StackPanel Margin="30,0,0,0">
                                                                 <DockPanel Margin="5">
-                                                                    <TextBlock Text="Ordinary tour request " />
-                                                                    <TextBlock FontWeight="Bold"   Text="{Binding Id}" />
+                                                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Button}" Text="{ns:Loc Ordinary tour request:}" FontSize="15"  />
+                                                                    <TextBlock FontSize="15" FontWeight="Normal" Foreground="{DynamicResource Button}" Text="{Binding Id}" />
                                                                 </DockPanel>
                                                                 <DockPanel Margin="5">
-                                                                    <TextBlock Text="Location: " />
-                                                                    <TextBlock  FontWeight="Bold"   Text="{Binding LocationDTO}" />
-                                                                    <!--<Button Content="Rate tour" Width="70" Height="30" HorizontalAlignment="Center" Margin="50,0,0,0" />-->
+                                                                    <TextBlock FontWeight="Bold" Text="{ns:Loc Location:}" />
+                                                                    <TextBlock  FontWeight="Normal"   Text="{Binding LocationDTO}" />
+
+                                                                </DockPanel>
+                                                                <DockPanel Margin="5">
+                                                                    <TextBlock  FontWeight="Bold"  Text="{ns:Loc Language:}"  FontSize="12"/>
+                                                                    <TextBlock  FontSize="12"  Text="{Binding Language}"/>
+                                                                </DockPanel>
+                                                               
+                                                                <DockPanel  Margin="5">
+                                                                    <TextBlock FontSize="12" FontWeight="Bold" Text="{ns:Loc Date:}" />
+                                                                    <TextBlock FontWeight="Normal" FontSize="12">
+                                                                        <TextBlock.Style>
+                                                                            <Style TargetType="TextBlock">
+                                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                                                <Style.Triggers>
+                                                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static model:TourRequestStatus.Accepted}">
+                                                                                        <Setter Property="Visibility" Value="Visible" />
+                                                                                        <Setter Property="Text" Value="{Binding BeginDateOnly}" />
+                                                                                    </DataTrigger>
+                                                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static model:TourRequestStatus.OnWait}">
+                                                                                        <Setter Property="Visibility" Value="Visible" />
+                                                                                        <Setter Property="Text" Value="OnWait" />
+                                                                                    </DataTrigger>
+                                                                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static model:TourRequestStatus.Invalid}">
+                                                                                        <Setter Property="Visibility" Value="Visible" />
+                                                                                        <Setter Property="Text" Value="/" />
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </TextBlock.Style>
+                                                                    </TextBlock>
                                                                 </DockPanel>
                                                                 <DockPanel  Margin="5">
-                                                                    <TextBlock Text="Status: " />
-                                                                    <TextBlock FontWeight="Bold"  Text="{Binding Status}" />
+                                                                    <TextBlock FontWeight="Bold" Text="{ns:Loc Tour status:}" />
+                                                                    <TextBlock  FontWeight="Normal" Text="{Binding Status}" />
                                                                 </DockPanel>
                                                             </StackPanel>
 
                                                         </StackPanel>
-                                                        <Button Grid.Column="1" BorderThickness="2" Background="#fae8f1" FontWeight="Bold" Foreground="Black" Command="{Binding DataContext.ShowOrdinaryTourRequestInfoWindowCommand, RelativeSource={RelativeSource AncestorType=ListView}}" Content="More Info" Margin="0,10,60,10" Width="100" Height="60"/>
-                                                        <TextBlock Grid.Column="1" Text="Press Enter to rate" Margin="0,95,40,10"></TextBlock>
+                                                        <Button Grid.Column="1" Background="{DynamicResource ConfirmButton}"  FontWeight="Bold" Foreground="Black" Command="{Binding DataContext.ShowOrdinaryTourRequestInfoWindowCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}" Content="{ns:Loc More info}" Margin="0,10,60,10" Width="100" Height="60"/>
+                                                        <TextBlock Grid.Column="1" FontSize="10" FontWeight="Normal" Text="{ns:Loc (Press Enter for more)}" Margin="0,110,40,10"></TextBlock>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
@@ -152,9 +118,9 @@
                 </Border>
 
             </TabItem>
-            <TabItem  Header="Ordinary Tour Requests Statistics(Ctrl+Tab)">
-                <Border Background="#edebfc">
-                    <Grid Background="#edebfc" >
+            <TabItem FontWeight="Bold" Background="{DynamicResource Background}" Header="{ns:Loc Ordinary Tour Requests Statistics(Ctrl+Tab)}">
+                <Border Background="{DynamicResource Background}">
+                    <Grid Background="{DynamicResource Background}" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="400"/>
                             <ColumnDefinition Width="auto"/>
@@ -168,105 +134,116 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Tour requests statistics:" Margin="30,10,10,10"  FontSize="25"></TextBlock>
+                        <TextBlock Text="{ns:Loc Ordinary Tour Requests Statistics:}" Margin="30,10,10,10"  FontSize="25"></TextBlock>
 
-                        <Grid   Grid.Row="1" Grid.Column="0" >
-                                <Grid.ColumnDefinitions>
+                        <Grid   Grid.Row="1" Grid.Column="0" Margin="0,0,0,34" >
+                            <Grid.ColumnDefinitions>
 
-                                    <ColumnDefinition MaxWidth="400"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
+                                <ColumnDefinition MaxWidth="400"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
 
-                            <Border BorderBrush="LightGray" Background="White" CornerRadius="8" Margin="20,0,0,0" Width="350" Height="300" BorderThickness="2" Grid.Column="0">
+                            <Border  BorderBrush="{DynamicResource Border}" Background="{DynamicResource Card}" CornerRadius="8" Margin="20,0,0,0" Width="350" Height="300" BorderThickness="3" Grid.Column="0">
                                 <Grid   Grid.Column="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                    <Grid >
-                                    <lvc:PieChart  Width="200" Height="200" Grid.Column="0" Series="{Binding ChartValues}" Margin="21,0,20,0">
-                                      
-                                        <lvc:PieChart.ChartLegend>
-                                            <lvc:DefaultLegend  />
-                                        </lvc:PieChart.ChartLegend>
-                                    </lvc:PieChart>
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" FontWeight="Bold" Margin="5,10,0,0">Showing statistics for:</TextBlock>
-                                <DockPanel Margin="5,0,0,0"  Grid.Row="2" >
-                                    <RadioButton Margin="5"  IsChecked="{Binding Path=SelectedParameterForChar, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"  Command="{Binding ShowForAllYearsCommand}" GroupName="ChartSpecificYear" Grid.Row="1" ></RadioButton>
-                                    <TextBlock  Margin="5"  Text="for all years"></TextBlock>
-                                </DockPanel>
-                                    <DockPanel Margin="5,0,0,0" Grid.Row="3" >
-                                    <RadioButton  IsChecked="{Binding Path=SelectedParameterForChar, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"  x:Name="SpecificYearRadioButton2" GroupName="ChartSpecificYear" Margin="5" Grid.Row="2" ></RadioButton>
-                                    <TextBlock Margin="5" Text="for a specific year" ></TextBlock>
-                                    <ComboBox  Grid.Row="3" Grid.Column="0" Margin="20,5,5,5"  IsEditable="True" Width="70" Foreground="Black"  Height="20" ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedYear}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding}" />
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                        <ComboBox.Style>
-                                            <Style TargetType="ComboBox">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsChecked, ElementName=SpecificYearRadioButton2}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ComboBox.Style>
-                                    </ComboBox>
-                                </DockPanel>
-                            </Grid>
-                            </Border>
-
-                            <Grid  Grid.Row="2" Grid.Column="0" Height="200" >
-                                    <Grid.ColumnDefinitions>
-
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
-                                <Border Grid.Row="0" Background="White" CornerRadius="8" Width="350" Height="100" BorderBrush="LightGray" BorderThickness="2" Margin="35,20,0,0"  Grid.RowSpan="4">
-                                        <Grid Grid.Row="0">
+                                    <Grid Grid.ColumnSpan="2">
+                                        <lvc:PieChart LegendLocation ="Right" Width="250" Height="250" Series="{Binding ChartValues}" Margin="21,-15,20,54">
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                            </Grid.RowDefinitions>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Average number of people in accepted requests: "   Margin="5" Grid.Row="0"></TextBlock>
-                                                <TextBlock Text="{Binding AverageTouristNumber}"  Margin="0,5,0,0"></TextBlock>
-                                            </DockPanel>
-                                            <DockPanel Grid.Row="1">
-                                                <RadioButton Margin="8,5,5,5"  IsChecked="{Binding Path=SelectedParameter, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"  Command="{Binding AverageTourisNumberCommand}" GroupName="SpecificYear" Grid.Row="1" ></RadioButton>
-                                                <TextBlock  Margin="5" Text="for all years"></TextBlock>
-                                            </DockPanel>
-                                            <DockPanel  Grid.Row="2" >
+                                            <lvc:PieChart.ChartLegend>
+                                                <lvc:DefaultLegend  />
+                                            </lvc:PieChart.ChartLegend>
+                                        </lvc:PieChart>
+                                    </Grid>
+                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Button}" Text="{ns:Loc Showing statistics for:}" Margin="5,230,79,17" Grid.ColumnSpan="2"></TextBlock>
+                                    <DockPanel Margin="5,241,79,4" Grid.ColumnSpan="2" >
+                                        <RadioButton Margin="5"  IsChecked="{Binding Path=SelectedParameterForChar, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"  Command="{Binding ShowForAllYearsCommand}" GroupName="ChartSpecificYear" Grid.Row="1" ></RadioButton>
+                                        <TextBlock  Margin="5" FontWeight="Normal" Text="{ns:Loc for all years}"></TextBlock>
+                                    </DockPanel>
+                                    <DockPanel Margin="5,261,79,3" Grid.ColumnSpan="2" Grid.RowSpan="3" >
+                                        <RadioButton  IsChecked="{Binding Path=SelectedParameterForChar, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"  x:Name="SpecificYearRadioButton2" GroupName="ChartSpecificYear" Margin="5" Grid.Row="2" ></RadioButton>
+                                        <TextBlock Margin="5" FontWeight="Normal" Text="{ns:Loc for a specific year}" ></TextBlock>
+                                    
+                                            <ComboBox  Grid.Row="3" Grid.Column="0" IsDropDownOpen="{Binding IsSubmenuOpenCommand1}" Margin="20,5,5,5"  IsEditable="True" Width="70" Foreground="Black"  Height="20" ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedYear}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+
+                                                        <TextBlock Text="{Binding}" />
+
+
+
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                                <ComboBox.Style>
+                                                    <Style TargetType="ComboBox">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=SpecificYearRadioButton2}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ComboBox.Style>
+                                            </ComboBox>
+                                          
+                                      
+                                    </DockPanel>
+                                </Grid>
+                            </Border>
+
+                            <Grid  Grid.Row="2" Grid.Column="0" Height="200" >
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0"  BorderBrush="{DynamicResource Border}" Background="{DynamicResource Card}" CornerRadius="8" Width="350" Height="100"  BorderThickness="3" Margin="35,20,0,0"  Grid.RowSpan="4">
+                                    <Grid Grid.Row="0">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Foreground="{DynamicResource Button}" Text="{ns:Loc Average number of people in accepted requests:}"   Margin="5" Grid.Row="0"></TextBlock>
+                                            <TextBlock Text="{Binding AverageTouristNumber}" FontWeight="Bold" Foreground="{DynamicResource Button}" Margin="0,5,0,0"></TextBlock>
+                                        </DockPanel>
+                                        <DockPanel Grid.Row="1">
+                                            <RadioButton Margin="8,5,5,5"  IsChecked="{Binding Path=SelectedParameter, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"  Command="{Binding AverageTourisNumberCommand}" GroupName="SpecificYear" Grid.Row="1" ></RadioButton>
+                                            <TextBlock FontWeight="Normal"  Margin="5" Text="{ns:Loc for all years}"></TextBlock>
+                                        </DockPanel>
+                                        <DockPanel  Grid.Row="2" >
                                             <RadioButton Margin="8,5,5,5"  IsChecked="{Binding Path=SelectedParameter, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"  x:Name="SpecificYearRadioButton" GroupName="SpecificYear"  Grid.Row="2" ></RadioButton>
-                                                <TextBlock Margin="5" Text="for a specific year"></TextBlock>
-                                                <ComboBox  Grid.Row="1" Grid.Column="0" Margin="-35,5,50,5" IsEditable="True" Foreground="Black" Width="70"  Height="20" ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedYearForAverageNumber}">
+                                            <TextBlock Margin="5" FontWeight="Normal" Text="{ns:Loc for a specific year}"></TextBlock>
+                                         
+                                                <ComboBox  Grid.Row="1" Grid.Column="0" IsDropDownOpen="{Binding IsSubmenuOpenCommand2}" Margin="-35,5,50,5" IsEditable="True" Foreground="Black" Width="70"  Height="20" ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedYearForAverageNumber}">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding}" />
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding}" />
+                                                           
+                                                            </StackPanel>
                                                         </DataTemplate>
                                                     </ComboBox.ItemTemplate>
                                                     <ComboBox.Style>
@@ -280,12 +257,14 @@
                                                         </Style>
                                                     </ComboBox.Style>
                                                 </ComboBox>
-                                            </DockPanel>
-                                        </Grid>
-                                    </Border>
-
+                                              
+                                         
+                                        </DockPanel>
+                                    </Grid>
+                                </Border>
+                                
                             </Grid>
-                               
+                           
                         </Grid>
 
 
@@ -293,7 +272,7 @@
 
 
 
-                        <Border CornerRadius="8" Height="420"  Width="550" Margin="0,0,0,120" Background="White" BorderBrush="LightGray" BorderThickness="2" Grid.Column="1"  Grid.Row="1" >
+                        <Border CornerRadius="8" Height="420"  Width="550" Margin="0,0,0,120" BorderBrush="{DynamicResource Border}" Background="{DynamicResource Card}" BorderThickness="3" Grid.Column="1"  Grid.Row="1" >
                             <Grid Grid.Column="1" Width="550" Margin="5,10,10,5" Grid.Row="1" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -313,10 +292,10 @@
                                     </Grid.Style>
                                     <lvc:CartesianChart Series="{Binding HistogramData}"  Width="550" LegendLocation="Right" Height="350">
                                         <lvc:CartesianChart.AxisX>
-                                            <lvc:Axis Labels="{Binding Labels}" Foreground="Black" FontSize="15"/>
+                                            <lvc:Axis Labels="{Binding Labels}" FontWeight="Bold" Foreground="Black" FontSize="15"/>
                                         </lvc:CartesianChart.AxisX>
                                         <lvc:CartesianChart.AxisY>
-                                            <lvc:Axis Title="Number of Languages" Foreground="Black" FontSize="15"/>
+                                            <lvc:Axis Title="{ns:Loc Number of Languages}" FontWeight="Bold" Foreground="Black" FontSize="15"/>
                                         </lvc:CartesianChart.AxisY>
                                     </lvc:CartesianChart>
                                 </Grid>
@@ -335,64 +314,24 @@
                                     </Grid.Style>
                                     <lvc:CartesianChart Series="{Binding HistogramDataForLocation}" LegendLocation="Right" Width="550" Height="350">
                                         <lvc:CartesianChart.AxisX>
-                                            <lvc:Axis Labels="{Binding LocationLabels}" Foreground="Black" FontSize="15"/>
+                                            <lvc:Axis Labels="{Binding LocationLabels}" FontWeight="Bold" Foreground="Black" FontSize="15"/>
                                         </lvc:CartesianChart.AxisX>
                                         <lvc:CartesianChart.AxisY>
-                                            <lvc:Axis Title="Number of Languages" Foreground="Black" FontSize="15"/>
+                                            <lvc:Axis Title="{ns:Loc Number of Locations}" FontWeight="Bold" Foreground="Black" FontSize="15"/>
                                         </lvc:CartesianChart.AxisY>
                                     </lvc:CartesianChart>
                                 </Grid>
 
                                 <DockPanel Grid.Row="1" Grid.RowSpan="1">
                                     <RadioButton Margin="5"  IsChecked="{Binding Path=IsLocationGridVisible, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=3}" x:Name="gridLocationVisibiliity"   GroupName="GridVisibility" Grid.Row="1"></RadioButton>
-                                    <TextBlock Margin="5" Text="number of requests depending on locations"></TextBlock>
+                                    <TextBlock Margin="5" Foreground="{DynamicResource Button}" Text="{ns:Loc number of requests depending on locations}"></TextBlock>
                                 </DockPanel>
                                 <DockPanel Grid.Row="2">
                                     <RadioButton IsChecked="{Binding Path=IsLocationGridVisible, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=4}" x:Name="gridLanguageVisibiliity" GroupName="GridVisibility" Margin="5" Grid.Row="2"></RadioButton>
-                                    <TextBlock Margin="5" Text="number of requests depending on languages"></TextBlock>
+                                    <TextBlock Margin="5" Foreground="{DynamicResource Button}" Text="{ns:Loc number of requests depending on languages}"></TextBlock>
                                 </DockPanel>
 
-                                <!--<Border Grid.Row="0" BorderBrush="Black" BorderThickness="1">
-                                <Grid Grid.Row="0">
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-                                    <DockPanel>
-                                        <TextBlock Text="Average number of people in accepted requests: "   Margin="5" Grid.Row="0"></TextBlock>
-                                        <TextBlock Text="{Binding AverageTouristNumber}"  Margin="5"></TextBlock>
-                                    </DockPanel>
-                                    <DockPanel Grid.Row="1">
-                                        <RadioButton Margin="5"  IsChecked="{Binding Path=SelectedParameter, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"  Command="{Binding AverageTourisNumberCommand}" GroupName="SpecificYear" Grid.Row="1" ></RadioButton>
-                                        <TextBlock  Margin="5" Text="for all years"></TextBlock>
-                                    </DockPanel>
-                                    <DockPanel  Grid.Row="2" >
-                                        <RadioButton  IsChecked="{Binding Path=SelectedParameter, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=2}"  x:Name="SpecificYearRadioButton" GroupName="SpecificYear" Margin="5" Grid.Row="2" ></RadioButton>
-                                        <TextBlock Margin="5" Text="for a specific year"></TextBlock>
-                                        <ComboBox  Grid.Row="1" Grid.Column="0" Margin="10,5,5,5" IsEditable="True" Foreground="Black"  Width="100" Height="20" ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedYearForAverageNumber}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding}" />
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                            <ComboBox.Style>
-                                                <Style TargetType="ComboBox">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsChecked, ElementName=SpecificYearRadioButton}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </ComboBox.Style>
-                                        </ComboBox>
-                                    </DockPanel>
-                                </Grid>
-                            </Border>-->
-
+                                
                             </Grid>
                         </Border>
 
@@ -407,21 +346,21 @@
 
             </TabItem>
 
-            <TabItem Header="Complex Tour Requests(Ctrl+Tab)">
+            <TabItem FontWeight="Bold" Header="{ns:Loc Complex Tour Requests(Ctrl+Tab)}">
 
 
-                <Border  BorderThickness="3" BorderBrush="#fa8ec4"   CornerRadius="4" Margin="30,20,30,20">
-                    <Grid Background="White" Grid.Row="1">
+                <Border  BorderThickness="3" BorderBrush="{DynamicResource Button}"   CornerRadius="4" Margin="30,20,30,20">
+                    <Grid Background="{DynamicResource Background}" Grid.Row="1">
                         <Grid Grid.Column="0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel Grid.Row="1">
-                                    <ItemsControl x:Name="complexToursView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Dictionary}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                                    
+                                    <ItemsControl x:Name="complexToursView"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Dictionary}"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                
-                                                <Border BorderThickness="2" Width="900"   BorderBrush="LightGray" CornerRadius="8" Background="#fcfcf2" Margin="10,10,5,10">
-                                                    
+
+                                                <Border BorderThickness="2" Width="900"   BorderBrush="{DynamicResource Border}" CornerRadius="8" Background="{DynamicResource Card}" Margin="10,10,5,10">
+
                                                     <Grid>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="auto"/>
@@ -429,45 +368,49 @@
                                                             <RowDefinition Height="auto"/>
                                                         </Grid.RowDefinitions>
                                                         <DockPanel  Margin="10,10,5,0">
-                                                            <TextBlock Height="50" Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Ordinary tour request"></TextBlock>
+                                                            <TextBlock Height="50" Grid.Row="0" FontSize="16" Foreground="{DynamicResource Button}" FontWeight="Bold" Text="{ns:Loc Complex tour request:}"></TextBlock>
                                                             <TextBlock Height="50" Grid.Row="0" FontSize="16" FontWeight="Bold" Margin="5,0,0,0" Text="{Binding Key.Id}"></TextBlock>
                                                         </DockPanel>
-                                                        
-                                                        <Border Grid.Row="1" BorderThickness="2" Background="White" MaxHeight="300"  BorderBrush="LightGray"  CornerRadius="8" Margin="10,0,10,10">
+
+                                                        <Border Grid.Row="1" BorderThickness="2" Background="{DynamicResource Background}" MaxHeight="300"  BorderBrush="{DynamicResource Border}"  CornerRadius="8" Margin="10,0,10,10">
                                                             <Grid>
                                                                 <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
-                                                                    <ListView x:Name="smallerListView" SelectedItem="{Binding SelectedTourDTO}"  Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxWidth="850" ItemsSource="{Binding Value}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                                                                
-                                                                
-                                                                <ListView.ItemsPanel>
-                                                                    <ItemsPanelTemplate>
-                                                                        <WrapPanel Orientation="Horizontal"  />
-                                                                    </ItemsPanelTemplate>
-                                                                </ListView.ItemsPanel>
-                                                                <ListView.ItemTemplate>
-                                                                    <DataTemplate>
-                                                                        <Border BorderThickness="2" Width="400" BorderBrush="LightGray" CornerRadius="8" Background="#fcfcf2" Margin="0,10,5,10">
-                                                                            <Grid>
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="260"/>
-                                                                                    <ColumnDefinition Width="auto"/>
-                                                                                </Grid.ColumnDefinitions>
-                                                                                <StackPanel  Width="400"  Orientation="Horizontal"  Margin ="10,10,0,10" Grid.Column="0">
-                                                                                    <Image Source="../../Resources/Images/Tourist/request.png" Height="100" Width="110" Stretch="Fill"  />
-                                                                                <StackPanel Margin="5,0,0,0">
-                                                                                    
-                                                                                    <DockPanel Margin="5,5,5,5">
-                                                                                        <TextBlock  FontSize="13" FontWeight="Bold" Text="Location: " />
-                                                                                        <TextBlock   FontSize="13"  Text="{Binding LocationDTOString}" />
-                                                                                        <!--<Button Content="Rate tour" Width="70" Height="30" HorizontalAlignment="Center" Margin="50,0,0,0" />-->
-                                                                                    </DockPanel>
-                                                                                    <DockPanel Margin="5">
-                                                                                        <TextBlock FontWeight="Bold" FontSize="13" Text="Tour status: " />
-                                                                                        <TextBlock FontWeight="Bold" FontSize="13"   Text="{Binding Status}" />
-                                                                                    </DockPanel>
-                                                                                    <DockPanel  Margin="5,5,5,0">
-                                                                                                    <TextBlock FontSize="13" FontWeight="Bold" Text="Date: " />
-                                                                                                    <TextBlock FontSize="13">
+                                                                    <ListView  x:Name="smallerListView" SelectedItem="{Binding SelectedTourDTO}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxWidth="850" ItemsSource="{Binding Value}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+
+
+                                                                        <ListView.ItemsPanel>
+                                                                            <ItemsPanelTemplate>
+                                                                                <WrapPanel Orientation="Horizontal"  />
+                                                                            </ItemsPanelTemplate>
+                                                                        </ListView.ItemsPanel>
+                                                                        <ListView.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <Border BorderThickness="2" Width="400" BorderBrush="{DynamicResource Border}" CornerRadius="8" Background="{DynamicResource Card}" Margin="0,10,5,10">
+                                                                                    <Grid>
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="auto"/>
+
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <StackPanel  Width="400"  Orientation="Horizontal"  Margin ="10,10,0,10" Grid.Column="0">
+                                                                                            <Image Source="../../Resources/Images/Tourist/request.png" Height="100" Width="110" Stretch="Fill"  />
+                                                                                            <StackPanel Margin="5,0,0,0">
+                                                                                                <DockPanel Margin="5">
+                                                                                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource Button}" Text="{ns:Loc Ordinary tour request:}" FontSize="13"  />
+                                                                                                    <TextBlock FontSize="13" FontWeight="Normal" Foreground="{DynamicResource Button}" Text="{Binding Id}" />
+                                                                                                </DockPanel>
+                                                                                                <DockPanel Margin="5,5,5,5">
+                                                                                                    <TextBlock  FontSize="12" FontWeight="Bold" Text="{ns:Loc Location:}" />
+                                                                                                    <TextBlock   FontSize="12" FontWeight="Normal"  Text="{Binding LocationDTOString}" />
+
+                                                                                                </DockPanel>
+                                                                                                <DockPanel Margin="5">
+                                                                                                    <TextBlock  FontWeight="Bold"  Text="{ns:Loc Language:}"  FontSize="12"/>
+                                                                                                    <TextBlock  FontSize="12"  Text="{Binding Language}"/>
+                                                                                                </DockPanel>
+                                                                                               
+                                                                                                <DockPanel  Margin="5,5,5,0">
+                                                                                                    <TextBlock FontSize="12" FontWeight="Bold" Text="{ns:Loc Date:}" />
+                                                                                                    <TextBlock FontWeight="Normal" FontSize="12">
                                                                                                         <TextBlock.Style>
                                                                                                             <Style TargetType="TextBlock">
                                                                                                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -489,28 +432,32 @@
                                                                                                         </TextBlock.Style>
                                                                                                     </TextBlock>
                                                                                                 </DockPanel>
-                                                                                </StackPanel>
-                                                                                </StackPanel>
-                                                                                        <Button Grid.Column="1" BorderThickness="2" Background="#fae8f1" FontWeight="Bold" Foreground="Black" Command="{Binding Path=DataContext.ShowOrdinaryTourRequestInfoWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Content="More Info" Margin="0,10,60,10" Width="100" Height="60">
-                                                                                          
+                                                                                                <DockPanel Margin="5">
+                                                                                                    <TextBlock FontWeight="Bold" FontSize="12" Text="{ns:Loc Tour status:}" />
+                                                                                                    <TextBlock  FontSize="12" FontWeight="Normal"  Text="{Binding Status}" />
+                                                                                                </DockPanel>
+                                                                                            </StackPanel>
+                                                                                        </StackPanel>
+                                                                                        <Button   Background="{DynamicResource ConfirmButton}" FontWeight="Bold" Foreground="Black" Command="{Binding Path=DataContext.ShowOrdinaryTourRequestInfoWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Content="{ns:Loc More info}" Margin="250,20,60,0" Width="100" Height="40">
+
                                                                                         </Button>
-                                                                                        <TextBlock Grid.Column="1" Text="(Press Enter)" Margin="0,95,40,10"></TextBlock>
-                                                                            </Grid>
-                                                                          
-                                                                        </Border>
-                                                                    </DataTemplate>
-                                                                </ListView.ItemTemplate>
-                                                            </ListView>
+                                                                                        <TextBlock Grid.Column="1" FontSize="10" FontWeight="Normal" Text="(Press Enter for more)" Margin="255,110,40,10"></TextBlock>
+                                                                                    </Grid>
+
+                                                                                </Border>
+                                                                            </DataTemplate>
+                                                                        </ListView.ItemTemplate>
+                                                                    </ListView>
                                                                 </ScrollViewer>
                                                             </Grid>
                                                         </Border>
                                                         <DockPanel Grid.Row="2">
-                                                        <TextBlock FontSize="13" Text="Status:" FontWeight="Bold"  Margin="10,5,5,10"></TextBlock>
-                                                        <TextBlock FontSize="13" Text="{Binding Key.Status}" Margin="5,5,5,10" ></TextBlock>
+                                                            <TextBlock FontSize="13" Text="Status:" FontWeight="Bold"  Margin="10,5,5,10"></TextBlock>
+                                                            <TextBlock FontSize="13" Text="{Binding Key.Status}" Margin="5,5,5,10" ></TextBlock>
                                                         </DockPanel>
                                                     </Grid>
                                                 </Border>
-                                            
+
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

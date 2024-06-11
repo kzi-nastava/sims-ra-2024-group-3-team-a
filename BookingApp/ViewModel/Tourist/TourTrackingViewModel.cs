@@ -26,6 +26,8 @@ namespace BookingApp.ViewModel.Tourist
         private ObservableCollection<KeyPointDTO> _keyPoints { get; set; }
         public RelayCommand ScrollLeftCommand { get; }
         public RelayCommand ScrollRightCommand { get; }
+        public Action CloseAction { get; set; }
+        private RelayCommand _closeWindowCommand;
         public TourTrackingViewModel(TourDTO tourDTO)
         { 
             _tourDTO = tourDTO;
@@ -45,6 +47,7 @@ namespace BookingApp.ViewModel.Tourist
             _keyPoints = new ObservableCollection<KeyPointDTO>(keypointsDTO);
             ScrollLeftCommand = new RelayCommand(ScrollLeft);
             ScrollRightCommand = new RelayCommand(ScrollRight);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
         }
         public ObservableCollection<KeyPointDTO> KeyPoints
         {
@@ -94,6 +97,23 @@ namespace BookingApp.ViewModel.Tourist
         {
             _scrollViewer?.ScrollToHorizontalOffset(_scrollViewer.HorizontalOffset - 140);
         }
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public void CloseWindow()
+        {
 
+
+            CloseAction();
+        }
     }
 }

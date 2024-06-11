@@ -42,25 +42,16 @@ namespace BookingApp.View.Tourist
 
             if (_finishedToursViewModel.CloseAction == null)
                 _finishedToursViewModel.CloseAction = new Action(this.Close);
-            //finishedToursListView.Focus();
+           
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            this.PreviewKeyDown += TouristFinishedWindow_PreviewKeyDown;
+            
 
 
           
 
 
         }
-        private void TouristFinishedWindow_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.F9 && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
-            {
-
-                More.IsSubmenuOpen = true;
-                Settings.Focus();
-                e.Handled = true;
-            }
-        }
+        
         public static FinishedToursWindow GetInstance()
         {
             return Instance;

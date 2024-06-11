@@ -239,8 +239,10 @@ namespace BookingApp.ViewModel.Guest
             if (GuestHomePage.Instance.checkBoxHouse.IsChecked == true)
                 selectedTypes.Add("house");
 
-            string searchCapacityInput = GuestHomePage.Instance.searchCapacityTextBox.Text.ToLower();
-            string searchMinDaysInput = GuestHomePage.Instance.searchMinDaysTextBox.Text.ToLower();
+            //string searchCapacityInput = GuestHomePage.Instance.searchCapacityTextBox.Text.ToLower();
+            //string searchMinDaysInput = GuestHomePage.Instance.searchMinDaysTextBox.Text.ToLower();
+            string searchCapacityInput = _numberOfPeople.ToString();
+            string searchMinDaysInput = _daysStaying.ToString();
 
             string allParams = searchCityInput + searchCountryInput + searchNameInput + string.Join("", selectedTypes) + searchCapacityInput + searchMinDaysInput;
 
@@ -285,7 +287,32 @@ namespace BookingApp.ViewModel.Guest
             GuestMainWindow.GetInstance().Close();
             signInForm.Show();
         }
-        
+        private int _daysStaying = 1;
+        public int DaysStaying
+        {
+            get
+            {
+                return _daysStaying;
+            }
+            set
+            {
+                _daysStaying = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _numberOfPeople = 1;
+        public int NumberOfPeople
+        {
+            get
+            {
+                return _numberOfPeople;
+            }
+            set
+            {
+                _numberOfPeople = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<MessageDTO> MyMessagesDTO
         {
             get

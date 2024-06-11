@@ -26,6 +26,9 @@ namespace BookingApp.View.Tourist
             InitializeComponent();
             _settingsViewModel = new SettingsViewModel();
             DataContext = _settingsViewModel;
+            if (_settingsViewModel.CloseAction == null)
+                _settingsViewModel.CloseAction = new Action(this.Close);
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using BookingApp.Model.Enums;
 using BookingApp.Serializer;
-using BookingApp.View.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;

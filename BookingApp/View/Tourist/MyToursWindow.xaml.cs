@@ -2,6 +2,7 @@
 using BookingApp.Model;
 using BookingApp.Repository;
 using BookingApp.Service;
+using BookingApp.ViewModel.Owner;
 using BookingApp.ViewModel.Tourist;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,15 @@ namespace BookingApp.View.Tourist
     {
         private MyToursViewModel _myToursViewModel;
 
-        public MyToursWindow()
+        public MyToursWindow(UserDTO loggedInUser)
         {
             InitializeComponent();
 
-           _myToursViewModel = new MyToursViewModel();
+           _myToursViewModel = new MyToursViewModel(loggedInUser);
             DataContext = _myToursViewModel;
-           
+            if (_myToursViewModel.CloseAction == null)
+                _myToursViewModel.CloseAction = new Action(this.Close);
+
         }
     }
 }

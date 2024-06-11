@@ -26,10 +26,14 @@ namespace BookingApp.ViewModel.Tourist
 
         private TourDTO _selectedTourDTO = null;
 
-        private RelayCommand _showTourTrackingWindowCommand;
-
-        public MyToursViewModel()
+      
+        private UserDTO _userDTO;
+        public Action CloseAction { get; set; }
+        private RelayCommand _closeWindowCommand;
+        private RelayCommand _showTrackTourWindowCommand;
+        public MyToursViewModel(UserDTO loggedInUser)
         {
+            _userDTO = loggedInUser;
             ITourRepository tourRepository = Injector.CreateInstance<ITourRepository>();
             IUserRepository userRepository = Injector.CreateInstance<IUserRepository>();
             ITouristRepository touristRepository = Injector.CreateInstance<ITouristRepository>();
@@ -37,11 +41,12 @@ namespace BookingApp.ViewModel.Tourist
             ITourReviewRepository tourReviewRepository = Injector.CreateInstance<ITourReviewRepository>();
             IVoucherRepository voucherRepository = Injector.CreateInstance<IVoucherRepository>();
             _tourService = new TourService(tourRepository, userRepository, touristRepository, tourReservationRepository, tourReviewRepository, voucherRepository);
-            List<TourDTO> activeTours = _tourService.GetActiveTours().Select(activeTours => new TourDTO(activeTours)).ToList();
-            List<TourDTO> unactiveTours = _tourService.GetUnactiveTours().Select(unactiveTours => new TourDTO(unactiveTours)).ToList();
+            List<TourDTO> activeTours = _tourService.GetActiveToursForUser(loggedInUser.Id).Select(activeTours => new TourDTO(activeTours)).ToList();
+            List<TourDTO> unactiveTours = _tourService.GetUnactiveToursForUser(loggedInUser.Id).Select(unactiveTours => new TourDTO(unactiveTours)).ToList();
             _activeTourDTO = new ObservableCollection<TourDTO>(activeTours);
             _unactiveTourDTO = new ObservableCollection<TourDTO>(unactiveTours);
-            _showTourTrackingWindowCommand = new RelayCommand(ShowTourTrackingWindow);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
+            _showTrackTourWindowCommand = new RelayCommand(ShowTourTrackingWindow);
         }
         public ObservableCollection<TourDTO> ActiveToursDTO
         {
@@ -70,7 +75,30 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand ShowTourTrackingWindowCommand
+        {
+            get
+            {
+                return _showTrackTourWindowCommand;
+            }
+            set
+            {
+                _showTrackTourWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public TourDTO SelectedTourDTO
         {
             get
@@ -84,30 +112,26 @@ namespace BookingApp.ViewModel.Tourist
                
             }
         }
-        public RelayCommand ShowTourTrackingWindowCommand
+        public void ShowTourTrackingWindow(object parameter)
         {
-            get
-            {
-                return _showTourTrackingWindowCommand;
-            }
-            set
-            {
-                _showTourTrackingWindowCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public void ShowTourTrackingWindow()
-        {
-
-            if (_selectedTourDTO == null)
+            var selectedItem = parameter as TourDTO;
+            if (selectedItem == null)
             {
                 return;
             }
 
-            var selectedItem = _selectedTourDTO as TourDTO;
+            
             TrackTourWindow trackTourWindow = new TrackTourWindow(new TourDTO(selectedItem));
             trackTourWindow.ShowDialog();
         }
+
+        public void CloseWindow()
+        {
+
+
+            CloseAction();
+        }
+
+
     }
 }

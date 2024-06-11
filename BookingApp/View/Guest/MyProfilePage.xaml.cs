@@ -1,4 +1,5 @@
-﻿using BookingApp.ViewModel.Guest;
+﻿using BookingApp.DTO;
+using BookingApp.ViewModel.Guest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace BookingApp.View.Guest
     {
         public static MyProfilePage Instance;
         public static GuestReservationsViewModel _guestReservationsViewModel;
+        public UserDTO User = GuestMainViewWindow.LoggedInGuest;
         public MyProfilePage()
         {
             InitializeComponent();

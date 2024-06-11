@@ -1,6 +1,7 @@
 ﻿using BookingApp.Commands;
 using BookingApp.DTO;
 using BookingApp.InjectorNameSpace;
+using BookingApp.Model;
 using BookingApp.Model.Enums;
 using BookingApp.Repository.Interfaces;
 using BookingApp.Service;
@@ -51,10 +52,13 @@ namespace BookingApp.ViewModel.Tourist
         public RelayCommand LostFocusBeginDateCommand { get; private set; }
         public RelayCommand LostFocusEndDateCommand { get; private set; }
         private LocationDTO _locationDTO;
+        private UserService _userService;
         public Action CloseAction { get; set; }
         public RelayCommand OpenDatePickerCommand { get; private set; }
         public RelayCommand OpenDatePickerFinalCommand { get; private set; }
         public RelayCommand OpenDropDownComboboxCommand { get; private set; }
+        private App app;
+        private string _currentLanguage;
         public OrdinaryTourRequestViewModel(UserDTO loggedInUser, int complexTourRequestId)
         {
             _userDTO = loggedInUser;
@@ -85,8 +89,14 @@ namespace BookingApp.ViewModel.Tourist
             LostFocusEndDateCommand = new RelayCommand(OnLostFocusEndDate);
             _validateSelf2Command = new RelayCommand(ValidateSelf2);
             OpenDatePickerCommand = new RelayCommand(OpenDatePicker);
-            OpenDatePickerFinalCommand = new RelayCommand(OpenDatePicker);
+            OpenDatePickerFinalCommand = new RelayCommand(OpenFinalDatePicker);
             OpenDropDownComboboxCommand = new RelayCommand(OpenCombobox);
+            _userService = new UserService(userRepository);
+            FinUserInfo(_userDTO);
+
+            var currentLanguage = App.Instance.CurrentLanguage.Name;
+            _currentLanguage = currentLanguage;
+
         }
 
         public OrdinaryTourRequestDTO OrdinaryTourRequestDTO
@@ -256,7 +266,17 @@ namespace BookingApp.ViewModel.Tourist
                 _ordinaryTourRequestDTO.RequestSentDate = DateTime.Now;
                 _ordinaryTourRequestDTO.ComplexTourRequestId = _complexTourRequestId;
                 _ordinaryTourRequestService.Save(_ordinaryTourRequestDTO.ToOrdinaryTourRequest());
-                MessageBox.Show("made!");
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    MessageBox.Show("Request is created!");
+                    CloseWindow();
+                }
+                else
+                {
+                    MessageBox.Show("Zahtjev je kreiran!");
+                    CloseWindow();
+                }
+                   
             }
          
             
@@ -306,24 +326,66 @@ namespace BookingApp.ViewModel.Tourist
         protected override void ValidateSelf1()
         {
             if (string.IsNullOrWhiteSpace(_touristDTO.Name))
+
             {
-                ValidationErrors["Name"] = "First name is required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Name"] = "First name is required.";
+                }
+                else
+                {
+                    ValidationErrors["Name"] = "Ime je obavezno.";
+                }
+            }
+            else if (!Regex.IsMatch(_touristDTO.Name, @"^[a-zA-Z]+$"))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Name"] = "Name must contain only letters.";
+                }
+                else
+                {
+                    ValidationErrors["Name"] = "Ime moze sadrzati samo slova.";
+                }
+
             }
 
             if (string.IsNullOrWhiteSpace(_touristDTO.Surname))
             {
-                ValidationErrors["Surname"] = "Last name is required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Surname"] = "Surname is required.";
+                }
+                else
+                {
+                    ValidationErrors["Surname"] = "Prezime je obavezno.";
+                }
+            }
+            else if (!Regex.IsMatch(_touristDTO.Surname, @"^[a-zA-Z]+$"))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Surname"] = "Surname must contain only letters.";
+                }
+                else
+                {
+                    ValidationErrors["Surname"] = "Prezime moze sadrzati samo slova.";
+                }
+
             }
 
             int age;
-            if (!int.TryParse(_touristDTO.Age.ToString(), out age) || age==0)
+            if (!int.TryParse(_touristDTO.Age.ToString(), out age) || age<=0)
             {
-                ValidationErrors["Age"] = "Enter a valid age number.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Age"] = "Enter a valid age number.";
+                }
+                else
+                {
+                    ValidationErrors["Age"] = "Broj godina nije validan";
+                }
             }
-           
-           
-
-
 
             OnPropertyChanged(nameof(ValidationErrors));
         }
@@ -332,28 +394,115 @@ namespace BookingApp.ViewModel.Tourist
 
             if (string.IsNullOrWhiteSpace(_ordinaryTourRequestDTO.LocationDTO.Country))
             {
-                ValidationErrors["Country"] = "Contry  is required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Country"] = "Contry  is required.";
+                }
+                else
+                {
+                    ValidationErrors["Country"] = "Drzava je obavezna.";
+                }
+                    
+            }
+            else if (!Regex.IsMatch(_ordinaryTourRequestDTO.LocationDTO.Country, @"^[a-zA-Z]+$"))
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Country"] = "Country must contain only letters.";
+                }
+                else
+                {
+                    ValidationErrors["Country"] = "Drzava moze sadrzati samo slova.";
+                }
+
             }
 
             if (string.IsNullOrWhiteSpace(_ordinaryTourRequestDTO.LocationDTO.City))
             {
-                ValidationErrors["City"] = "City is required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["City"] = "City is required.";
+                }
+                else
+                {
+                    ValidationErrors["City"] = "Grad je neophodan.";
+                }
+                    
             }
-           
-            if(string.IsNullOrWhiteSpace(_ordinaryTourRequestDTO.BeginDate.ToString()))
+            else if (!Regex.IsMatch(_ordinaryTourRequestDTO.LocationDTO.City, @"^[a-zA-Z]+$"))
             {
-                ValidationErrors["BeginDate"] = "Begin date i required.";
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["City"] = "City must contain only letters.";
+                }
+                else
+                {
+                    ValidationErrors["City"] = "Grad moze da sadrzi samo slova.";
+                }
+
+                    
+
             }
-           
-           /* Languages selectedLanguage;
-            bool isValidLanguage = Enum.TryParse(comboBoxInput, out selectedLanguage);
-
-            if (!isValidLanguage || !Languages.Contains(selectedLanguage))
+            if (Start == new DateTime())
             {
-                ValidationErrors["Language"] = "Please select one of the options";
-            }*/
-           
-
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["BeginDate"] = "You must choose a date";
+                }
+                else
+                {
+                    ValidationErrors["BeginDate"] = "Morate izabrati datum";
+                }
+                    
+            }
+            else if (Start >= End)
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["BeginDate"] = "To Date must be bigger than From Date";
+                }
+                else
+                {
+                    ValidationErrors["BeginDate"] = "Krajnji datum mora biti veci od pocetnog";
+                }
+                   
+            }
+            if (End == new DateTime())
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["EndDate"] = "You must choose a date";
+                }
+                else
+                {
+                    ValidationErrors["EndDate"] = "Morate izabrati datum";
+                }
+                  
+            }
+            else if (Start >= End)
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["EndDate"] = "From Date must be smaller than To Date";
+                }
+                else
+                {
+                    ValidationErrors["EndDate"] = "Krajnji datum mnora biti veci od pocetnog";
+                }
+                   
+            }
+            if(_ordinaryTourRequestDTO.Language.ToString() == "")
+            {
+                if (_currentLanguage.Equals("en-US"))
+                {
+                    ValidationErrors["Language"] = "Language is required";
+                }
+                else
+                {
+                    ValidationErrors["Language"] = "Jezik je obavezan";
+                }
+                   
+            }
 
         }
 
@@ -449,6 +598,10 @@ namespace BookingApp.ViewModel.Tourist
         {
             IsDatePickerOpen = true;
         }
+        private void OpenFinalDatePicker()
+        {
+            IsDatePickerFinalOpen = true;
+        }
         private void OpenCombobox()
         {
             IsDropDownComboboxOpenCommand = true;
@@ -467,6 +620,19 @@ namespace BookingApp.ViewModel.Tourist
         {
             comboBoxInput = _userInput;
         }
+        public void FinUserInfo(UserDTO loggedInUser)
+        {
+            TouristProfile profile = new TouristProfile();
+            profile = _userService.GetTouristProfileById(loggedInUser.Id);
+            if (profile != null)
+            {
+                _touristDTO.Surname = profile.Surname;
+                _touristDTO.Name = profile.Name;
+                _touristDTO.Age = profile.Age;
+                _touristsDTO.Add(new TouristDTO(_touristDTO));
+               
+            }
 
+        }
     }
 }

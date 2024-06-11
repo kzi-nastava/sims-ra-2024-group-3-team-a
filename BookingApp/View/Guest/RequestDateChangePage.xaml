@@ -72,7 +72,7 @@
                     <Label Foreground="#d4ff00" HorizontalAlignment="Left" FontSize="19" Content="Additional comment:  "/>
                     <TextBox TextWrapping="Wrap" Grid.Row="3" Width="190" Height="60" HorizontalAlignment="Left"
                     AcceptsReturn="True"
-                    Text="Enter text here"
+                    Tag="Enter text here"
                         VerticalScrollBarVisibility="Auto"
                         HorizontalScrollBarVisibility="Auto"
                     Margin="0, 0, 0 0"/>

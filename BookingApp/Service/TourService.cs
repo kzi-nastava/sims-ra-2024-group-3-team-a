@@ -347,6 +347,64 @@ namespace BookingApp.Service
           .ToList();
            return sortedTours;
         }
+        public List<Tour> GetAlternativeTourist()
+        {
+            // Get all tours from the repository
+            List<Tour> allTours = _tourRepository.GetAll();
+            List<User> allUser = _userService.GetAll();
+            // Sort the tours based on whether the guide is super or not
+            List<Tour> sortedTours = allTours
+          .OrderByDescending(tour => allUser.FirstOrDefault(guide => guide.Id == tour.GuideId && tour.CurrentCapacity!=0)?.IsSuper ?? false)
+          .ToList();
+            return sortedTours;
+        }
+        public List<Tour> GetActiveToursForUser(int id)
+        {
+            List<Tour> activeTours = new List<Tour>();
+            foreach (Tour tour in GetAll())
+            {
+                foreach (TourReservation tourReservation in _tourReservationService.GetAllForUser(id))
+                {
+                    if (tour.Id == tourReservation.TourId && tour.IsActive)
+                    {
+                        activeTours.Add(tour);
+                    }
+                }
+            }
+            return activeTours.Distinct().ToList();
+        }
+
+        public List<Tour> GetUnactiveToursForUser(int id)
+        {
+            List<Tour> unactiveTours = new List<Tour>();
+            foreach (Tour tour in GetAll())
+            {
+                foreach (TourReservation tourReservation in _tourReservationService.GetAllForUser(id))
+                {
+                    if (tour.Id == tourReservation.TourId && !tour.IsActive && !tour.CurrentKeyPoint.Equals("finished"))
+                    {
+                        unactiveTours.Add(tour);
+                    }
+                }
+            }
+            return unactiveTours.Distinct().ToList();
+        }
+        public List<Tour> GetAllFinishedToursForUser(int id)
+        {
+            List<Tour> finishedTours = new List<Tour>();
+            foreach (Tour tour in GetAll())
+            {
+                foreach (TourReservation tourReservation in _tourReservationService.GetAllForUser(id))
+                {
+                    if (tour.Id == tourReservation.TourId && !tour.IsActive && tour.CurrentKeyPoint.Equals("finished"))
+                    {
+                        finishedTours.Add(tour);
+                    }
+                }
+
+            }
+            return finishedTours;
+        }
 
     }
 }

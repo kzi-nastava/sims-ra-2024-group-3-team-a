@@ -18,7 +18,7 @@ namespace BookingApp.ViewModel.Tourist
     public class OrdinaryTourRequestInfoViewModel : ViewModel
     {
 
-       // private OrdinaryTourRequestService _ordinaryTourRequestService { get; set; }
+      
 
         private OrdinaryTourRequestDTO _ordinaryTourRequestDTO { get; set; }
         private UserDTO _userDTO { get; set; }
@@ -26,6 +26,8 @@ namespace BookingApp.ViewModel.Tourist
         private User user { get; set; }
         
         public ObservableCollection<TouristDTO> _touristsDTO;
+        public Action CloseAction { get; set; }
+        private RelayCommand _closeWindowCommand;
         public OrdinaryTourRequestInfoViewModel(OrdinaryTourRequestDTO ordinaryTourRequestDTO)
         {
             
@@ -45,9 +47,9 @@ namespace BookingApp.ViewModel.Tourist
             {
                 _userDTO = new UserDTO();
             }
-            
+            _closeWindowCommand = new RelayCommand(CloseWindow);
 
-           // _userDTO = _userService.GetById(ordinaryTourRequestDTO.GuideId);
+           
         }
 
         public OrdinaryTourRequestDTO OrdinaryTourRequestDTO
@@ -91,8 +93,25 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public void CloseWindow()
+        {
 
-        
+
+            CloseAction();
+        }
+
 
 
     }

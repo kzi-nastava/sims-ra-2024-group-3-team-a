@@ -46,14 +46,28 @@ namespace BookingApp.ViewModel.Tourist
         private RelayCommand _updateCommand;
         private RelayCommand _averageTouristNumberCommand;
         private RelayCommand _showForAllYearsCommand;
+     
+        private RelayCommand _showMyToursWindowCommand;
+        private RelayCommand _showInboxWindowCommand;
+        private RelayCommand _showFinishedToursWindowCommand;
+        private RelayCommand _showVoucherWindowCommand;
+        private RelayCommand _showAppropriateWindowCommand;
+      
+        private RelayCommand _showOrindaryTourRequestWindow;
+      
+        private RelayCommand _showTourRequestsCommand;
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesCollection HistogramData { get; set; }
         public SeriesCollection HistogramDataForLocation { get; set; }
+        public RelayCommand OpenSugmenuCommand1 { get; private set; }
+        public RelayCommand OpenSugmenuCommand2 { get; private set; }
         public string[] Labels { get; set; }
         public List<SolidColorBrush> brushes { get; set; }
 
         public Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> keyValuePairs { get; set; }
         private Dictionary<ComplexTourRequestDTO, ObservableCollection<OrdinaryTourRequestDTO>> _dictionary;
+        public Action CloseAction { get; set; }
+        private RelayCommand _closeWindowCommand;
 
         public TourRequestsViewModel(UserDTO loggedInUser)
         {
@@ -84,6 +98,9 @@ namespace BookingApp.ViewModel.Tourist
             _updateCommand = new RelayCommand(Update);
             _averageTouristNumberCommand = new RelayCommand(GetAverageTouristNumber);
             _showForAllYearsCommand = new RelayCommand(LoadDataForPieChart);
+            _closeWindowCommand = new RelayCommand(CloseWindow);
+            OpenSugmenuCommand1 = new RelayCommand(OpenSubmenu);
+            OpenSugmenuCommand2 = new RelayCommand(OpenSubmenu2);
             LoadDataForPieChart();
            
             _isLocationGridVisible = 3;
@@ -157,7 +174,7 @@ namespace BookingApp.ViewModel.Tourist
             set
             {
                 _complexTourRequestsDTO = value;
-              //  _complexTourPartsDTO = _complexTourRequestService.getOrdinaryTourRequestsForUser()
+           
                 OnPropertyChanged();
             }
 
@@ -175,20 +192,7 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
-        /*public ObservableCollection<OrdinaryTourRequestDTO> ComplexTourPartsDTO
-        {
-            get
-            {
-                
-            }
-            set
-            {
-                _ordinaryTourRequestsDTO = value;
-                OnPropertyChanged();
-            }
-
-        }*/
-
+       
 
         public OrdinaryTourRequestDTO SelectedTourDTO
         {
@@ -203,8 +207,19 @@ namespace BookingApp.ViewModel.Tourist
 
             }
         }
-     
-        
+        public RelayCommand CloseWindowCommand
+        {
+            get
+            {
+                return _closeWindowCommand;
+            }
+            set
+            {
+                _closeWindowCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
         public OrdinaryTourRequestDTO SelectedPartDTO
         {
             get
@@ -291,6 +306,9 @@ namespace BookingApp.ViewModel.Tourist
                 OnPropertyChanged();
             }
         }
+        
+        
+       
 
         private int _selectedYear;
         public int SelectedYear
@@ -398,15 +416,16 @@ namespace BookingApp.ViewModel.Tourist
             }
             set { }
         }
-        public void ShowOrdinaryTourRequestInfoWindow()
+        private void ShowOrdinaryTourRequestInfoWindow(object parameter)
         {
+            var selectedItem = parameter as OrdinaryTourRequestDTO;
 
-            if (_selectedTourDTO == null)
+            if (selectedItem == null)
             {
                 return;
             }
 
-            var selectedItem = _selectedTourDTO as OrdinaryTourRequestDTO;
+           
 
             
                 OrdinaryTourRequestInfoWindow ordinaryTourRequestInfoWindow = new OrdinaryTourRequestInfoWindow(new OrdinaryTourRequestDTO(selectedItem));
@@ -465,6 +484,22 @@ namespace BookingApp.ViewModel.Tourist
 
         public void Update()
         {
+            Color color1 = (Color)ColorConverter.ConvertFromString("#ffe2f1");
+            Color color2 = (Color)ColorConverter.ConvertFromString("#ffd3ea");
+            Color color3 = (Color)ColorConverter.ConvertFromString("#ffb9de");
+            Color color4 = (Color)ColorConverter.ConvertFromString("#ffaad7");
+            Color color5 = (Color)ColorConverter.ConvertFromString("#ffffd8");
+
+
+            SolidColorBrush brush3 = new SolidColorBrush(color1);
+            SolidColorBrush brush4 = new SolidColorBrush(color4);
+            SolidColorBrush brush5 = new SolidColorBrush(color5);
+
+            brushes = new List<SolidColorBrush>();
+            brushes.Add(brush3);
+            brushes.Add(brush4);
+            brushes.Add(brush5);
+
             var selectedItem = _selectedYear;
             int acceptedCount = _ordinaryTourRequestService.CountAcceptedOrdinaryTourRequestsForSpecificYear(_userDTO.Id, selectedItem);
             int rejectedCount = _ordinaryTourRequestService.CountRejectedOrdinaryTourRequestsForSpecificYear(_userDTO.Id, selectedItem);
@@ -483,13 +518,15 @@ namespace BookingApp.ViewModel.Tourist
                 {
                     Title = "Accepted",
                     Values = new ChartValues<double> { acceptedPercentage },
-                    DataLabels = true
+                    DataLabels = true,
+                    Fill = brushes[1]
                 },
                 new PieSeries
                 {
                     Title = "Rejected",
                     Values = new ChartValues<double> { declinedPercentage },
-                    DataLabels = true
+                    DataLabels = true,
+                    Fill = brushes[2]
                 }
             };
         }
@@ -547,5 +584,49 @@ namespace BookingApp.ViewModel.Tourist
                 }
             }
         }
+
+
+        private bool _isSubmenuOpenCommand1;
+        public bool IsSubmenuOpenCommand1
+        {
+            get
+            {
+                return _isSubmenuOpenCommand1;
+            }
+            set
+            {
+                _isSubmenuOpenCommand1 = value;
+                OnPropertyChanged();
+            }
+        }
+        private void OpenSubmenu()
+        {
+            IsSubmenuOpenCommand1 = true;
+        }
+        public void CloseWindow()
+        {
+
+
+            CloseAction();
+        }
+        private bool _isSubmenuOpenCommand2;
+        public bool IsSubmenuOpenCommand2
+        {
+            get
+            {
+                return _isSubmenuOpenCommand2;
+            }
+            set
+            {
+                _isSubmenuOpenCommand2 = value;
+                OnPropertyChanged();
+            }
+        }
+        private void OpenSubmenu2()
+        {
+            IsSubmenuOpenCommand2 = true;
+        }
+        
+
     }
 }

@@ -33,7 +33,11 @@ namespace BookingApp.ViewModel.Guest
         private RelayCommand _showReservationDetailsPageCommand;
         private RelayCommand _showSideMenuCommand;
         private RelayCommand _newReservationCommand;
+        private RelayCommand _nextImageCommand;
+        private RelayCommand _previousImageCommand;
 
+        private List<string> _images;
+        private string _selectedImage;
 
         public MakeReservationViewModel(AccommodationDTO selectedAccommodationDTO, UserDTO loggedInGuest, DateTime selectedBeginDate, DateTime selectedEndDate, int daysToStay)
         {
@@ -60,8 +64,13 @@ namespace BookingApp.ViewModel.Guest
             _showReservationDetailsPageCommand = new RelayCommand(ShowReservationDetailsPage);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
             _newReservationCommand = new RelayCommand(NewReservation);
+            _nextImageCommand = new RelayCommand(NextImage);
+            _previousImageCommand = new RelayCommand(PreviousImage);
             _accommodationReservationsDTO = new List<AccommodationReservationDTO>();
             _accommodationReservationsDTO = _accommodationReservationService.GetAllByAccommodationId(_selectedAccommodationDTO.Id).Where(c => c.Canceled == false).Select(reservation => new AccommodationReservationDTO(reservation)).ToList();
+
+            _images = _selectedAccommodationDTO.Images;
+            SelectedImage = _images[0];
 
             if ((_superGuestService.GetByUserId(_userDTO.Id) == null) || _superGuestService.GetByUserId(_userDTO.Id).Points == 0)
             {
@@ -334,6 +343,30 @@ namespace BookingApp.ViewModel.Guest
                 OnPropertyChanged();
             }
         }
+        public RelayCommand NextImageCommand
+        {
+            get
+            {
+                return _nextImageCommand;
+            }
+            set
+            {
+                _nextImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand PreviousImageCommand
+        {
+            get
+            {
+                return _previousImageCommand;
+            }
+            set
+            {
+                _previousImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
         public RelayCommand ShowReservationDetailsPageCommand
         {
             get
@@ -366,7 +399,43 @@ namespace BookingApp.ViewModel.Guest
         {
             GuestMainViewWindow.SideMenuFrame.Content = null;
         }
+        private void NextImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == _images.Count - 1)
+            {
+                SelectedImage = _images[0];
+            }
+            else
+            {
+                SelectedImage = _images[index + 1];
+            }
+        }
 
+        private void PreviousImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == 0)
+            {
+                SelectedImage = _images[_images.Count - 1];
+            }
+            else
+            {
+                SelectedImage = _images[index - 1];
+            }
+        }
+        public string SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
+        }
     }
     
 }

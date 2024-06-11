@@ -25,7 +25,7 @@ namespace BookingApp.View.Tourist
     {
         public static TourInformationViewModel _tourInformationView;
         public static TourInformationWindow Instance;
-    
+        
         public TourInformationWindow(TourDTO tourDTO, UserDTO userDTO)
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace BookingApp.View.Tourist
                 _tourInformationView.CloseAction = new Action(this.Close);
 
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            
+           
         }
         public static TourInformationWindow GetInstance()
         {
@@ -48,61 +48,16 @@ namespace BookingApp.View.Tourist
 
 
 
-        /* private void Scroll_PreviewKeyDown(object sender, KeyEventArgs e)
-          {
-
-
-
-
-
-                if ( e.Key == Key.Left || e.Key == Key.Right)
-                {
-                    // Get the ScrollViewer
-                    ScrollViewer scrollViewer = sender as ScrollViewer;
-
-                    if (scrollViewer != null)
-                    {
-                        double verticalOffset = scrollViewer.VerticalOffset;
-                        double horizontalOffset = scrollViewer.HorizontalOffset;
-
-                        switch (e.Key)
-                        {
-                            case Key.Up:
-                                verticalOffset -= 10; // Adjust the scroll amount as needed
-                                scrollViewer.ScrollToVerticalOffset(verticalOffset);
-                                break;
-                            case Key.Down:
-                                verticalOffset += 10; // Adjust the scroll amount as needed
-                                scrollViewer.ScrollToVerticalOffset(verticalOffset);
-                                break;
-                            case Key.Left:
-                                horizontalOffset -= 10; // Adjust the scroll amount as needed
-                                scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
-                                break;
-                            case Key.Right:
-                                horizontalOffset += 10; // Adjust the scroll amount as needed
-                                scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
-                                break;
-                        }
-
-                        e.Handled = true; // Mark the event as handled
-                    }
-                }
-
-
-
-
-          */
-        private void TouristInformationWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        
+        private void LightThemeClick(object sender, RoutedEventArgs e)
         {
-            if (e.Key == Key.F9 && (Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0)
-            {
-
-                More.IsSubmenuOpen = true;
-                Settings.Focus();
-                e.Handled = true;
-            }
+            AppTheme.ChangeTheme(new Uri("Themes/LightTheme.xaml", UriKind.Relative));
         }
+        private void DarkThemeClick(object sender, RoutedEventArgs e)
+        {
+            AppTheme.ChangeTheme(new Uri("Themes/DarkTheme.xaml", UriKind.Relative));
+        }
+        
 
         private void ImageListView_Loaded(object sender, RoutedEventArgs e)
         {

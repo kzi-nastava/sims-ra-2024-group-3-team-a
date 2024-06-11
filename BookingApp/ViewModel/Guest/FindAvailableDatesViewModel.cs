@@ -18,12 +18,20 @@ namespace BookingApp.ViewModel.Guest
 
         private RelayCommand _searchDatesCommand;
         private RelayCommand _showSideMenuCommand;
+        private RelayCommand _nextImageCommand;
+        private RelayCommand _previousImageCommand;
+        private List<string> _images;
+        private string _selectedImage;
         public FindAvailableDatesViewModel(AccommodationDTO selectedAccommodationDTO, UserDTO loggedGuest) 
         {
             _selectedAccommodationDTO = selectedAccommodationDTO;
             _searchDatesCommand = new RelayCommand(SearchDates);
             _showSideMenuCommand = new RelayCommand(ShowSideMenu);
+            _nextImageCommand = new RelayCommand(NextImage);
+            _previousImageCommand = new RelayCommand(PreviousImage);
             _loggedGuest = loggedGuest;
+            _images = _selectedAccommodationDTO.Images;
+            SelectedImage = _images[0];
         }
 
         private void SearchDates()
@@ -156,6 +164,67 @@ namespace BookingApp.ViewModel.Guest
         public void CloseSideMenu()
         {
             GuestMainViewWindow.SideMenuFrame.Content = null;
+        }
+
+        private void NextImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == _images.Count - 1)
+            {
+                SelectedImage = _images[0];
+            }
+            else
+            {
+                SelectedImage = _images[index + 1];
+            }
+        }
+        public RelayCommand NextImageCommand
+        {
+            get
+            {
+                return _nextImageCommand;
+            }
+            set
+            {
+                _nextImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        public RelayCommand PreviousImageCommand
+        {
+            get
+            {
+                return _previousImageCommand;
+            }
+            set
+            {
+                _previousImageCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private void PreviousImage()
+        {
+            int index = _images.IndexOf(_selectedImage);
+            if (index == 0)
+            {
+                SelectedImage = _images[_images.Count - 1];
+            }
+            else
+            {
+                SelectedImage = _images[index - 1];
+            }
+        }
+        public string SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
         }
     }
 }
